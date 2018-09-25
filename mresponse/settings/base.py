@@ -90,6 +90,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(PROJECT_DIR, 'templates'),
+            os.path.join(BASE_DIR, 'frontend/app/build')
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -101,6 +102,10 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'frontend/app/build/static'),
 ]
 
 WSGI_APPLICATION = 'mresponse.wsgi.application'
