@@ -6,6 +6,7 @@ import StoryRouter from 'storybook-react-router'
 
 import WelcomePage from '../src/pages/welcome/welcome'
 import LoginPage from '../src/pages/login/login'
+import SettingsPage from '../src/pages/profile/profile'
 
 storiesOf('Pages', module)
 	.addDecorator(StoryRouter())
@@ -21,6 +22,27 @@ storiesOf('Pages', module)
 			login={action('Login')}
 			createAccount={action('Create Account')}
 			forgotPassword={action('Forgot Password')}
+		/>
+	)
+	.add('Profile', () =>
+		<SettingsPage
+			logout={action("Logout")}
+			back={action("Go Back to dashboard")}
+			editProfile={action("Go to settings page")}
+			profile={{
+				name: 'Asa',
+				avatar: 'https://api.adorable.io/avatars/100/abott@adorable.png',
+				karma: {
+					responses: {
+						karmaValue: 345,
+						responsesCount: 245
+					},
+					moderations: {
+						karmaValue: 700,
+						moderationsCount: 100
+					}
+				}
+			}}
 		/>
 	)
 

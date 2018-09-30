@@ -12,10 +12,14 @@ import StandardButton from '../src/components/buttons'
 import SignUpForm from '../src/components/signup-form'
 import ForgotPasswordForm from '../src/components/forgot-password-form'
 import TagField from '../src/components/tag-field'
+import Toolbar from '../src/components/toolbar'
+import Avatar from '../src/components/avatar'
 
 storiesOf('Components', module)
 	.addDecorator(backgroundColor(['#24172A', '#ffffff', '#dcdde1', '#000000']))
 	.add('Logo', () => <Logo/>)
+	.add('Toolbar', () => <Toolbar title='Responder Mode' titleBackground='#57ddc4' />)
+	.add('Avatar', () => <Avatar src='https://api.adorable.io/avatars/100/abott@adorable.png' editable={true} onClick={action('Change Avatar')}/>)
 	.add('Input Field', () => <InputField/>)
 	.add('Tag Field', () => <TagField
 		suggestions={[
