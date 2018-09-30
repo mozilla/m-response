@@ -1,0 +1,36 @@
+.signup-form {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  &-title {
+    margin: 0;
+    margin-bottom: 20px;
+    padding: 0;
+    color: white;
+  }
+
+  &-status {
+    text-align: center;
+
+    &-text {
+      font-size: 1.4rem !important;
+    }
+  }
+
+  &-fields {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &-field {
+    width: 100%;
+  }
+
+  &-submit {
+    margin-top: 55px
+  }
+
+}

@@ -1,0 +1,79 @@
+@import '../../styles/main';
+
+.welcome-page {
+	position: relative;
+	min-height: 100vh;
+	background-color: $primary;
+
+	display: grid;
+	grid-template-rows: auto 1fr auto;
+
+	padding-left: 20px;
+	padding-right: 20px;
+
+	.mozilla-logo {
+		grid-row: 1;
+		user-select: none;
+		margin: 0 auto;
+		width: 4.5rem;
+		padding: 30px;
+	}
+
+	.page-content {
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+		grid-row: 2;
+		text-align: center;
+	}
+
+	.brand-container {
+		margin: 40px;
+		text-align: center;
+
+		.logo {
+			margin: 0 auto;
+			margin-bottom: 20px;
+		}
+
+		.text-logo {
+			font-size: 1.3rem;
+			font-weight: 100;
+			color: white;
+		}
+	}
+
+	.info-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+		.tagline {}
+
+		.info-desc  {
+			max-width: 600px;
+			text-align: center;
+			color: white;
+			font-size: 1rem;
+			margin: 30px;
+		}
+	}
+
+	.continue-button {
+		margin: 60px auto 0;
+	}
+
+	footer {
+		grid-row: 3;
+		padding: 30px;
+		color: #959198;
+		font-size: 0.8rem;
+		text-align: center;
+		.footer-link {
+			cursor: pointer;
+			text-decoration: underline;
+			color: rgba(white, 0.4);
+		}
+	}
+
+}

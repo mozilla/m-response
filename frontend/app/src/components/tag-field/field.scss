@@ -1,0 +1,115 @@
+@import "../../styles/main";
+
+.form-field {
+
+  &-outer {
+    position: relative;
+    height: 50px;
+    background-color: $yellow;
+    opacity: 0.8;
+    transition: opacity 0.1s;
+
+    &--shifted {
+      opacity: 1;
+    }
+  }
+
+  &-inner {
+    height: 100%;
+    width: 100%;
+    background-color: #5A4F5F;
+    transition: margin-left 0.1s, background-color 0.1s;
+    overflow: scroll;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    &--shifted {
+      margin-left: 8px;
+      background-color: white;
+    }
+  }
+
+  &-input-container {
+    display: flex;
+    align-items: center;
+  }
+
+  &-input {
+    width: 100%;
+    height: 100%;
+    min-width: 400px;
+    border: none;
+    user-select: none;
+    outline:0;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    color: #ADADAD;
+    font-size: 16px;
+
+    &:focus {
+      color: black;
+    }
+
+    &::placeholder {
+      color: #ADADAD;
+      opacity: 1;
+    }
+
+  }
+
+  &-suggestions {
+    position: absolute;
+    top: 50px;
+    left: 0px;
+    width: 100%;
+    height: auto;
+    background-color: #3B2F3F;
+    color: white;
+    border-left: 1px solid #9C969F;
+    border-right: 1px solid #9C969F;
+    border-bottom: 1px solid #9C969F;
+    padding: 0;
+    margin: 0;
+    z-index: 3;
+
+    li {
+      display: flex;
+      align-items: center;
+
+      list-style: none;
+      font-size: 12pt;
+      width: 100%;
+      padding: 0;
+      margin: 0;
+      padding-left: 20px;
+      cursor: pointer;
+    }
+  }
+
+  &-tag {
+    background-color: #ffc681;
+    border-radius: 4px;
+    padding: 0px 10px 0px 10px;
+    font-size: 14px;
+    margin-right: 8px;
+    color: rgba(0, 0, 0, 0.6);
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+
+    &:nth-child(odd) {
+      background-color: #ffe66f;
+    }
+
+    .removeClass {
+      font-size: 26px;
+      padding-left: 8px;
+      padding-bottom: 3px;
+    }
+  }
+
+}
