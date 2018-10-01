@@ -104,10 +104,6 @@ TEMPLATES = [
     },
 ]
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'frontend/app/build/static'),
-]
-
 WSGI_APPLICATION = 'mresponse.wsgi.application'
 
 
@@ -197,9 +193,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # applications which are used by default.
 # https://docs.djangoproject.com/en/stable/ref/settings/#staticfiles-dirs
 STATICFILES_DIRS = [
-    # "static_compiled" is a folder used by the front-end tooling
-    # to output compiled static assets.
-    # os.path.join(PROJECT_DIR, 'static_compiled'),
+    os.path.join(BASE_DIR, 'frontend/app/build/static'),
 ]
 
 
