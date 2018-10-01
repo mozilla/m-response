@@ -78,9 +78,8 @@ def push_staging_data(c):
 
 @task
 def deploy_staging(c):
-    raise RuntimeError('Please check the configuration of the fabfile before using it.')
     deploy_to_heroku(c, STAGING_APP_INSTANCE, local_branch='staging',
-                     remote_branch='staging')
+                     remote_branch='master')
 
 
 @task
