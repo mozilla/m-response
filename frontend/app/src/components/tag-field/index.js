@@ -34,7 +34,7 @@ export default class TagField extends React.Component {
 
 	render() {
 		const { focused } = this.state
-		const { className, icon, placeholder} = this.props
+		const { className, icon, placeholder } = this.props
 		return (
 			<div className={`form-field-outer ${className} ${focused ? 'form-field-outer--shifted' : ''}`}>
 				<div className={`form-field-inner ${focused ? 'form-field-inner--shifted' : ''}`}>
@@ -52,7 +52,7 @@ export default class TagField extends React.Component {
 						placeholder={placeholder}
 						allowUnique={true}
 						classNames={{
-							tags: 'tagsClass',
+							tags: 'form-field-tags',
 							tagInput: 'form-field-input',
 							tagInputField: 'form-field-input',
 							selected: 'form-field-input-container',

@@ -6,7 +6,7 @@ import HighlightedText from '../../components/highlighted-text'
 import './profile.scss'
 
 
-export default class Profile extends React.Component {
+export default class ProfilePage extends React.Component {
 
 	render () {
 		const { profile: { name, avatar, karma } } = this.props

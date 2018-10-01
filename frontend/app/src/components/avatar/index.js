@@ -9,9 +9,8 @@ export default ({ src, className = '', editable, onClick }) => {
 			{editable
 				? (
 					<div className='avatar-edit' onClick={() => onClick()}>
-						<img className='avatar-edit-icon' src='/static/media/icons/camera.svg'/>
-					</div>
-				)
+					<img className='avatar-edit-icon' src='/static/media/icons/camera.svg'/>
+				</div>)
 				: null
 			}
 		</div>

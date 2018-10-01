@@ -5,7 +5,7 @@ import Logo from '../../components/logo'
 import HighlightedText from '../../components/highlighted-text'
 import Button from '../../components/buttons'
 
-export default class Index extends React.Component {
+export default class WelcomePage extends React.Component {
 	render() {
 		return (
 			<div className='welcome-page'>
