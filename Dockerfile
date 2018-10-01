@@ -49,8 +49,8 @@ RUN pip install "gunicorn== 19.9.0"
 #RUN npm install
 
 # Install your app's Python requirements.
-#COPY requirements.txt /
-#RUN pip install -r /requirements.txt
+COPY requirements.txt /
+RUN pip install -r /requirements.txt
 
 # Compile static files
 #COPY ./mresponse/static_src/ ./
