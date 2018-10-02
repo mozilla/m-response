@@ -19,10 +19,10 @@ class LoginPage extends React.Component {
         <header className="toolbar">
           <img
             className="toolbar-back-icon"
-            src={this.props.icon || '/static/media/icons/back-chevron.svg'}
+            src={this.props.icon || 'staticmedia/icons/back-chevron.svg'}
             onClick={() => this.goBack()}
           />
-          <img className="toolbar-logo" src="/static/media/mozilla-logo.png" />
+          <img className="toolbar-logo" src="staticmedia/mozilla-logo.png" />
           <span
             onClick={() => this.toggleRoute()}
             className="toolbar-login-link"

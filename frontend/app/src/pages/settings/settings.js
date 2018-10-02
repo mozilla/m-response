@@ -50,7 +50,7 @@ export default class SettingsPage extends React.Component {
           leftComponent={
             <img
               className="settings-toolbar-back-link"
-              src="/static/media/icons/back-chevron.svg"
+              src="static/media/icons/back-chevron.svg"
               onClick={() => this.props.back()}
             />
           }
@@ -88,7 +88,7 @@ export default class SettingsPage extends React.Component {
               key="name-field"
               className="settings-form-row-input"
               placeholder="Name"
-              icon="/static/media/icons/user.svg"
+              icon="static/media/icons/user.svg"
               type="text"
               value={this.state.name}
               onChange={event => this.setState({ name: event.target.value })}

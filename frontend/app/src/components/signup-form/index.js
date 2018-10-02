@@ -79,7 +79,7 @@ export default class SignUpForm extends React.Component {
               key="name-field"
               className="signup-form-field"
               placeholder="Name"
-              icon="/static/media/icons/user.svg"
+              icon="staticmedia/icons/user.svg"
               value={this.state.name}
               onChange={event => this.setState({ name: event.target.value })}
             />
@@ -152,7 +152,7 @@ export default class SignUpForm extends React.Component {
             <TagField
               className="signup-form-field"
               placeholder="Enter your languages"
-              icon="/static/media/icons/message.svg"
+              icon="staticmedia/icons/message.svg"
               suggestions={this.state.supportedLanguages}
               onChange={languages => this.setState({ languages })}
             />

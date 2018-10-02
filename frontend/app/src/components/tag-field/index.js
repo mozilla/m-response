@@ -57,7 +57,7 @@ export default class TagField extends React.Component {
         >
           <img
             className="form-field-icon"
-            src={icon || '/static/media/icons/message.svg'}
+            src={icon || 'static/media/icons/message.svg'}
           />
           <ReactTags
             tags={this.state.tags}
@@ -71,6 +71,7 @@ export default class TagField extends React.Component {
             autocomplete={true}
             placeholder={placeholder}
             allowUnique={true}
+            autofocus={false}
             classNames={{
               tags: 'form-field-tags',
               tagInput: 'form-field-input',

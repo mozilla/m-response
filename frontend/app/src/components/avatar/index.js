@@ -11,7 +11,7 @@ const Avatar = ({ src, className = '', editable, onClick }) => {
         <div className="avatar-edit" onClick={() => onClick()}>
           <img
             className="avatar-edit-icon"
-            src="/static/media/icons/camera.svg"
+            src="staticmedia/icons/camera.svg"
           />
         </div>
       ) : null}
