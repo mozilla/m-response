@@ -9,6 +9,7 @@ import TagField from '@components/tag-field'
 
 export default class SettingsPage extends React.Component {
   state = {
+    status: '',
     name: null,
     avatar: null,
     email: null,
@@ -33,7 +34,7 @@ export default class SettingsPage extends React.Component {
   }
 
   render () {
-    const { name, avatar, languages } = this.state
+    const { avatar, languages } = this.state
     return (
       <div className="settings">
         <Toolbar
@@ -84,8 +85,8 @@ export default class SettingsPage extends React.Component {
         <section className="settings-form">
           <HighlightedText
             text={this.state.status}
-            className="signup-form-status"
-            textClassName="signup-form-status-text"
+            className="settings-form-status"
+            textClassName="settings-form-status-text"
           />
           <div className="settings-form-row">
             <span className="settings-form-row-label">Name</span>
@@ -194,22 +195,31 @@ export default class SettingsPage extends React.Component {
       password,
       passwordConfirm
     } = this.state
-    let profile = { name, email, avatar }
+    let profile = { avatar }
 
-    console.log(this.state)
+    if (name) {
+      profile.name = name
+    } else {
+      return this.setStatus(STATUS.invalidName)
+    }
+
+    if (email) {
+      profile.email = email
+    } else {
+      return this.setStatus(STATUS.invalidEmail)
+    }
+
     if (languages.length > 0) {
       profile.languages = languages
     } else {
-      alert('Need to know at least 1 language')
-      throw 'Passwords do not match'
+      return this.setStatus(STATUS.invalidLanguagesCount)
     }
 
     if (password && passwordConfirm) {
       if (password === passwordConfirm) {
         profile.password = password
       } else {
-        alert('Passwords do not match')
-        throw 'Passwords do not match'
+        return this.setStatus(STATUS.incorrectConfirm)
       }
     }
 
@@ -218,5 +228,16 @@ export default class SettingsPage extends React.Component {
     }
 
     this.props.saveProfile(profile)
+    return this.setStatus(STATUS.saved)
   }
+
+  setStatus = reason => this.setState({ status: reason })
+}
+
+const STATUS = {
+  saved: 'Great! Your profile was updated.',
+  invalidName: "Pardon, You don't have a name?",
+  invalidEmail: "Awesome! and what's your email address?",
+  invalidPassConfirm: "Oops! Your passwords don't match.",
+  invalidLanguagesCount: 'Sorry! You need to know at least one language.'
 }
