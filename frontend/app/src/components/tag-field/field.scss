@@ -1,7 +1,6 @@
-@import "../../styles/main";
+@import '../../styles/main';
 
 .form-field {
-
   &-outer {
     position: relative;
     height: 50px;
@@ -17,7 +16,7 @@
   &-inner {
     height: 100%;
     width: 100%;
-    background-color: #5A4F5F;
+    background-color: #5a4f5f;
     transition: margin-left 0.1s, background-color 0.1s, width 0.1s;
     overflow: scroll;
 
@@ -51,11 +50,11 @@
     min-width: 400px;
     border: none;
     user-select: none;
-    outline:0;
+    outline: 0;
     margin: 0;
     padding: 0;
     background-color: transparent;
-    color: #ADADAD;
+    color: #adadad;
     font-size: 16px;
 
     &:focus {
@@ -63,10 +62,9 @@
     }
 
     &::placeholder {
-      color: #ADADAD;
+      color: #adadad;
       opacity: 1;
     }
-
   }
 
   &-suggestions {
@@ -75,11 +73,11 @@
     left: 0px;
     width: 100%;
     height: auto;
-    background-color: #3B2F3F;
+    background-color: #3b2f3f;
     color: white;
-    border-left: 1px solid #9C969F;
-    border-right: 1px solid #9C969F;
-    border-bottom: 1px solid #9C969F;
+    border-left: 1px solid #9c969f;
+    border-right: 1px solid #9c969f;
+    border-bottom: 1px solid #9c969f;
     padding: 0;
     margin: 0;
     z-index: 3;
@@ -120,5 +118,4 @@
       padding-bottom: 3px;
     }
   }
-
 }

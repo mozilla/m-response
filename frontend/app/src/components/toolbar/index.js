@@ -5,12 +5,7 @@ import './toolbar.scss'
 
 export default class Toolbar extends React.Component {
   render () {
-    const {
-      leftComponent,
-      rightComponent,
-      title,
-      titleBackground
-    } = this.props
+    const { leftComponent, rightComponent, title, titleBackground } = this.props
     return (
       <header className="toolbar">
         <div className="toolbar-left">{leftComponent}</div>

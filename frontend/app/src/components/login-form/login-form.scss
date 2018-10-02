@@ -28,12 +28,12 @@
   &-field {
     width: 100%;
     &:first-child {
-      border-bottom: 1px solid #9C969F;
+      border-bottom: 1px solid #9c969f;
     }
   }
 
   &-submit {
-    margin-top: 55px
+    margin-top: 55px;
   }
 
   &-forgot-link {
@@ -44,5 +44,4 @@
     color: white;
     user-select: none;
   }
-
 }

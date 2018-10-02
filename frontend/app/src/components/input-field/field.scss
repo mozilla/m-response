@@ -1,13 +1,12 @@
-@import "../../styles/main";
+@import '../../styles/main';
 
 .form-field {
-
   &-outer {
     height: 50px;
     background-color: $yellow;
     opacity: 0.8;
     transition: opacity 0.1s;
-    border-bottom: 1px solid #9C969F;
+    border-bottom: 1px solid #9c969f;
 
     &:last-of-type {
       border-bottom: none !important;
@@ -21,7 +20,7 @@
   &-inner {
     height: 100%;
     width: 100%;
-    background-color: #5A4F5F;
+    background-color: #5a4f5f;
     transition: margin-left 0.1s, background-color 0.1s;
 
     display: flex;
@@ -39,11 +38,11 @@
     height: 100%;
     border: none;
     user-select: none;
-    outline:0;
+    outline: 0;
     margin: 0;
     padding: 0;
     background-color: transparent;
-    color: #ADADAD;
+    color: #adadad;
     font-size: 16px;
 
     &:focus {
@@ -51,7 +50,7 @@
     }
 
     &::placeholder {
-      color: #ADADAD;
+      color: #adadad;
       opacity: 1;
     }
   }

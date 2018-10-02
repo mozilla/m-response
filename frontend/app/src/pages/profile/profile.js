@@ -42,10 +42,10 @@ export default class ProfilePage extends React.Component {
           </span>
 
           <div className="profile-avatar">
-            <Avatar src={avatar}/>
+            <Avatar src={avatar} />
           </div>
 
-          <HighlightedText textClassName="profile-name" text={name}/>
+          <HighlightedText textClassName="profile-name" text={name} />
         </section>
 
         <section className="profile-karma">

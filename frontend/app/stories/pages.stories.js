@@ -11,21 +11,21 @@ import SettingsPage from '../src/pages/settings/settings'
 
 storiesOf('Pages', module)
   .addDecorator(StoryRouter())
-  .add('Welcome', () =>
+  .add('Welcome', () => (
     <WelcomePage
       continue={action('Go to SignUp page')}
       login={action('Go to Login page')}
     />
-  )
-  .add('Login', () =>
+  ))
+  .add('Login', () => (
     <LoginPage
       back={action('Go back to Welcome page')}
       login={action('Login')}
       createAccount={action('Create Account')}
       forgotPassword={action('Forgot Password')}
     />
-  )
-  .add('Profile', () =>
+  ))
+  .add('Profile', () => (
     <ProfilePage
       logout={action('Logout')}
       back={action('Go Back to dashboard')}
@@ -45,8 +45,8 @@ storiesOf('Pages', module)
         }
       }}
     />
-  )
-  .add('Settings', () =>
+  ))
+  .add('Settings', () => (
     <SettingsPage
       logout={action('Logout')}
       back={action('Go Back to dashboard')}
@@ -62,4 +62,4 @@ storiesOf('Pages', module)
         ]
       }}
     />
-  )
+  ))
