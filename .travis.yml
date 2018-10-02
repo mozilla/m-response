@@ -52,6 +52,9 @@ script:
   # Run python code style checks
   - flake8 mresponse
 
+  # Run JavaScript code style checks
+  - yarn run eslint mresponse
+
   # Run system checks
   - python manage.py check
 
