@@ -1,0 +1,65 @@
+language: python
+sudo: false
+
+python:
+  - 3.6
+
+cache:
+  pip: true
+  yarn: true
+  directories:
+    - node_modules
+
+# Services
+services:
+  - postgresql
+
+addons:
+  postgresql: "9.6"
+
+env:
+  global:
+    - DJANGO_SETTINGS_MODULE=mresponse.settings.production
+    - DATABASE_URL=postgres://postgres@localhost/test_db
+    - SECRET_KEY=iamnotsosecret
+    - ALLOWED_HOSTS=localhost
+    - NODE_ENV=production
+
+before_script:
+  # Create a database
+  - psql -c 'create database test_db;' -U postgres
+
+before_install:
+  # Install node using NVM (version in .nvmrc file)
+  - nvm install
+
+  # Install linters
+  - pip install flake8
+
+# Package installation
+install:
+  # Install project dependencies
+  - pip install -r requirements.txt
+
+  # Install node dependencies
+  - yarn install --frozen-lockfile
+
+  # Build the static files
+  - yarn build
+
+# Run the tests
+script:
+  # Run python code style checks
+  - flake8 mresponse
+
+  # Run system checks
+  - python manage.py check
+
+  # Check for missing migrations
+  - python manage.py makemigrations --check
+
+  # Run tests
+  - python manage.py test
+
+  # Run Node tests
+  - yarn test
