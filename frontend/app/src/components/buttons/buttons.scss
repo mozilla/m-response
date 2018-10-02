@@ -1,6 +1,9 @@
+@import "../../styles/main";
+
 .standard-button {
   height: 50px;
   background-color: white;
+  color: $primary;
   width: 80%;
   max-width: 300px;
   border: none;
