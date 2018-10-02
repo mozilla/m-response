@@ -32,3 +32,4 @@ wheels/
 
 # Frontend Tooling
 /.out/
+/*.log/
