@@ -4,6 +4,10 @@ sudo: false
 python:
   - 3.6
 
+stages:
+  - lint
+  - test
+
 cache:
   pip: true
   yarn: true
@@ -33,36 +37,32 @@ before_install:
   # Install node using NVM (version in .nvmrc file)
   - nvm install
 
-  # Install linters
-  - pip install flake8
-
-# Package installation
-install:
-  # Install project dependencies
-  - pip install -r requirements.txt
-
-  # Install node dependencies
-  - yarn install --frozen-lockfile
-
-  # Build the static files
-  - yarn build
-
-# Run the tests
-script:
-  # Run python code style checks
-  - flake8 mresponse
-
-  # Run JavaScript code style checks
-  - yarn run eslint mresponse
-
-  # Run system checks
-  - python manage.py check
-
-  # Check for missing migrations
-  - python manage.py makemigrations --check
-
-  # Run tests
-  - python manage.py test
-
-  # Run Node tests
-  - yarn test
+jobs:
+  include:
+  - stage: lint
+    name: lint back-end
+    install: pip install flake8 isort
+    script:
+      - flake8 mresponse
+      - isort --check-only --diff --recursive mresponse
+  - stage: lint
+    name: lint front-end
+    install: yarn install --frozen-lockfile
+    script:  yarn run eslint mresponse
+  - stage: test
+    name: test back-end
+    install:
+      - pip install -r requirements.txt
+      - yarn install --frozen-lockfile
+      - yarn build
+    script:
+      - python manage.py check
+      - python manage.py makemigrations --check --noinput
+      - python manage.py collectstatic --clear --noinput
+      - python manage.py test
+  - stage: test
+    name: test front-end
+    install: yarn install --frozen-lockfile
+    script:
+      - yarn build
+      - yarn test
