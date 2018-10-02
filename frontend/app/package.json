@@ -63,7 +63,8 @@
     "test": "node scripts/test.js --env=jsdom",
     "lint": "eslint src .storybook stories",
     "storybook": "start-storybook -s ./public -p 6006",
-    "storybook:build": "build-storybook"
+    "build-storybook": "build-storybook -s ./public -o .out",
+    "deploy-storybook": "storybook-to-ghpages"
   },
   "jest": {
     "collectCoverageFrom": [
@@ -112,6 +113,7 @@
     "@storybook/addon-links": "^3.4.11",
     "@storybook/addons": "^3.4.11",
     "@storybook/react": "^3.4.11",
+    "@storybook/storybook-deployer": "^2.3.0",
     "babel-plugin-module-resolver": "^3.1.1",
     "eslint-config-prettier": "^3.1.0",
     "eslint-plugin-node": "^7.0.1",

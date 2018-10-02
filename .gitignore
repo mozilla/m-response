@@ -29,3 +29,6 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+
+# Frontend Tooling
+/.out/
