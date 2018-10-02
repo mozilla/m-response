@@ -61,7 +61,7 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
-    "lint": "eslint src",
+    "lint": "eslint src .storybook stories",
     "storybook": "start-storybook -s ./public -p 6006",
     "storybook:build": "build-storybook"
   },

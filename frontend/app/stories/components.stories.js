@@ -16,23 +16,22 @@ import Toolbar from '../src/components/toolbar'
 import Avatar from '../src/components/avatar'
 
 storiesOf('Components', module)
-	.addDecorator(backgroundColor(['#24172A', '#ffffff', '#dcdde1', '#000000']))
-	.add('Logo', () => <Logo/>)
-	.add('Toolbar', () => <Toolbar title='Responder Mode' titleBackground='#57ddc4' />)
-	.add('Avatar', () => <Avatar src='https://api.adorable.io/avatars/100/abott@adorable.png' editable={true} onClick={action('Change Avatar')}/>)
-	.add('Input Field', () => <InputField/>)
-	.add('Tag Field', () => <TagField
-		suggestions={[
-			{ id: 'English', text: 'English' },
-			{ id: 'Spanish', text: 'Spanish' },
-			{ id: 'French', text: 'French' },
-			{ id: 'Russian', text: 'Russian' },
-			{ id: 'Latin', text: 'Latin' },
-		]}/>)
-	.add('Highlighted Text', () => <HighlightedText text='Test Text'/>)
-	.add('Button', () => <StandardButton label='Test Button' onClick={action('Button Press!')}/>)
-	.add('Login Form', () => <LoginForm login={action('Login with details')} forgotPassword={action('Forgot Password')}/>)
-	.add('Signup Form', () => <SignUpForm login={action('Login with details')}
-																				forgotPassword={action('Forgot Password')}/>)
-	.add('Forgot Password Form', () => <ForgotPasswordForm resetPassword={action('Forgot Password')}/>)
-
+  .addDecorator(backgroundColor(['#24172A', '#ffffff', '#dcdde1', '#000000']))
+  .add('Logo', () => <Logo/>)
+  .add('Toolbar', () => <Toolbar title='Responder Mode' titleBackground='#57ddc4' />)
+  .add('Avatar', () => <Avatar src='https://api.adorable.io/avatars/100/abott@adorable.png' editable={true} onClick={action('Change Avatar')}/>)
+  .add('Input Field', () => <InputField/>)
+  .add('Tag Field', () => <TagField
+    suggestions={[
+      { id: 'English', text: 'English' },
+      { id: 'Spanish', text: 'Spanish' },
+      { id: 'French', text: 'French' },
+      { id: 'Russian', text: 'Russian' },
+      { id: 'Latin', text: 'Latin' }
+    ]}/>)
+  .add('Highlighted Text', () => <HighlightedText text='Test Text'/>)
+  .add('Button', () => <StandardButton label='Test Button' onClick={action('Button Press!')}/>)
+  .add('Login Form', () => <LoginForm login={action('Login with details')} forgotPassword={action('Forgot Password')}/>)
+  .add('Signup Form', () => <SignUpForm login={action('Login with details')}
+    forgotPassword={action('Forgot Password')}/>)
+  .add('Forgot Password Form', () => <ForgotPasswordForm resetPassword={action('Forgot Password')}/>)
