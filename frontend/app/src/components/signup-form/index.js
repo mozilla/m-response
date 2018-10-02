@@ -1,10 +1,10 @@
 import React from 'react'
 
 import './signup-form.scss'
-import InputField from '../input-field'
-import TagField from '../tag-field'
-import HighlightedText from '../highlighted-text'
-import Button from '../buttons'
+import InputField from '@components/input-field'
+import TagField from '@components/tag-field'
+import HighlightedText from '@components/highlighted-text'
+import Button from '@components/buttons'
 
 export default class SignUpForm extends React.Component {
   state = {

@@ -2,10 +2,10 @@ import React from 'react'
 import { Route, Redirect, withRouter } from 'react-router-dom'
 
 import './login.scss'
-import { FORGOT_PASSWORD_URL, LOGIN_URL, SIGNUP_URL } from '../../utils/urls'
-import LoginForm from '../../components/login-form'
-import SignupForm from '../../components/signup-form'
-import ForgotPasswordForm from '../../components/forgot-password-form'
+import { FORGOT_PASSWORD_URL, LOGIN_URL, SIGNUP_URL } from '@utils/urls'
+import LoginForm from '@components/login-form'
+import SignupForm from '@components/signup-form'
+import ForgotPasswordForm from '@components/forgot-password-form'
 
 class LoginPage extends React.Component {
   constructor (props) {

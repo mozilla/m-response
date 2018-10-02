@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import Logo from '../../components/logo'
-import HighlightedText from '../../components/highlighted-text'
-import Button from '../../components/buttons'
+import Logo from '@components/logo'
+import HighlightedText from '@components/highlighted-text'
+import Button from '@components/buttons'
 import './welcome.scss'
 
 export default class WelcomePage extends React.Component {

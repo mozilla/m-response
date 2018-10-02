@@ -1,0 +1,24 @@
+{
+  "presets": [
+    "react",
+    "stage-0"
+  ],
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "root": [
+          "./"
+        ],
+        "alias": {
+          "@root": "./src",
+          "@styles": "./src/styles",
+          "@pages": "./src/pages",
+          "@components": "./src/components",
+          "@redux": "./src/redux",
+          "@utils": "./src/utils"
+        }
+      }
+    ]
+  ]
+}

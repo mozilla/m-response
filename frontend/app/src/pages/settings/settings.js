@@ -1,11 +1,11 @@
 import React from 'react'
 
-import Toolbar from '../../components/toolbar'
-import Avatar from '../../components/avatar'
-import HighlightedText from '../../components/highlighted-text'
+import Toolbar from '@components/toolbar'
+import Avatar from '@components/avatar'
+import HighlightedText from '@components/highlighted-text'
 import './settings.scss'
-import InputField from '../../components/input-field'
-import TagField from '../../components/tag-field'
+import InputField from '@components/input-field'
+import TagField from '@components/tag-field'
 
 export default class SettingsPage extends React.Component {
   state = {

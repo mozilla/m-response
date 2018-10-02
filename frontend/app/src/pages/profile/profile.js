@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import Toolbar from '../../components/toolbar'
-import Avatar from '../../components/avatar'
-import HighlightedText from '../../components/highlighted-text'
+import Toolbar from '@components/toolbar'
+import Avatar from '@components/avatar'
+import HighlightedText from '@components/highlighted-text'
 import './profile.scss'
 
 export default class ProfilePage extends React.Component {

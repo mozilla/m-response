@@ -2,9 +2,9 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 import './login-form.scss'
-import InputField from '../input-field'
-import HighlightedText from '../highlighted-text'
-import Button from '../buttons'
+import InputField from '@components/input-field'
+import HighlightedText from '@components/highlighted-text'
+import Button from '@components/buttons'
 
 export default class LoginForm extends React.Component {
   state = { status: "What's your email address?", email: '', password: '' }
