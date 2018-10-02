@@ -31,5 +31,5 @@ wheels/
 *.egg
 
 # Frontend Tooling
-/.out/
-/*.log/
+mresponse/frontend/app/.out/
+*.log

@@ -82,6 +82,11 @@ export default class SettingsPage extends React.Component {
         </section>
 
         <section className="settings-form">
+          <HighlightedText
+            text={this.state.status}
+            className="signup-form-status"
+            textClassName="signup-form-status-text"
+          />
           <div className="settings-form-row">
             <span className="settings-form-row-label">Name</span>
             <InputField
@@ -110,7 +115,7 @@ export default class SettingsPage extends React.Component {
           <div className="settings-form-row">
             <span className="settings-form-row-label">Languages</span>
             <TagField
-              key="password-confirm-field"
+              key="languages-field"
               className="settings-form-row-input"
               placeholder="Enter your languages"
               tags={this.state.languages}
@@ -185,10 +190,19 @@ export default class SettingsPage extends React.Component {
       email,
       avatar,
       avatarUpload,
+      languages,
       password,
       passwordConfirm
     } = this.state
     let profile = { name, email, avatar }
+
+    console.log(this.state)
+    if (languages.length > 0) {
+      profile.languages = languages
+    } else {
+      alert('Need to know at least 1 language')
+      throw 'Passwords do not match'
+    }
 
     if (password && passwordConfirm) {
       if (password === passwordConfirm) {
@@ -200,7 +214,7 @@ export default class SettingsPage extends React.Component {
     }
 
     if (avatarUpload) {
-      // PUSH TO SERVER
+      // TODO: PUSH TO SERVER
     }
 
     this.props.saveProfile(profile)

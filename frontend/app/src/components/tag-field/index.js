@@ -21,16 +21,15 @@ const delimiters = [
 export default class TagField extends React.Component {
   state = {
     focused: false,
-    tags: [],
-    suggestions: []
+    tags: null,
+    suggestions: null
   }
 
   static getDerivedStateFromProps (props, state) {
     return {
-      suggestions: state.suggestions.length
-        ? state.suggestions
-        : props.suggestions || [],
-      tags: state.tags.length ? state.tags : props.tags || []
+      suggestions:
+        state.suggestions != null ? state.suggestions : props.suggestions || [],
+      tags: state.tags != null ? state.tags : props.tags || []
     }
   }
 

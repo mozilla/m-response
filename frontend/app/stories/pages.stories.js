@@ -56,9 +56,8 @@ storiesOf('Pages', module)
         avatar: 'https://api.adorable.io/avatars/100/abott@adorable.png',
         email: 'Asa@mozilla.com',
         languages: [
-          { id: 'english', text: 'English' },
-          { id: 'french', text: 'French' },
-          { id: 'spanish', text: 'Spanish' }
+          { id: 'EN', text: 'English' },
+          { id: 'ES', text: 'Spanish' }
         ]
       }}
     />

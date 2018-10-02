@@ -32,11 +32,10 @@ storiesOf('Components', module)
   .add('Tag Field', () => (
     <TagField
       suggestions={[
-        { id: 'English', text: 'English' },
-        { id: 'Spanish', text: 'Spanish' },
-        { id: 'French', text: 'French' },
-        { id: 'Russian', text: 'Russian' },
-        { id: 'Latin', text: 'Latin' }
+        { id: 'EN', text: 'English' },
+        { id: 'ES', text: 'Spanish' },
+        { id: 'FR', text: 'French' },
+        { id: 'RU', text: 'Russian' }
       ]}
     />
   ))
