@@ -29,3 +29,7 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+
+# Frontend Tooling
+mresponse/frontend/app/.out/
+*.log

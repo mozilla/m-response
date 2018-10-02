@@ -1,0 +1,35 @@
+.avatar {
+  height: 80px;
+  width: 80px;
+  position: relative;
+  user-select: none;
+
+  &-img {
+    position: absolute;
+    border-radius: 100%;
+    width: 100%;
+    height: 100%;
+  }
+
+  &-edit {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #959198;
+    opacity: 0;
+    border-radius: 100%;
+    transition: 0.1s opacity;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      opacity: 0.9;
+      cursor: pointer;
+    }
+
+    &-icon {
+    }
+  }
+}

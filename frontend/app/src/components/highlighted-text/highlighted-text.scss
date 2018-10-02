@@ -1,0 +1,15 @@
+@import '../../styles/main';
+
+.highlighted-text-container {
+  display: inline;
+}
+
+.highlighted-text {
+  color: $primary;
+  font-size: 1.8rem;
+  box-shadow: 0.3rem 0 0 white, -0.3rem 0 0 white;
+  background-color: #fff;
+  line-height: 2.5rem;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+}

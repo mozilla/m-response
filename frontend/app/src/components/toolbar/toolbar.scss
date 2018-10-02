@@ -1,0 +1,54 @@
+@import '../../styles/main';
+
+.toolbar {
+  height: 75px;
+  width: 100%;
+  background-color: $toolbar-color;
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &-left {
+    height: 100%;
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+  }
+
+  &-right {
+    height: 100%;
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+  }
+
+  &-logo {
+    user-select: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 4rem;
+  }
+
+  &-page-title {
+    height: 40px;
+    width: 190px;
+    background-color: #ffff8a;
+    user-select: none;
+
+    position: absolute;
+    top: calc(100% - 15px);
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
