@@ -41,10 +41,10 @@ jobs:
     script:
       - flake8 mresponse
       - isort --check-only --diff --recursive mresponse
-  #- stage: lint
-    #name: lint front-end
-    #install: yarn install --frozen-lockfile
-    #script:  yarn run eslint mresponse
+  - stage: lint
+    name: lint front-end
+    install: yarn --cwd frontend/app install --frozen-lockfile
+    script:  yarn --cwd frontend/app lint
   - stage: test
     name: test back-end
     env:
@@ -54,16 +54,16 @@ jobs:
       - ALLOWED_HOSTS=localhost
     install:
       - pip install -r requirements.txt
-      - yarn install --frozen-lockfile
-      - yarn build
+      - yarn --cwd frontend/app install --frozen-lockfile
+      - yarn --cwd frontend/app build
     script:
       - python manage.py check
       - python manage.py makemigrations --check --noinput
       - python manage.py collectstatic --clear --noinput
       - python manage.py test
-  #- stage: test
-    #name: test front-end
-    #install: yarn install --frozen-lockfile
-    #script:
-      #- yarn build
-      #- yarn test
+  - stage: test
+    name: test front-end
+    install: yarn --cwd frontend/app install --frozen-lockfile
+    script:
+      - yarn --cwd frontend/app build
+      - yarn --cwd frontend/app test --ci
