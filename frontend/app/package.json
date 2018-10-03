@@ -100,10 +100,14 @@
       "mjs"
     ]
   },
-  "babel": {
-    "presets": [
-      "react-app"
-    ]
+  "browserslist": {
+    "targets": {
+      "chrome": "68",
+      "android": "68",
+      "firefox": "17",
+      "ios": "11.4",
+      "safari": "11.1"
+    }
   },
   "eslintConfig": {
     "extends": "react-app"
