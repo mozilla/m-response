@@ -1,9 +1,10 @@
 {
   "presets": [
-    "react",
-    "env"
+    "env",
+    "react"
   ],
   "plugins": [
+    "transform-class-properties",
     [
       "module-resolver",
       {
