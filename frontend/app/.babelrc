@@ -1,7 +1,6 @@
 {
   "presets": [
-    "react",
-    "stage-0"
+    "react-app"
   ],
   "plugins": [
     [
