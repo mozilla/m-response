@@ -24,6 +24,7 @@ WORKDIR /app
 #    variable is read by Gunicorn
 ENV PYTHONUNBUFFERED=1 \
     PYTHONPATH=/app \
+    NODE_ENV=production \
     DJANGO_SETTINGS_MODULE=mresponse.settings.production \
     PORT=8000 \
     WEB_CONCURRENCY=3 \
@@ -36,28 +37,32 @@ EXPOSE 8000
 # Install operating system dependencies.
 RUN apt-get update -y && \
     apt-get install -y apt-transport-https rsync && \
-    #curl -sL https://deb.nodesource.com/setup_8.x | bash - &&\
-    #apt-get install -y nodejs &&\
+    curl -sL https://deb.nodesource.com/setup_8.x | bash - &&\
+    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - &&\
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list &&\
+    apt-get update -y &&\
+    apt-get install nodejs yarn &&\
     rm -rf /var/lib/apt/lists/*
 
 # Intsall WSGI server - Gunicorn - that will serve the application.
 RUN pip install "gunicorn== 19.9.0"
 
-
 # Install front-end dependencies.
-#COPY package.json package-lock.json .
-#RUN npm install
+WORKDIR /app/mresponse/frontend/app
+COPY mresponse/frontend/app/package.json mresponse/frontend/app/yarn.lock ./
+RUN yarn install --frozen-lockfile
 
 # Install your app's Python requirements.
 COPY requirements.txt /
 RUN pip install -r /requirements.txt
 
 # Compile static files
-#COPY ./mresponse/static_src/ ./
-#RUN npm run build:prod
+COPY mresponse/frontend/app/ ./
+RUN yarn build
 
 
 # Copy application code.
+WORKDIR /app
 COPY . .
 
 # Collect static. This command will move static files from application
