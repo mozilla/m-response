@@ -38,10 +38,6 @@ jobs:
     script:
       - flake8 mresponse
       - isort --check-only --diff --recursive mresponse
-  - stage: lint
-    name: lint front-end
-    install: yarn --cwd mresponse/frontend/app install --frozen-lockfile
-    script:  cd mresponse/frontend/app && yarn lint
   - stage: test
     name: test back-end
     env:
@@ -64,3 +60,8 @@ jobs:
     script:
       - yarn --cwd mresponse/frontend/app build
       - yarn --cwd mresponse/frontend/app test --ci
+  allow_failures:
+    - stage: lint
+      name: lint front-end
+      install: yarn --cwd mresponse/frontend/app install --frozen-lockfile
+      script:  cd mresponse/frontend/app && yarn lint
