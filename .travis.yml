@@ -21,10 +21,6 @@ services:
 addons:
   postgresql: "9.6"
 
-env:
-  global:
-    - NODE_ENV=production
-
 before_script:
   # Create a database
   - psql -c 'create database test_db;' -U postgres
