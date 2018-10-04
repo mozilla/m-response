@@ -1,5 +1,4 @@
 from django.urls import path
-from django.conf.urls import url
 from django.views.generic import TemplateView
 
 urlpatterns = [
@@ -19,5 +18,5 @@ urlpatterns = [
         ),
         name='manifest.json',
     ),
-    url(r'^', TemplateView.as_view(template_name="index.html"))
+    path('', TemplateView.as_view(template_name="index.html"))
 ]

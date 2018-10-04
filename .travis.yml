@@ -1,0 +1,66 @@
+language: python
+sudo: false
+
+python:
+  - 3.6
+
+stages:
+  - lint
+  - test
+
+cache:
+  pip: true
+  yarn: true
+  directories:
+    - mresponse/frontend/app/node_modules
+
+# Services
+services:
+  - postgresql
+
+addons:
+  postgresql: "9.6"
+
+before_script:
+  # Create a database
+  - psql -c 'create database test_db;' -U postgres
+
+before_install:
+  # Install node using NVM (version in .nvmrc file)
+  - nvm install
+  - nvm use
+
+jobs:
+  include:
+    - stage: lint
+      name: lint back-end
+      install: pip install flake8 isort
+      script:
+        - flake8 mresponse
+        - isort --check-only --diff --recursive mresponse
+    - stage: test
+      name: test back-end
+      env:
+        - DJANGO_SETTINGS_MODULE=mresponse.settings.production
+        - DATABASE_URL=postgres://postgres@localhost/test_db
+        - SECRET_KEY=iamnotsosecret
+        - ALLOWED_HOSTS=localhost
+      install:
+        - pip install -r requirements.txt
+        - yarn --cwd mresponse/frontend/app install --frozen-lockfile
+        - yarn --cwd mresponse/frontend/app build
+      script:
+        - python manage.py check
+        - python manage.py makemigrations --check --noinput
+        - python manage.py collectstatic --clear --noinput
+        - python manage.py test
+    - stage: test
+      name: test front-end
+      install: yarn --cwd mresponse/frontend/app install --frozen-lockfile
+      script:
+        - yarn --cwd mresponse/frontend/app build
+        - yarn --cwd mresponse/frontend/app test --ci
+    - stage: lint
+      name: lint front-end
+      install: yarn --cwd mresponse/frontend/app install --frozen-lockfile
+      script:  cd mresponse/frontend/app && yarn lint
