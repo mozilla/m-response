@@ -29,7 +29,7 @@ class TestConfigurationAPI(django.test.TestCase):
     def test_returns_dictionary(self):
         response = self.client.get('/api/config/')
         content = response.json()
-        self.assertEqual(content.keys(), {'languages'})
+        self.assertEqual(content.keys(), {'languages', 'response_guide_book_url'})
 
     def test_languages_are_list(self):
         response = self.client.get('/api/config/')
