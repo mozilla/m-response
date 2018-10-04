@@ -62,6 +62,7 @@
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
     "lint": "eslint src .storybook stories",
+    "lint:fix": "yarn lint --fix",
     "storybook": "start-storybook -s ./public -p 6006",
     "build-storybook": "build-storybook -s ./public -o .out",
     "deploy-storybook": "storybook-to-ghpages"
@@ -106,9 +107,6 @@
     "last 1 iOS Version",
     "last 1 Android Version"
   ],
-  "eslintConfig": {
-    "extends": "react-app"
-  },
   "devDependencies": {
     "@storybook/addon-actions": "^3.4.11",
     "@storybook/addon-links": "^3.4.11",
