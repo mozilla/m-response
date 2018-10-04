@@ -45,6 +45,7 @@ jobs:
         - DATABASE_URL=postgres://postgres@localhost/test_db
         - SECRET_KEY=iamnotsosecret
         - ALLOWED_HOSTS=localhost
+        - SECURE_SSL_REDIRECT=false
       install:
         - pip install -r requirements.txt
         - yarn --cwd mresponse/frontend/app install --frozen-lockfile
