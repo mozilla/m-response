@@ -90,7 +90,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(PROJECT_DIR, 'templates'),
-            os.path.join(BASE_DIR, 'frontend/app/build')
+            os.path.join(BASE_DIR, 'mresponse/frontend/app/build')
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -193,7 +193,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # applications which are used by default.
 # https://docs.djangoproject.com/en/stable/ref/settings/#staticfiles-dirs
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'frontend/app/build/static'),
+    os.path.join(BASE_DIR, 'mresponse/frontend/app/build/static'),
 ]
 
 
