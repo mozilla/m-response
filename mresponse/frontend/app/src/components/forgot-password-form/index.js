@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 
 import './forgot-form.scss'
 import InputField from '@components/input-field'

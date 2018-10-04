@@ -29,6 +29,7 @@ export default class ProfilePage extends React.Component {
               className="profile-toolbar-back-link"
               src="staticmedia/icons/back-chevron.svg"
               onClick={() => this.props.back()}
+              alt=""
             />
           }
         />

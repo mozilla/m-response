@@ -53,6 +53,7 @@ export default class SettingsPage extends React.Component {
               className="settings-toolbar-back-link"
               src="static/media/icons/back-chevron.svg"
               onClick={() => this.props.back()}
+              alt=""
             />
           }
         />
