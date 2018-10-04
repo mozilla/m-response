@@ -12,7 +12,7 @@ cache:
   pip: true
   yarn: true
   directories:
-    - node_modules
+    - mresponse/frontend/app/node_modules
 
 # Services
 services:
@@ -45,7 +45,7 @@ jobs:
   - stage: lint
     name: lint front-end
     install: yarn --cwd mresponse/frontend/app install --frozen-lockfile
-    script:  yarn --cwd mresponse/frontend/app lint
+    script:  cd mresponse/frontend/app && yarn lint
   - stage: test
     name: test back-end
     env:
