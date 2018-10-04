@@ -32,6 +32,7 @@ before_script:
 before_install:
   # Install node using NVM (version in .nvmrc file)
   - nvm install
+  - nvm use
 
 jobs:
   include:
