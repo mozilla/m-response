@@ -43,8 +43,8 @@ jobs:
       - isort --check-only --diff --recursive mresponse
   - stage: lint
     name: lint front-end
-    install: yarn --cwd frontend/app install --frozen-lockfile
-    script:  yarn --cwd frontend/app lint
+    install: yarn --cwd mresponse/frontend/app install --frozen-lockfile
+    script:  yarn --cwd mresponse/frontend/app lint
   - stage: test
     name: test back-end
     env:
@@ -54,8 +54,8 @@ jobs:
       - ALLOWED_HOSTS=localhost
     install:
       - pip install -r requirements.txt
-      - yarn --cwd frontend/app install --frozen-lockfile
-      - yarn --cwd frontend/app build
+      - yarn --cwd mresponse/frontend/app install --frozen-lockfile
+      - yarn --cwd mresponse/frontend/app build
     script:
       - python manage.py check
       - python manage.py makemigrations --check --noinput
@@ -63,7 +63,7 @@ jobs:
       - python manage.py test
   - stage: test
     name: test front-end
-    install: yarn --cwd frontend/app install --frozen-lockfile
+    install: yarn --cwd mresponse/frontend/app install --frozen-lockfile
     script:
-      - yarn --cwd frontend/app build
-      - yarn --cwd frontend/app test --ci
+      - yarn --cwd mresponse/frontend/app build
+      - yarn --cwd mresponse/frontend/app test --ci
