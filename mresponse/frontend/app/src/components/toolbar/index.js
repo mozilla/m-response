@@ -10,7 +10,11 @@ export default class Toolbar extends React.Component {
       <header className="toolbar">
         <div className="toolbar-left">{leftComponent}</div>
 
-        <img className="toolbar-logo" src="static/media/mozilla-logo.png" />
+        <img
+          className="toolbar-logo"
+          src="static/media/mozilla-logo.png"
+          alt=""
+        />
         {title ? (
           <span
             className="toolbar-page-title"

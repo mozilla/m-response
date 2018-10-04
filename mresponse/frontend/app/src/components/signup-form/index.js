@@ -8,7 +8,7 @@ import Button from '@components/buttons'
 
 export default class SignUpForm extends React.Component {
   state = {
-    status: STATUS.name,
+    status: this.status.name,
     step: 0,
     name: '',
     email: '',
@@ -24,8 +24,14 @@ export default class SignUpForm extends React.Component {
     ]
   }
 
-  constructor (props) {
-    super(props)
+  status = {
+    name: "Welcome! What's your name?",
+    email: "Awesome! and what's your email address?",
+    password: 'Cool! and what password would you like to use?',
+    passwordConfirm: 'Nearly There! Enter the password again.',
+    incorrectConfirm: "Oops! Your passwords don't match",
+    languages:
+      'Nice! Now, What language(s) can communicate in, or rather respond best in?'
   }
 
   render () {
@@ -71,7 +77,7 @@ export default class SignUpForm extends React.Component {
   getStep = () =>
     [
       {
-        prepare: () => this.setStatus(STATUS.name),
+        prepare: () => this.setStatus(this.status.name),
         title: 'Signup - Step 1/3',
         fields: (
           <React.Fragment>
@@ -91,7 +97,7 @@ export default class SignUpForm extends React.Component {
       },
 
       {
-        prepare: () => this.setStatus(STATUS.email),
+        prepare: () => this.setStatus(this.status.email),
         title: 'Signup - Step 2/3',
         fields: (
           <React.Fragment>
@@ -102,7 +108,7 @@ export default class SignUpForm extends React.Component {
               type="email"
               value={this.state.email}
               onChange={event => this.setState({ email: event.target.value })}
-              onFocus={() => this.setStatus(STATUS.email)}
+              onFocus={() => this.setStatus(this.status.email)}
             />
             <InputField
               key="password-field"
@@ -112,7 +118,7 @@ export default class SignUpForm extends React.Component {
               onChange={event =>
                 this.setState({ password: event.target.value })
               }
-              onFocus={() => this.setStatus(STATUS.password)}
+              onFocus={() => this.setStatus(this.status.password)}
               disabled={!this.state.email.length}
             />
             <InputField
@@ -123,7 +129,7 @@ export default class SignUpForm extends React.Component {
               onChange={event =>
                 this.setState({ passwordConfirm: event.target.value })
               }
-              onFocus={() => this.setStatus(STATUS.passwordConfirm)}
+              onFocus={() => this.setStatus(this.status.passwordConfirm)}
               disabled={!this.state.password.length}
             />
           </React.Fragment>
@@ -137,7 +143,7 @@ export default class SignUpForm extends React.Component {
           if (this.state.password === this.state.passwordConfirm) {
             return true
           } else {
-            this.setStatus(STATUS.incorrectConfirm)
+            this.setStatus(this.status.incorrectConfirm)
             return false
           }
         },
@@ -145,7 +151,7 @@ export default class SignUpForm extends React.Component {
       },
 
       {
-        prepare: () => this.setStatus(STATUS.languages),
+        prepare: () => this.setStatus(this.status.languages),
         title: 'Signup - Step 3/3',
         fields: (
           <React.Fragment>
@@ -187,14 +193,4 @@ export default class SignUpForm extends React.Component {
       return false
     }
   }
-}
-
-const STATUS = {
-  name: "Welcome! What's your name?",
-  email: "Awesome! and what's your email address?",
-  password: 'Cool! and what password would you like to use?',
-  passwordConfirm: 'Nearly There! Enter the password again.',
-  incorrectConfirm: "Oops! Your passwords don't match",
-  languages:
-    'Nice! Now, What language(s) can communicate in, or rather respond best in?'
 }
