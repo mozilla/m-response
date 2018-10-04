@@ -50,7 +50,7 @@ RUN pip install "gunicorn== 19.9.0"
 # Install front-end dependencies.
 WORKDIR /app/mresponse/frontend/app
 COPY mresponse/frontend/app/package.json mresponse/frontend/app/yarn.lock ./
-RUN yarn install --frozen-lockfile
+RUN yarn install --frozen-lockfile --production=false
 
 # Install your app's Python requirements.
 COPY requirements.txt /
