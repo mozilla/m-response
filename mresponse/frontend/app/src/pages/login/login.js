@@ -19,13 +19,13 @@ class LoginPage extends React.Component {
         <header className="toolbar">
           <img
             className="toolbar-back-icon"
-            src={this.props.icon || 'static/media/icons/back-chevron.svg'}
+            src={this.props.icon || '/static/media/icons/back-chevron.svg'}
             onClick={() => this.goBack()}
             alt=""
           />
           <img
             className="toolbar-logo"
-            src="static/media/mozilla-logo.png"
+            src="/static/media/mozilla-logo.png"
             alt=""
           />
           <span
@@ -37,7 +37,6 @@ class LoginPage extends React.Component {
         </header>
 
         <section className="login-page-content">
-          <Redirect exact to={LOGIN_URL} />
           <Route
             path={LOGIN_URL}
             component={() => (

@@ -12,7 +12,7 @@ export default class WelcomePage extends React.Component {
       <div className="welcome-page">
         <img
           className="mozilla-logo"
-          src="staticmedia/mozilla-logo.png"
+          src="/static/media/mozilla-logo.png"
           alt=""
         />
         <div className="page-content">

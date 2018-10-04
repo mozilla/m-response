@@ -7,6 +7,16 @@ import HighlightedText from '@components/highlighted-text'
 import Button from '@components/buttons'
 
 export default class SignUpForm extends React.Component {
+  status = {
+    name: "Welcome! What's your name?",
+    email: "Awesome! and what's your email address?",
+    password: 'Cool! and what password would you like to use?',
+    passwordConfirm: 'Nearly There! Enter the password again.',
+    incorrectConfirm: "Oops! Your passwords don't match",
+    languages:
+      'Nice! Now, What language(s) can communicate in, or rather respond best in?'
+  }
+
   state = {
     status: this.status.name,
     step: 0,
@@ -22,16 +32,6 @@ export default class SignUpForm extends React.Component {
       { id: 'Russian', text: 'Russian' },
       { id: 'Latin', text: 'Latin' }
     ]
-  }
-
-  status = {
-    name: "Welcome! What's your name?",
-    email: "Awesome! and what's your email address?",
-    password: 'Cool! and what password would you like to use?',
-    passwordConfirm: 'Nearly There! Enter the password again.',
-    incorrectConfirm: "Oops! Your passwords don't match",
-    languages:
-      'Nice! Now, What language(s) can communicate in, or rather respond best in?'
   }
 
   render () {
@@ -85,7 +85,7 @@ export default class SignUpForm extends React.Component {
               key="name-field"
               className="signup-form-field"
               placeholder="Name"
-              icon="staticmedia/icons/user.svg"
+              icon="/static/media/icons/user.svg"
               value={this.state.name}
               onChange={event => this.setState({ name: event.target.value })}
             />
@@ -158,7 +158,7 @@ export default class SignUpForm extends React.Component {
             <TagField
               className="signup-form-field"
               placeholder="Enter your languages"
-              icon="staticmedia/icons/message.svg"
+              icon="/static/media/icons/message.svg"
               suggestions={this.state.supportedLanguages}
               onChange={languages => this.setState({ languages })}
             />
