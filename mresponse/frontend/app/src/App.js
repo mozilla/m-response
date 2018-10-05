@@ -1,41 +1,48 @@
 import React, { Component, Fragment } from 'react'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { Provider } from 'react-redux'
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
 import { ConnectedRouter } from 'connected-react-router'
 
 import WelcomePage from '@pages/welcome'
-import LoginPage from '@pages/login/login'
+import LoginPage from '@pages/login'
 import createStore from '@redux/store'
+import { handleAuthentication } from '@redux/actions'
+import PrivateRoute from '@utils/private-route'
+import { WELCOME_URL, DASHBOARD_URL } from '@utils/urls'
+
 import 'normalize.css'
 import './App.scss'
 
-const store = createStore()
+const {store, history} = createStore()
 
 class App extends Component {
-  render() {
+  render () {
     return (
       <Provider store={store}>
-        <BrowserRouter>
+        <ConnectedRouter history={history}>
           <Switch>
             <Route
-              path={'/'}
+              path={WELCOME_URL}
               exact
               component={props => <WelcomePage {...props} />}
             />
             <Route
               path={'/account/'}
-              component={props => 
-                <LoginPage 
-                  {...props}
-                  back={() => props.history.push('/')}
-                  login={() => console.log('Login')}
-                  createAccount={() => console.log('Create Account')}
-                  forgotPassword={() => console.log('Forgot Password')}
-                />
-              }
+              component={props => <LoginPage {...props} />}
+            />
+            <PrivateRoute
+              path={DASHBOARD_URL}
+              component={props => <h1>Dashboard</h1>}
+            />
+            <Route
+              path={'/callback'}
+              component={props => {
+                store.dispatch(handleAuthentication(props.history))
+                return null
+              }}
             />
           </Switch>
-        </BrowserRouter>
+        </ConnectedRouter>
       </Provider>
     )
   }

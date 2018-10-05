@@ -42,6 +42,7 @@ class LoginPage extends React.Component {
             component={() => (
               <LoginForm
                 login={this.props.login}
+                status={this.props.status}
                 forgotPassword={() =>
                   this.props.history.push(FORGOT_PASSWORD_URL)
                 }
