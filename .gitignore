@@ -33,3 +33,4 @@ wheels/
 # Frontend Tooling
 mresponse/frontend/app/.out/
 *.log
+.env
