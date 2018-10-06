@@ -3,13 +3,18 @@ import { push } from 'connected-react-router'
 import { LOGIN_URL } from '@utils/urls'
 
 const connection = 'Username-Password-Authentication'
-const domain = 'codecrate.auth0.com'
-const clientID = 'OlBTitWKe6JPIBGG0O5zSnK8JTefT72C'
+
+const domain = process.env.REACT_APP_AUTH_DOMAIN
+const clientID = process.env.REACT_APP_AUTH_CLIENT_ID
+const redirectUri = process.env.REACT_APP_AUTH_CALLBACK_URL
+
 const auth = new auth0.WebAuth({
   domain,
   clientID,
-  redirectUri: 'http://localhost:3000/callback',
-  responseType: 'token id_token'
+  redirectUri,
+  responseType: 'token id_token',
+  scope: 'openid profile read:current_user',
+  prompt: 'none'
 })
 
 export const LOGIN_ATTEMPT = 'LOGIN_ATTEMPT'
