@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware, compose } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly'
 import { connectRouter, routerMiddleware } from 'connected-react-router'
@@ -29,5 +29,5 @@ export default initialState => {
     )
   )
   const persistor = persistStore(store)
-  return {store, history, persistor}
+  return { store, history, persistor }
 }
