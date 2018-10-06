@@ -4,16 +4,18 @@ const initialState = {
   isAuthenticated: false,
   authError: null,
   token: null,
-  profile: null
+  profile: null,
+  expiresAt: null
 }
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case LOGIN_SUCCESS: {
-      const { profile, token } = action
+      const { profile, token, expiresAt } = action
       return Object.assign({}, state, {
         token,
         profile,
+        expiresAt,
         isAuthenticated: true
       })
     }

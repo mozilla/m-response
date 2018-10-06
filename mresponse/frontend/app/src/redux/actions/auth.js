@@ -20,17 +20,17 @@ export const loginAttempt = (username, password) => {
   }
 }
 
-export const loginSuccess = (profile, token) => {
+export const loginSuccess = (profile, token, expiresAt) => {
   return {
     type: LOGIN_SUCCESS,
     profile,
-    token
+    token,
+    expiresAt
   }
 }
 
 export const loginError = error => dispatch => {
   console.log(error)
-  alert(error.message)
   dispatch({
     type: LOGIN_ERROR,
     error
@@ -75,7 +75,8 @@ export const forgetPassword = email => async dispatch => {
 export const loginCallback = () => async dispatch => {
   try {
     const authResult = await auth.parseHash()
-    dispatch(loginSuccess(authResult.idTokenPayload, authResult.idToken))
+    const expiresAt = Date.now() + (authResult.expiresIn * 1000)
+    dispatch(loginSuccess(authResult.idTokenPayload, authResult.idToken, expiresAt))
     return dispatch(push(DASHBOARD_URL))
   } catch (err) {
     dispatch(loginError(err))
