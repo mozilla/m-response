@@ -3,12 +3,12 @@ import { connect } from 'react-redux'
 import { Redirect, Route } from 'react-router-dom'
 import { WELCOME_URL } from '@utils/urls'
 
-const PrivateRoute = ({component: Component, ...rest}) => (
+const AuthRoute = ({component: Component, redirect, authenticated=true, ...rest}) => (
   <Route {...rest} render={(props) => {
-    console.log(rest)
-    return rest.isAuthenticated
+    const condition = authenticated ? rest.isAuthenticated : !rest.isAuthenticated
+    return condition
       ? <Component {...props} />
-      : <Redirect to={WELCOME_URL} />
+      : <Redirect to={redirect} />
   }}/>
 )
 
@@ -18,4 +18,4 @@ const mapStateToProps = (state, props) => ({
 
 export default connect(
   mapStateToProps
-)(PrivateRoute)
+)(AuthRoute)
