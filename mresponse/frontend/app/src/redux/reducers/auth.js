@@ -1,4 +1,4 @@
-import { LOGIN_SUCCESS, LOGIN_ERROR } from '@redux/actions'
+import { LOGIN_SUCCESS, LOGOUT } from '@redux/actions'
 
 const initialState = {
   isAuthenticated: false,
@@ -7,9 +7,8 @@ const initialState = {
   profile: null
 }
 
-export default (state=initialState, action) => {
-  switch(action.type) {
-
+export default (state = initialState, action) => {
+  switch (action.type) {
     case LOGIN_SUCCESS: {
       const { profile, token } = action
       return Object.assign({}, state, {
@@ -19,8 +18,10 @@ export default (state=initialState, action) => {
       })
     }
 
+    case LOGOUT:
+      return initialState
+
     default:
       return state
-
   }
 }

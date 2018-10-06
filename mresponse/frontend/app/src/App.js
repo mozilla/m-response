@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { Provider } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
 import { ConnectedRouter } from 'connected-react-router'
@@ -7,14 +7,20 @@ import { PersistGate } from 'redux-persist/integration/react'
 import WelcomePage from '@pages/welcome'
 import LoginPage from '@pages/login'
 import createStore from '@redux/store'
-import { handleAuthentication } from '@redux/actions'
+import { loginCallback, logoutCallback, logout } from '@redux/actions'
 import AuthRoute from '@utils/auth-route'
-import { WELCOME_URL, LOGIN_URL, DASHBOARD_URL } from '@utils/urls'
+import {
+  WELCOME_URL,
+  LOGIN_URL,
+  DASHBOARD_URL,
+  CALLBACK_URL,
+  LOGOUT_URL
+} from '@utils/urls'
 
 import 'normalize.css'
 import './App.scss'
 
-const {store, history, persistor} = createStore()
+const { store, history, persistor } = createStore()
 
 class App extends Component {
   render () {
@@ -39,12 +45,24 @@ class App extends Component {
               <AuthRoute
                 path={DASHBOARD_URL}
                 redirect={LOGIN_URL}
-                component={props => <h1>Dashboard</h1>}
+                component={props => (
+                  <div>
+                    <h1>Dashboard</h1>
+                    <button onClick={() => store.dispatch(logout())}>Logout</button>
+                  </div>
+                )}
               />
               <Route
-                path={'/callback'}
+                path={CALLBACK_URL}
                 component={props => {
-                  store.dispatch(handleAuthentication(props.history))
+                  store.dispatch(loginCallback())
+                  return null
+                }}
+              />
+              <Route
+                path={LOGOUT_URL}
+                component={props => {
+                  store.dispatch(logoutCallback())
                   return null
                 }}
               />
