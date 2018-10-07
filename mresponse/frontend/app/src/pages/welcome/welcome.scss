@@ -3,7 +3,7 @@
 .welcome-page {
   position: relative;
   min-height: 100vh;
-  background-color: $primary;
+  background-color: $off-white;
 
   display: grid;
   grid-template-rows: auto 1fr auto;
@@ -15,7 +15,7 @@
     grid-row: 1;
     user-select: none;
     margin: 0 auto;
-    width: 4.5rem;
+    width: 6rem;
     padding: 30px;
   }
 
@@ -28,18 +28,9 @@
   }
 
   .brand-container {
-    margin: 40px;
-    text-align: center;
-
-    .logo {
-      margin: 0 auto;
-      margin-bottom: 20px;
-    }
-
-    .text-logo {
-      font-size: 1.3rem;
-      font-weight: 100;
-      color: white;
+    margin-bottom: 80px;
+    .welcome-image {
+      width: 200px;
     }
   }
 
@@ -48,31 +39,37 @@
     flex-direction: column;
     align-items: center;
 
-    .tagline {}
+    .info-tagline {
+        font-weight: 700;
+        font-size: 1.2rem;
+    }
 
     .info-desc {
       max-width: 600px;
       text-align: center;
-      color: white;
+      // color: white;
       font-size: 1rem;
-      margin: 30px;
+      margin: 20px;
     }
   }
 
   .continue-button {
     margin: 60px auto 0;
+    background-color: $blue;
+    color: white;
+    font-size: 1rem;
   }
 
   footer {
     grid-row: 3;
     padding: 30px;
-    color: #959198;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     text-align: center;
     .footer-link {
       cursor: pointer;
       text-decoration: underline;
-      color: rgba(white, 0.4);
+      font-weight: 600;
+      margin-left: 5px;
     }
   }
 }
