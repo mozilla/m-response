@@ -25,7 +25,7 @@ export default class TagField extends React.Component {
     suggestions: null
   }
 
-  static getDerivedStateFromProps (props, state) {
+  static getDerivedStateFromProps(props, state) {
     return {
       suggestions:
         state.suggestions != null ? state.suggestions : props.suggestions || [],
@@ -33,26 +33,26 @@ export default class TagField extends React.Component {
     }
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.handleDelete = this.handleDelete.bind(this)
     this.handleAddition = this.handleAddition.bind(this)
     this.handleDrag = this.handleDrag.bind(this)
   }
 
-  render () {
+  render() {
     const { focused } = this.state
     const { className, icon, placeholder } = this.props
     return (
       <div
-        className={`form-field-outer ${className} ${
-          focused ? 'form-field-outer--shifted' : ''
-        }`}
+        className={`tag-field-outer ${className} ${
+          focused ? 'tag-field-outer--shifted' : ''
+          }`}
       >
         <div
-          className={`form-field-inner ${
-            focused ? 'form-field-inner--shifted' : ''
-          }`}
+          className={`tag-field-inner ${
+            focused ? 'tag-field-inner--shifted' : ''
+            }`}
         >
           <img
             className="form-field-icon"
@@ -73,13 +73,13 @@ export default class TagField extends React.Component {
             allowUnique={true}
             autofocus={false}
             classNames={{
-              tags: 'form-field-tags',
-              tagInput: 'form-field-input',
-              tagInputField: 'form-field-input',
-              selected: 'form-field-input-container',
-              tag: 'form-field-tag',
+              tags: 'tag-field-tags',
+              tagInput: 'tag-field-input',
+              tagInputField: 'tag-field-input',
+              selected: 'tag-field-input-container',
+              tag: 'tag-field-tag',
               remove: 'removeClass',
-              suggestions: 'form-field-suggestions',
+              suggestions: 'tag-field-suggestions',
               activeSuggestion: 'activeSuggestionClass'
             }}
             delimiters={delimiters}
@@ -89,7 +89,7 @@ export default class TagField extends React.Component {
     )
   }
 
-  handleDelete (i) {
+  handleDelete(i) {
     const { tags } = this.state
     this.setState(
       {
@@ -99,8 +99,9 @@ export default class TagField extends React.Component {
     )
   }
 
-  handleAddition (tag) {
-    if (this.isSupported(tag.text)) {
+  handleAddition(tag) {
+    tag = this.state.suggestions.find(({ text }) => String(text).toUpperCase() === String(tag.text).toUpperCase())
+    if (tag && this.isUnique(tag)) {
       this.setState(
         state => ({ tags: [...state.tags, tag] }),
         () => this.props.onChange(this.state.tags)
@@ -108,7 +109,7 @@ export default class TagField extends React.Component {
     }
   }
 
-  handleDrag (tag, currPos, newPos) {
+  handleDrag(tag, currPos, newPos) {
     const tags = [...this.state.tags]
     const newTags = tags.slice()
 
@@ -119,9 +120,9 @@ export default class TagField extends React.Component {
     this.setState({ tags: newTags }, () => this.props.onChange(this.state.tags))
   }
 
-  isSupported = tag =>
-    !!this.state.suggestions.filter(
-      ({ text }) => String(text).toUpperCase() === String(tag).toUpperCase()
+  isUnique = tag =>
+    !this.state.tags.filter(
+      ({ id }) => id === tag.id
     ).length
 
   toggleFocus = () =>

@@ -1,18 +1,22 @@
+@import '../../styles/main';
+
 .login-form {
   display: flex;
   align-items: center;
   flex-direction: column;
+  padding-left: 20px;
+  padding-right: 20px;
+  max-width: 500px;
+  margin: 0 auto;
 
   &-title {
     margin: 0;
     margin-bottom: 20px;
     padding: 0;
-    color: white;
   }
 
   &-status {
     text-align: center;
-
     &-text {
       font-size: 1.4rem !important;
     }
@@ -23,13 +27,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 50px;
   }
 
   &-field {
     width: 100%;
-    &:first-child {
-      border-bottom: 1px solid #9c969f;
-    }
+    margin-bottom: 20px;
   }
 
   &-submit {
@@ -37,11 +40,22 @@
   }
 
   &-forgot-link {
-    margin-top: 20px;
+    width: 100%;
+    text-align: right;
     font-size: 14px;
     cursor: pointer;
-    text-decoration: underline;
-    color: white;
-    user-select: none;
+  }
+
+  &-signup {
+    margin-top: 30px;
+    font-size: 0.9rem;
+
+    &-link {
+      font-weight: 600;
+      &:hover {
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
   }
 }

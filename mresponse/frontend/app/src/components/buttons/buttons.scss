@@ -4,8 +4,8 @@
   height: 50px;
   width: 80%;
   max-width: 300px;
-  background-color: white;
-  color: $primary;
+  background-color: $blue;
+  color: white;
 
   font-size: 1rem;
   font-weight: 600;
@@ -17,6 +17,6 @@
   outline: 0;
 
   &--disabled {
-    background-color: #5a4f5f;
+    opacity: 0.4;
   }
 }

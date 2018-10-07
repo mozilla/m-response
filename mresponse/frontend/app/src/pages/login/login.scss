@@ -2,28 +2,30 @@
 
 .login-page {
   height: 100vh;
-  background-color: $primary;
+  background-color: $off-white;
 
   display: flex;
   align-items: center;
   flex-direction: column;
-  //justify-content: center;
+  // color: black;
 
   .toolbar {
     height: 75px;
     width: 100%;
-    background-color: rgba(black, 0.3);
+    background-color: $off-white;
 
     display: flex;
     align-items: center;
     justify-content: space-between;
 
-    &-back-icon {
-      color: white;
-      margin-left: 10px;
-      //width: 1rem;
-      //height: 1rem;
-      cursor: pointer;
+    &-back {
+      margin-left: 20px;
+      font-weight: 700;
+
+      &:hover {
+        text-decoration: underline;
+        cursor: pointer;
+      }
     }
 
     &-logo {
@@ -32,16 +34,7 @@
       left: 0;
       right: 0;
       margin: 0 auto;
-      width: 4.5rem;
-    }
-
-    &-login-link {
-      cursor: pointer;
-      user-select: none;
-      text-decoration: underline;
-      color: #959198;
-      font-size: 0.8rem;
-      margin-right: 30px;
+      width: 6rem;
     }
   }
 

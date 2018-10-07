@@ -8,32 +8,22 @@ import SignupForm from '@components/signup-form'
 import ForgotPasswordForm from '@components/forgot-password-form'
 
 class LoginPage extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.signupForm = React.createRef()
   }
 
-  render () {
+  render() {
     return (
       <div className="login-page">
         <header className="toolbar">
-          <img
-            className="toolbar-back-icon"
-            src={this.props.icon || '/static/media/icons/back-chevron.svg'}
-            onClick={() => this.goBack()}
-            alt=""
-          />
+          <span className="toolbar-back" onClick={this.goBack}>Back</span>
           <img
             className="toolbar-logo"
             src="/static/media/mozilla-logo.png"
             alt=""
           />
-          <span
-            onClick={() => this.toggleRoute()}
-            className="toolbar-login-link"
-          >
-            {this.props.location.pathname === LOGIN_URL ? 'Signup' : 'Login'}
-          </span>
+          <span />
         </header>
 
         <section className="login-page-content">
@@ -43,6 +33,7 @@ class LoginPage extends React.Component {
               <LoginForm
                 login={this.props.login}
                 status={this.props.status}
+                goToSignup={() => this.props.history.push(SIGNUP_URL)}
                 forgotPassword={() =>
                   this.props.history.push(FORGOT_PASSWORD_URL)
                 }
@@ -69,16 +60,7 @@ class LoginPage extends React.Component {
       </div>
     )
   }
-
-  toggleRoute = () => {
-    const { pathname } = this.props.location
-    if (pathname === LOGIN_URL) {
-      this.props.history.push(SIGNUP_URL)
-    } else {
-      this.props.history.push(LOGIN_URL)
-    }
-  }
-
+  
   goBack = () => {
     if (this.props.location.pathname === SIGNUP_URL) {
       const canGoBack = this.signupForm.current.goBack()
