@@ -4,12 +4,14 @@ const connection = 'Username-Password-Authentication'
 const domain = process.env.REACT_APP_AUTH_DOMAIN
 const clientID = process.env.REACT_APP_AUTH_CLIENT_ID
 const redirectUri = process.env.REACT_APP_AUTH_CALLBACK_URL
+const audience = process.env.REACT_APP_AUTH_AUDIENCE
 
 export default class Auth {
   auth = new auth0.WebAuth({
     domain,
     clientID,
     redirectUri,
+    audience,
     responseType: 'token id_token',
     scope: 'openid profile read:current_user',
     prompt: 'none'

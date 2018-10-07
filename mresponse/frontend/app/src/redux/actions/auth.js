@@ -76,7 +76,7 @@ export const loginCallback = () => async dispatch => {
   try {
     const authResult = await auth.parseHash()
     const expiresAt = Date.now() + (authResult.expiresIn * 1000)
-    dispatch(loginSuccess(authResult.idTokenPayload, authResult.idToken, expiresAt))
+    dispatch(loginSuccess(authResult.idTokenPayload, authResult.accessToken, expiresAt))
     return dispatch(push(DASHBOARD_URL))
   } catch (err) {
     dispatch(loginError(err))
