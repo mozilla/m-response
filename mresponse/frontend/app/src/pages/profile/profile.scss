@@ -2,20 +2,17 @@
 
 .profile {
   min-height: 100vh;
-  background-color: $primary;
+  background-color: $off-white;
+  padding-left: 20px;
+  padding-right: 20px;
 
   &-toolbar {
-    &-logout-link {
-      font-size: 0.8rem;
-      text-align: center;
-      cursor: pointer;
-      text-decoration: underline;
-      color: $grey;
-    }
-
     &-back-link {
-      transform: rotate(180deg);
-      cursor: pointer;
+      font-weight: 700;
+      &:hover {
+        text-decoration: underline;
+        cursor: pointer;
+      }
     }
   }
 
@@ -39,9 +36,7 @@
 
   &-avatar {
     margin: 80px auto 0;
-    padding: 5px;
     border-radius: 100%;
-    border: 2px solid white;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -49,101 +44,113 @@
 
   &-name {
     font-size: 1.3rem;
-    padding-left: 10px;
-    padding-right: 10px;
+    margin-top: 10px;
+    font-weight: 600;
+  }
+
+  &-languages {
+    margin-top: 15px;
+    &-tag {
+      font-size: 0.8rem;
+      padding-left: 5px;
+      padding-right: 5px;
+      border-right: 1px solid $grey;
+
+      &:last-of-type {
+        padding-right: none;
+        border-right: none;
+      }
+    }
   }
 
   &-karma {
-    max-width: 800px;
+    width: 100%;
+    max-width: 680px;
     margin: 0 auto;
+    height: 60px;
     display: flex;
-    flex-direction: column;
-    padding-bottom: 40px;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    background-color: white;
+    margin-top: 20px;
 
-    @include for-tablet-landscape-up() {
-      flex-direction: row;
-    }
-
-    &-box {
-      width: 100%;
+    &-group {
+      flex: 1;
       display: flex;
       flex-direction: column;
+      align-items: center; 
+
+      &-value {
+        font-weight: 600;
+        font-size: 0.8rem;
+      }
+
+      &-label {
+        color: $grey;
+        font-size: 0.7rem;
+      }
+    }
+  }
+
+  &-awesome-progress {
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto;
+    margin-top: 25px;
+
+    &-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    &-bar {
+      margin-top: 15px;
+    }
+  }
+
+  &-response-history {
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto;
+    margin-top: 40px;
+
+    &-header {
+      display: flex;
       align-items: center;
-      margin-top: 20px;
+      justify-content: space-between;
+      padding-bottom: 20px;
 
-      &-header {
-        background-color: $teal !important;
-        box-shadow: 0.3rem 0 0 $teal, -0.3rem 0 0 $teal;
-        font-size: 1rem;
-        color: $primary;
-        font-weight: 900;
-        padding-left: 10px;
-        padding-right: 10px;
+      &-title {
+        font-size: 0.9rem;
+        font-weight: 600;
       }
 
-      &-amount {
-        width: 100%;
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        position: relative;
-
-        &:after {
-          content: ' ';
-          position: absolute;
-          left: 0;
-          right: 0;
-          top: 100%;
-          margin: 20px auto 0;
-          height: 1px;
-          width: 25%;
-          border-bottom: 1px solid $grey;
-        }
-
-        &-value {
-          color: white;
-          font-size: 2.5rem;
-        }
-
-        &-label {
-          color: $grey;
-          font-size: 0.8rem;
-          margin-top: 15px;
-        }
-      }
-
-      &-responses {
-        width: 100%;
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        position: relative;
-        margin-top: 40px;
-
-        &-value {
-          color: white;
-          font-size: 1.5rem;
-        }
-
-        &-label {
-          color: $grey;
-          font-size: 0.8rem;
-          margin-top: 10px;
-          text-align: center;
-        }
-      }
-
-      &--left {
-        border-right: 1px solid $grey;
-        //border-bottom: 1px solid $grey
-      }
-
-      &--right {
-        .profile-karma-box-header {
-          background-color: $yellow !important;
-          box-shadow: 0.3rem 0 0 $yellow, -0.3rem 0 0 $yellow;
+      &-link {
+        font-size: 12pt;
+        cursor: pointer;
+        &:hover {
+          text-decoration: underline;
         }
       }
     }
+
+    &-list {
+      width: 100%;
+      display: grid;
+      grid-template-columns: auto;
+      grid-column-gap: 20px;
+      grid-row-gap: 20px;
+      padding-bottom: 20px;
+
+      @include for-tablet-landscape-up() {
+        grid-template-columns: auto auto;
+      }
+
+      &-card {
+        width: auto;
+      }
+    }
+
   }
 }
