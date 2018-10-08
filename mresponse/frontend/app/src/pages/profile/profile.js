@@ -3,14 +3,13 @@ import PropTypes from 'prop-types'
 
 import Toolbar from '@components/toolbar'
 import Avatar from '@components/avatar'
-import HighlightedText from '@components/highlighted-text'
 import ProgressBar from '@components/progress-bar'
 import ResponseCard from '@components/response-card'
 
 import './profile.scss'
 
 export default class ProfilePage extends React.Component {
-  render() {
+  render () {
     const {
       profile: { name, avatar, karma, languages, responses }
     } = this.props

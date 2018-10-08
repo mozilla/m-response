@@ -64,7 +64,7 @@ storiesOf('Components', module)
     <ProgressBar value={90} />
   ))
   .add('Response Card', () => (
-    <ResponseCard 
+    <ResponseCard
       response='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam elementum sodales mattis. Vestibulum fermentum volutpat efficitur. In hac habitasse platea dictumst. Aliquam tincidunt in sem non gravida. Maecenas magna diam, lobortis sed bibendum id, faucibus non tortor. Aliquam euismod euismod odio, quis consequat enim malesuada vitae. Sed eget lacus at turpis hendrerit dapibus. Maecenas finibus enim a auctor viverra. Quisque maximus scelerisque consectetur.'
       date='January 08, 2016'
       productName='Firefox'

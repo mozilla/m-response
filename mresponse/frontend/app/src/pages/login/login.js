@@ -8,12 +8,12 @@ import SignupForm from '@components/signup-form'
 import ForgotPasswordForm from '@components/forgot-password-form'
 
 class LoginPage extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.signupForm = React.createRef()
   }
 
-  render() {
+  render () {
     return (
       <div className="login-page">
         <header className="toolbar">
@@ -60,7 +60,7 @@ class LoginPage extends React.Component {
       </div>
     )
   }
-  
+
   goBack = () => {
     if (this.props.location.pathname === SIGNUP_URL) {
       const canGoBack = this.signupForm.current.goBack()
