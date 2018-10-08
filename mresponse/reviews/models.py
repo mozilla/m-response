@@ -1,12 +1,13 @@
 from django.db import models
-from django.utils.translation import ngettext_lazy, ugettext_lazy as _
+from django.utils import translation
+from django.utils.translation import ugettext_lazy as _
 
 from mresponse.utils import android as android_utils
 
-rating_string = ngettext_lazy('%d star', '%d stars')
+STAR_RATING_STRING = translation.ngettext_lazy('%d star', '%d stars')
 
 REVIEW_RATING_CHOICES = tuple([
-    (i, rating_string % i)
+    (i, STAR_RATING_STRING % i)
     for i in range(1, 6)
 ])
 

@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from mresponse.applications import models as applications_models
 
 
