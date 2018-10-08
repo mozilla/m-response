@@ -1,0 +1,60 @@
+{
+  "name": "m-response",
+  "description": "",
+  "scripts": {
+  },
+  "env": {
+    "ALLOWED_HOSTS": "*.herokuapp.com",
+    "EMAIL_HOST": {
+      "required": true
+    },
+    "EMAIL_HOST_PASSWORD": {
+      "required": true
+    },
+    "EMAIL_HOST_USER": {
+      "required": true
+    },
+    "EMAIL_PORT": {
+      "required": true
+    },
+    "EMAIL_USE_SSL": {
+      "required": true
+    },
+    "EMAIL_USE_TLS": {
+      "required": true
+    },
+    "PAPERTRAIL_API_TOKEN": {
+      "required": true
+    },
+    "SCOUT_KEY": {
+      "required": true
+    },
+    "SCOUT_MONITOR": {
+      "required": true
+    },
+    "SCOUT_NAME": "mresponse review app",
+    "SECRET_KEY": {
+      "generator": "secret"
+    },
+    "SENTRY_DSN": {
+      "required": true
+    },
+    "SERVER_EMAIL": {
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "addons": [
+    "papertrail",
+    "heroku-postgresql",
+    "heroku-redis",
+    "scheduler"
+  ],
+  "buildpacks": [
+
+  ]
+}
