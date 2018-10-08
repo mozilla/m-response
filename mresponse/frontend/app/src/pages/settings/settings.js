@@ -42,30 +42,23 @@ export default class SettingsPage extends React.Component {
           titleBackground="white"
           rightComponent={
             <span
-              className="settings-toolbar-logout-link"
-              onClick={() => this.props.logout()}
+              className="settings-toolbar-done-link"
+              onClick={() => this.saveProfile()}
             >
-              Logout
+              Done
             </span>
           }
           leftComponent={
-            <img
+            <span
               className="settings-toolbar-back-link"
-              src="/static/media/icons/back-chevron.svg"
               onClick={() => this.props.back()}
-              alt=""
-            />
+            >
+              Back
+            </span>
           }
         />
 
         <section className="settings-user-meta">
-          <span
-            className="settings-edit-button"
-            onClick={() => this.saveProfile()}
-          >
-            Done
-          </span>
-
           <div className="settings-avatar">
             <Avatar
               editable={true}
