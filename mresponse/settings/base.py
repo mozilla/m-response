@@ -62,6 +62,9 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
 
     'rest_framework',
+
+    'mresponse.applications',
+    'mresponse.reviews',
 ]
 
 
