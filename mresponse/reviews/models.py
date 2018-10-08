@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.translation import ngettext_lazy, ugettext_lazy as _
 
+from mresponse.utils import android as android_utils
+
 rating_string = ngettext_lazy('%d star', '%d stars')
 
 REVIEW_RATING_CHOICES = tuple([
@@ -34,3 +36,7 @@ class Review(models.Model):
             'review_id': self.play_store_review_id,
             'review_author': self.author_name,
         }
+
+    @property
+    def android_version(self):
+        return android_utils.get_human_readable_android_version(self.android_sdk_version)
