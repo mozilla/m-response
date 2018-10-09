@@ -1,7 +1,7 @@
 from django.urls import path
 
-from mresponse.reviews.api import views
+from mresponse.reviews.api import views as reviews_views
 
 urlpatterns = [
-    path('', views.Review.as_view(), name='get_review'),
+    path('', reviews_views.Review.as_view(), name='get_review'),
 ]

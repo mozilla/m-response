@@ -1,11 +1,13 @@
-from rest_framework import generics, permissions
+from django.utils.translation import ugettext_lazy as _
+
+from rest_framework import exceptions, generics, permissions
 
 from mresponse.reviews import models as reviews_models
 from mresponse.reviews.api import serializers as reviews_serializers
 
 
 class Review(generics.RetrieveAPIView):
-    queryset = reviews_models.Review.objects.select_related(
+    queryset = reviews_models.Review.objects.unresponded().select_related(
         'application',
         'application_version',
         'response',
@@ -18,6 +20,12 @@ class Review(generics.RetrieveAPIView):
         Get review from the queue.
         """
         # TODO: Add priority of getting results
-        review = generics.get_object_or_404(self.get_queryset())
+        review = self.get_queryset().first()
+
+        if review is None:
+            raise exceptions.NotFound(
+                detail=_('No reviews available in the queue.')
+            )
+
         # TODO: Add locking mechanism to assign the review to a user.
         return review
