@@ -11,16 +11,17 @@ class CreateResponse(generics.CreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get_review_for_user(self):
-        # TODO: Override with getting the locked review.
-        return reviews_models.Review.objects.unresponded().first()
+        """
+        Get a review that matches the ID in the URL and has been
+        assigned to the current user.
+        """
+        qs = reviews_models.Review.objects.unresponded().assigned_to_user(
+            self.request.user
+        )
+        return generics.get_object_or_404(qs, pk=self.kwargs['review_pk'])
 
     def perform_create(self, serializer):
         review = self.get_review_for_user()
-        if review is None:
-            raise exceptions.NotFound(
-                detail=_('Your account has no assigned reviews.')
-            )
-
         serializer.save(
             review=review,
             author=self.request.user,

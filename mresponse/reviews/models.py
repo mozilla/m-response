@@ -44,3 +44,7 @@ class Review(models.Model):
     @property
     def android_version(self):
         return android_utils.get_human_readable_android_version(self.android_sdk_version)
+
+    @property
+    def is_unresponded(self):
+        return self.response_id is not None
