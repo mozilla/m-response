@@ -5,7 +5,7 @@ from mresponse.reviews.api import serializers as reviews_serializers
 
 
 class Review(generics.RetrieveAPIView):
-    queryset = reviews_models.Review.objects.unresponded().select_related(
+    queryset = reviews_models.Review.objects.select_related(
         'application',
         'application_version',
         'response',

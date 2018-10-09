@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from mresponse.applications.api import serializers as applications_serializers
+from mresponse.responses.api import serializers as responses_serializers
 from mresponse.reviews import models as reviews_models
 
 
@@ -11,6 +12,7 @@ class ReviewSerializer(serializers.ModelSerializer):
             hide_application=True,
         )
     )
+    response = responses_serializers.ResponseSerializer()
 
     class Meta:
         model = reviews_models.Review
@@ -24,5 +26,6 @@ class ReviewSerializer(serializers.ModelSerializer):
             'review_text',
             'review_rating',
             'last_modified',
+            'response',
         )
         read_only_fields = ('android_version',)
