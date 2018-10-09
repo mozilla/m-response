@@ -15,9 +15,8 @@ def api_root(request, format=None):
     )
     return response.Response(response_dict)
 
-
 class Config(views.APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, format=None):
         response_dict = collections.OrderedDict()
