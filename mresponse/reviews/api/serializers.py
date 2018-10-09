@@ -1,9 +1,17 @@
 from rest_framework import serializers
 
+from mresponse.applications.api import serializers as applications_serializers
 from mresponse.reviews import models as reviews_models
 
 
 class ReviewSerializer(serializers.ModelSerializer):
+    application = applications_serializers.ApplicationSerializer()
+    application_version = (
+        applications_serializers.ApplicationVersionSerializer(
+            hide_application=True,
+        )
+    )
+
     class Meta:
         model = reviews_models.Review
         fields = (
