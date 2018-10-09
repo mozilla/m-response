@@ -54,6 +54,7 @@ class LoginPage extends React.Component {
             component={() => (
               <SignupForm
                 ref={this.signupForm}
+                status={this.props.status}
                 createAccount={this.props.createAccount}
               />
             )}

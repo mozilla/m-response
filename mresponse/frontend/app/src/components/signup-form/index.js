@@ -18,7 +18,7 @@ export default class SignUpForm extends React.Component {
   }
 
   state = {
-    status: this.status.name,
+    status: this.props.status || this.status.name,
     step: 0,
     name: '',
     email: '',
@@ -95,10 +95,27 @@ export default class SignUpForm extends React.Component {
         validate: () => true,
         buttonText: 'Next'
       },
-
+      {
+        prepare: () => this.setStatus(this.status.languages),
+        title: 'Signup - Step 2/3',
+        fields: (
+          <React.Fragment>
+            <TagField
+              className="signup-form-field"
+              placeholder="Enter your languages"
+              icon="/static/media/icons/message.svg"
+              suggestions={this.state.supportedLanguages}
+              onChange={languages => this.setState({ languages })}
+            />
+          </React.Fragment>
+        ),
+        canContinue: false,
+        validate: () => true,
+        buttonText: 'Next'
+      },
       {
         prepare: () => this.setStatus(this.status.email),
-        title: 'Signup - Step 2/3',
+        title: 'Signup - Step 3/3',
         fields: (
           <React.Fragment>
             <InputField
@@ -147,26 +164,7 @@ export default class SignUpForm extends React.Component {
             return false
           }
         },
-        buttonText: 'Next'
-      },
-
-      {
-        prepare: () => this.setStatus(this.status.languages),
-        title: 'Signup - Step 3/3',
-        fields: (
-          <React.Fragment>
-            <TagField
-              className="signup-form-field"
-              placeholder="Enter your languages"
-              icon="/static/media/icons/message.svg"
-              suggestions={this.state.supportedLanguages}
-              onChange={languages => this.setState({ languages })}
-            />
-          </React.Fragment>
-        ),
-        canContinue: false,
-        validate: () => true,
-        buttonText: 'Finish',
+        buttonText: 'Create Account',
         buttonPress: () =>
           this.props.createAccount({
             email: this.state.email,

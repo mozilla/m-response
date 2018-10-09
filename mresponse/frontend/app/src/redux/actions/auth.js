@@ -30,10 +30,10 @@ export const loginSuccess = (profile, token, expiresAt) => {
 }
 
 export const loginError = error => dispatch => {
-  console.log(error)
-  dispatch({
+  const { description, policy } = error
+  return dispatch({
     type: LOGIN_ERROR,
-    error
+    error: policy || description
   })
 }
 
@@ -42,7 +42,8 @@ export const login = (username, password) => async dispatch => {
     await auth.login(username, password)
     return dispatch(loginAttempt(username, password))
   } catch (err) {
-    return dispatch(loginError(err))
+    dispatch(loginError(err))
+    return dispatch(push(LOGIN_URL))
   }
 }
 
@@ -68,7 +69,8 @@ export const forgetPassword = email => async dispatch => {
       email
     })
   } catch (err) {
-    return dispatch(loginError(err))
+    dispatch(loginError(err))
+    return dispatch(push(LOGIN_URL))
   }
 }
 

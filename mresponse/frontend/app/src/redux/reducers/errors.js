@@ -7,9 +7,9 @@ const initial = {
 export default (state = initial, action) => {
   switch (action.type) {
     case LOGIN_ERROR:
-      const { error: { description } } = action
+      const { error } = action
       return Object.assign({}, state, {
-        loginError: description
+        loginError: error
       })
 
     default:
