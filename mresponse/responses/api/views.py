@@ -16,7 +16,7 @@ class CreateResponse(generics.CreateAPIView):
         qs = reviews_models.Review.objects.unresponded()
         # TODO: Enable replying to assigned reviews only.
         # qs = qs.assigned_to_user(
-            # self.request.user
+        #    self.request.user
         # )
         return generics.get_object_or_404(qs, pk=self.kwargs['review_pk'])
 

@@ -34,4 +34,3 @@ class ReviewQuerySet(models.QuerySet):
             self.unresponded().rating_range(1, 2).newer_than_6_months()
                                                  .newest_first()
         )
-
