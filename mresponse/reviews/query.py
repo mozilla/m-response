@@ -16,9 +16,6 @@ class ReviewQuerySet(models.QuerySet):
         # TODO: Add a logic that only allows to get a review for that user.
         return self.none()
 
-    def newest_first(self):
-        return self.order_by('-last_modified')
-
     def rating_range(self, min_value, max_value):
         return self.filter(
             review_rating__gte=min_value,
@@ -30,7 +27,6 @@ class ReviewQuerySet(models.QuerySet):
         return self.filter(last_modified__gte=six_months_ago)
 
     def responder_queue(self):
-        return (
-            self.unresponded().rating_range(1, 2).newer_than_6_months()
-                                                 .newest_first()
-        )
+        qs = self.unresponded().rating_range(1, 2).newer_than_6_months()
+        # 1 star reviews first. Prefer newer reviews.
+        return qs.order_by('review_rating', '-last_modified')
