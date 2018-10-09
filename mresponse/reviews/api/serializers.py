@@ -25,10 +25,9 @@ class ReviewSerializer(serializers.ModelSerializer):
             'review_text',
             'review_rating',
             'last_modified',
-            'is_unresponded',
             'response_url',
         )
-        read_only_fields = ('android_version', 'is_unresponded', 'response',)
+        read_only_fields = ('android_version',)
 
     def get_response_url(self, instance):
         return reverse.reverse(

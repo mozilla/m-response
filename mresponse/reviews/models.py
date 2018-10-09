@@ -45,6 +45,6 @@ class Review(models.Model):
     def android_version(self):
         return android_utils.get_human_readable_android_version(self.android_sdk_version)
 
-    @property
-    def is_unresponded(self):
-        return self.response_id is not None
+    def assign_to_user(self, user):
+        # TODO: Add locking logic
+        pass
