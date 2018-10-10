@@ -41,6 +41,12 @@
     },
     "SERVER_EMAIL": {
       "required": true
+    },
+    "AUTH0_DOMAIN": {
+        "required": true
+    },
+    "JWT_AUDIENCE": {
+        "required": true
     }
   },
   "formation": {

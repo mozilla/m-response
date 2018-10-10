@@ -12,3 +12,5 @@ boto3==1.9.14
 scout-apm==1.3.7
 django-basic-auth-ip-whitelist==0.2.1
 pycountry==18.5.26
+djangorestframework-jwt==1.11.0
+cryptography==2.3.1
