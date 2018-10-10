@@ -89,7 +89,6 @@ export default class SettingsPage extends React.Component {
               key="name-field"
               className="settings-form-row-input"
               placeholder="Name"
-              icon={staticAsset('media/icons/user.svg')}
               type="text"
               value={this.state.name}
               onChange={event => this.setState({ name: event.target.value })}

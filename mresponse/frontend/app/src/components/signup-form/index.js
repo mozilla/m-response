@@ -86,7 +86,6 @@ export default class SignUpForm extends React.Component {
               key="name-field"
               className="signup-form-field"
               placeholder="Name"
-              icon={staticAsset('media/icons/user.svg')}
               value={this.state.name}
               onChange={event => this.setState({ name: event.target.value })}
             />

@@ -7,7 +7,7 @@ import './field.scss'
 export default class InputField extends React.Component {
   state = { focused: false }
 
-  render () {
+  render() {
     const { focused } = this.state
     const {
       className,
@@ -22,18 +22,19 @@ export default class InputField extends React.Component {
       <div
         className={`form-field-outer ${className} ${
           focused ? 'form-field-outer--shifted' : ''
-        }`}
+          }`}
       >
         <div
           className={`form-field-inner ${
             focused ? 'form-field-inner--shifted' : ''
-          }`}
+            }`}
         >
-          <img
-            className="form-field-icon"
-            src={icon || staticAsset('media/icons/email.svg')}
-            alt=""
-          />
+          {icon ?
+            <img
+              className="form-field-icon"
+              src={icon}
+              alt=""
+            /> : null}
           <input
             placeholder={placeholder || 'Email'}
             className="form-field-input"

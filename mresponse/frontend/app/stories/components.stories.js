@@ -32,7 +32,7 @@ storiesOf('Components', module)
       onClick={action('Change Avatar')}
     />
   ))
-  .add('Input Field', () => <InputField />)
+  .add('Input Field', () => <InputField icon={staticAsset('media/icons/email.svg')} />)
   .add('Tag Field', () => (
     <TagField
       suggestions={[

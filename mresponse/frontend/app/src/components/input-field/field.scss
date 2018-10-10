@@ -3,7 +3,7 @@
 .form-field {
   &-outer {
     height: 50px;
-    background-color: $blue !important;
+    background-color: $grey !important;
     opacity: 0.8;
     transition: opacity 0.1s;
     border-bottom: 1px solid $grey;
@@ -36,6 +36,7 @@
     user-select: none;
     outline: 0;
     margin: 0;
+    margin-left: 5px;
     padding: 0;
     background-color: transparent;
     color: black;
