@@ -72,7 +72,7 @@
 
     &-tag {
       user-select: none;
-      background-color: $blue;
+      background-color: $grey;
       color: white;
       border-radius: 3px;
       font-size: 0.8rem;
@@ -102,11 +102,7 @@
       align-items: center;
       margin-bottom: 10px;
       overflow: scroll;
-
-      .tag-field-outer {
-        margin-left: 40px;
-      }
-
+      
       &-input {
         flex: 1;
       }

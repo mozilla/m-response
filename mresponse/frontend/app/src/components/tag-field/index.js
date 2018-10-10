@@ -55,11 +55,12 @@ export default class TagField extends React.Component {
             focused ? 'tag-field-inner--shifted' : ''
           }`}
         >
-          <img
-            className="tag-field-icon"
-            src={icon || staticAsset('media/icons/email.svg')}
-            alt=""
-          />
+          {icon ?
+            <img
+              className="tag-field-icon"
+              src={icon}
+              alt=""
+            /> : null}
           <ReactTags
             tags={this.state.tags}
             suggestions={this.state.suggestions}
