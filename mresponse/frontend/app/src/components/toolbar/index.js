@@ -12,7 +12,7 @@ export default class Toolbar extends React.Component {
 
         <img
           className="toolbar-logo"
-          src="static/media/mozilla-logo.png"
+          src="/static/media/mozilla-logo.png"
           alt=""
         />
         {title ? (

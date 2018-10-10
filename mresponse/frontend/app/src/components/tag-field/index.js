@@ -56,7 +56,7 @@ export default class TagField extends React.Component {
         >
           <img
             className="form-field-icon"
-            src={icon || 'static/media/icons/message.svg'}
+            src={icon || '/static/media/icons/message.svg'}
             alt=""
           />
           <ReactTags

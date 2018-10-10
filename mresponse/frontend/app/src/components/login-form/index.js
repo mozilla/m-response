@@ -6,7 +6,7 @@ import HighlightedText from '@components/highlighted-text'
 import Button from '@components/buttons'
 
 export default class LoginForm extends React.Component {
-  state = { status: "What's your email address?", email: '', password: '' }
+  state = { status: this.props.status || "What's your email address?", email: '', password: '' }
 
   render () {
     return (

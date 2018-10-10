@@ -30,7 +30,7 @@ export default class InputField extends React.Component {
         >
           <img
             className="form-field-icon"
-            src={icon || 'static/media/icons/email.svg'}
+            src={icon || '/static/media/icons/email.svg'}
             alt=""
           />
           <input

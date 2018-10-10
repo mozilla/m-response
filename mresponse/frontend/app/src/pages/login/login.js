@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Redirect, withRouter } from 'react-router-dom'
+import { Route, withRouter } from 'react-router-dom'
 
 import './login.scss'
 import { FORGOT_PASSWORD_URL, LOGIN_URL, SIGNUP_URL } from '@utils/urls'
@@ -19,13 +19,13 @@ class LoginPage extends React.Component {
         <header className="toolbar">
           <img
             className="toolbar-back-icon"
-            src={this.props.icon || 'static/media/icons/back-chevron.svg'}
+            src={this.props.icon || '/static/media/icons/back-chevron.svg'}
             onClick={() => this.goBack()}
             alt=""
           />
           <img
             className="toolbar-logo"
-            src="static/media/mozilla-logo.png"
+            src="/static/media/mozilla-logo.png"
             alt=""
           />
           <span
@@ -37,12 +37,12 @@ class LoginPage extends React.Component {
         </header>
 
         <section className="login-page-content">
-          <Redirect exact to={LOGIN_URL} />
           <Route
             path={LOGIN_URL}
             component={() => (
               <LoginForm
                 login={this.props.login}
+                status={this.props.status}
                 forgotPassword={() =>
                   this.props.history.push(FORGOT_PASSWORD_URL)
                 }
@@ -54,6 +54,7 @@ class LoginPage extends React.Component {
             component={() => (
               <SignupForm
                 ref={this.signupForm}
+                status={this.props.status}
                 createAccount={this.props.createAccount}
               />
             )}
