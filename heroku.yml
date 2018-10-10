@@ -1,6 +1,10 @@
 build:
   docker:
     web: Dockerfile
+  config:
+    REACT_APP_AUTH_DOMAIN: nathan-tbx.eu.auth0.com
+    REACT_APP_AUTH_CLIENT_ID: 4QeY21eP8MHQSIitzT9dx3wCj9I85lAG
+    REACT_APP_AUTH_AUDIENCE: https://nathan-tbx.eu.auth0.com/api/v2/
 release:
   image: web
   command:
