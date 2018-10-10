@@ -5,7 +5,6 @@ import InputField from '@components/input-field'
 import TagField from '@components/tag-field'
 import HighlightedText from '@components/highlighted-text'
 import Button from '@components/buttons'
-import { staticAsset } from '@utils/urls'
 
 export default class SignUpForm extends React.Component {
   status = {

@@ -1,13 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { staticAsset } from '@utils/urls'
 
 import './field.scss'
 
 export default class InputField extends React.Component {
   state = { focused: false }
 
-  render() {
+  render () {
     const { focused } = this.state
     const {
       className,
@@ -22,15 +21,15 @@ export default class InputField extends React.Component {
       <div
         className={`form-field-outer ${className} ${
           focused ? 'form-field-outer--shifted' : ''
-          }`}
+        }`}
       >
         <div
           className={`form-field-inner ${
             focused ? 'form-field-inner--shifted' : ''
-            }`}
+          }`}
         >
-          {icon ?
-            <img
+          {icon
+            ? <img
               className="form-field-icon"
               src={icon}
               alt=""

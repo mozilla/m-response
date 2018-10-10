@@ -18,7 +18,6 @@ import ProgressBar from '../src/components/progress-bar'
 import ResponseCard from '../src/components/response-card'
 import { staticAsset } from '../src/utils/urls'
 
-
 storiesOf('Components', module)
   .addDecorator(backgroundColor(['#24172A', '#ffffff', '#dcdde1', '#000000']))
   .add('Logo', () => <Logo />)

@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { WithContext as ReactTags } from 'react-tag-input'
 
-import { staticAsset } from '@utils/urls'
 import './field.scss'
 
 const KeyCodes = {
@@ -55,8 +54,8 @@ export default class TagField extends React.Component {
             focused ? 'tag-field-inner--shifted' : ''
           }`}
         >
-          {icon ?
-            <img
+          {icon
+            ? <img
               className="tag-field-icon"
               src={icon}
               alt=""
