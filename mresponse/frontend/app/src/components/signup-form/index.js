@@ -13,6 +13,7 @@ export default class SignUpForm extends React.Component {
     password: 'Cool! and what password would you like to use?',
     passwordConfirm: 'Nearly There! Enter the password again.',
     incorrectConfirm: "Oops! Your passwords don't match",
+    invalidLanguagesCount: 'Sorry! You need to know at least one language.',
     languages:
       'Nice! Now, What language(s) can communicate in, or rather respond best in?'
   }
@@ -102,14 +103,20 @@ export default class SignUpForm extends React.Component {
             <TagField
               className="signup-form-field"
               placeholder="Enter your languages"
-              icon="/static/media/icons/message.svg"
               suggestions={this.state.supportedLanguages}
               onChange={languages => this.setState({ languages })}
             />
           </React.Fragment>
         ),
         canContinue: false,
-        validate: () => true,
+        validate: () => {
+          if (this.state.languages.length > 0) {
+            return true
+          } else {
+            this.setStatus(this.status.invalidLanguagesCount)
+            return false
+          }
+        },
         buttonText: 'Next'
       },
       {

@@ -7,7 +7,7 @@ import HighlightedText from '@components/highlighted-text'
 import Button from '@components/buttons'
 
 export default class LoginForm extends React.Component {
-  state = { status: this.props.status || "What's your email address?", email: '', password: '' }
+  state = { status: this.props.status || "", email: '', password: '' }
 
   render () {
     return (
@@ -50,7 +50,7 @@ export default class LoginForm extends React.Component {
             disabled={!(this.state.email && this.state.password)}
           />
           <span className="login-form-signup">
-            Don't have an account yet?{' '}
+            Don't have an account yet?
             <span onClick={() => this.props.goToSignup()} className="login-form-signup-link">
               Register
             </span>
