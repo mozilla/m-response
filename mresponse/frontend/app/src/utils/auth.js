@@ -32,9 +32,9 @@ export default class Auth {
     })
   }
 
-  logout (redirectTo) {
+  logout (returnTo) {
     this.auth.logout({
-      redirectTo
+      returnTo
     })
   }
 
