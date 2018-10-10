@@ -120,4 +120,18 @@
       }
     }
   }
+
+  &-logout-button {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 20px;
+    margin: 0 auto;
+    width: 140px;
+
+    color: $grey;
+    background-color: transparent;
+    border: 2px solid $grey;
+    font-size: 15px;
+  }
 }
