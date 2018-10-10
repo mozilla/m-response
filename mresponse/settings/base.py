@@ -1,12 +1,18 @@
 """
 Django settings for mresponse project.
 """
+import logging
 import os
 import sys
+import urllib
 
+import cryptography
 import dj_database_url
 import raven
+import requests
 from raven.exceptions import InvalidGitRepository
+
+logger = logging.getLogger(__name__)
 
 env = os.environ.copy()
 
@@ -477,3 +483,79 @@ if env.get('BASIC_AUTH_ENABLED', 'false').lower().strip() == 'true':
         BASIC_AUTH_WHITELISTED_HTTP_HOSTS = (
             env['BASIC_AUTH_WHITELISTED_HTTP_HOSTS'].split(',')
         )
+
+
+# JSON Web Token authentication settings
+def get_auth0_certificate(auth0_url):
+    response = requests.get(
+        urllib.parse.urljoin(auth0_url, '/.well-known/jwks.json'),
+        timeout=10
+    )
+    jwks = response.json()
+    cert = '\n'.join([
+        '-----BEGIN CERTIFICATE-----',
+        jwks['keys'][0]['x5c'][0],
+        '-----END CERTIFICATE-----',
+    ])
+    certificate = cryptography.x509.load_pem_x509_certificate(
+        cert.encode('utf-8'),
+        cryptography.hazmat.backends.default_backend(),
+    )
+    return certificate.public_key()
+
+
+AUTH0_DOMAIN = AUTH0_URL = None
+
+if 'AUTH0_DOMAIN' in env:
+    AUTH0_DOMAIN = env['AUTH0_DOMAIN']
+    AUTH0_URL = urllib.parse.urlunsplit([
+        'https',
+        AUTH0_DOMAIN,
+        '/',
+        None,
+        None,
+    ])
+
+
+JWT_PUBLIC_KEY = JWT_AUDIENCE = JWT_ISSUER = None
+
+if AUTH0_URL:
+    try:
+        JWT_PUBLIC_KEY = get_auth0_certificate(AUTH0_URL)
+    except requests.exceptions.RequestException as e:
+        logger.exception(
+            'Could not obtain certificate for Auth0 JWT authentication.'
+        )
+    else:
+        JWT_ISSUER = AUTH0_URL
+
+
+# Set your Auth0 API key as JWT_AUDNIENE
+if 'JWT_AUDIENCE' in env:
+    JWT_AUDIENCE = env['JWT_AUDIENCE']
+
+
+# JWT_AUTH
+JWT_AUTH = None
+if JWT_PUBLIC_KEY and JWT_PUBLIC_KEY and JWT_ISSUER:
+    JWT_AUTH = {
+        'JWT_PAYLOAD_GET_USERNAME_HANDLER': (
+            'mresponse.users.utils.jwt_get_username_from_payload_handler'
+        ),
+        'JWT_ALGORITHM': 'RS256',
+        'JWT_AUTH_HEADER_PREFIX': 'Bearer',
+        'JWT_AUDIENCE': JWT_AUDIENCE,
+        'JWT_PUBLIC_KEY': JWT_PUBLIC_KEY,
+        'JWT_ISSUER': JWT_ISSUER,
+    }
+
+
+# Django REST Framework settings
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+}
+
+
