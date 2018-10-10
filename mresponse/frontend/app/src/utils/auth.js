@@ -3,7 +3,7 @@ import auth0 from 'auth0-js'
 const connection = 'Username-Password-Authentication'
 const domain = process.env.REACT_APP_AUTH_DOMAIN
 const clientID = process.env.REACT_APP_AUTH_CLIENT_ID
-const redirectUri = process.env.REACT_APP_AUTH_CALLBACK_URL
+const redirectUri = window.location.origin + '/callback'
 const audience = process.env.REACT_APP_AUTH_AUDIENCE
 
 export default class Auth {
