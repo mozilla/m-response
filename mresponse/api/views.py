@@ -13,6 +13,11 @@ def api_root(request, format=None):
         request=request,
         format=format
     )
+    response_dict['review'] = reverse.reverse(
+        'get_review',
+        request=request,
+        format=format
+    )
     return response.Response(response_dict)
 
 

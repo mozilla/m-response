@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import translation
 from django.utils.translation import ugettext_lazy as _
 
+from mresponse.reviews import query as reviews_query
 from mresponse.utils import android as android_utils
 
 STAR_RATING_STRING = translation.ngettext_lazy('%d star', '%d stars')
@@ -32,6 +33,8 @@ class Review(models.Model):
     review_rating = models.SmallIntegerField(choices=REVIEW_RATING_CHOICES)
     last_modified = models.DateTimeField()
 
+    objects = reviews_query.ReviewQuerySet.as_manager()
+
     def __str__(self):
         return _('Review %(review_id)s by %(review_author)s') % {
             'review_id': self.play_store_review_id,
@@ -41,3 +44,7 @@ class Review(models.Model):
     @property
     def android_version(self):
         return android_utils.get_human_readable_android_version(self.android_sdk_version)
+
+    def assign_to_user(self, user):
+        # TODO: Add locking logic
+        pass
