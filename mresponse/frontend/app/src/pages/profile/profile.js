@@ -5,20 +5,24 @@ import Toolbar from '@components/toolbar'
 import Avatar from '@components/avatar'
 import ProgressBar from '@components/progress-bar'
 import ResponseCard from '@components/response-card'
+import Button from '@components/buttons'
 
 import './profile.scss'
 
 export default class ProfilePage extends React.Component {
-  render () {
+  render() {
     const {
-      profile: { name, avatar, karma, languages, responses }
+      profile: { name, avatar, karma, languages, responses },
+      editProfile
     } = this.props
     const totalKarma = karma.responses.karmaValue + karma.moderations.karmaValue
     return (
       <div className="profile">
+
         <Toolbar
+          className='profile-toolbar'
+          titleClassName='profile-toolbar-title'
           title="Profile"
-          titleBackground="white"
           leftComponent={
             <span
               className="profile-toolbar-back-link"
@@ -29,42 +33,42 @@ export default class ProfilePage extends React.Component {
           }
         />
 
-        <section className="profile-user-meta">
-          <span
-            className="profile-edit-button"
-            onClick={() => this.props.editProfile()}
-          >
-            Edit
-          </span>
+        <section className='profile-header'>
+          <div className='profile-header-container'>
+            <div className="profile-header-avatar">
+              <Avatar src={avatar} />
+            </div>
 
-          <div className="profile-avatar">
-            <Avatar src={avatar} />
+            <div className="profile-header-meta">
+              <span className="profile-header-meta-name">{name}</span>
+
+              <span className="profile-header-meta-languages">
+                Languages: {languages.map(({ text }, index) =>
+                  (index != languages.length - 1)
+                    ? text + ', '
+                    : text
+                )}
+              </span>
+            </div>
           </div>
 
-          <span className="profile-name">{name}</span>
+          <div className="profile-header-karma">
+            <div className='profile-header-karma-group'>
+              <span className='profile-header-karma-group-value'>{karma.responses.responsesCount}</span>
+              <span className='profile-header-karma-group-label'>Responses</span>
+            </div>
+            <span className='profile-header-karma-seperator'>|</span>
+            <div className='profile-header-karma-group'>
+              <span className='profile-header-karma-group-value'>{karma.moderations.moderationsCount}</span>
+              <span className='profile-header-karma-group-label'>Moderations</span>
+            </div>
+            <span className='profile-header-karma-seperator'>|</span>
+            <div className='profile-header-karma-group'>
+              <span className='profile-header-karma-group-value'>{totalKarma}</span>
+              <span className='profile-header-karma-group-label'>Karma</span>
+            </div>
+          </div>
 
-          <div className="profile-languages">
-            {languages.map(({ text }) => (
-              <span className="profile-languages-tag">{text}</span>
-            ))}
-          </div>
-        </section>
-
-        <section className="profile-karma">
-          <div className='profile-karma-group'>
-            <span className='profile-karma-group-value'>{karma.responses.responsesCount}</span>
-            <span className='profile-karma-group-label'>Responses</span>
-          </div>
-          <span className='profile-karma-seperator'>|</span>
-          <div className='profile-karma-group'>
-            <span className='profile-karma-group-value'>{karma.moderations.moderationsCount}</span>
-            <span className='profile-karma-group-label'>Moderations</span>
-          </div>
-          <span className='profile-karma-seperator'>|</span>
-          <div className='profile-karma-group'>
-            <span className='profile-karma-group-value'>{totalKarma}</span>
-            <span className='profile-karma-group-label'>Karma</span>
-          </div>
         </section>
 
         <section className="profile-awesome-progress">
@@ -75,10 +79,14 @@ export default class ProfilePage extends React.Component {
             maxValue={10000} />
         </section>
 
-        <section className="profile-response-history">
+        <Button 
+          className='profile-edit-button' 
+          label='Settings'
+          onClick={editProfile} />
+
+        {/* <section className="profile-response-history">
           <div className="profile-response-history-header">
             <span className="profile-response-history-header-title">Response History</span>
-            {/* <span className="profile-response-history-header-link">More</span> */}
           </div>
           <div className="profile-response-history-list">
             {responses.map(({ response, date, product }) => (
@@ -90,7 +98,9 @@ export default class ProfilePage extends React.Component {
                 productName={product.name} />
             ))}
           </div>
-        </section>
+        </section> */}
+
+
       </div>
     )
   }

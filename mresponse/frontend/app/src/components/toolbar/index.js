@@ -5,13 +5,13 @@ import './toolbar.scss'
 
 export default class Toolbar extends React.Component {
   render () {
-    const { leftComponent, rightComponent, title } = this.props
+    const { className, titleClassName, leftComponent, rightComponent, title } = this.props
     return (
-      <header className="toolbar">
+      <header className={`toolbar ${className}`}>
         <div className="toolbar-left">{leftComponent}</div>
         {title ? (
           <span
-            className="toolbar-title">
+            className={`toolbar-title ${titleClassName}`}>
             {title}
           </span>
         ) : null}
