@@ -9,8 +9,8 @@ import urllib
 import cryptography.x509
 import dj_database_url
 import raven
-from raven.exceptions import InvalidGitRepository
 import requests
+from raven.exceptions import InvalidGitRepository
 
 logger = logging.getLogger(__name__)
 
