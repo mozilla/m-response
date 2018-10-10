@@ -541,7 +541,7 @@ if AUTH0_URL:
         JWT_ISSUER = AUTH0_URL
 
 
-# Set your Auth0 API key as JWT_AUDNIENE
+# Set your Auth0 API key as JWT_AUDIENCE
 if 'JWT_AUDIENCE' in env:
     JWT_AUDIENCE = env['JWT_AUDIENCE']
 
