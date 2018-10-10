@@ -497,6 +497,8 @@ if env.get('BASIC_AUTH_ENABLED', 'false').lower().strip() == 'true':
 
 # JSON Web Token authentication settings
 def get_auth0_certificate(auth0_url):
+    if not auth0_url:
+        return
     response = requests.get(
         urllib.parse.urljoin(auth0_url, '/.well-known/jwks.json'),
         timeout=10

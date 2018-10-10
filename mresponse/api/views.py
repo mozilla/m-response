@@ -5,7 +5,7 @@ from rest_framework import decorators, permissions, response, reverse, views
 
 
 @decorators.api_view(['GET'])
-@decorators.permission_classes([permissions.IsAuthenticated])
+@decorators.permission_classes([permissions.AllowAny])
 def api_root(request, format=None):
     response_dict = collections.OrderedDict()
     response_dict['config'] = reverse.reverse(
