@@ -16,6 +16,8 @@ import Toolbar from '../src/components/toolbar/index'
 import Avatar from '../src/components/avatar/index'
 import ProgressBar from '../src/components/progress-bar'
 import ResponseCard from '../src/components/response-card'
+import { staticAsset } from '../src/utils/urls'
+
 
 storiesOf('Components', module)
   .addDecorator(backgroundColor(['#24172A', '#ffffff', '#dcdde1', '#000000']))
@@ -68,6 +70,6 @@ storiesOf('Components', module)
       response='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam elementum sodales mattis. Vestibulum fermentum volutpat efficitur. In hac habitasse platea dictumst. Aliquam tincidunt in sem non gravida. Maecenas magna diam, lobortis sed bibendum id, faucibus non tortor. Aliquam euismod euismod odio, quis consequat enim malesuada vitae. Sed eget lacus at turpis hendrerit dapibus. Maecenas finibus enim a auctor viverra. Quisque maximus scelerisque consectetur.'
       date='January 08, 2016'
       productName='Firefox'
-      productImage='/static/media/firefox.png'
+      productImage={staticAsset('media/firefox.png')}
     />
   ))

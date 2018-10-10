@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import { staticAsset } from '@utils/urls'
 import './avatar.scss'
 
 const Avatar = ({ src, className = '', editable, onClick }) => {
@@ -11,7 +12,7 @@ const Avatar = ({ src, className = '', editable, onClick }) => {
         <div className="avatar-edit" onClick={() => onClick()}>
           <img
             className="avatar-edit-icon"
-            src="/static/media/icons/camera.svg"
+            src={staticAsset('media/icons/camera.svg')}
             alt=""
           />
         </div>

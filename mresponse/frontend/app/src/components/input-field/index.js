@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { staticAsset } from '@utils/urls'
 
 import './field.scss'
 
@@ -30,7 +31,7 @@ export default class InputField extends React.Component {
         >
           <img
             className="form-field-icon"
-            src={icon || '/static/media/icons/email.svg'}
+            src={icon || staticAsset('media/icons/email.svg')}
             alt=""
           />
           <input

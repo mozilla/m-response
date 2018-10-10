@@ -9,6 +9,8 @@ import LoginPage from '../src/pages/login/login'
 import ProfilePage from '../src/pages/profile/profile'
 import SettingsPage from '../src/pages/settings/settings'
 
+import { staticAsset } from '../src/utils/urls'
+
 import 'normalize.css'
 
 const profile = {
@@ -35,7 +37,7 @@ const profile = {
       date: 'September 13, 2018',
       product: {
         name: 'Firefox',
-        image: '/static/media/firefox.png'
+        image: staticAsset('media/firefox.png')
       }
     },
     {
@@ -43,7 +45,7 @@ const profile = {
       date: 'January 08, 2016',
       product: {
         name: 'Firefox',
-        image: '/static/media/firefox.png'
+        image: staticAsset('media/firefox.png')
       }
     },
     {
@@ -51,7 +53,7 @@ const profile = {
       date: 'January 08, 2016',
       product: {
         name: 'Firefox',
-        image: '/static/media/firefox.png'
+        image: staticAsset('media/firefox.png')
       }
     }
   ]

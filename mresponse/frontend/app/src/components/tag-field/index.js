@@ -1,8 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-
-import './field.scss'
 import { WithContext as ReactTags } from 'react-tag-input'
+
+import { staticAsset } from '@utils/urls'
+import './field.scss'
 
 const KeyCodes = {
   comma: 188,
@@ -56,7 +57,7 @@ export default class TagField extends React.Component {
         >
           <img
             className="tag-field-icon"
-            src={icon || 'static/media/icons/message.svg'}
+            src={icon || staticAsset('media/icons/email.svg')}
             alt=""
           />
           <ReactTags

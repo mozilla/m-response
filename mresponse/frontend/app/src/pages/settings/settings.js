@@ -3,9 +3,10 @@ import React from 'react'
 import Toolbar from '@components/toolbar'
 import Avatar from '@components/avatar'
 import HighlightedText from '@components/highlighted-text'
-import './settings.scss'
 import InputField from '@components/input-field'
 import TagField from '@components/tag-field'
+import { staticAsset } from '@utils/urls'
+import './settings.scss'
 
 export default class SettingsPage extends React.Component {
   state = {
@@ -88,7 +89,7 @@ export default class SettingsPage extends React.Component {
               key="name-field"
               className="settings-form-row-input"
               placeholder="Name"
-              icon="/static/media/icons/user.svg"
+              icon={staticAsset('media/icons/user.svg')}
               type="text"
               value={this.state.name}
               onChange={event => this.setState({ name: event.target.value })}

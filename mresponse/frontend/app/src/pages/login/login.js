@@ -2,7 +2,7 @@ import React from 'react'
 import { Route, withRouter } from 'react-router-dom'
 
 import './login.scss'
-import { FORGOT_PASSWORD_URL, LOGIN_URL, SIGNUP_URL } from '@utils/urls'
+import { FORGOT_PASSWORD_URL, LOGIN_URL, SIGNUP_URL, staticAsset } from '@utils/urls'
 import LoginForm from '@components/login-form'
 import SignupForm from '@components/signup-form'
 import ForgotPasswordForm from '@components/forgot-password-form'
@@ -20,7 +20,7 @@ class LoginPage extends React.Component {
           <span className="toolbar-back" onClick={this.goBack}>Back</span>
           <img
             className="toolbar-logo"
-            src="/static/media/mozilla-logo.png"
+            src={staticAsset('media/mozilla-logo.png')}
             alt=""
           />
           <span />

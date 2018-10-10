@@ -5,6 +5,7 @@ import InputField from '@components/input-field'
 import TagField from '@components/tag-field'
 import HighlightedText from '@components/highlighted-text'
 import Button from '@components/buttons'
+import { staticAsset } from '@utils/urls'
 
 export default class SignUpForm extends React.Component {
   status = {
@@ -85,7 +86,7 @@ export default class SignUpForm extends React.Component {
               key="name-field"
               className="signup-form-field"
               placeholder="Name"
-              icon="/static/media/icons/user.svg"
+              icon={staticAsset('media/icons/user.svg')}
               value={this.state.name}
               onChange={event => this.setState({ name: event.target.value })}
             />

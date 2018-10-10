@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import Button from '@components/buttons'
+import { staticAsset } from '@utils/urls'
 import './welcome.scss'
 
 export default class WelcomePage extends React.Component {
@@ -10,14 +11,14 @@ export default class WelcomePage extends React.Component {
       <div className="welcome-page">
         <img
           className="mozilla-logo"
-          src="/static/media/mozilla-logo.png"
+          src={staticAsset('media/mozilla-logo.svg')}
           alt=""
         />
         <div className="page-content">
           <div className="brand-container">
             <img
               className="welcome-image"
-              src="static/media/welcome-image.png"
+              src={staticAsset('media/welcome-image.png')}
               alt=""
             />
           </div>
