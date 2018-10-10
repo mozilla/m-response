@@ -15,7 +15,7 @@ class TestRootAPI(django.test.TestCase):
     def test_returns_dict(self):
         response = self.client.get('/api/')
         content = response.json()
-        self.assertEqual(content.keys(), {'config', 'review'})
+        self.assertEqual(content.keys(), {'me', 'config', 'review'})
 
 
 class TestConfigurationAPI(django.test.TestCase):
