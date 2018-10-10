@@ -3,9 +3,9 @@ import React from 'react'
 import Toolbar from '@components/toolbar'
 import Avatar from '@components/avatar'
 import HighlightedText from '@components/highlighted-text'
-import './settings.scss'
 import InputField from '@components/input-field'
 import TagField from '@components/tag-field'
+import './settings.scss'
 
 export default class SettingsPage extends React.Component {
   state = {
@@ -42,30 +42,23 @@ export default class SettingsPage extends React.Component {
           titleBackground="white"
           rightComponent={
             <span
-              className="settings-toolbar-logout-link"
-              onClick={() => this.props.logout()}
+              className="settings-toolbar-done-link"
+              onClick={() => this.saveProfile()}
             >
-              Logout
+              Done
             </span>
           }
           leftComponent={
-            <img
+            <span
               className="settings-toolbar-back-link"
-              src="/static/media/icons/back-chevron.svg"
               onClick={() => this.props.back()}
-              alt=""
-            />
+            >
+              Back
+            </span>
           }
         />
 
         <section className="settings-user-meta">
-          <span
-            className="settings-edit-button"
-            onClick={() => this.saveProfile()}
-          >
-            Done
-          </span>
-
           <div className="settings-avatar">
             <Avatar
               editable={true}
@@ -95,7 +88,6 @@ export default class SettingsPage extends React.Component {
               key="name-field"
               className="settings-form-row-input"
               placeholder="Name"
-              icon="/static/media/icons/user.svg"
               type="text"
               value={this.state.name}
               onChange={event => this.setState({ name: event.target.value })}

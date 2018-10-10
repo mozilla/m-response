@@ -5,25 +5,16 @@ import './toolbar.scss'
 
 export default class Toolbar extends React.Component {
   render () {
-    const { leftComponent, rightComponent, title, titleBackground } = this.props
+    const { leftComponent, rightComponent, title } = this.props
     return (
       <header className="toolbar">
         <div className="toolbar-left">{leftComponent}</div>
-
-        <img
-          className="toolbar-logo"
-          src="/static/media/mozilla-logo.png"
-          alt=""
-        />
         {title ? (
           <span
-            className="toolbar-page-title"
-            style={{ backgroundColor: titleBackground }}
-          >
+            className="toolbar-title">
             {title}
           </span>
         ) : null}
-
         <div className="toolbar-right">{rightComponent}</div>
       </header>
     )
@@ -33,6 +24,5 @@ export default class Toolbar extends React.Component {
 Toolbar.propTypes = {
   leftComponent: PropTypes.element.optional,
   rightComponent: PropTypes.element.optional,
-  title: PropTypes.string.optional,
-  titleBackground: PropTypes.string.optional
+  title: PropTypes.string.optional
 }

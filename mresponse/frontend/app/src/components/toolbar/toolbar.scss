@@ -3,7 +3,6 @@
 .toolbar {
   height: 75px;
   width: 100%;
-  background-color: $toolbar-color;
 
   position: relative;
   display: flex;
@@ -33,22 +32,15 @@
     width: 4rem;
   }
 
-  &-page-title {
-    height: 40px;
-    width: 190px;
-    background-color: #ffff8a;
+  &-title {
+    color: black;
+    font-weight: 500;
+    font-size: 1.2rem;
     user-select: none;
-
+    text-align: center;
     position: absolute;
-    top: calc(100% - 15px);
     left: 0;
     right: 0;
     margin: 0 auto;
-    padding-left: 10px;
-    padding-right: 10px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 }

@@ -28,11 +28,12 @@ export default class InputField extends React.Component {
             focused ? 'form-field-inner--shifted' : ''
           }`}
         >
-          <img
-            className="form-field-icon"
-            src={icon || '/static/media/icons/email.svg'}
-            alt=""
-          />
+          {icon
+            ? <img
+              className="form-field-icon"
+              src={icon}
+              alt=""
+            /> : null}
           <input
             placeholder={placeholder || 'Email'}
             className="form-field-input"

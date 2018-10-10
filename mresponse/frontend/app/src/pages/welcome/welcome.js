@@ -1,9 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import Logo from '@components/logo'
-import HighlightedText from '@components/highlighted-text'
 import Button from '@components/buttons'
+import { staticAsset } from '@utils/urls'
 import './welcome.scss'
 
 export default class WelcomePage extends React.Component {
@@ -12,19 +11,19 @@ export default class WelcomePage extends React.Component {
       <div className="welcome-page">
         <img
           className="mozilla-logo"
-          src="/static/media/mozilla-logo.png"
+          src={staticAsset('media/mozilla-logo.svg')}
           alt=""
         />
         <div className="page-content">
           <div className="brand-container">
-            <Logo className="logo-foo" />
-            <span className="text-logo">M-Response</span>
+            <img
+              className="welcome-image"
+              src={staticAsset('media/welcome-image.png')}
+              alt=""
+            />
           </div>
           <section className="info-container">
-            <HighlightedText
-              textClassName="tagline"
-              text="LIKE THE IDEA OF SAVING THE WORLD FROM YOUR COUCH?"
-            />
+            <span className="info-tagline">Saving The World From Your Couch</span>
             <span className="info-desc">
               This is a new and fun tool to make it fun and easy to respond as
               Mozilla on Google Play store reviews

@@ -3,21 +3,33 @@
 .settings {
   min-height: 100vh;
   padding-bottom: 40px;
-  background-color: $primary;
+  background-color: $off-white;
 
   &-toolbar {
-    &-logout-link {
+    
+    &-done-link {
       margin-right: 10px;
-      font-size: 0.8rem;
+      font-size: 0.9rem;
       text-align: center;
       cursor: pointer;
-      text-decoration: underline;
-      color: $grey;
+      font-weight: 600;
+      
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    &-title {
+      width: 200px;
     }
 
     &-back-link {
-      //transform: rotate(180deg);
-      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 700;
+      &:hover {
+        text-decoration: underline;
+        cursor: pointer;
+      }
     }
   }
 
@@ -32,7 +44,7 @@
     position: absolute;
     top: 30px;
     left: 30px;
-    color: rgba(white, 0.55);
+    color: rgba(black, 0.55);
     font-size: 15px;
     cursor: pointer;
     text-decoration: underline;
@@ -41,9 +53,7 @@
 
   &-avatar {
     margin: 80px auto 0;
-    padding: 5px;
     border-radius: 100%;
-    border: 2px solid white;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -51,7 +61,6 @@
 
   &-name {
     font-size: 1.3rem;
-    color: white;
     margin-top: 15px;
   }
 
@@ -89,17 +98,25 @@
 
     &-row {
       width: 100%;
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      overflow: scroll;
+      
+      &-input {
+        flex: 1;
+      }
 
       &-label {
         display: block;
         height: 50px;
-        background-color: #322537;
+        width: 100px;
 
         display: flex;
         align-items: center;
-        padding-left: 20px;
-        color: white;
+        padding-left: 10px;
         font-size: 0.8rem;
+        font-weight: 500;
       }
     }
   }

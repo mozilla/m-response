@@ -2,7 +2,7 @@ import React from 'react'
 import { Route, withRouter } from 'react-router-dom'
 
 import './login.scss'
-import { FORGOT_PASSWORD_URL, LOGIN_URL, SIGNUP_URL } from '@utils/urls'
+import { FORGOT_PASSWORD_URL, LOGIN_URL, SIGNUP_URL, staticAsset } from '@utils/urls'
 import LoginForm from '@components/login-form'
 import SignupForm from '@components/signup-form'
 import ForgotPasswordForm from '@components/forgot-password-form'
@@ -17,23 +17,13 @@ class LoginPage extends React.Component {
     return (
       <div className="login-page">
         <header className="toolbar">
-          <img
-            className="toolbar-back-icon"
-            src={this.props.icon || '/static/media/icons/back-chevron.svg'}
-            onClick={() => this.goBack()}
-            alt=""
-          />
+          <span className="toolbar-back" onClick={this.goBack}>Back</span>
           <img
             className="toolbar-logo"
-            src="/static/media/mozilla-logo.png"
+            src={staticAsset('media/mozilla-logo.png')}
             alt=""
           />
-          <span
-            onClick={() => this.toggleRoute()}
-            className="toolbar-login-link"
-          >
-            {this.props.location.pathname === LOGIN_URL ? 'Signup' : 'Login'}
-          </span>
+          <span />
         </header>
 
         <section className="login-page-content">
@@ -43,6 +33,7 @@ class LoginPage extends React.Component {
               <LoginForm
                 login={this.props.login}
                 status={this.props.status}
+                goToSignup={() => this.props.history.push(SIGNUP_URL)}
                 forgotPassword={() =>
                   this.props.history.push(FORGOT_PASSWORD_URL)
                 }
@@ -68,15 +59,6 @@ class LoginPage extends React.Component {
         </section>
       </div>
     )
-  }
-
-  toggleRoute = () => {
-    const { pathname } = this.props.location
-    if (pathname === LOGIN_URL) {
-      this.props.history.push(SIGNUP_URL)
-    } else {
-      this.props.history.push(LOGIN_URL)
-    }
   }
 
   goBack = () => {

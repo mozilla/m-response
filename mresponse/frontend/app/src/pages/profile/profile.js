@@ -3,34 +3,29 @@ import PropTypes from 'prop-types'
 
 import Toolbar from '@components/toolbar'
 import Avatar from '@components/avatar'
-import HighlightedText from '@components/highlighted-text'
+import ProgressBar from '@components/progress-bar'
+import ResponseCard from '@components/response-card'
+
 import './profile.scss'
 
 export default class ProfilePage extends React.Component {
   render () {
     const {
-      profile: { name, avatar, karma }
+      profile: { name, avatar, karma, languages, responses }
     } = this.props
+    const totalKarma = karma.responses.karmaValue + karma.moderations.karmaValue
     return (
       <div className="profile">
         <Toolbar
-          title="Your Profile"
+          title="Profile"
           titleBackground="white"
           leftComponent={
             <span
-              className="profile-toolbar-logout-link"
-              onClick={() => this.props.logout()}
-            >
-              Logout
-            </span>
-          }
-          rightComponent={
-            <img
               className="profile-toolbar-back-link"
-              src="/static/media/icons/back-chevron.svg"
               onClick={() => this.props.back()}
-              alt=""
-            />
+            >
+              Back
+            </span>
           }
         />
 
@@ -46,59 +41,55 @@ export default class ProfilePage extends React.Component {
             <Avatar src={avatar} />
           </div>
 
-          <HighlightedText textClassName="profile-name" text={name} />
+          <span className="profile-name">{name}</span>
+
+          <div className="profile-languages">
+            {languages.map(({ text }) => (
+              <span className="profile-languages-tag">{text}</span>
+            ))}
+          </div>
         </section>
 
         <section className="profile-karma">
-          <section className="profile-karma-box profile-karma-box--left">
-            <HighlightedText
-              textClassName="profile-karma-box-header"
-              text="R."
-            />
+          <div className='profile-karma-group'>
+            <span className='profile-karma-group-value'>{karma.responses.responsesCount}</span>
+            <span className='profile-karma-group-label'>Responses</span>
+          </div>
+          <span className='profile-karma-seperator'>|</span>
+          <div className='profile-karma-group'>
+            <span className='profile-karma-group-value'>{karma.moderations.moderationsCount}</span>
+            <span className='profile-karma-group-label'>Moderations</span>
+          </div>
+          <span className='profile-karma-seperator'>|</span>
+          <div className='profile-karma-group'>
+            <span className='profile-karma-group-value'>{totalKarma}</span>
+            <span className='profile-karma-group-label'>Karma</span>
+          </div>
+        </section>
 
-            <div className="profile-karma-box-amount">
-              <span className="profile-karma-box-amount-value">
-                +{karma.responses.karmaValue}
-              </span>
-              <span className="profile-karma-box-amount-label">
-                Karma Received
-              </span>
-            </div>
+        <section className="profile-awesome-progress">
+          <span className="profile-awesome-progress-title">Unlock Awesome Mode</span>
+          <ProgressBar
+            className='profile-awesome-progress-bar'
+            value={totalKarma}
+            maxValue={10000} />
+        </section>
 
-            <div className="profile-karma-box-responses">
-              <span className="profile-karma-box-responses-value">
-                {karma.responses.responseCount}
-              </span>
-              <span className="profile-karma-box-responses-label">
-                Number of Responses Completed
-              </span>
-            </div>
-          </section>
-
-          <section className="profile-karma-box profile-karma-box--right">
-            <HighlightedText
-              textClassName="profile-karma-box-header"
-              text="M."
-            />
-
-            <div className="profile-karma-box-amount">
-              <span className="profile-karma-box-amount-value">
-                +{karma.moderations.karmaValue}
-              </span>
-              <span className="profile-karma-box-amount-label">
-                Karma Given
-              </span>
-            </div>
-
-            <div className="profile-karma-box-responses">
-              <span className="profile-karma-box-responses-value">
-                {karma.responses.moderationsCount}
-              </span>
-              <span className="profile-karma-box-responses-label">
-                Number of Moderations Completed
-              </span>
-            </div>
-          </section>
+        <section className="profile-response-history">
+          <div className="profile-response-history-header">
+            <span className="profile-response-history-header-title">Response History</span>
+            {/* <span className="profile-response-history-header-link">More</span> */}
+          </div>
+          <div className="profile-response-history-list">
+            {responses.map(({ response, date, product }) => (
+              <ResponseCard
+                className="profile-response-history-list-card"
+                response={response}
+                date={date}
+                productImage={product.image}
+                productName={product.name} />
+            ))}
+          </div>
         </section>
       </div>
     )

@@ -4,19 +4,19 @@
   height: 50px;
   width: 80%;
   max-width: 300px;
-  background-color: white;
-  color: $primary;
+  background-color: $grey;
+  color: white;
 
   font-size: 1rem;
   font-weight: 600;
 
   border: none;
-  border-radius: 5px;
+  border-radius: 3px;
   user-select: none;
   cursor: pointer;
   outline: 0;
 
   &--disabled {
-    background-color: #5a4f5f;
+    opacity: 0.4;
   }
 }
