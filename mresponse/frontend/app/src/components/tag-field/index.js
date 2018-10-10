@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { WithContext as ReactTags } from 'react-tag-input'
 
-import { staticAsset } from '@utils/urls'
 import './field.scss'
 
 const KeyCodes = {
@@ -26,7 +25,7 @@ export default class TagField extends React.Component {
     suggestions: null
   }
 
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps (props, state) {
     return {
       suggestions:
         state.suggestions != null ? state.suggestions : props.suggestions || [],
@@ -34,29 +33,29 @@ export default class TagField extends React.Component {
     }
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.handleDelete = this.handleDelete.bind(this)
     this.handleAddition = this.handleAddition.bind(this)
     this.handleDrag = this.handleDrag.bind(this)
   }
 
-  render() {
+  render () {
     const { focused } = this.state
     const { className, icon, placeholder } = this.props
     return (
       <div
         className={`tag-field-outer ${className} ${
           focused ? 'tag-field-outer--shifted' : ''
-          }`}
+        }`}
       >
         <div
           className={`tag-field-inner ${
             focused ? 'tag-field-inner--shifted' : ''
-            }`}
+          }`}
         >
-          { icon ?
-            <img
+          { icon
+            ? <img
               className="tag-field-icon"
               src={icon}
               alt=""
@@ -91,7 +90,7 @@ export default class TagField extends React.Component {
     )
   }
 
-  handleDelete(i) {
+  handleDelete (i) {
     const { tags } = this.state
     this.setState(
       {
@@ -101,7 +100,7 @@ export default class TagField extends React.Component {
     )
   }
 
-  handleAddition(tag) {
+  handleAddition (tag) {
     tag = this.state.suggestions.find(({ text }) => String(text).toUpperCase() === String(tag.text).toUpperCase())
     if (tag && this.isUnique(tag)) {
       this.setState(
@@ -111,7 +110,7 @@ export default class TagField extends React.Component {
     }
   }
 
-  handleDrag(tag, currPos, newPos) {
+  handleDrag (tag, currPos, newPos) {
     const tags = [...this.state.tags]
     const newTags = tags.slice()
 
