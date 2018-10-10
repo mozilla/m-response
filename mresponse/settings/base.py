@@ -9,8 +9,8 @@ import urllib
 import cryptography.x509
 import dj_database_url
 import raven
-import requests
 from raven.exceptions import InvalidGitRepository
+import requests
 
 logger = logging.getLogger(__name__)
 
@@ -161,7 +161,6 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'django.contrib.auth.backends.RemoteUserBackend',
 ]
-
 
 
 # Password validation
@@ -569,5 +568,3 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ),
 }
-
-
