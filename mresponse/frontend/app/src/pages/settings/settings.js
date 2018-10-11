@@ -1,10 +1,10 @@
 import React from 'react'
 
 import Toolbar from '@components/toolbar'
-import Avatar from '@components/avatar'
 import HighlightedText from '@components/highlighted-text'
 import InputField from '@components/input-field'
 import TagField from '@components/tag-field'
+import Button from '@components/buttons'
 import './settings.scss'
 
 export default class SettingsPage extends React.Component {
@@ -34,7 +34,6 @@ export default class SettingsPage extends React.Component {
   }
 
   render () {
-    const { avatar, languages } = this.state
     return (
       <div className="settings">
         <Toolbar
@@ -57,24 +56,6 @@ export default class SettingsPage extends React.Component {
             </span>
           }
         />
-
-        <section className="settings-user-meta">
-          <div className="settings-avatar">
-            <Avatar
-              editable={true}
-              src={avatar}
-              onClick={() => this.avatarUploadField.current.click()}
-            />
-          </div>
-
-          <span className="settings-name">{this.state.name}</span>
-        </section>
-
-        <section className="settings-languages">
-          {languages.map(({ text }) => (
-            <span className="settings-languages-tag">{text}</span>
-          ))}
-        </section>
 
         <section className="settings-form">
           <HighlightedText
@@ -164,6 +145,12 @@ export default class SettingsPage extends React.Component {
             onInput={event => this.handleFileUpload(event)}
           />
         </section>
+
+        <Button
+          className='settings-logout-button'
+          label='Log Out'
+          onClick={this.props.logout} />
+
       </div>
     )
   }
