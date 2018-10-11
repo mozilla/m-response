@@ -4,15 +4,15 @@ import PropTypes from 'prop-types'
 import Toolbar from '@components/toolbar'
 import Avatar from '@components/avatar'
 import ProgressBar from '@components/progress-bar'
-import ResponseCard from '@components/response-card'
+// import ResponseCard from '@components/response-card'
 import Button from '@components/buttons'
 
 import './profile.scss'
 
 export default class ProfilePage extends React.Component {
-  render() {
+  render () {
     const {
-      profile: { name, avatar, karma, languages, responses },
+      profile: { name, avatar, karma, languages },
       editProfile
     } = this.props
     const totalKarma = karma.responses.karmaValue + karma.moderations.karmaValue
@@ -44,7 +44,7 @@ export default class ProfilePage extends React.Component {
 
               <span className="profile-header-meta-languages">
                 Languages: {languages.map(({ text }, index) =>
-                  (index != languages.length - 1)
+                  (index !== languages.length - 1)
                     ? text + ', '
                     : text
                 )}
@@ -79,8 +79,8 @@ export default class ProfilePage extends React.Component {
             maxValue={10000} />
         </section>
 
-        <Button 
-          className='profile-edit-button' 
+        <Button
+          className='profile-edit-button'
           label='Settings'
           onClick={editProfile} />
 
@@ -99,7 +99,6 @@ export default class ProfilePage extends React.Component {
             ))}
           </div>
         </section> */}
-
 
       </div>
     )

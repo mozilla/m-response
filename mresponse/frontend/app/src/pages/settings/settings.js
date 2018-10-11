@@ -1,7 +1,6 @@
 import React from 'react'
 
 import Toolbar from '@components/toolbar'
-import Avatar from '@components/avatar'
 import HighlightedText from '@components/highlighted-text'
 import InputField from '@components/input-field'
 import TagField from '@components/tag-field'
@@ -35,7 +34,6 @@ export default class SettingsPage extends React.Component {
   }
 
   render () {
-    const { avatar, languages } = this.state
     return (
       <div className="settings">
         <Toolbar
@@ -148,8 +146,8 @@ export default class SettingsPage extends React.Component {
           />
         </section>
 
-        <Button 
-          className='settings-logout-button' 
+        <Button
+          className='settings-logout-button'
           label='Log Out'
           onClick={this.props.logout} />
 
