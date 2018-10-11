@@ -2,18 +2,18 @@ html {
   font-size: 16px;
 
   * {
-    font-family: 'Zilla Slab', serif;
+    font-family: 'Open Sans', serif;
   }
 
   @include for-tablet-landscape-up() {
-    font-size: 18px;
+    font-size: 16px;
   }
 
   @include for-desktop-up() {
-    font-size: 20px;
+    font-size: 17px;
   }
 
   @include for-big-desktop-up() {
-    font-size: 21px;
+    font-size: 18px;
   }
 }

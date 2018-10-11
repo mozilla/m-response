@@ -6,8 +6,10 @@ import { PersistGate } from 'redux-persist/integration/react'
 
 import WelcomePage from '@pages/welcome'
 import LoginPage from '@pages/login'
+import HomePage from '@pages/home'
+
 import createStore from '@redux/store'
-import { loginCallback, logoutCallback, logout } from '@redux/actions'
+import { loginCallback, logoutCallback } from '@redux/actions'
 import AuthRoute from '@utils/auth-route'
 import {
   WELCOME_URL,
@@ -45,12 +47,7 @@ class App extends Component {
               <AuthRoute
                 path={DASHBOARD_URL}
                 redirect={LOGIN_URL}
-                component={props => (
-                  <div>
-                    <h1>Dashboard</h1>
-                    <button onClick={() => store.dispatch(logout())}>Logout</button>
-                  </div>
-                )}
+                component={props => <HomePage {...props} />}
               />
               <Route
                 path={CALLBACK_URL}

@@ -8,6 +8,7 @@ import WelcomePage from '../src/pages/welcome/welcome'
 import LoginPage from '../src/pages/login/login'
 import ProfilePage from '../src/pages/profile/profile'
 import SettingsPage from '../src/pages/settings/settings'
+import HomePage from '../src/pages/home/home'
 
 import { staticAsset } from '../src/utils/urls'
 
@@ -74,6 +75,9 @@ storiesOf('Pages', module)
       createAccount={action('Create Account')}
       forgotPassword={action('Forgot Password')}
     />
+  ))
+  .add('Home', () => (
+    <HomePage profile={profile}/>
   ))
   .add('Profile', () => (
     <ProfilePage

@@ -1,0 +1,70 @@
+@import '../../styles/main.scss';
+
+.home-page {
+    background-color: #F9F9FA;
+
+    &-header {
+        display: grid;
+        grid-template-columns: auto 60px;
+
+        height: 180px;
+        padding: 20px;
+        background-color: $grey;
+
+        &-logo {
+            width: 100px;
+            height: auto;
+        }
+
+        &-avatar {
+            cursor: pointer;
+            width: 60px;
+            height: 60px;
+        }
+
+    }
+
+    &-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-column-gap: 20px;
+        grid-row-gap: 20px; 
+        max-width: 420px;
+        margin: 0 auto;
+        position: absolute;
+        top: 180px;
+        right: 20px;
+        left: 20px;
+
+        @include for-desktop-up  {
+            grid-template-columns: 1fr 1fr;
+            max-width: 420px;
+        }
+    }
+    
+    &-card {
+        width: 100% !important;
+        min-width: 0;
+    }
+
+    &-footer {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        max-width: 400px;
+        margin: 0 auto;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+
+        padding-bottom: 20px;
+            
+        &-link {
+            color: $grey;
+            font-size: 13px;
+        }
+    }
+
+}
