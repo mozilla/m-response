@@ -2,6 +2,7 @@ import collections
 
 from rest_framework import decorators, permissions, response
 
+from mresponse.responses import models as responses_models
 from mresponse.reviews import models as reviews_models
 
 
@@ -12,6 +13,9 @@ def homepage(request, format=None):
     return_dict['respond_queue'] = (
         reviews_models.Review.objects.responder_queue(user=request.user).count()
     )
-    # TODO: Replace once moderation is added
-    return_dict['moderate_queue'] = 123
+    return_dict['moderate_queue'] = (
+        responses_models.Response.objects
+                                 .moderator_queue()
+                                 .count()
+    )
     return response.Response(return_dict)
