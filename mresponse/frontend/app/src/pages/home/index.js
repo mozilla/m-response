@@ -3,14 +3,15 @@ import { push } from 'connected-react-router'
 
 import { PROFILE_URL } from '@utils/urls'
 import { updateAppConfig, updateHomeConfig } from '@redux/actions'
+import { moderateQueue, respondQueue, feedbackLink, aboutLink, profile } from '@redux/selectors'
 import HomePage from './home'
 
 const mapStateToProps = (state, props) => ({
-  profile: state.auth.profile,
-  respondQueue: state.config.homeConfig['respond_queue'] || 0,
-  moderateQueue: state.config.homeConfig['moderate_queue'] || 0,
-  feedbackLink: state.config.appConfig['feedback_url'] || '#',
-  aboutLink: state.config.appConfig['about_url'] || '#'
+  profile: profile(state),
+  respondQueue: respondQueue(state),
+  moderateQueue: moderateQueue(state),
+  feedbackLink: feedbackLink(state),
+  aboutLink: aboutLink(state)
 })
 const mapDispatchToProps = (dispatch, props) => ({
   goToRespondMode: () => true,
