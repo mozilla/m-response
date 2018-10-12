@@ -16,7 +16,7 @@ import 'normalize.css'
 
 const profile = {
   name: 'Asa',
-  avatar: 'https://api.adorable.io/avatars/100/abott@adorable.png',
+  picture: 'https://api.adorable.io/avatars/100/abott@adorable.png',
   email: 'Asa@mozilla.com',
   languages: [
     { id: 'EN', text: 'English' },
@@ -77,7 +77,12 @@ storiesOf('Pages', module)
     />
   ))
   .add('Home', () => (
-    <HomePage profile={profile}/>
+    <HomePage 
+      profile={profile} 
+      updateAppConfig={() => null} 
+      updateHomeConfig={() => null}
+      respondQueue={2000}
+      moderateQueue={1000} />
   ))
   .add('Profile', () => (
     <ProfilePage
