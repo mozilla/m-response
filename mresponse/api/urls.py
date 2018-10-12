@@ -8,4 +8,5 @@ urlpatterns = [
     path('review/', include('mresponse.reviews.api.urls')),
     path('respond/', include('mresponse.responses.api.urls')),
     path('users/', include('mresponse.users.api.urls')),
+    path('homepage/', include('mresponse.homepage.api.urls')),
 ]
