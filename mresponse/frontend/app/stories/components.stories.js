@@ -16,6 +16,7 @@ import Toolbar from '../src/components/toolbar/index'
 import Avatar from '../src/components/avatar/index'
 import ProgressBar from '../src/components/progress-bar'
 import ResponseCard from '../src/components/response-card'
+import HomePageCard from '../src/components/home-page-card'
 import { staticAsset } from '../src/utils/urls'
 
 storiesOf('Components', module)
@@ -70,5 +71,12 @@ storiesOf('Components', module)
       date='January 08, 2016'
       productName='Firefox'
       productImage={staticAsset('media/firefox.png')}
+    />
+  ))
+  .add('Home Page Card', () => (
+    <HomePageCard
+      title='Respond'
+      icon={staticAsset('media/icons/message.svg')}
+      subtitle='Queue: 31,240'
     />
   ))

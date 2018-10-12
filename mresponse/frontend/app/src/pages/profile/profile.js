@@ -12,7 +12,7 @@ import './profile.scss'
 export default class ProfilePage extends React.Component {
   render () {
     const {
-      profile: { name, avatar, karma, languages },
+      profile: { name, picture, karma, languages },
       editProfile
     } = this.props
     const totalKarma = karma.responses.karmaValue + karma.moderations.karmaValue
@@ -36,7 +36,7 @@ export default class ProfilePage extends React.Component {
         <section className='profile-header'>
           <div className='profile-header-container'>
             <div className="profile-header-avatar">
-              <Avatar src={avatar} />
+              <Avatar src={picture} />
             </div>
 
             <div className="profile-header-meta">
