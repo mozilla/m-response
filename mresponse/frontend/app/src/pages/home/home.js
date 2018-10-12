@@ -29,7 +29,8 @@ export default class HomePage extends React.Component {
         <header className='home-page-header'>
           <img
             className='home-page-header-logo'
-            src={staticAsset('media/mozilla-logo-white.png')} />
+            src={staticAsset('media/mozilla-logo-white.png')}
+            alt='' />
           <Avatar
             className='home-page-header-avatar'
             src={profile.picture}

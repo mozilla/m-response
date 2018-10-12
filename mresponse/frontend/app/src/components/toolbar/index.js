@@ -1,14 +1,25 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import { staticAsset } from '@utils/urls'
+
 import './toolbar.scss'
 
 export default class Toolbar extends React.Component {
   render () {
-    const { className, titleClassName, leftComponent, rightComponent, title } = this.props
+    const { className, titleClassName, leftComponent, rightComponent, title, onBack, backArrowClassName } = this.props
     return (
       <header className={`toolbar ${className}`}>
-        <div className="toolbar-left">{leftComponent}</div>
+        <div className="toolbar-left">
+          {leftComponent || (
+            <img
+              src={staticAsset('media/icons/arrow-left.svg')}
+              className={`toolbar-back-link ${backArrowClassName}`}
+              onClick={onBack}
+              alt=''
+            />
+          )}
+        </div>
         {title ? (
           <span
             className={`toolbar-title ${titleClassName}`}>

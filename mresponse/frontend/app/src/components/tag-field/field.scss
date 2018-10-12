@@ -19,7 +19,7 @@
     width: 100%;
     background-color: $off-white;
     transition: margin-left 0.1s, background-color 0.1s, width 0.1s;
-    overflow: scroll;
+    overflow: hidden;
 
     display: flex;
     flex-direction: row;
@@ -59,7 +59,7 @@
     padding: 0;
     background-color: transparent;
     color: $off-white;
-    font-size: 16px;
+    font-size: 14px;
 
     &:focus {
       color: black;
@@ -102,9 +102,9 @@
 
   &-tag {
     background-color: $grey;
-    border-radius: 4px;
-    padding: 0px 10px 0px 10px;
-    font-size: 14px;
+    border-radius: 3px;
+    padding: 8px 10px 10px 8px;
+    font-size: 12px;
     margin-right: 3px;
     margin-left: 5px;
     color: white;
@@ -114,9 +114,9 @@
     align-items: center;
 
     .removeClass {
-      font-size: 26px;
+      font-size: 16px;
       padding-left: 8px;
-      padding-bottom: 3px;
+      // padding-bottom: 3px;
     }
   }
 }

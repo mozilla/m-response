@@ -38,7 +38,6 @@ export default class SettingsPage extends React.Component {
       <div className="settings">
         <Toolbar
           title="Edit Profile"
-          titleBackground="white"
           rightComponent={
             <span
               className="settings-toolbar-done-link"
@@ -47,14 +46,8 @@ export default class SettingsPage extends React.Component {
               Done
             </span>
           }
-          leftComponent={
-            <span
-              className="settings-toolbar-back-link"
-              onClick={() => this.props.back()}
-            >
-              Back
-            </span>
-          }
+          backArrowClassName='settings-toolbar-back-link'
+          onBack={this.props.back}
         />
 
         <section className="settings-form">
@@ -150,6 +143,14 @@ export default class SettingsPage extends React.Component {
           className='settings-logout-button'
           label='Log Out'
           onClick={this.props.logout} />
+
+        <footer className='settings-footer'>
+          <div className='settings-footer-inner'>
+            <a href={this.props.legalUrl} className='settings-footer-inner-link'>Legal</a>
+            <a href={this.props.privacyUrl} className='settings-footer-inner-link'>Privacy</a>
+            <a href={this.props.cookiesUrl} className='settings-footer-inner-link'>Cookies</a>
+          </div>
+        </footer>
 
       </div>
     )

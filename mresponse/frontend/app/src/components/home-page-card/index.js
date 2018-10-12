@@ -9,7 +9,8 @@ export default ({ title, subtitle, footer, icon, dotColor = '#0a84ff', onClick, 
       style={{ backgroundColor: dotColor }}>
       <img
         src={icon}
-        className='home-page-card-dot-image' />
+        className='home-page-card-dot-image'
+        alt='' />
     </div>
     <span className='home-page-card-title'>{title}</span>
     {subtitle

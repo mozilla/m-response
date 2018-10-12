@@ -13,7 +13,7 @@ const Avatar = ({ src, coverIcon, className = '', editable, onClick, karma }) =>
           <img
             className="avatar-cover-icon"
             src={coverIcon || staticAsset('media/icons/camera.svg')}
-            alt=""
+            alt=''
           />
         </div>
       ) : null}
@@ -22,7 +22,8 @@ const Avatar = ({ src, coverIcon, className = '', editable, onClick, karma }) =>
           <div className='avatar-karma'>
             <img
               src={staticAsset('media/icons/karma.svg')}
-              className='avatar-karma-icon' />
+              className='avatar-karma-icon'
+              alt='' />
             <span className='avatar-karma-value'>{karma}</span>
           </div>
         ) : null}
