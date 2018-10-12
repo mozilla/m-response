@@ -1,8 +1,8 @@
-export const appConfig = state => state.config.appConfig
-export const homeConfig = state => state.config.homeConfig
+export const getAppConfig = state => state.config.appConfig
+export const getHomeConfig = state => state.config.homeConfig
 
-export const respondQueue = state => homeConfig(state)['respond_queue'] || 0
-export const moderateQueue = state => homeConfig(state)['moderate_queue'] || 0
+export const getRespondQueue = state => getHomeConfig(state)['respond_queue'] || 0
+export const getModerateQueue = state => getHomeConfig(state)['moderate_queue'] || 0
 
-export const feedbackLink = state => appConfig(state)['feedback_url'] || '#'
-export const aboutLink = state => appConfig(state)['about_url'] || '#'
+export const getFeedbackLink = state => getAppConfig(state)['feedback_url'] || '#'
+export const getAboutLink = state => getAppConfig(state)['about_url'] || '#'

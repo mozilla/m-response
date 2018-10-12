@@ -1,1 +1,1 @@
-export const profile = state => state.auth.profile
+export const getProfile = state => state.auth.profile
