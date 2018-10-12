@@ -14,6 +14,11 @@ def api_root(request, format=None):
             request=request,
             format=format,
         )
+        response_dict['homepage'] = reverse.reverse(
+            'homepage',
+            request=request,
+            format=format,
+        )
     response_dict['config'] = reverse.reverse(
         'config',
         request=request,
