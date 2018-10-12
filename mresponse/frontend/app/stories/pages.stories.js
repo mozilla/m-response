@@ -77,9 +77,9 @@ storiesOf('Pages', module)
     />
   ))
   .add('Home', () => (
-    <HomePage 
-      profile={profile} 
-      updateAppConfig={() => null} 
+    <HomePage
+      profile={profile}
+      updateAppConfig={() => null}
       updateHomeConfig={() => null}
       respondQueue={2000}
       moderateQueue={1000} />
