@@ -16,7 +16,7 @@ class Response(models.Model):
         related_name='+'
     )
     text = models.TextField()
-    submitted_at = models.DateTimeField(default=timezone.now)
+    submitted_at = models.DateTimeField(default=timezone.now, editable=False)
 
     def __str__(self):
         return _('Response to review #%(review_id)s') % {

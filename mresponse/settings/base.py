@@ -70,6 +70,7 @@ INSTALLED_APPS = [
     'rest_framework',
 
     'mresponse.applications',
+    'mresponse.moderations',
     'mresponse.responses',
     'mresponse.reviews',
 ]
