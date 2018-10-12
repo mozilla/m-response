@@ -9,8 +9,8 @@ const mapStateToProps = (state, props) => ({
   profile: state.auth.profile,
   respondQueue: state.config.homeConfig['respond_queue'] || 0,
   moderateQueue: state.config.homeConfig['moderate_queue'] || 0,
-  feedbackLink: state.config.homeConfig['feedback_url'] || '#',
-  aboutLink: state.config.homeConfig['about_url'] || '#'
+  feedbackLink: state.config.appConfig['feedback_url'] || '#',
+  aboutLink: state.config.appConfig['about_url'] || '#'
 })
 const mapDispatchToProps = (dispatch, props) => ({
   goToRespondMode: () => true,
