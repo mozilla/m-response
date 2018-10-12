@@ -23,14 +23,7 @@ export default class ProfilePage extends React.Component {
           className='profile-toolbar'
           titleClassName='profile-toolbar-title'
           title="Profile"
-          leftComponent={
-            <span
-              className="profile-toolbar-back-link"
-              onClick={() => this.props.back()}
-            >
-              Back
-            </span>
-          }
+          onBack={this.props.back}
         />
 
         <section className='profile-header'>
