@@ -24,9 +24,12 @@ class Review(generics.RetrieveAPIView):
         """
         # Get a review that is already assigned for the current user.
         try:
-            return self.get_queryset().assigned_to_user(
+            review = self.get_queryset().assigned_to_user(
                 self.request.user
             ).get()
+            # Renew assignment
+            review.assign_to_user(self.request.user)
+            return review
         except reviews_models.Review.DoesNotExist:
             pass
 

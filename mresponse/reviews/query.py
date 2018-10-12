@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
 
+ASSIGNMENT_TIMEOUT = timezone.timedelta(minutes=20)
+
 
 class ReviewQuerySet(models.QuerySet):
     def unresponded_q(self):
@@ -19,8 +21,17 @@ class ReviewQuerySet(models.QuerySet):
         return self.filter(self.assigned_to_user_q(user))
 
     def assigned_to_user_q(self, user):
-        # TODO: Add a logic that only allows to get a review for that user.
-        return models.Q()
+        return models.Q(
+            assigned_to=user,
+            assigned_to_user_at__gte=timezone.now() - ASSIGNMENT_TIMEOUT
+        )
+
+    def not_assigned_to_user_q(self):
+        assigned_to_noone_q = models.Q(assigned_to__isnull=True)
+        assignment_expired_q = models.Q(
+            assigned_to_user_at__lte=timezone.now() - ASSIGNMENT_TIMEOUT,
+        )
+        return models.Q(assigned_to_noone_q | assignment_expired_q)
 
     def rating_range_q(self, min_value, max_value):
         return models.Q(
@@ -33,10 +44,11 @@ class ReviewQuerySet(models.QuerySet):
         return models.Q(last_modified__gte=six_months_ago)
 
     def responder_queue_q(self, user=None):
-        query = (
+        query = models.Q(
             self.unresponded_q()
             & self.rating_range_q(1, 2)
             & self.newer_than_6_months_q()
+            & self.not_assigned_to_user_q()
         )
         if user is not None:
             query = query | self.assigned_to_user_q(user)
