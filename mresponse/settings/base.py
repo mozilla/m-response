@@ -533,7 +533,7 @@ JWT_PUBLIC_KEY = JWT_AUDIENCE = JWT_ISSUER = None
 if AUTH0_URL:
     try:
         JWT_PUBLIC_KEY = get_auth0_certificate(AUTH0_URL)
-    except requests.exceptions.RequestException as e:
+    except requests.exceptions.RequestException:
         logger.exception(
             'Could not obtain certificate for Auth0 JWT authentication.'
         )

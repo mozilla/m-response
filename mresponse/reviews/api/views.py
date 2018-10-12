@@ -46,6 +46,7 @@ class Review(generics.RetrieveAPIView):
     def get_object(self):
         return self.choose_review_for_user()
 
+
 class SkipReview(views.APIView):
     def post(self, format=None):
         try:
