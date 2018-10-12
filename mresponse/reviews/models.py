@@ -60,3 +60,8 @@ class Review(models.Model):
         self.assigned_to = user
         self.assigned_to_user_at = timezone.now()
         self.save(update_fields=('assigned_to', 'assigned_to_user_at',))
+
+    def return_to_the_queue(self):
+        self.assigned_to = None
+        self.assigned_to_user_at = None
+        self.save(update_fields=('assigned_to', 'assigned_to_user_at',))

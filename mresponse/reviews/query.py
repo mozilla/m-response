@@ -39,15 +39,15 @@ class ReviewQuerySet(models.QuerySet):
             review_rating__lte=max_value
         )
 
-    def newer_than_6_months_q(self):
-        six_months_ago = timezone.now() - timezone.timedelta(weeks=52 / 12 * 6)
+    def newer_than_1_week_q(self):
+        six_months_ago = timezone.now() - timezone.timedelta(weeks=1)
         return models.Q(last_modified__gte=six_months_ago)
 
     def responder_queue_q(self, user=None):
         query = models.Q(
             self.unresponded_q()
             & self.rating_range_q(1, 2)
-            & self.newer_than_6_months_q()
+            & self.newer_than_1_week_q()
             & self.not_assigned_to_user_q()
         )
         if user is not None:
@@ -57,5 +57,5 @@ class ReviewQuerySet(models.QuerySet):
     def responder_queue(self, user=None):
         return (
             self.filter(self.responder_queue_q(user=user))
-                .order_by('review_rating', '-last_modified')
+                .order_by('?')
         )
