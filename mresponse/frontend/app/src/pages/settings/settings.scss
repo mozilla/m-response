@@ -121,14 +121,15 @@
     margin: 0 auto;
     width: 140px;
 
-    color: $grey;
+    color: black;
+    font-weight: 700;
     background-color: transparent;
     border: 2px solid $grey;
     font-size: 15px;
   }
 
   &-change-pass-button {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     height: 35px;
   }
 

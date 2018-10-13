@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import './buttons.scss'
 
-const Button = ({ label, onClick, className, disabled = false }) => (
+const Button = ({ label, onClick, className, disabled = false, icon }) => (
   <button
     className={`standard-button ${
       disabled ? 'standard-button--disabled' : null
@@ -11,6 +11,7 @@ const Button = ({ label, onClick, className, disabled = false }) => (
     onClick={onClick}
     disabled={disabled}
   >
+    { icon ? <img src={icon} className='standard-button-icon' alt='' /> : null }
     {label}
   </button>
 )

@@ -85,6 +85,7 @@ export default class ProfilePage extends React.Component {
         <Button
           className='profile-edit-button'
           label='Settings'
+          icon={staticAsset('media/icons/cog.svg')}
           onClick={editProfile} />
 
         {/* <section className="profile-response-history">

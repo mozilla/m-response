@@ -5,6 +5,7 @@ import HighlightedText from '@components/highlighted-text'
 import InputField from '@components/input-field'
 import TagField from '@components/tag-field'
 import Button from '@components/buttons'
+import { staticAsset } from '@utils/urls'
 import './settings.scss'
 
 export default class SettingsPage extends React.Component {

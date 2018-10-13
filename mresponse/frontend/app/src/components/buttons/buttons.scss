@@ -1,6 +1,10 @@
 @import '../../styles/main';
 
 .standard-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
   height: 50px;
   background-color: $grey;
   color: white;
@@ -13,6 +17,10 @@
   user-select: none;
   cursor: pointer;
   outline: 0;
+
+  &-icon {
+    margin-right: 10px;
+  }
 
   &--disabled {
     opacity: 0.4;
