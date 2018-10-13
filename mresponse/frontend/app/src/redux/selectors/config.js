@@ -10,8 +10,8 @@ export const getLegalUrl = state => getAppConfig(state)['legal_url'] || '#'
 export const getPrivacyUrl = state => getAppConfig(state)['privacy_url'] || '#'
 export const getCookiesUrl = state => getAppConfig(state)['cookies_url'] || '#'
 export const getSupportedLanguages = state => getAppConfig(state)
-    .languages
-    .map(({ id, display_name }) => ({
-        id,
-        text: display_name
-    })) || []
+  .languages
+  .map(language => ({
+    id: language.id,
+    text: language.display_name
+  })) || []

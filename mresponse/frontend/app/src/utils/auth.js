@@ -82,7 +82,6 @@ export default class Auth {
     })
   }
 
-
   getUser (token, userId) {
     return new Promise((resolve, reject) => {
       const auth0Manage = new auth0.Management({
@@ -97,7 +96,6 @@ export default class Auth {
       })
     })
   }
-
 
   updateUserMetadata (userId, token, metadata) {
     return new Promise((resolve, reject) => {
@@ -114,6 +112,4 @@ export default class Auth {
       })
     })
   }
-
-
 }

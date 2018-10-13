@@ -20,7 +20,7 @@ import {
   CALLBACK_URL,
   LOGOUT_URL,
   PROFILE_URL,
-  SETTINGS_URL,
+  SETTINGS_URL
 } from '@utils/urls'
 
 import 'normalize.css'

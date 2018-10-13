@@ -20,7 +20,7 @@ export default class Api {
       'about_url': 'https://www.mozilla.org/en-US/about/',
       'privacy_url': '#',
       'legal_url': '#',
-      'cookies_url': '#',
+      'cookies_url': '#'
     }
   }
 

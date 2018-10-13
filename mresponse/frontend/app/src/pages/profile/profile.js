@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import Toolbar from '@components/toolbar'
 import Avatar from '@components/avatar'
-import ProgressBar from '@components/progress-bar'
+// import ProgressBar from '@components/progress-bar'
 // import ResponseCard from '@components/response-card'
 import Button from '@components/buttons'
 import { staticAsset } from '@utils/urls'
@@ -11,7 +11,7 @@ import { staticAsset } from '@utils/urls'
 import './profile.scss'
 
 export default class ProfilePage extends React.Component {
-  render() {
+  render () {
     const {
       profile: {
         name,
@@ -113,6 +113,6 @@ ProfilePage.propTypes = {
   profile: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
   back: PropTypes.func.isRequired,
-  editProfile: PropTypes.func.isRequired,
+  editProfile: PropTypes.func.isRequired
 
 }

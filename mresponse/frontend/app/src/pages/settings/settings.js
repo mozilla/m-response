@@ -5,7 +5,6 @@ import HighlightedText from '@components/highlighted-text'
 import InputField from '@components/input-field'
 import TagField from '@components/tag-field'
 import Button from '@components/buttons'
-import { staticAsset } from '@utils/urls'
 import './settings.scss'
 
 export default class SettingsPage extends React.Component {
@@ -16,11 +15,7 @@ export default class SettingsPage extends React.Component {
     languages: this.props.profile.languages || []
   }
 
-  constructor(props) {
-    super(props)
-  }
-
-  render() {
+  render () {
     return (
       <div className="settings">
         <Toolbar
@@ -106,25 +101,22 @@ export default class SettingsPage extends React.Component {
     )
   }
 
-  handleFileUpload = event => {
-    const file = event.target.files[0]
-    this.setState({ pictureUpload: file })
-    const reader = new FileReader()
-    reader.onload = event => {
-      this.setState({ picture: event.target.result })
-    }
-    reader.readAsDataURL(file)
-  }
+  // handleFileUpload = event => {
+  //   const file = event.target.files[0]
+  //   this.setState({ pictureUpload: file })
+  //   const reader = new FileReader()
+  //   reader.onload = event => {
+  //     this.setState({ picture: event.target.result })
+  //   }
+  //   reader.readAsDataURL(file)
+  // }
 
-  saveProfile() {
+  saveProfile () {
     const {
       name,
       email,
       picture,
-      pictureUpload,
-      languages,
-      password,
-      passwordConfirm
+      languages
     } = this.state
     let profile = { picture }
 
@@ -160,11 +152,10 @@ export default class SettingsPage extends React.Component {
   setStatus = reason => this.setState({ status: reason })
 }
 
-
 const STATUS = {
   saved: 'Great! Your profile was updated.',
   invalidName: "Pardon, You don't have a name?",
   invalidEmail: "Awesome! and what's your email address?",
-  passReset: "Done! Please check your email for a reset link.",
+  passReset: 'Done! Please check your email for a reset link.',
   invalidLanguagesCount: 'Sorry! You need to know at least one language.'
 }
