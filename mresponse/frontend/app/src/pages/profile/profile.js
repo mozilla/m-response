@@ -62,7 +62,7 @@ export default class ProfilePage extends React.Component {
             </div>
             <span className='profile-header-karma-seperator'>|</span>
             <div className='profile-header-karma-group'>
-              <span className='profile-header-karma-group-value'>{karma ? karma.moderations.moderations : 0}</span>
+              <span className='profile-header-karma-group-value'>{karma ? karma.moderations.moderationsCount : 0}</span>
               <span className='profile-header-karma-group-label'>Moderations</span>
             </div>
             <span className='profile-header-karma-seperator'>|</span>
