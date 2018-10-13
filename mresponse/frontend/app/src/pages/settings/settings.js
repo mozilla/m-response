@@ -10,30 +10,16 @@ import './settings.scss'
 export default class SettingsPage extends React.Component {
   state = {
     status: '',
-    name: null,
-    avatar: null,
-    email: null,
-    languages: null,
-    password: null,
-    passwordConfirm: null
+    name: this.props.profile.name || '',
+    email: this.props.profile.email || '',
+    languages: this.props.profile.languages || []
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
-    this.avatarUploadField = React.createRef()
   }
 
-  static getDerivedStateFromProps (props, state) {
-    return {
-      name: state.name != null ? state.name : props.profile.name,
-      avatar: state.avatar != null ? state.avatar : props.profile.avatar,
-      email: state.email != null ? state.email : props.profile.email,
-      languages:
-        state.languages != null ? state.languages : props.profile.languages
-    }
-  }
-
-  render () {
+  render() {
     return (
       <div className="settings">
         <Toolbar
@@ -76,6 +62,7 @@ export default class SettingsPage extends React.Component {
               placeholder="Email"
               type="email"
               value={this.state.email}
+              disabled={true}
               onChange={event => this.setState({ email: event.target.value })}
             />
           </div>
@@ -88,55 +75,17 @@ export default class SettingsPage extends React.Component {
               placeholder="Enter your languages"
               tags={this.state.languages}
               onChange={languages => this.setState({ languages })}
-              suggestions={[
-                { id: 'EN', text: 'English' },
-                { id: 'ES', text: 'Spanish' },
-                { id: 'FR', text: 'French' },
-                { id: 'RU', text: 'Russian' }
-              ]}
+              suggestions={this.props.supportedLanguages || []}
             />
           </div>
 
           <div className="settings-form-row">
-            <span className="settings-form-row-label">New Password</span>
-            <InputField
-              key="password-field"
-              className="settings-form-row-input"
-              placeholder="New Password"
-              type="password"
-              value={this.state.password}
-              onChange={event =>
-                this.setState({ password: event.target.value })
-              }
-            />
+            <span className="settings-form-row-label">Password</span>
+            <Button
+              className='settings-change-pass-button'
+              label='Reset Password'
+              onClick={this.resetPass} />
           </div>
-
-          <div className="settings-form-row">
-            <span className="settings-form-row-label">Confirm Password</span>
-            <InputField
-              key="password-confirm-field"
-              className="settings-form-row-input"
-              placeholder="Confirm New Password"
-              type="password"
-              value={this.state.passwordConfirm}
-              onChange={event =>
-                this.setState({ passwordConfirm: event.target.value })
-              }
-            />
-          </div>
-
-          <input
-            ref={this.avatarUploadField}
-            id="file-input"
-            type="file"
-            name="avatar"
-            style={{ display: 'none' }}
-            accept="image/*"
-            onClick={event => {
-              event.target.value = null
-            }}
-            onInput={event => this.handleFileUpload(event)}
-          />
         </section>
 
         <Button
@@ -146,9 +95,9 @@ export default class SettingsPage extends React.Component {
 
         <footer className='settings-footer'>
           <div className='settings-footer-inner'>
-            <a href={this.props.legalUrl} className='settings-footer-inner-link'>Legal</a>
-            <a href={this.props.privacyUrl} className='settings-footer-inner-link'>Privacy</a>
-            <a href={this.props.cookiesUrl} className='settings-footer-inner-link'>Cookies</a>
+            <a target='_blank' href={this.props.legalUrl} className='settings-footer-inner-link'>Legal</a>
+            <a target='_blank' href={this.props.privacyUrl} className='settings-footer-inner-link'>Privacy</a>
+            <a target='_blank' href={this.props.cookiesUrl} className='settings-footer-inner-link'>Cookies</a>
           </div>
         </footer>
 
@@ -158,25 +107,25 @@ export default class SettingsPage extends React.Component {
 
   handleFileUpload = event => {
     const file = event.target.files[0]
-    this.setState({ avatarUpload: file })
+    this.setState({ pictureUpload: file })
     const reader = new FileReader()
     reader.onload = event => {
-      this.setState({ avatar: event.target.result })
+      this.setState({ picture: event.target.result })
     }
     reader.readAsDataURL(file)
   }
 
-  saveProfile () {
+  saveProfile() {
     const {
       name,
       email,
-      avatar,
-      avatarUpload,
+      picture,
+      pictureUpload,
       languages,
       password,
       passwordConfirm
     } = this.state
-    let profile = { avatar }
+    let profile = { picture }
 
     if (name) {
       profile.name = name
@@ -191,34 +140,30 @@ export default class SettingsPage extends React.Component {
     }
 
     if (languages.length > 0) {
-      profile.languages = languages
+      profile.languages = languages.map(({ id }) => id)
     } else {
       return this.setStatus(STATUS.invalidLanguagesCount)
-    }
-
-    if (password && passwordConfirm) {
-      if (password === passwordConfirm) {
-        profile.password = password
-      } else {
-        return this.setStatus(STATUS.incorrectConfirm)
-      }
-    }
-
-    if (avatarUpload) {
-      // TODO: PUSH TO SERVER
     }
 
     this.props.saveProfile(profile)
     return this.setStatus(STATUS.saved)
   }
 
+  resetPass = () => {
+    if (this.state.email) {
+      this.props.resetPassword(this.state.email)
+      this.setStatus(STATUS.passReset)
+    }
+  }
+
   setStatus = reason => this.setState({ status: reason })
 }
+
 
 const STATUS = {
   saved: 'Great! Your profile was updated.',
   invalidName: "Pardon, You don't have a name?",
   invalidEmail: "Awesome! and what's your email address?",
-  invalidPassConfirm: "Oops! Your passwords don't match.",
+  passReset: "Done! Please check your email for a reset link.",
   invalidLanguagesCount: 'Sorry! You need to know at least one language.'
 }

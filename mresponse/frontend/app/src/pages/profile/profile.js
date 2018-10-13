@@ -6,16 +6,22 @@ import Avatar from '@components/avatar'
 import ProgressBar from '@components/progress-bar'
 // import ResponseCard from '@components/response-card'
 import Button from '@components/buttons'
+import { staticAsset } from '@utils/urls'
 
 import './profile.scss'
 
 export default class ProfilePage extends React.Component {
-  render () {
+  render() {
     const {
-      profile: { name, picture, karma, languages },
+      profile: {
+        name,
+        picture,
+        karma,
+        languages
+      },
       editProfile
     } = this.props
-    const totalKarma = karma.responses.karmaValue + karma.moderations.karmaValue
+    const totalKarma = karma ? karma.responses.karmaValue + karma.moderations.karmaValue : 0
     return (
       <div className="profile">
 
@@ -29,14 +35,18 @@ export default class ProfilePage extends React.Component {
         <section className='profile-header'>
           <div className='profile-header-container'>
             <div className="profile-header-avatar">
-              <Avatar src={picture} />
+              <Avatar src={picture || ''} />
             </div>
 
             <div className="profile-header-meta">
-              <span className="profile-header-meta-name">{name}</span>
+              <span className="profile-header-meta-name">{name || ''}</span>
 
               <span className="profile-header-meta-languages">
-                Languages: {languages.map(({ text }, index) =>
+                <img
+                  src={staticAsset('media/icons/globe.svg')}
+                  className='profile-header-meta-languages-icon'
+                  alt='' />
+                {languages.map(({ text }, index) =>
                   (index !== languages.length - 1)
                     ? text + ', '
                     : text
@@ -47,12 +57,12 @@ export default class ProfilePage extends React.Component {
 
           <div className="profile-header-karma">
             <div className='profile-header-karma-group'>
-              <span className='profile-header-karma-group-value'>{karma.responses.responsesCount}</span>
+              <span className='profile-header-karma-group-value'>{karma ? karma.responses.responsesCount : 0}</span>
               <span className='profile-header-karma-group-label'>Responses</span>
             </div>
             <span className='profile-header-karma-seperator'>|</span>
             <div className='profile-header-karma-group'>
-              <span className='profile-header-karma-group-value'>{karma.moderations.moderationsCount}</span>
+              <span className='profile-header-karma-group-value'>{karma ? karma.moderations.moderations : 0}</span>
               <span className='profile-header-karma-group-label'>Moderations</span>
             </div>
             <span className='profile-header-karma-seperator'>|</span>
@@ -64,13 +74,13 @@ export default class ProfilePage extends React.Component {
 
         </section>
 
-        <section className="profile-awesome-progress">
+        {/* <section className="profile-awesome-progress">
           <span className="profile-awesome-progress-title">Unlock Awesome Mode</span>
           <ProgressBar
             className='profile-awesome-progress-bar'
             value={totalKarma}
             maxValue={10000} />
-        </section>
+        </section> */}
 
         <Button
           className='profile-edit-button'
@@ -102,5 +112,6 @@ ProfilePage.propTypes = {
   profile: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
   back: PropTypes.func.isRequired,
-  editProfile: PropTypes.func.isRequired
+  editProfile: PropTypes.func.isRequired,
+
 }

@@ -1,4 +1,4 @@
-import { LOGIN_SUCCESS, LOGOUT } from '@redux/actions'
+import { LOGIN_SUCCESS, LOGOUT, SET_PROFILE } from '@redux/actions'
 
 const initialState = {
   isAuthenticated: false,
@@ -22,6 +22,13 @@ export default (state = initialState, action) => {
 
     case LOGOUT:
       return initialState
+
+    case SET_PROFILE: {
+      const { profile } = action
+      return Object.assign({}, state, {
+        profile
+      })
+    }
 
     default:
       return state

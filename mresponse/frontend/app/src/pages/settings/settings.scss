@@ -2,7 +2,6 @@
 
 .settings {
   min-height: 100vh;
-  padding-bottom: 40px;
   background-color: $off-white;
 
   &-toolbar {
@@ -126,6 +125,11 @@
     background-color: transparent;
     border: 2px solid $grey;
     font-size: 15px;
+  }
+
+  &-change-pass-button {
+    font-size: 0.8rem;
+    height: 35px;
   }
 
   &-footer {

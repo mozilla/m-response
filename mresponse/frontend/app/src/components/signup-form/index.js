@@ -25,14 +25,7 @@ export default class SignUpForm extends React.Component {
     email: '',
     password: '',
     passwordConfirm: '',
-    languages: [],
-    supportedLanguages: [
-      { id: 'English', text: 'English' },
-      { id: 'Spanish', text: 'Spanish' },
-      { id: 'French', text: 'French' },
-      { id: 'Russian', text: 'Russian' },
-      { id: 'Latin', text: 'Latin' }
-    ]
+    languages: []
   }
 
   render () {
@@ -103,7 +96,7 @@ export default class SignUpForm extends React.Component {
             <TagField
               className="signup-form-field"
               placeholder="Enter your languages"
-              suggestions={this.state.supportedLanguages}
+              suggestions={this.props.supportedLanguages || []}
               onChange={languages => this.setState({ languages })}
             />
           </React.Fragment>

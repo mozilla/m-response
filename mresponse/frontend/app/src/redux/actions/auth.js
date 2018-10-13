@@ -9,6 +9,7 @@ export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 export const LOGIN_ERROR = 'LOGIN_ERROR'
 export const LOGIN_RESET = 'LOGIN_RESET'
 export const LOGOUT = 'LOGOUT'
+export const SET_PROFILE = 'SET_PROFILE'
 
 export const loginAttempt = (username, password) => {
   return {
@@ -74,11 +75,34 @@ export const forgetPassword = email => async dispatch => {
   }
 }
 
+export const updateProfile = ({ name, languages }) => async (dispatch, getState) => {
+  try {
+    const { token, profile } = getState().auth
+    const metadata = {}
+    if (name) {
+      metadata.name = name
+    }
+    if (languages) {
+      metadata.languages = JSON.stringify(languages)
+    }
+    if (metadata.name || metadata.languages) {
+      const updatedProfile = await auth.updateUserMetadata(profile.user_id, token, metadata)
+      return dispatch({
+        type: SET_PROFILE,
+        profile: updatedProfile
+      })
+    }
+  } catch (err) {
+    return dispatch(loginError(err))
+  }
+}
+
 export const loginCallback = () => async dispatch => {
   try {
     const authResult = await auth.parseHash()
     const expiresAt = Date.now() + (authResult.expiresIn * 1000)
-    dispatch(loginSuccess(authResult.idTokenPayload, authResult.accessToken, expiresAt))
+    const profile = await auth.getUser(authResult.accessToken, authResult.idTokenPayload.sub)
+    dispatch(loginSuccess(profile, authResult.accessToken, expiresAt))
     return dispatch(push(DASHBOARD_URL))
   } catch (err) {
     dispatch(loginError(err))
