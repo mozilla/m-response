@@ -21,6 +21,7 @@
     &-back {
       margin-left: 20px;
       font-weight: 700;
+      filter: invert(1);
 
       &:hover {
         text-decoration: underline;

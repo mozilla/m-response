@@ -17,7 +17,11 @@ class LoginPage extends React.Component {
     return (
       <div className="login-page">
         <header className="toolbar">
-          <span className="toolbar-back" onClick={this.goBack}>Back</span>
+          <img
+            src={staticAsset('media/icons/arrow-left.svg')}
+            className={`toolbar-back`}
+            onClick={this.goBack}
+            alt='' />
           <img
             className="toolbar-logo"
             src={staticAsset('media/mozilla-logo.png')}
