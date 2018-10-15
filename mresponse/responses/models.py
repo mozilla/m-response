@@ -3,7 +3,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
-from mresponse.responses import query
+from mresponse.responses import managers, query
 
 
 class Response(models.Model):
@@ -25,7 +25,7 @@ class Response(models.Model):
     text = models.TextField()
     submitted_at = models.DateTimeField(default=timezone.now, editable=False)
 
-    objects = query.ResponseQuerySet.as_manager()
+    objects = managers.ResponseManager.from_queryset(query.ResponseQuerySet)()
 
     def __str__(self):
         return _('Response to review #%(review_id)s') % {

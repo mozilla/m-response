@@ -19,13 +19,18 @@ def api_root(request, format=None):
             request=request,
             format=format,
         )
+        response_dict['review'] = reverse.reverse(
+            'get_review',
+            request=request,
+            format=format
+        )
+        response_dict['response'] = reverse.reverse(
+            'get_response',
+            request=request,
+            format=format
+        )
     response_dict['config'] = reverse.reverse(
         'config',
-        request=request,
-        format=format
-    )
-    response_dict['review'] = reverse.reverse(
-        'get_review',
         request=request,
         format=format
     )

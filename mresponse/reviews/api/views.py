@@ -4,6 +4,7 @@ from rest_framework import exceptions, generics, permissions, response, views
 
 from mresponse.reviews import models as reviews_models
 from mresponse.reviews.api import serializers as reviews_serializers
+from mresponse.utils import queryset
 
 
 class Review(generics.RetrieveAPIView):
@@ -17,6 +18,12 @@ class Review(generics.RetrieveAPIView):
     )
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = reviews_serializers.ReviewSerializer
+
+    def get_serializer(self, *args, **kwargs):
+        kwargs['show_assignment_expires_at'] = True
+        kwargs['show_response_url'] = True
+        kwargs['show_skip_url'] = True
+        return super().get_serializer(*args, **kwargs)
 
     def choose_review_for_user(self):
         """
@@ -35,7 +42,9 @@ class Review(generics.RetrieveAPIView):
 
         # Otherwise try to elect  a review that is avaialble in the
         # queue and assign it to user.
-        review = self.get_queryset().responder_queue().first()
+        review = queryset.get_random_entry(
+            self.get_queryset().responder_queue()
+        )
         if review is None:
             raise exceptions.NotFound(
                 detail=_('No reviews available in the queue.')
