@@ -56,6 +56,13 @@ class Review(models.Model):
             self.android_sdk_version
         )
 
+    @property
+    def assignment_expires_at(self):
+        if self.assigned_to_user_at:
+            return self.assigned_to_user_at + reviews_query.ASSIGNMENT_TIMEOUT
+        return
+
+
     @transaction.atomic()
     def assign_to_user(self, user):
         # If assignment of the other reviews to the user expired, return
