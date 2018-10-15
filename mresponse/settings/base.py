@@ -73,6 +73,7 @@ INSTALLED_APPS = [
     'mresponse.moderations',
     'mresponse.responses',
     'mresponse.reviews',
+    'mresponse.users.apps.UsersConfig',
 ]
 
 

@@ -20,7 +20,7 @@ class Response(models.Model):
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         models.PROTECT,
-        related_name='+'
+        related_name='responses'
     )
     text = models.TextField()
     submitted_at = models.DateTimeField(default=timezone.now, editable=False)

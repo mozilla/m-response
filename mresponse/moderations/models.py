@@ -17,7 +17,7 @@ class Moderation(models.Model):
     moderator = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         models.PROTECT,
-        related_name='+'
+        related_name='moderations'
     )
     positive_in_tone = models.BooleanField(
         verbose_name=_('is the response positive in tone?')
