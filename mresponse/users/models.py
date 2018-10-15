@@ -20,4 +20,3 @@ class UserProfile(models.Model):
     @property
     def moderation_count(self):
         return self.user.moderations.count()
-
