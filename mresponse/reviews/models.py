@@ -62,7 +62,6 @@ class Review(models.Model):
             return self.assigned_to_user_at + reviews_query.ASSIGNMENT_TIMEOUT
         return
 
-
     @transaction.atomic()
     def assign_to_user(self, user):
         # If assignment of the other reviews to the user expired, return
