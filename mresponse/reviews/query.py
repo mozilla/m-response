@@ -48,4 +48,3 @@ class ReviewQuerySet(models.QuerySet):
         if user is not None:
             qs = qs | self.assigned_to_user(user)
         return qs.order_by('?')
-
