@@ -42,4 +42,7 @@ class ReviewSerializer(serializers.ModelSerializer):
         return reverse.reverse(
             'skip_review',
             request=self.context.get('request'),
+            kwargs={
+                'review_pk': self.instance.pk
+            }
         )

@@ -48,14 +48,14 @@ class Review(generics.RetrieveAPIView):
 
 
 class SkipReview(views.APIView):
-    def post(self, format=None):
+    def post(self, *args, format=None, **kwargs):
         try:
             review = reviews_models.Review.objects.assigned_to_user(
                 self.request.user
-            ).get()
+            ).get(pk=kwargs['review_pk'])
         except reviews_models.Review.DoesNotExist:
             raise exceptions.NotFound(
-                detail=_('User has no assigned review')
+                detail=_('User has no assigned review of this ID.')
             )
         review.return_to_the_queue()
         return response.Response()
