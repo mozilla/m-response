@@ -64,3 +64,5 @@ http://mresponse.local/
 
     127.0.0.1       mresponse.local
 
+On the backend you need to set two environment variables - ``AUTH0_DOMAIN`` and
+``JWT_ISSUER``.
