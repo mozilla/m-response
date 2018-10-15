@@ -11,7 +11,7 @@ export default class RespondPage extends React.Component {
     state = { isResponding: false, isDoneEditing: false, hasSubmitted: false, response: this.props.response || '' }
 
     componentWillMount () {
-      this.props.fetchNewReviews()
+      this.props.fetchNewReviews(this.props.api)
     }
 
     render () {
@@ -94,7 +94,7 @@ export default class RespondPage extends React.Component {
                   onClick={this.setIsResponding} />
                 <span
                   className='respond-page-actions-skip'
-                  onClick={this.props.skipReview}>Skip</span>
+                  onClick={() => { this.props.skipReview(this.props.api) }}>Skip</span>
               </div>
             )}
 
@@ -142,7 +142,7 @@ export default class RespondPage extends React.Component {
       }
 
       if (isValid) {
-        this.props.submitResponse((successMessage, err) => {
+        this.props.submitResponse(this.props.api, (successMessage, err) => {
           if (err) { }
           this.setState({ successMessage })
           this.refreshData()

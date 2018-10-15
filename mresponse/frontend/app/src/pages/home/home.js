@@ -8,8 +8,8 @@ import './home.scss'
 
 export default class HomePage extends React.Component {
   componentWillMount () {
-    this.props.updateAppConfig()
-    this.props.updateHomeConfig()
+    this.props.updateAppConfig(this.props.api)
+    this.props.updateHomeConfig(this.props.api)
   }
 
   render () {
@@ -23,7 +23,6 @@ export default class HomePage extends React.Component {
       goToRespondMode,
       goToModerateMode
     } = this.props
-    this.props.updateHomeConfig()
     return (
       <div className='home-page'>
         <header className='home-page-header'>
