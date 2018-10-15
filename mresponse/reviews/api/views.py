@@ -1,6 +1,6 @@
 from django.utils.translation import ugettext_lazy as _
 
-from rest_framework import exceptions, generics, permissions
+from rest_framework import exceptions, generics, permissions, response, views
 
 from mresponse.reviews import models as reviews_models
 from mresponse.reviews.api import serializers as reviews_serializers
@@ -24,9 +24,12 @@ class Review(generics.RetrieveAPIView):
         """
         # Get a review that is already assigned for the current user.
         try:
-            return self.get_queryset().assigned_to_user(
+            review = self.get_queryset().assigned_to_user(
                 self.request.user
             ).get()
+            # Renew assignment
+            review.assign_to_user(self.request.user)
+            return review
         except reviews_models.Review.DoesNotExist:
             pass
 
@@ -42,3 +45,17 @@ class Review(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.choose_review_for_user()
+
+
+class SkipReview(views.APIView):
+    def post(self, *args, format=None, **kwargs):
+        try:
+            review = reviews_models.Review.objects.assigned_to_user(
+                self.request.user
+            ).get(pk=kwargs['review_pk'])
+        except reviews_models.Review.DoesNotExist:
+            raise exceptions.NotFound(
+                detail=_('User has no assigned review of this ID.')
+            )
+        review.return_to_the_queue()
+        return response.Response()

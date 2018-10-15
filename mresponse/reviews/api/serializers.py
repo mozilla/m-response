@@ -12,6 +12,7 @@ class ReviewSerializer(serializers.ModelSerializer):
         )
     )
     response_url = serializers.SerializerMethodField()
+    skip_url = serializers.SerializerMethodField()
 
     class Meta:
         model = reviews_models.Review
@@ -26,6 +27,7 @@ class ReviewSerializer(serializers.ModelSerializer):
             'review_rating',
             'last_modified',
             'response_url',
+            'skip_url',
         )
         read_only_fields = ('android_version',)
 
@@ -34,4 +36,13 @@ class ReviewSerializer(serializers.ModelSerializer):
             'create_response',
             kwargs={'review_pk': instance.pk},
             request=self.context.get('request'),
+        )
+
+    def get_skip_url(self, instance):
+        return reverse.reverse(
+            'skip_review',
+            request=self.context.get('request'),
+            kwargs={
+                'review_pk': self.instance.pk
+            }
         )
