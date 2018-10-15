@@ -3,16 +3,19 @@ import { UPDATE_REVIEWS, UPDATE_RESPONSE } from '@redux/actions'
 const initial = {
   currentReviewResponse: '',
   currentReview: {},
-  nextReview: {}
+  nextReview: null
 }
 
 export default (state = initial, action) => {
   switch (action.type) {
     case UPDATE_REVIEWS: {
-      const { currentReview, nextReview } = action
+      const {
+        currentReview
+        // nextReview
+      } = action
       return Object.assign({}, state, {
         currentReview,
-        nextReview,
+        // nextReview,
         currentReviewResponse: ''
       })
     }

@@ -15,7 +15,11 @@ export default class RespondPage extends React.Component {
     }
 
     render () {
-      const { back, review, nextReview } = this.props
+      const {
+        back,
+        review
+        // nextReview
+      } = this.props
       const { isResponding, isDoneEditing, response, successMessage } = this.state
 
       return (
@@ -94,7 +98,7 @@ export default class RespondPage extends React.Component {
               </div>
             )}
 
-          {!isResponding ? (
+          {/* {!isResponding ? (
             <ReviewCard
               className='respond-page-next-review'
               author={nextReview.author}
@@ -105,7 +109,7 @@ export default class RespondPage extends React.Component {
               productImage={nextReview.product.image}
               androidVersion={nextReview.androidVersion}
             />
-          ) : null}
+          ) : null} */}
 
         </div>
       )

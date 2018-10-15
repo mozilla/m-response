@@ -7,11 +7,11 @@ const api = new Api()
 
 export const fetchNewReviews = () => async (dispatch, getState) => {
   const currentReview = await api.getReview()
-  const nextReview = await api.getReview()
+  // const nextReview = await api.getReview()
   return dispatch({
     type: UPDATE_REVIEWS,
-    currentReview,
-    nextReview
+    currentReview
+    // nextReview
   })
 }
 
