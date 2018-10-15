@@ -39,6 +39,11 @@ class Config(views.APIView):
         response_dict = collections.OrderedDict()
         response_dict['languages'] = self.get_languages()
         response_dict['response_guide_book_url'] = 'http://dgg.gg'
+        response_dict['feedback_url'] = 'http://dgg.gg'
+        response_dict['about_url'] = 'http://dgg.gg'
+        response_dict['legal_url'] = 'http://dgg.gg'
+        response_dict['privacy_url'] = 'http://dgg.gg'
+        response_dict['cookies_url'] = 'http://dgg.gg'
         return response.Response(response_dict)
 
     def get_languages(self):
