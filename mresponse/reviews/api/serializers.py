@@ -26,6 +26,7 @@ class ReviewSerializer(serializers.ModelSerializer):
             'review_text',
             'review_rating',
             'last_modified',
+            'assignment_expires_at',
             'response_url',
             'skip_url',
         )
