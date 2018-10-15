@@ -1,4 +1,4 @@
-from rest_framework import generics, permissions
+from rest_framework import exceptions, generics, permissions
 
 from mresponse.responses import models as responses_models
 from mresponse.responses.api import serializers as responses_serializers
@@ -44,6 +44,7 @@ class GetResponse(generics.RetrieveAPIView):
 
     def choose_response_for_user(self):
         # TODO: Get one assigned to user first.
+
         querysets = (
             self.get_queryset().two_or_more_moderations(),
             self.get_queryset().one_moderation(),
@@ -51,6 +52,12 @@ class GetResponse(generics.RetrieveAPIView):
         )
         for qs in querysets:
             chosen_response = queryset.get_random_entry(qs)
+            if chosen_response is not None:
+                break
+        if chosen_response is None:
+            raise exceptions.NotFound(
+                'No responses available in the moderator queue.'
+            )
 
         # TODO: chosen_response.assign_to_user(self.request.user)
 

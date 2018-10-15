@@ -1,21 +1,24 @@
 from django.db import models
 
 
+from mresponse.moderations import models as moderations_models
+
+
 class ResponseQuerySet(models.QuerySet):
     def annotate_moderations_count(self):
-        return self.annotate(models.Count('moderations'))
+        return self.annotate(num_moderations=models.Count('moderations'))
 
-    def approved(self):
-        return self.filter(approved=True)
+    def not_approved(self):
+        return self.filter(approved=False)
 
     def moderator_queue(self):
-        return self.difference(self.approved())
+        return self.not_approved()
 
     def no_moderations(self):
-        return self.filter(moderations__count=0)
+        return self.annotate_moderations_count().filter(num_moderations=0)
 
     def one_moderation(self):
-        return self.filter(moderations__count=1)
+        return self.annotate_moderations_count().filter(num_moderations=1)
 
     def two_or_more_moderations(self):
-        return self.filter(moderations__count__gte=2)
+        return self.annotate_moderations_count().filter(num_moderations__gte=2)

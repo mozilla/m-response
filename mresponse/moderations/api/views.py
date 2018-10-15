@@ -22,3 +22,6 @@ class CreateModeration(generics.CreateAPIView):
             response=self.get_response_for_user(),
             moderator=self.request.user,
         )
+
+        # TODO: Check if response can be approved to send over to the Play
+        # Store in here.
