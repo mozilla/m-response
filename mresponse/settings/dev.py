@@ -1,3 +1,12 @@
+import os
+
+# Set Auth0 environment variables for dev environment
+os.environ.setdefault('AUTH0_DOMAIN', 'nathan-tbx.eu.auth0.com')
+os.environ.setdefault(
+    'JWT_AUDIENCE',
+    'https://nathan-tbx.eu.auth0.com/api/v2/'
+)
+
 from .base import *  # noqa
 
 # Debugging to be enabled locally only
