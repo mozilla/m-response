@@ -2,12 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { staticAsset } from '@utils/urls'
-
 import './toolbar.scss'
 
 export default class Toolbar extends React.Component {
   render () {
-    const { className, titleClassName, leftComponent, rightComponent, title, onBack, backArrowClassName } = this.props
+    const { className = '', titleClassName = '', leftComponent, rightComponent, title, onBack, backArrowClassName = '' } = this.props
     return (
       <header className={`toolbar ${className}`}>
         <div className="toolbar-left">
