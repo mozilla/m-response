@@ -56,6 +56,5 @@ class GetResponse(generics.RetrieveAPIView):
 
         return chosen_response
 
-
     def get_object(self):
         return self.choose_response_for_user()
