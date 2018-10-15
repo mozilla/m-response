@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.db import models
+from django.db import models, transaction
 from django.utils import timezone, translation
 from django.utils.translation import ugettext_lazy as _
 
@@ -56,7 +56,15 @@ class Review(models.Model):
             self.android_sdk_version
         )
 
+    @transaction.atomic()
     def assign_to_user(self, user):
+        # If assignment of the other reviews to the user expired, return
+        # them to the queue to avoid raising IntegrityError.
+        # This method should not be called if other reviews are not expired.
+        for r in Review.objects.filter(assigned_to=user).assignment_expired():
+            r.return_to_the_queue()
+
+        # Assign this review to the user.
         self.assigned_to = user
         self.assigned_to_user_at = timezone.now()
         self.save(update_fields=('assigned_to', 'assigned_to_user_at',))

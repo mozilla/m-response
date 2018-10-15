@@ -5,57 +5,47 @@ ASSIGNMENT_TIMEOUT = timezone.timedelta(minutes=20)
 
 
 class ReviewQuerySet(models.QuerySet):
-    def unresponded_q(self):
-        return models.Q(response__isnull=True)
-
     def unresponded(self):
         """
         Get reviews that have no response.
         """
-        return self.filter(self.unresponded_q())
+        return self.filter(response__isnull=True)
 
     def assigned_to_user(self, user):
         """
         Get reviews that are assigned to a particular user.
         """
-        return self.filter(self.assigned_to_user_q(user))
+        return self.assignment_not_expired() & self.filter(assigned_to=user)
 
-    def assigned_to_user_q(self, user):
-        return models.Q(
-            assigned_to=user,
+    def assignment_not_expired(self):
+        return self.filter(
             assigned_to_user_at__gte=timezone.now() - ASSIGNMENT_TIMEOUT
         )
 
-    def not_assigned_to_user_q(self):
-        assigned_to_noone_q = models.Q(assigned_to__isnull=True)
-        assignment_expired_q = models.Q(
-            assigned_to_user_at__lte=timezone.now() - ASSIGNMENT_TIMEOUT,
-        )
-        return models.Q(assigned_to_noone_q | assignment_expired_q)
+    def assignment_expired(self):
+        return self.difference(self.assignment_not_expired())
 
-    def rating_range_q(self, min_value, max_value):
-        return models.Q(
+    def not_assigned_to_any_user(self):
+        return self.filter(assigned_to__isnull=True) | self.assignment_expired()
+
+    def rating_range(self, min_value, max_value):
+        return self.filter(
             review_rating__gte=min_value,
             review_rating__lte=max_value
         )
 
-    def newer_than_1_week_q(self):
-        six_months_ago = timezone.now() - timezone.timedelta(weeks=1)
-        return models.Q(last_modified__gte=six_months_ago)
-
-    def responder_queue_q(self, user=None):
-        query = models.Q(
-            self.unresponded_q()
-            & self.rating_range_q(1, 2)
-            & self.newer_than_1_week_q()
-            & self.not_assigned_to_user_q()
-        )
-        if user is not None:
-            query = query | self.assigned_to_user_q(user)
-        return query
+    def newer_than_1_week(self):
+        one_week_ago = timezone.now() - timezone.timedelta(weeks=1)
+        return self.filter(last_modified__gte=one_week_ago)
 
     def responder_queue(self, user=None):
-        return (
-            self.filter(self.responder_queue_q(user=user))
-                .order_by('?')
+        qs = (
+            self.unresponded()
+            & self.rating_range(1, 2)
+            & self.newer_than_1_week()
+            & self.not_assigned_to_any_user()
         )
+        if user is not None:
+            qs = qs | self.assigned_to_user(user)
+        return qs.order_by('?')
+
