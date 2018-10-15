@@ -1,0 +1,132 @@
+@import '../../styles/main.scss';
+
+.respond-page {
+    min-height: 100vh;
+    background-color: $off-white;
+
+    &-alert-prompt {
+        margin: 0 auto;
+        width: calc(100% - 40px);
+        max-width: 380px;
+        margin-bottom: 10px;
+    }
+
+    
+    &-review {
+        margin: 0 auto;
+        width: calc(100% - 40px);
+        max-width: 380px;
+    }
+
+    &-next-review {
+        @extend .respond-page-review;
+        opacity: 0.2;
+        margin-top: 80px;
+    }
+
+    &-edit-response {
+        min-height: 80px;
+        margin-top: 20px;
+        padding: 10px;
+        padding-left: 20px;
+        padding-right: 20px;
+        background-color: white;
+        border-top: 1px solid $light-grey;     
+        border-bottom: 1px solid $light-grey;        
+
+        &-content {
+            margin: 0 auto;
+            width: calc(100% - 40px);
+            max-width: 380px;
+        }
+
+        &-guide-button {
+            background-color: transparent !important;
+            border: 2px solid $blue;
+            color: $blue;
+            height: 35px;
+            font-size: 10pt;
+        }
+
+        &-form {
+            width: 100%;
+            padding-top: 10px;
+        }
+
+        &-form-text {
+            width: calc(100% - 20px);
+            min-height: 150px;
+            padding: 10px;
+            resize: vertical;
+            background-color: $off-white;
+            border-radius: 3px;
+            border: 1px solid $grey;
+            font-size: 0.8rem;
+            line-height: 20px;
+        }
+
+        &-form-submit {
+            @extend .respond-page-actions-respond;
+            width: 100%;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+            margin-top: 10px;
+        }
+
+    }
+
+    &-preview-response {
+        margin: 0 auto;
+        width: calc(100% - 40px);
+        max-width: 380px;
+        height: auto;
+        margin: 0 auto;
+        margin-top: 10px;
+        border-radius: 5px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+        border-top: 4px solid $orange;
+        background-color: white;
+        padding: 15px;
+
+        &-caption {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: $grey;
+        }
+
+        &-content {
+            font-size: 0.8rem;
+            line-height: 20px;
+        }
+
+    }
+
+    &-actions {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 20px;
+
+        &-respond {
+            height: 40px;
+            background-color: $orange;
+            padding-left: 20px;
+            padding-right: 20px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            margin-right: 30px;
+            margin-left: 30px;
+        }
+
+        &-skip {
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            user-select: none;
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+}

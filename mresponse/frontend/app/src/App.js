@@ -7,6 +7,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 import WelcomePage from '@pages/welcome'
 import LoginPage from '@pages/login'
 import HomePage from '@pages/home'
+import RespondPage from '@pages/respond'
 
 import createStore from '@redux/store'
 import { loginCallback, logoutCallback } from '@redux/actions'
@@ -16,7 +17,8 @@ import {
   LOGIN_URL,
   DASHBOARD_URL,
   CALLBACK_URL,
-  LOGOUT_URL
+  LOGOUT_URL,
+  RESPOND_URL
 } from '@utils/urls'
 
 import 'normalize.css'
@@ -48,6 +50,11 @@ class App extends Component {
                 path={DASHBOARD_URL}
                 redirect={LOGIN_URL}
                 component={props => <HomePage {...props} />}
+              />
+              <AuthRoute
+                path={RESPOND_URL}
+                redirect={LOGIN_URL}
+                component={props => <RespondPage {...props} />}
               />
               <Route
                 path={CALLBACK_URL}
