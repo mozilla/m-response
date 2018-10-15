@@ -7,7 +7,10 @@ os.environ.setdefault(
     'https://nathan-tbx.eu.auth0.com/api/v2/'
 )
 
-from .base import *  # noqa
+if True:
+    # Currently isort does not recognise "noqa", need to wrap
+    # improper imports into this if statement.
+    from .base import *
 
 # Debugging to be enabled locally only
 DEBUG = True
