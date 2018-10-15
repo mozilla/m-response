@@ -30,7 +30,7 @@ export default (state = initialState, action) => {
         profile
       })
     }
-    
+
     case UPDATE_EXTRA_USER_META: {
       const { meta } = action
       return Object.assign({}, state, {

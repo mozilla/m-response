@@ -14,7 +14,7 @@ export default class ProfilePage extends React.Component {
   componentDidMount () {
     this.props.updateKarma()
   }
-  
+
   render () {
     const {
       profile: {
@@ -25,7 +25,7 @@ export default class ProfilePage extends React.Component {
       },
       editProfile
     } = this.props
-    
+
     return (
       <div className="profile">
 
