@@ -52,7 +52,7 @@ class GetResponse(generics.RetrieveAPIView):
         for qs in querysets:
             chosen_response = queryset.get_random_entry(qs)
 
-        # chosen_response.assign_to_user(self.request.user)
+        # TODO: chosen_response.assign_to_user(self.request.user)
 
         return chosen_response
 
