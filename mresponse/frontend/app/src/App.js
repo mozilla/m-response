@@ -54,7 +54,7 @@ class App extends Component {
               <AuthRoute
                 path={DASHBOARD_URL}
                 redirect={LOGIN_URL}
-                component={props => <HomePage {...props} />}
+                component={props => <HomePage constructApi={this.props.constructApi} {...props} />}
               />
               <AuthRoute
                 path={PROFILE_URL}
@@ -71,7 +71,7 @@ class App extends Component {
               <AuthRoute
                 path={RESPOND_URL}
                 redirect={LOGIN_URL}
-                component={props => <RespondPage {...props} />}
+                component={props => <RespondPage constructApi={this.props.constructApi} {...props} />}
               />
               <Route
                 path={CALLBACK_URL}

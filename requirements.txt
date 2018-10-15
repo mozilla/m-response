@@ -1,5 +1,6 @@
 Django==2.1.2
 djangorestframework==3.8.2
+django-cors-headers==2.4.0
 psycopg2==2.7.5
 
 whitenoise==4.1

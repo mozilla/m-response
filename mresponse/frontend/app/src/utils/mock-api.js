@@ -3,8 +3,7 @@ import faker from 'faker'
 import { staticAsset } from '@utils/urls'
 
 export default class Api {
-  
-  getConfig() {
+  async getConfig () {
     return {
       'languages': [
         {
@@ -29,32 +28,22 @@ export default class Api {
     }
   }
 
-  getHomeConfig () {
+  async getHomeConfig () {
     return {
       'respond_queue': 31240,
       'moderate_queue': 1800
     }
   }
 
-  getExtraUserMeta () {
-    return {
-      karma: {
-        points: 180,
-        responsesCount: 50,
-        moderationsCount: 20
-      }
-    }
-  }
-
-  getReview() {
-    const res =  {
-      "id": faker.random.number(100000),
-      "android_sdk_version": 22,
-      "android_version": "7.1",
-      "author_name": faker.name.findName(),
-      "application": {
-        "name": "Firefox",
-        "package": "org.mozilla.firefox"
+  async getReview () {
+    const res = {
+      'id': faker.random.number(100000),
+      'android_sdk_version': 22,
+      'android_version': '7.1',
+      'author_name': faker.name.findName(),
+      'application': {
+        'name': 'Firefox',
+        'package': 'org.mozilla.firefox'
       },
       'application_version': {
         'name': '1.0.1',
@@ -83,24 +72,20 @@ export default class Api {
     }
   }
 
-  submitResponse (reviewId, response) {
-    return new Promise((resolve, reject) => {
-      if (reviewId && response) {
-        resolve({ detail: 'Thank you for your effort and so making Mozilla better for all of us!' })
-      } else {
-        reject(Error({ detail: 'An error happened!' }))
-      }
-    })
+  async submitResponse (reviewId, response) {
+    if (reviewId && response) {
+      return { detail: 'Thank you for your effort and so making Mozilla better for all of us!' }
+    } else {
+      throw Error({ detail: 'An error happened!' })
+    }
   }
 
-  skipReview (reviewId) {
-    return new Promise((resolve, reject) => {
-      if (reviewId) {
-        resolve({ detail: 'Review Skipped!' })
-      } else {
-        reject(Error({ detail: 'An error happened!' }))
-      }
-    })
+  async skipReview (reviewId) {
+    if (reviewId) {
+      return { detail: 'Review Skipped!' }
+    } else {
+      throw Error({ detail: 'An error happened!' })
+    }
   }
 
 }
