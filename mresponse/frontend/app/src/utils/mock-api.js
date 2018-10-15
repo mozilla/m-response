@@ -30,4 +30,14 @@ export default class Api {
       'moderate_queue': 1800
     }
   }
+
+  getExtraUserMeta () {
+    return {
+      karma: {
+        points: 180,
+        responsesCount: 50,
+        moderationsCount: 20
+      }
+    }
+  }
 }

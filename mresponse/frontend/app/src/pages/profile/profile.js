@@ -11,6 +11,10 @@ import { staticAsset } from '@utils/urls'
 import './profile.scss'
 
 export default class ProfilePage extends React.Component {
+  componentDidMount () {
+    this.props.updateKarma()
+  }
+  
   render () {
     const {
       profile: {
@@ -21,7 +25,7 @@ export default class ProfilePage extends React.Component {
       },
       editProfile
     } = this.props
-    const totalKarma = karma ? karma.responses.karmaValue + karma.moderations.karmaValue : 0
+    
     return (
       <div className="profile">
 
@@ -57,17 +61,17 @@ export default class ProfilePage extends React.Component {
 
           <div className="profile-header-karma">
             <div className='profile-header-karma-group'>
-              <span className='profile-header-karma-group-value'>{karma ? karma.responses.responsesCount : 0}</span>
+              <span className='profile-header-karma-group-value'>{karma.responsesCount || 0}</span>
               <span className='profile-header-karma-group-label'>Responses</span>
             </div>
             <span className='profile-header-karma-seperator'>|</span>
             <div className='profile-header-karma-group'>
-              <span className='profile-header-karma-group-value'>{karma ? karma.moderations.moderationsCount : 0}</span>
+              <span className='profile-header-karma-group-value'>{karma.moderationsCount || 0}</span>
               <span className='profile-header-karma-group-label'>Moderations</span>
             </div>
             <span className='profile-header-karma-seperator'>|</span>
             <div className='profile-header-karma-group'>
-              <span className='profile-header-karma-group-value'>{totalKarma}</span>
+              <span className='profile-header-karma-group-value'>{karma.points || 0}</span>
               <span className='profile-header-karma-group-label'>Karma</span>
             </div>
           </div>

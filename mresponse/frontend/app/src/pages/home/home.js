@@ -9,6 +9,7 @@ import './home.scss'
 export default class HomePage extends React.Component {
   componentWillMount () {
     this.props.updateHomeConfig()
+    this.props.updateKarma()
   }
 
   render () {
@@ -32,7 +33,7 @@ export default class HomePage extends React.Component {
           <Avatar
             className='home-page-header-avatar'
             src={profile.picture}
-            karma={0}
+            karma={profile.karma.points}
             coverIcon={staticAsset('media/icons/user.svg')}
             onClick={goToProfile} />
         </header>

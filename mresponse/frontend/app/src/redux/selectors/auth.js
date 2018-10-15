@@ -1,8 +1,12 @@
 import { getSupportedLanguages } from './config'
 
 export const getProfile = state => {
-  const { profile } = state.auth
-  const spokenLangauges = JSON.parse(profile.user_metadata.languages)
+  const { profile, extraUserMeta } = state.auth
+  const meta = profile.user_metadata || {
+    name: '',
+    languages: '[]'
+  }
+  const spokenLangauges = JSON.parse(meta.languages)
 
   const languages = getSupportedLanguages(state)
     .filter(language => {
@@ -16,20 +20,18 @@ export const getProfile = state => {
       return speaksLanguage
     })
 
+  const karma = extraUserMeta.karma || {
+    points: 0,
+    responsesCount: 0,
+    moderationsCount: 0
+  }
+  console.log(karma)
+
   return {
-    name: profile.user_metadata.name,
+    name: meta.name,
     picture: profile.picture,
     email: profile.email,
     languages,
-    karma: {
-      responses: {
-        karmaValue: 0,
-        responsesCount: 0
-      },
-      moderations: {
-        karmaValue: 0,
-        moderationsCount: 0
-      }
-    }
+    karma
   }
 }

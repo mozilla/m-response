@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import { push } from 'connected-react-router'
 
 import { PROFILE_URL } from '@utils/urls'
-import { updateAppConfig, updateHomeConfig } from '@redux/actions'
+import { updateAppConfig, updateHomeConfig, fetchExtraUserMeta } from '@redux/actions'
 import { getModerateQueue, getRespondQueue, getFeedbackUrl, getAboutUrl, getProfile } from '@redux/selectors'
 import HomePage from './home'
 
@@ -17,6 +17,7 @@ const mapDispatchToProps = (dispatch, props) => ({
   goToRespondMode: () => true,
   goToModerateMode: () => true,
   goToProfile: () => dispatch(push(PROFILE_URL)),
+  updateKarma: () => dispatch(fetchExtraUserMeta()),
   updateAppConfig: () => dispatch(updateAppConfig()),
   updateHomeConfig: () => dispatch(updateHomeConfig())
 })
