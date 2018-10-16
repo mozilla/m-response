@@ -3,7 +3,7 @@ from django.db import models
 
 class ResponseQuerySet(models.QuerySet):
     def annotate_moderations_count(self):
-        return self.annotate(num_moderations=models.Count('moderations'))
+        return self.annotate(moderations_count=models.Count('moderations'))
 
     def not_approved(self):
         return self.filter(approved=False)
@@ -12,10 +12,10 @@ class ResponseQuerySet(models.QuerySet):
         return self.not_approved()
 
     def no_moderations(self):
-        return self.annotate_moderations_count().filter(num_moderations=0)
+        return self.annotate_moderations_count().filter(moderations_count=0)
 
     def one_moderation(self):
-        return self.annotate_moderations_count().filter(num_moderations=1)
+        return self.annotate_moderations_count().filter(moderations_count=1)
 
     def two_or_more_moderations(self):
-        return self.annotate_moderations_count().filter(num_moderations__gte=2)
+        return self.annotate_moderations_count().filter(moderations_count__gte=2)
