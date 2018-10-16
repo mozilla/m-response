@@ -1,9 +1,6 @@
 from django.db import models
 
 
-from mresponse.moderations import models as moderations_models
-
-
 class ResponseQuerySet(models.QuerySet):
     def annotate_moderations_count(self):
         return self.annotate(num_moderations=models.Count('moderations'))
