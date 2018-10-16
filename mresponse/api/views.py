@@ -57,7 +57,11 @@ class Config(views.APIView):
         languages = [
             pycountry.languages.get(alpha_2='de'),
             pycountry.languages.get(alpha_2='en'),
+            pycountry.languages.get(alpha_2='es'),
             pycountry.languages.get(alpha_2='fr'),
+            pycountry.languages.get(alpha_2='id'),
+            pycountry.languages.get(alpha_2='pt'),
+            pycountry.languages.get(alpha_2='ru'),
         ]
         for language in languages:
             yield collections.OrderedDict([
