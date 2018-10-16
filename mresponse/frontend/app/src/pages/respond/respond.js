@@ -21,7 +21,6 @@ export default class RespondPage extends React.Component {
         // nextReview
       } = this.props
       const { isResponding, isDoneEditing, response, successMessage } = this.state
-
       return (
         <div className='respond-page'>
           <Toolbar title='Respond' invertBackIcon={true} onBack={back} />
@@ -136,6 +135,11 @@ export default class RespondPage extends React.Component {
 
     submitResponse = () => {
       const isValid = this.validateResponse()
+      if (this.props.review.assignmentExpiration - Date.now() < 0) {
+        this.props.fetchNextReview()
+        return null
+      }
+
       if (isValid) {
         this.props.submitResponse((successMessage, err) => {
           if (err) { }
