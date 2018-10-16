@@ -8,8 +8,8 @@ import './home.scss'
 
 export default class HomePage extends React.Component {
   componentWillMount () {
-    this.props.updateAppConfig(this.props.api)
-    this.props.updateHomeConfig(this.props.api)
+    this.props.updateAppConfig()
+    this.props.updateHomeConfig()
   }
 
   render () {
