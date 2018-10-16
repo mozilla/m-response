@@ -21,6 +21,7 @@ export default class RespondPage extends React.Component {
         // nextReview
       } = this.props
       const { isResponding, isDoneEditing, response, successMessage } = this.state
+
       return (
         <div className='respond-page'>
           <Toolbar title='Respond' invertBackIcon={true} onBack={back} />

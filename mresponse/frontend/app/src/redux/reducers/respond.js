@@ -2,7 +2,7 @@ import { UPDATE_REVIEWS, UPDATE_RESPONSE } from '@redux/actions'
 
 const initial = {
   currentReviewResponse: '',
-  currentReview: {},
+  currentReview: null,
   nextReview: null
 }
 
