@@ -2,12 +2,13 @@ import { connect } from 'react-redux'
 import { push } from 'connected-react-router'
 
 import { fetchNewReviews, fetchNextReview, updateCurrentResponse, submitResponse, skipReview } from '@redux/actions'
+import { getCurrentReview, getNextReview } from '@redux/selectors'
 import { DASHBOARD_URL } from '@utils/urls'
 import RespondPage from './respond'
 
 const mapStateToProps = state => ({
-  review: state.respond.currentReview,
-  nextReview: state.respond.nextReview,
+  review: getCurrentReview(state),
+  nextReview: getNextReview(state),
   response: state.respond.currentReviewResponse,
   guideBookUrl: '#'
 })
