@@ -13,6 +13,9 @@ export default class SignUpForm extends React.Component {
     password: 'Cool! and what password would you like to use?',
     passwordConfirm: 'Nearly There! Enter the password again.',
     incorrectConfirm: "Oops! Your passwords don't match",
+    passwordTooShort: 'Oops! Your password must be at least 8 characters long',
+    passwordNoLetter: 'Oops! Your password must contain at least one letter',
+    passwordNoNumber: 'Oops! Your password must contain at least one number',
     invalidLanguagesCount: 'Sorry! You need to know at least one language.',
     languages:
       'Nice! Now, What language(s) can communicate in, or rather respond best in?'
@@ -156,12 +159,41 @@ export default class SignUpForm extends React.Component {
           this.state.passwordConfirm
         ),
         validate: () => {
-          if (this.state.password === this.state.passwordConfirm) {
-            return true
-          } else {
+          // Validate password strength
+          if (this.state.password.length < 8) {
+            this.setStatus(this.status.passwordTooShort)
+            return false
+          }
+
+          let passwordHasLetter = false
+          let passwordHasNumber = false
+
+          for (let char of this.state.password) {
+            if (char.match(/[a-z]/i)) {
+              passwordHasLetter = true
+            }
+            if (char.match(/[0-9]/i)) {
+              passwordHasNumber = true
+            }
+          }
+
+          if (!passwordHasLetter) {
+            this.setStatus(this.status.passwordNoLetter)
+            return false
+          }
+
+          if (!passwordHasNumber) {
+            this.setStatus(this.status.passwordNoNumber)
+            return false
+          }
+
+          // Validate passwords match
+          if (this.state.password !== this.state.passwordConfirm) {
             this.setStatus(this.status.incorrectConfirm)
             return false
           }
+
+          return true
         },
         buttonText: 'Create Account',
         buttonPress: () =>
