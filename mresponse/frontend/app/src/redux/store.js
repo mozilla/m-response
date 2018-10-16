@@ -5,6 +5,7 @@ import { connectRouter, routerMiddleware } from 'connected-react-router'
 import { createBrowserHistory } from 'history'
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
+import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 
 import rootReducer from './reducers/index'
 
@@ -13,7 +14,8 @@ const history = createBrowserHistory()
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['errors']
+  blacklist: ['errors'],
+  stateReconciler: autoMergeLevel2
 }
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 

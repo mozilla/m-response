@@ -44,7 +44,7 @@
       flex-direction: column;
 
       &-name {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
         font-weight: 600;
         margin-bottom: 10px;
         color: white;
@@ -53,6 +53,12 @@
       &-languages {
         color: $light-grey;
         font-size: 0.8rem;
+        display: flex;
+        align-items: center;
+
+        &-icon {
+          margin-right: 5px;
+        }
       }
     }
 
@@ -143,7 +149,8 @@
     margin: 0 auto;
     width: 140px;
 
-    color: $grey;
+    color: black;
+    font-weight: 700;
     background-color: transparent;
     border: 2px solid $grey;
     font-size: 15px;

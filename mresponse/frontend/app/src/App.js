@@ -7,16 +7,20 @@ import { PersistGate } from 'redux-persist/integration/react'
 import WelcomePage from '@pages/welcome'
 import LoginPage from '@pages/login'
 import HomePage from '@pages/home'
+import ProfilePage from '@pages/profile'
+import SettingsPage from '@pages/settings'
 
 import createStore from '@redux/store'
-import { loginCallback, logoutCallback } from '@redux/actions'
+import { loginCallback, logoutCallback, updateAppConfig } from '@redux/actions'
 import AuthRoute from '@utils/auth-route'
 import {
   WELCOME_URL,
   LOGIN_URL,
   DASHBOARD_URL,
   CALLBACK_URL,
-  LOGOUT_URL
+  LOGOUT_URL,
+  PROFILE_URL,
+  SETTINGS_URL
 } from '@utils/urls'
 
 import 'normalize.css'
@@ -26,6 +30,7 @@ const { store, history, persistor } = createStore()
 
 class App extends Component {
   render () {
+    store.dispatch(updateAppConfig())
     return (
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
@@ -48,6 +53,18 @@ class App extends Component {
                 path={DASHBOARD_URL}
                 redirect={LOGIN_URL}
                 component={props => <HomePage {...props} />}
+              />
+              <AuthRoute
+                path={PROFILE_URL}
+                redirect={LOGIN_URL}
+                exact
+                component={props => <ProfilePage {...props} />}
+              />
+              <AuthRoute
+                path={SETTINGS_URL}
+                redirect={LOGIN_URL}
+                exact
+                component={props => <SettingsPage {...props} />}
               />
               <Route
                 path={CALLBACK_URL}

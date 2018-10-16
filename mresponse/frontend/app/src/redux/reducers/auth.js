@@ -1,10 +1,11 @@
-import { LOGIN_SUCCESS, LOGOUT } from '@redux/actions'
+import { LOGIN_SUCCESS, LOGOUT, SET_PROFILE, UPDATE_EXTRA_USER_META } from '@redux/actions'
 
 const initialState = {
   isAuthenticated: false,
   authError: null,
   token: null,
   profile: null,
+  extraUserMeta: {},
   expiresAt: null
 }
 
@@ -22,6 +23,20 @@ export default (state = initialState, action) => {
 
     case LOGOUT:
       return initialState
+
+    case SET_PROFILE: {
+      const { profile } = action
+      return Object.assign({}, state, {
+        profile
+      })
+    }
+
+    case UPDATE_EXTRA_USER_META: {
+      const { meta } = action
+      return Object.assign({}, state, {
+        extraUserMeta: meta
+      })
+    }
 
     default:
       return state

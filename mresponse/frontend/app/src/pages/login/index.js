@@ -3,12 +3,14 @@ import { push } from 'connected-react-router'
 
 import { WELCOME_URL } from '@utils/urls'
 import { login, signup, forgetPassword } from '@redux/actions'
+import { getSupportedLanguages } from '@redux/selectors'
 import LoginPage from './login'
 
 const mapStateToProps = state => {
   const status = state.errors.loginError
   return {
-    status: status ? `Error: ${status}` : null
+    status: status ? `Error: ${status}` : null,
+    supportedLanguages: getSupportedLanguages(state)
   }
 }
 const mapDispatchToProps = (dispatch, props) => ({

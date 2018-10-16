@@ -3,21 +3,24 @@ export default class Api {
     return {
       'languages': [
         {
-          'id': 'de',
+          'id': 'DE',
           'display_name': 'German'
         },
         {
-          'id': 'en',
+          'id': 'EN',
           'display_name': 'English'
         },
         {
-          'id': 'fr',
+          'id': 'FR',
           'display_name': 'French'
         }
       ],
       'response_guide_book_url': 'http://dgg.gg',
       'feedback_url': 'https://github.com/torchbox/m-response/issues/new',
-      'about_url': 'https://www.mozilla.org/en-US/about/'
+      'about_url': 'https://www.mozilla.org/en-US/about/',
+      'privacy_url': '#',
+      'legal_url': '#',
+      'cookies_url': '#'
     }
   }
 
@@ -25,6 +28,16 @@ export default class Api {
     return {
       'respond_queue': 31240,
       'moderate_queue': 1800
+    }
+  }
+
+  getExtraUserMeta () {
+    return {
+      karma: {
+        points: 180,
+        responsesCount: 50,
+        moderationsCount: 20
+      }
     }
   }
 }

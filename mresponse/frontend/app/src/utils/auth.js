@@ -13,7 +13,7 @@ export default class Auth {
     redirectUri,
     audience,
     responseType: 'token id_token',
-    scope: 'openid profile read:current_user',
+    scope: 'openid read:current_user update:current_user_metadata',
     prompt: 'none'
   })
 
@@ -76,6 +76,37 @@ export default class Auth {
       this.auth.parseHash((err, authResult) => {
         if (err) {
           reject(err)
+        }
+        return resolve(authResult)
+      })
+    })
+  }
+
+  getUser (token, userId) {
+    return new Promise((resolve, reject) => {
+      const auth0Manage = new auth0.Management({
+        domain,
+        token
+      })
+      auth0Manage.getUser(userId, (err, authResult) => {
+        if (err) {
+          return reject(err)
+        }
+        return resolve(authResult)
+      })
+    })
+  }
+
+  updateUserMetadata (userId, token, metadata) {
+    return new Promise((resolve, reject) => {
+      const auth0Manage = new auth0.Management({
+        domain,
+        token
+      })
+      auth0Manage.patchUserMetadata(userId, metadata, (err, authResult) => {
+        if (err) {
+          console.error(err)
+          return reject(err)
         }
         return resolve(authResult)
       })
