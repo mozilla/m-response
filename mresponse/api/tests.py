@@ -30,7 +30,7 @@ class TestConfigurationAPI(django.test.TestCase):
         response = self.client.get('/api/config/')
         content = response.json()
         self.assertEqual(content.keys(), {
-            'languages', 
+            'languages',
             'response_guide_book_url',
             'feedback_url',
             'about_url',
