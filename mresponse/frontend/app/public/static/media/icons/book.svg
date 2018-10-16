@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="17px" viewBox="0 0 14 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 2</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M13.222,0 L2.722,0 C1.244,0 0,1.236 0,2.705 L0,14.295 C0,15.764 1.244,17 2.722,17 L13.222,17 C13.689,17 14,16.69 14,16.227 L14,0.773 C14,0.309 13.689,0 13.222,0 Z M2.722,1.545 L12.444,1.545 L12.444,11.591 L2.722,11.591 C2.333,11.591 1.944,11.668 1.556,11.9 L1.556,2.705 C1.556,2.086 2.1,1.545 2.722,1.545 Z M2.722,15.455 C2.1,15.455 1.556,14.914 1.556,14.295 C1.556,13.677 2.1,13.136 2.722,13.136 L12.444,13.136 L12.444,15.455 L2.722,15.455 Z" id="path-1"></path>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-2">
+            <g id="group_12">
+                <g id="Group">
+                    <g id="a-link" fill="#000000" fill-rule="nonzero">
+                        <path d="M13.222,0 L2.722,0 C1.244,0 0,1.236 0,2.705 L0,14.295 C0,15.764 1.244,17 2.722,17 L13.222,17 C13.689,17 14,16.69 14,16.227 L14,0.773 C14,0.309 13.689,0 13.222,0 Z M2.722,1.545 L12.444,1.545 L12.444,11.591 L2.722,11.591 C2.333,11.591 1.944,11.668 1.556,11.9 L1.556,2.705 C1.556,2.086 2.1,1.545 2.722,1.545 Z M2.722,15.455 C2.1,15.455 1.556,14.914 1.556,14.295 C1.556,13.677 2.1,13.136 2.722,13.136 L12.444,13.136 L12.444,15.455 L2.722,15.455 Z" id="a"></path>
+                    </g>
+                    <g id="Clipped">
+                        <mask id="mask-2" fill="white">
+                            <use xlink:href="#path-1"></use>
+                        </mask>
+                        <g id="a"></g>
+                        <g id="Group" mask="url(#mask-2)" fill="#0A84FF" fill-rule="nonzero">
+                            <g transform="translate(-3.000000, -1.000000)" id="Shape">
+                                <polygon points="0.667 0.227 19.334 0.227 19.334 18.772 0.667 18.772"></polygon>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+                <path d="M3.5,4.25 L10.5,4.25 M3.5,6.375 L10.5,6.375 M3.5,8.693 L10.5,8.693" id="Shape" stroke="#0A84FF" stroke-width="0.773" stroke-linecap="square"></path>
+            </g>
+        </g>
+    </g>
+</svg>
