@@ -12,7 +12,7 @@ class Moderation(models.Model):
     response = models.ForeignKey(
         'responses.Response',
         models.PROTECT,
-        related_name='+'
+        related_name='moderations',
     )
     moderator = models.ForeignKey(
         settings.AUTH_USER_MODEL,

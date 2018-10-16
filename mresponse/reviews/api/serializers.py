@@ -14,6 +14,22 @@ class ReviewSerializer(serializers.ModelSerializer):
     response_url = serializers.SerializerMethodField()
     skip_url = serializers.SerializerMethodField()
 
+    def __init__(self, *args, **kwargs):
+        show_response_url = kwargs.pop('show_response_url', False)
+        show_skip_url = kwargs.pop('show_skip_url', False)
+        show_assignment_expires_at = kwargs.pop('show_assignment_expires_at', False)
+
+        super().__init__(*args, **kwargs)
+
+        if not show_response_url:
+            del self.fields['response_url']
+
+        if not show_skip_url:
+            del self.fields['skip_url']
+
+        if not show_assignment_expires_at:
+            del self.fields['assignment_expires_at']
+
     class Meta:
         model = reviews_models.Review
         fields = (
