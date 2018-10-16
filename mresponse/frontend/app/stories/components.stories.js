@@ -17,6 +17,9 @@ import Avatar from '../src/components/avatar/index'
 import ProgressBar from '../src/components/progress-bar'
 import ResponseCard from '../src/components/response-card'
 import HomePageCard from '../src/components/home-page-card'
+import RespondCard from '../src/components/respond-card'
+import RatingStars from '../src/components/rating-stars'
+import AlertPrompt from '../src/components/alert-prompt'
 import { staticAsset } from '../src/utils/urls'
 
 storiesOf('Components', module)
@@ -77,6 +80,22 @@ storiesOf('Components', module)
     <HomePageCard
       title='Respond'
       icon={staticAsset('media/icons/message.svg')}
-      subtitle='Queue: 31,240'
+      subtitle='Queue: 31,240' />
+  ))
+  .add('Respond Card', () => (
+    <RespondCard
+      author='Tesh Taddy'
+      date={Date.now()}
+      review='The script that help you predetermine or offer suggestions is full of bugs and annoying in fact delays your typing speed. This cause you to get frustrated and use simple search engine that offer no search script.. F.fox on mobile also is slow at times always snooping on your search history, delaying on response.. Well...?'
+      rating={3}
+      productName='Firefox 59.0.2'
+      productImage={staticAsset('media/firefox.png')}
+      androidVersion='Android 7.07'
     />
+  ))
+  .add('Rating Stars', () => <RatingStars rating={3} />)
+  .add('Alert Prompt', () => (
+    <AlertPrompt
+      title='Submitted'
+      message='Thank you for your effort and so making Mozilla better for all of us!'/>
   ))

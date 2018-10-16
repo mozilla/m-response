@@ -6,5 +6,6 @@ export const LOGOUT_URL = '/logout'
 export const CALLBACK_URL = '/callback'
 export const DASHBOARD_URL = '/dashboard'
 export const PROFILE_URL = '/profile'
+export const RESPOND_URL = '/respond'
 
 export const staticAsset = url => `/static/${url}`
