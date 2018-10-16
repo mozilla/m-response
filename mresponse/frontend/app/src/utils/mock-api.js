@@ -29,7 +29,7 @@ export default class Api {
     }
   }
 
-  getHomeConfig() {
+  getHomeConfig () {
     return {
       'respond_queue': 31240,
       'moderate_queue': 1800
@@ -56,16 +56,16 @@ export default class Api {
         "name": "Firefox",
         "package": "org.mozilla.firefox"
       },
-      "application_version": {
-        "name": "1.0.1",
-        "code": 68
+      'application_version': {
+        'name': '1.0.1',
+        'code': 68
       },
-      "review_text":  faker.lorem.paragraphs(1),
-      "review_rating": faker.random.number(3),
-      "last_modified": faker.date.past(1),
-      "assignment_expires_at": Date.now() + 3600000,
-      "response_url": "https://mresponse-staging.herokuapp.com/api/respond/1/",
-      "skip_url": "https://mresponse-staging.herokuapp.com/api/review/skip/1/"
+      'review_text': faker.lorem.paragraphs(1),
+      'review_rating': faker.random.number(3),
+      'last_modified': faker.date.past(1),
+      'assignment_expires_at': Date.now() + 3600000,
+      'response_url': 'https://mresponse-staging.herokuapp.com/api/respond/1/',
+      'skip_url': 'https://mresponse-staging.herokuapp.com/api/review/skip/1/'
     }
 
     return {
@@ -83,7 +83,7 @@ export default class Api {
     }
   }
 
-  submitResponse(reviewId, response) {
+  submitResponse (reviewId, response) {
     return new Promise((resolve, reject) => {
       if (reviewId && response) {
         resolve({ detail: 'Thank you for your effort and so making Mozilla better for all of us!' })
@@ -93,7 +93,7 @@ export default class Api {
     })
   }
 
-  skipReview(reviewId) {
+  skipReview (reviewId) {
     return new Promise((resolve, reject) => {
       if (reviewId) {
         resolve({ detail: 'Review Skipped!' })
