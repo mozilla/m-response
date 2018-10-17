@@ -8,6 +8,17 @@ const AuthRoute = ({ component: Component, redirect, authenticated = true, ...re
   if (rest.expireTime != null && rest.expireTime < (Date.now() - 600000)) {
     rest.logout()
   }
+
+  // Force trailing slash
+  const path = rest.location.pathname
+  if (path.slice(-1) !== '/') {
+    return (
+      <Route {...rest}>
+        <Redirect to={path + '/'} />
+      </Route>
+    )
+  }
+
   return (
     <Route {...rest} render={(props) => {
       const condition = authenticated ? rest.isAuthenticated : !rest.isAuthenticated
