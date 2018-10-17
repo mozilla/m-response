@@ -5,7 +5,6 @@ export const UPDATE_RESPONSE = 'UPDATE_RESPONSE'
 
 export const fetchNewReviews = () => connectApi(api => async (dispatch, getState) => {
   const currentReview = await api.getReview()
-  console.log(currentReview)
   // const nextReview = await api.getReview()
   return dispatch({
     type: UPDATE_REVIEWS,
