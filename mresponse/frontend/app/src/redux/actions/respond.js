@@ -37,7 +37,6 @@ export const submitResponse = cb => connectApi(api => async (dispatch, getState)
   try {
     if (currentReview) {
       const res = await api.submitResponse(currentReview.id, currentReviewResponse)
-      console.log(res.detail)
       cb(res.detail, null)
       return dispatch(fetchNextReview())
     }
