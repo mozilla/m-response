@@ -56,6 +56,27 @@ class Review(generics.RetrieveAPIView):
         return self.choose_review_for_user()
 
 
+class NextReview(generics.RetrieveAPIView):
+    """
+    Gets the next review in the queue that isn't assigned to a user.
+    """
+    queryset = reviews_models.Review.objects.unresponded().select_related(
+        'application',
+        'application_version',
+        'response',
+    )
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = reviews_serializers.ReviewSerializer
+
+    def get_object(self):
+        review = self.get_queryset().responder_queue().first()
+        if review is None:
+            raise exceptions.NotFound(
+                detail=_('No reviews available in the queue.')
+            )
+        return review
+
+
 class SkipReview(views.APIView):
     def post(self, *args, format=None, **kwargs):
         try:
