@@ -15,3 +15,4 @@ django-basic-auth-ip-whitelist==0.2.1
 pycountry==18.5.26
 djangorestframework-jwt==1.11.0
 cryptography==2.3.1
+mozapkpublisher==0.8.0
