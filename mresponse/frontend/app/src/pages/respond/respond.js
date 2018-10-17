@@ -8,10 +8,16 @@ import { staticAsset } from '@utils/urls'
 import './respond.scss'
 
 export default class RespondPage extends React.Component {
-    state = { isResponding: false, isDoneEditing: false, hasSubmitted: false, response: this.props.response || '' }
+    state = {
+      isResponding: false,
+      isDoneEditing: false,
+      hasSubmitted: false,
+      response: this.props.response || '',
+      messages: []
+    }
 
     componentWillMount () {
-      this.props.fetchNewReviews(this.props.api)
+      this.props.fetchNewReviews()
     }
 
     render () {
@@ -20,18 +26,19 @@ export default class RespondPage extends React.Component {
         review
         // nextReview
       } = this.props
-      const { isResponding, isDoneEditing, response, successMessage } = this.state
+      const { isResponding, isDoneEditing, response, messages } = this.state
 
       return (
         <div className='respond-page'>
           <Toolbar title='Respond' invertBackIcon={true} onBack={back} />
 
-          {successMessage ? (
+          {messages.map(message => (
             <AlertPrompt
               className='respond-page-alert-prompt'
-              title={'Success'}
-              message={successMessage} />
-          ) : null}
+              title={message.title}
+              message={message.text}
+              isError={message.isError} />
+          ))}
 
           <ReviewCard
             className='respond-page-review'
@@ -94,7 +101,7 @@ export default class RespondPage extends React.Component {
                   onClick={this.setIsResponding} />
                 <span
                   className='respond-page-actions-skip'
-                  onClick={() => { this.props.skipReview(this.props.api) }}>Skip</span>
+                  onClick={() => { this.props.skipReview() }}>Skip</span>
               </div>
             )}
 
@@ -142,9 +149,23 @@ export default class RespondPage extends React.Component {
       }
 
       if (isValid) {
-        this.props.submitResponse(this.props.api, (successMessage, err) => {
-          if (err) { }
-          this.setState({ successMessage })
+        this.props.submitResponse((successMessage, err) => {
+          let message = {}
+          if (err) {
+            message = {
+              title: 'Error!',
+              text: err,
+              isError: true
+            }
+          } else {
+            alert(successMessage)
+            message = {
+              title: 'Success',
+              text: successMessage,
+              isError: false
+            }
+          }
+          this.setState({ messages: [message, ...this.state.messages] })
           this.refreshData()
         })
       }

@@ -52,4 +52,8 @@
         display: none;
     }
 
+    &--error {
+        border-top: 4px solid  #e53935;
+    }
+
 }

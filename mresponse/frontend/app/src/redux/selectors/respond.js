@@ -1,5 +1,5 @@
 const emptyReview = {
-  id: '',
+  id: 0,
   author: '',
   rating: 0,
   text: '',

@@ -8,12 +8,17 @@ export default class AlertPrompt extends React.Component {
 
     render () {
       const { dismissed } = this.state
-      const { className = '', title, message } = this.props
+      const { className = '', title, message, isError } = this.props
       return (
-        <div className={`alert-prompt ${dismissed ? 'alert-prompt--dismissed' : ''} ${className}`}>
+        <div className={`
+          alert-prompt 
+          ${dismissed ? 'alert-prompt--dismissed' : ''}
+          ${isError ? 'alert-prompt--error' : ''}
+          ${className} 
+        `}>
           <div className='alert-prompt-header'>
             <span className='alert-prompt-header-title'>
-              <img className='alert-prompt-header-title-icon' src={staticAsset('media/icons/check_circle.svg')} alt='' />
+              <img className='alert-prompt-header-title-icon' src={isError ? '' : staticAsset('media/icons/check_circle.svg')} alt='' />
               { title }
             </span>
             <img

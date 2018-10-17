@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import { push } from 'connected-react-router'
 
 import { fetchNewReviews, fetchNextReview, updateCurrentResponse, submitResponse, skipReview } from '@redux/actions'
-import { getCurrentReview, getNextReview, getApiToken } from '@redux/selectors'
+import { getCurrentReview, getNextReview } from '@redux/selectors'
 
 import { DASHBOARD_URL } from '@utils/urls'
 
@@ -12,18 +12,19 @@ const mapStateToProps = (state, props) => ({
   review: getCurrentReview(state),
   nextReview: getNextReview(state),
   response: state.respond.currentReviewResponse,
-  guideBookUrl: '#',
-  api: props.constructApi(getApiToken(state))
+  guideBookUrl: '#'
 })
-const mapDispatchToProps = (dispatch, props) => ({
-  back: () => dispatch(push(DASHBOARD_URL)),
-  fetchNewReviews: (api) => dispatch(fetchNewReviews(api)),
-  fetchNextReview: (api) => dispatch(fetchNextReview(api)),
-  onResponseUpdate: response => dispatch(updateCurrentResponse(response)),
-  skipReview: (api) => dispatch(skipReview(api)),
-  submitResponse: (api, cb) => dispatch(submitResponse(api, cb)),
-  fetchReview: () => true
-})
+const mapDispatchToProps = (dispatch, props) => {
+  return {
+    back: () => dispatch(push(DASHBOARD_URL)),
+    fetchNewReviews: () => dispatch(fetchNewReviews()),
+    fetchNextReview: () => dispatch(fetchNextReview()),
+    onResponseUpdate: response => dispatch(updateCurrentResponse(response)),
+    skipReview: () => dispatch(skipReview()),
+    submitResponse: cb => dispatch(submitResponse(cb)),
+    fetchReview: () => true
+  }
+}
 
 export default connect(
   mapStateToProps,
