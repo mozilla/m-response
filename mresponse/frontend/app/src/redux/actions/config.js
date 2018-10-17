@@ -1,4 +1,4 @@
-import { connectApi } from '@redux/utils/api-wrapper'
+import { connectApi } from '@redux/util/api-wrapper'
 
 export const UPDATE_APP_CONFIG = 'UPDATE_APP_CONFIG'
 export const UPDATE_HOME_CONFIG = 'UPDATE_HOME_CONFIG'
