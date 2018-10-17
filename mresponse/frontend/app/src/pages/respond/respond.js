@@ -43,7 +43,7 @@ export default class RespondPage extends React.Component {
           <ReviewCard
             className='respond-page-review'
             author={review.author}
-            date={review.dateSubmitted}
+            date={review.lastModified}
             review={review.text}
             rating={review.rating}
             productName={review.product.name}
@@ -109,7 +109,7 @@ export default class RespondPage extends React.Component {
             <ReviewCard
               className='respond-page-next-review'
               author={nextReview.author}
-              date={nextReview.dateSubmitted}
+              date={nextReview.lastModified}
               review={nextReview.text}
               rating={nextReview.rating}
               productName={nextReview.product.name}

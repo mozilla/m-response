@@ -67,7 +67,7 @@ export default class Api {
         image: staticAsset('media/firefox.png')
       },
       androidVersion: 'Android ' + res['android_version'],
-      dateSubmitted: res['last_modified'],
+      lastModified: res['last_modified'],
       assignmentExpiration: res['assignment_expires_at']
     }
   }

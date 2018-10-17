@@ -41,7 +41,7 @@ export default class Api {
             image: staticAsset('media/firefox.png') // TODO
           },
           androidVersion: json.android_version,
-          dateSubmitted: new Date() // TODO
+          lastModified: new Date(json.last_modified)
         }
       })
     } else if (response.status === 404) {

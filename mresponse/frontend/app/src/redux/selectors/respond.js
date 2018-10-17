@@ -8,7 +8,7 @@ const emptyReview = {
     image: ''
   },
   androidVersion: '',
-  dateSubmitted: 0,
+  lastModified: 0,
   assignmentExpiration: 0
 }
 

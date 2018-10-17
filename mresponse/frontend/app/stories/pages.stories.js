@@ -112,7 +112,7 @@ storiesOf('Pages', module)
           image: staticAsset('media/firefox.png')
         },
         androidVersion: 'Android 7.07',
-        dateSubmitted: Date.now()
+        lastModified: Date.now()
       }}
       nextReview={{
         author: 'Dave Davidson',
@@ -123,7 +123,7 @@ storiesOf('Pages', module)
           image: staticAsset('media/firefox.png')
         },
         androidVersion: 'Android 7.1',
-        dateSubmitted: Date.now()
+        lastModified: Date.now()
       }}
       submitResponse={cb => null}
       fetchReview={() => true}
