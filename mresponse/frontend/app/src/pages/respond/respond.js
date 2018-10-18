@@ -47,7 +47,7 @@ export default class RespondPage extends React.Component {
             review={review.text}
             rating={review.rating}
             productName={review.product.name}
-            productVersion={review.product.version}
+            productVersion={review.product.version || {}}
             productImage={review.product.image}
             androidVersion={review.androidVersion}
           />
