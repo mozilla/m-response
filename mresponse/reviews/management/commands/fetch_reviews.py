@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
+from django.db import transaction
 from django.utils import timezone
 
 from mozapkpublisher.common.googleplay import _connect
@@ -12,6 +13,7 @@ from mresponse.reviews.models import Review
 class Command(BaseCommand):
     help = "Fetches all available reviews from Google playstore"
 
+    @transaction.atomic
     def get_reviews(self, application):
         service = _connect(settings.PLAY_ACCOUNT, settings.PLAY_CREDENTIALS_PATH)
         reviews_service = service.reviews()
