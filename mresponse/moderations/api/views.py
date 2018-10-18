@@ -1,3 +1,5 @@
+from django.db import models, transaction
+
 from rest_framework import generics, permissions
 
 from mresponse.moderations.api import serializers as moderations_serializers
@@ -13,15 +15,30 @@ class CreateModeration(generics.CreateAPIView):
         Get a response that matches the ID in the URL and has been
         assigned to the current user.
         """
-        qs = responses_models.Response.objects.moderator_queue()
-        # TODO: Restrict by user
-        return generics.get_object_or_404(qs, pk=self.kwargs['response_pk'])
+        assignment = generics.get_object_or_404(
+            responses_models.ResponseAssignedToUser.objects.not_expired(),
+            user=self.request.user,
+            response_id=self.kwargs['response_pk']
+        )
+        return assignment.response
 
+    @transaction.atomic
     def perform_create(self, serializer):
-        serializer.save(
-            response=self.get_response_for_user(),
+        response = self.get_response_for_user()
+        moderation = serializer.save(
+            response=response,
             moderator=self.request.user,
         )
 
+        # Clear the assignment to the user.
+        self.request.user.response_assignment.delete()
+
         # TODO: Check if response can be approved to send over to the Play
         # Store in here.
+        # response.approved = True
+        # response.save(update_fields=('approved',))
+
+        # Update user's karma points
+        user_profile = response.author.profile
+        user_profile.karma_points = models.F('karma_points') + moderation.karma_points
+        user_profile.save(update_fields=('karma_points',))

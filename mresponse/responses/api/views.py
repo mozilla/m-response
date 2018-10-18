@@ -1,4 +1,6 @@
-from rest_framework import exceptions, generics, permissions
+from django.utils.translation import ugettext_lazy as _
+
+from rest_framework import exceptions, generics, permissions, views
 
 from mresponse.responses import models as responses_models
 from mresponse.responses.api import serializers as responses_serializers
@@ -40,15 +42,36 @@ class GetResponse(generics.RetrieveAPIView):
 
     def get_serializer(self, *args, **kwargs):
         kwargs['show_moderation_url'] = True
+        kwargs['show_skip_url'] = True
         return super().get_serializer(*args, **kwargs)
 
     def choose_response_for_user(self):
-        # TODO: Get one assigned to user first.
+        try:
+            # Get assignment assigned to user first if there's any.
+            users_response_assignment = (
+                responses_models.ResponseAssignedToUser.objects.not_expired().get(
+                    user=self.request.user
+                )
+            )
+
+            # If user's assignment is not expired, update the assignment date.
+            # Expired assignments are deleted in the assign_to_user.
+            response = users_response_assignment.response
+            response.assign_to_user(
+                self.request.user
+            )
+            return response
+        except responses_models.ResponseAssignedToUser.DoesNotExist:
+            pass
+
+        base_queryset = self.get_queryset().not_moderated_by(
+            self.request.user
+        ).not_authored_by(self.request.user)
 
         querysets = (
-            self.get_queryset().two_or_more_moderations(),
-            self.get_queryset().one_moderation(),
-            self.get_queryset().no_moderations(),
+            base_queryset.two_or_more_moderations(),
+            base_queryset.one_moderation(),
+            base_queryset.no_moderations(),
         )
         for qs in querysets:
             chosen_response = queryset.get_random_entry(qs)
@@ -59,9 +82,26 @@ class GetResponse(generics.RetrieveAPIView):
                 'No responses available in the moderator queue.'
             )
 
-        # TODO: chosen_response.assign_to_user(self.request.user)
+        chosen_response.assign_to_user(self.request.user)
 
         return chosen_response
 
     def get_object(self):
         return self.choose_response_for_user()
+
+
+class SkipResponse(views.APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, *args, format=None, **kwargs):
+        try:
+            response_assignment = (
+                responses_models.ResponseAssignedToUser.objects.not_expired().get(
+                    user=self.request.user
+                )
+            )
+        except responses_models.ResponseAssignedToUser.DoesNotExist:
+            raise exceptions.NotFound(
+                detail=_('User has no assigned response of this ID.')
+            )
+        response_assignment.delete()
