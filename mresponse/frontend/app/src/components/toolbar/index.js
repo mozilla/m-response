@@ -6,14 +6,18 @@ import './toolbar.scss'
 
 export default class Toolbar extends React.Component {
   render () {
-    const { className = '', titleClassName = '', leftComponent, rightComponent, title, onBack, backArrowClassName = '' } = this.props
+    const { className = '', titleClassName = '', leftComponent, rightComponent, title, onBack, backArrowClassName = '', invertBackIcon } = this.props
     return (
       <header className={`toolbar ${className}`}>
         <div className="toolbar-left">
           {leftComponent || (
             <img
               src={staticAsset('media/icons/arrow-left.svg')}
-              className={`toolbar-back-link ${backArrowClassName}`}
+              className={`
+                toolbar-back-link 
+                ${invertBackIcon ? 'toolbar-back-link--inverted' : ''} 
+                ${backArrowClassName}
+              `}
               onClick={onBack}
               alt=''
             />

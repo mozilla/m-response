@@ -9,6 +9,7 @@ import LoginPage from '@pages/login'
 import HomePage from '@pages/home'
 import ProfilePage from '@pages/profile'
 import SettingsPage from '@pages/settings'
+import RespondPage from '@pages/respond'
 
 import createStore from '@redux/store'
 import { loginCallback, logoutCallback, updateAppConfig } from '@redux/actions'
@@ -20,7 +21,8 @@ import {
   CALLBACK_URL,
   LOGOUT_URL,
   PROFILE_URL,
-  SETTINGS_URL
+  SETTINGS_URL,
+  RESPOND_URL
 } from '@utils/urls'
 
 import 'normalize.css'
@@ -65,6 +67,11 @@ class App extends Component {
                 redirect={LOGIN_URL}
                 exact
                 component={props => <SettingsPage {...props} />}
+              />
+              <AuthRoute
+                path={RESPOND_URL}
+                redirect={LOGIN_URL}
+                component={props => <RespondPage constructApi={this.props.constructApi} {...props} />}
               />
               <Route
                 path={CALLBACK_URL}

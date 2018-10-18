@@ -8,6 +8,7 @@ import './home.scss'
 
 export default class HomePage extends React.Component {
   componentWillMount () {
+    this.props.updateAppConfig()
     this.props.updateHomeConfig()
     this.props.updateKarma()
   }

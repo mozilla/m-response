@@ -1,11 +1,9 @@
-import Api from '@utils/mock-api'
+import { connectApi } from '@redux/util/api-wrapper'
 
 export const UPDATE_APP_CONFIG = 'UPDATE_APP_CONFIG'
 export const UPDATE_HOME_CONFIG = 'UPDATE_HOME_CONFIG'
 
-const api = new Api()
-
-export const updateAppConfig = () => async (dispatch, getState) => {
+export const updateAppConfig = () => connectApi(api => async (dispatch, getState) => {
   try {
     return dispatch({
       type: UPDATE_APP_CONFIG,
@@ -14,9 +12,9 @@ export const updateAppConfig = () => async (dispatch, getState) => {
   } catch (e) {
     console.error(e)
   }
-}
+})
 
-export const updateHomeConfig = () => async (dispatch, getState) => {
+export const updateHomeConfig = () => connectApi(api => async (dispatch, getState) => {
   try {
     return dispatch({
       type: UPDATE_HOME_CONFIG,
@@ -25,4 +23,4 @@ export const updateHomeConfig = () => async (dispatch, getState) => {
   } catch (e) {
     console.error(e)
   }
-}
+})
