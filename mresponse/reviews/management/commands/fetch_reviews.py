@@ -1,7 +1,8 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
+from django.utils import timezone
 
 from mozapkpublisher.common.googleplay import _connect
 from mresponse.applications.models import Application
@@ -18,6 +19,12 @@ class Command(BaseCommand):
 
         while results:
             for review in results['reviews']:
+                # Reviews are returned in reverse-chronological order so this import
+                # can stop importing when it reaches a target date/time. This target is
+                # either the date/time of the most review we've imported before or one
+                # week ago, which ever is closer to the current time.
+
+                # Stop when we reach a review that's already imported
                 if Review.objects.filter(play_store_review_id=review['reviewId']).exists():
                     return
 
@@ -33,6 +40,10 @@ class Command(BaseCommand):
                             int(comment['lastModified']['seconds'])
                         )
                     }
+
+                    # Stop when we reach a review that's older than one week
+                    if kwargs['last_modified'] < timezone.now() - timedelta(days=7):
+                        return
 
                     # TODO: Add application version
                     obj = Review(**kwargs)
