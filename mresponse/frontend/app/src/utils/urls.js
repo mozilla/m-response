@@ -1,6 +1,3 @@
-// Config
-export const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://mresponse.local:8000'
-
 // React App Routes
 export const WELCOME_URL = '/'
 export const LOGIN_URL = '/account/login/'
