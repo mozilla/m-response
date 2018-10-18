@@ -573,7 +573,43 @@ REST_FRAMEWORK = {
     ),
 }
 
+
+# CORS headers
 CORS_ORIGIN_WHITELIST = [
     'mresponse.local:8000',
     'mresponse.local:3000',
 ]
+
+
+# Basic authentication settings
+# These are settings to configure the third-party library:
+# https://gitlab.com/tmkn/django-basic-auth-ip-whitelist
+if env.get('BASIC_AUTH_ENABLED', 'false').lower().strip() == 'true':
+    # Insert basic auth as a first middleware to be checked first, before
+    # anything else.
+    MIDDLEWARE.insert(0, 'baipw.middleware.BasicAuthIPWhitelistMiddleware')
+    MIDDLEWARE.insert(0, 'mresponse.api.middleware.SkipBasicAuthForAPI')
+
+    # This is the credentials users will have to use to access the site.
+    BASIC_AUTH_LOGIN = env.get('BASIC_AUTH_LOGIN')
+    BASIC_AUTH_PASSWORD = env.get('BASIC_AUTH_PASSWORD')
+
+    # This is the list of network IP addresses that are allowed in without
+    # basic authentication check.
+    BASIC_AUTH_WHITELISTED_IP_NETWORKS = [
+        # Torchbox networks.
+        # https://projects.torchbox.com/projects/sysadmin/notebook/IP%20addresses%20to%20whitelist
+        '78.32.251.192/28',
+        '89.197.53.244/30',
+        '193.227.244.0/23',
+        '2001:41c8:103::/48',
+    ]
+
+    # This is the list of hosts that website can be accessed without basic auth
+    # check. This may be useful to e.g. white-list "llamasavers.com" but not
+    # "llamasavers.production.torchbox.com".
+    if 'BASIC_AUTH_WHITELISTED_HTTP_HOSTS' in env:
+        BASIC_AUTH_WHITELISTED_HTTP_HOSTS = (
+            env['BASIC_AUTH_WHITELISTED_HTTP_HOSTS'].split(',')
+        )
+
