@@ -1,4 +1,4 @@
-from django.db import transaction
+from django.db import models, transaction
 
 from rest_framework import generics, permissions
 
@@ -25,7 +25,7 @@ class CreateModeration(generics.CreateAPIView):
     @transaction.atomic
     def perform_create(self, serializer):
         response = self.get_response_for_user()
-        serializer.save(
+        moderation = serializer.save(
             response=response,
             moderator=self.request.user,
         )
@@ -37,3 +37,8 @@ class CreateModeration(generics.CreateAPIView):
         # Store in here.
         # response.approved = True
         # response.save(update_fields=('approved',))
+
+        # Update user's karma points
+        user_profile = response.author.profile
+        user_profile.karma_points = models.F('karma_points') + moderation.karma_points
+        user_profile.save(update_fields=('karma_points',))
