@@ -10,6 +10,7 @@ import ProfilePage from '../src/pages/profile/profile'
 import SettingsPage from '../src/pages/settings/settings'
 import HomePage from '../src/pages/home/home'
 import RespondPage from '../src/pages/respond/respond'
+import ModeratePage from '../src/pages/moderate/moderate'
 
 import { staticAsset } from '../src/utils/urls'
 import 'normalize.css'
@@ -109,7 +110,10 @@ storiesOf('Pages', module)
         text: 'The script that help you predetermine or offer suggestions is full of bugs and annoying in fact delays your typing speed. This cause you to get frustrated and use simple search engine that offer no search script.. F.fox on mobile also is slow at times always snooping on your search history, delaying on response.. Well...?',
         product: {
           name: 'Firefox 59.0.2',
-          image: staticAsset('media/firefox.png')
+          image: staticAsset('media/firefox.png'),
+          version: {
+            name: '1.0.1'
+          }
         },
         androidVersion: 'Android 7.07',
         lastModified: Date.now()
@@ -120,13 +124,39 @@ storiesOf('Pages', module)
         text: 'The script that help you predetermine or offer suggestions is full of bugs and annoying in fact delays your typing speed. This cause you to get frustrated and use simple search engine that offer no search script.. F.fox on mobile also is slow at times always snooping on your search history, delaying on response.. Well...?',
         product: {
           name: 'Firefox 59.0.1',
-          image: staticAsset('media/firefox.png')
+          image: staticAsset('media/firefox.png'),
+          version: {
+            name: '1.0.1'
+          }
         },
         androidVersion: 'Android 7.1',
         lastModified: Date.now()
       }}
       submitResponse={cb => null}
       fetchReview={() => true}
+      fetchNewReviews={() => true}
       guideBookUrl='#'
+    />
+  ))
+  .add('Moderate', () => (
+    <ModeratePage
+      back={action('Go Back to dashboard')}
+      response={{
+        text: 'I would like to help with organizing your bookmarks. Firefox for Android has easy bookmarking. This article will show you how to create and access your bookmarks. http://mzl.la/1PZ8VwS Please let us know if this is helpful by leaving an updated review. ',
+        review: {
+          author: 'Ted Taddy',
+          rating: 3,
+          text: 'The script that help you predetermine or offer suggestions is full of bugs and annoying in fact delays your typing speed. This cause you to get frustrated and use simple search engine that offer no search script.. F.fox on mobile also is slow at times always snooping on your search history, delaying on response.. Well...?',
+          product: {
+            name: 'Firefox 59.0.2',
+            image: staticAsset('media/firefox.png')
+          },
+          androidVersion: 'Android 7.07',
+          dateSubmitted: Date.now()
+        }
+      }}
+      submitModeration={cb => null}
+      fetchReview={() => true}
+      fetchNewResponse={() => true}
     />
   ))

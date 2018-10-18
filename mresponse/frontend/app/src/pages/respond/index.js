@@ -21,8 +21,7 @@ const mapDispatchToProps = (dispatch, props) => {
     fetchNextReview: () => dispatch(fetchNextReview()),
     onResponseUpdate: response => dispatch(updateCurrentResponse(response)),
     skipReview: () => dispatch(skipReview()),
-    submitResponse: cb => dispatch(submitResponse(cb)),
-    fetchReview: () => true
+    submitResponse: cb => dispatch(submitResponse(cb))
   }
 }
 

@@ -1,0 +1,97 @@
+@import '../../styles/main.scss';
+
+.moderate-page {
+    width: calc(100vw - 30px);
+    min-height: 100vh;
+    background-color: $off-white;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 15px;
+
+    &-alert-prompt {
+        margin: 0 auto;
+        width: initial;
+        max-width: 380px;
+        margin-bottom: 10px;
+    }
+    
+    &-response {
+        margin: 0 auto;
+        width: initial;
+        max-width: 380px;
+    }
+
+    &-form {
+        margin: 0 auto;
+        width: initial;
+        max-width: 380px;
+        border-radius: 5px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+        border-top: 4px solid $blue;
+        background-color: white;
+        padding: 15px;
+        margin-top: 10px;
+
+        &-row {
+          display: flex;
+          flex-direction: column;
+          margin-bottom: 20px;
+            &-title {
+              font-size: 0.9rem;
+              margin-bottom: 10px;
+            }
+
+            &-buttons {
+              display: flex;
+              flex-direction: row;
+
+              .toggle-button {
+                margin-right: 5px;
+              }
+            }
+
+            &-karma {
+              text-align: center;
+
+              &-label {
+                padding-top: 20px;
+                padding-bottom: 20px;
+                font-weight: 700;
+              }
+
+              &-slider {
+                margin-top: 10px;
+              }
+            }
+        }
+    }
+
+    &-actions {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 20px;
+
+        &-moderate {
+            height: 40px;
+            background-color: $blue;
+            padding-left: 20px;
+            padding-right: 20px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            margin-right: 30px;
+            margin-left: 30px;
+        }
+
+        &-skip {
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            user-select: none;
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+} 

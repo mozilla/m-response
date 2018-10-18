@@ -26,3 +26,36 @@
     opacity: 0.4;
   }
 }
+
+.toggle-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 40px;
+  background-color: white;
+  color: $grey;
+
+  font-size: 1rem;
+  font-weight: 500;
+
+  border: 2px solid #dcdbdf;
+  border-radius: 3px;
+  user-select: none;
+  cursor: pointer;
+  outline: 0;
+
+  &-icon {
+    margin-right: 10px;
+    height: 16px;
+  }
+
+  &--toggled {
+    border: 3px solid $blue;
+    color: $blue;
+  }
+
+  &--disabled {
+    opacity: 0.4;
+  }
+}
