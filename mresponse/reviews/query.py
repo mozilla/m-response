@@ -15,7 +15,10 @@ class ReviewQuerySet(models.QuerySet):
         """
         Get reviews that are assigned to a particular user.
         """
-        return self.assignment_not_expired() & self.filter(assigned_to=user)
+        return (
+            self.assignment_not_expired()
+            & self.filter(assigned_to=user)
+        )
 
     def assignment_not_expired(self):
         return self.filter(

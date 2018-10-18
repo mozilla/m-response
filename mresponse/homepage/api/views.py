@@ -15,6 +15,8 @@ def homepage(request, format=None):
     )
     return_dict['moderate_queue'] = (
         responses_models.Response.objects
+                                 .not_authored_by(request.user)
+                                 .not_moderated_by(request.user)
                                  .moderator_queue()
                                  .count()
     )
