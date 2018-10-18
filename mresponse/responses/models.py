@@ -6,6 +6,29 @@ from django.utils.translation import ugettext_lazy as _
 from mresponse.responses import query
 
 
+class ResponseAssignedToUser(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        models.CASCADE,
+        related_name='response_assignment',
+    )
+    response = models.ForeignKey(
+        'Response',
+        models.CASCADE,
+        related_name='moderation_assignments'
+    )
+    assigned_at = models.DateTimeField(default=timezone.now)
+
+    objects = query.ResponseAssignedToUserQuerySet.as_manager()
+
+    class Meta:
+        unique_together = ('user', 'response',)
+
+    @property
+    def assignment_expires_at(self):
+        return self.assigned_at + query.ASSIGNMENT_TIMEOUT
+
+
 class Response(models.Model):
     review = models.OneToOneField(
         'reviews.Review',
@@ -31,3 +54,18 @@ class Response(models.Model):
         return _('Response to review #%(review_id)s') % {
             'review_id': self.review.play_store_review_id,
         }
+
+    def assign_to_user(self, user):
+        # Free user from any expired assignments.
+        ResponseAssignedToUser.objects.filter(user=user).expired().delete()
+
+        # Create or get response assiment for that user.
+        response, created = ResponseAssignedToUser.objects.get_or_create(
+            user=user,
+            response=self,
+        )
+
+        # If assignment already exists, update the assignment time.
+        if not created:
+            response.assigned_at = timezone.now()
+            response.save(update_fields=('assigned_at',))

@@ -1,3 +1,5 @@
+from django.db import transaction
+
 from rest_framework import generics, permissions
 
 from mresponse.moderations.api import serializers as moderations_serializers
@@ -13,15 +15,25 @@ class CreateModeration(generics.CreateAPIView):
         Get a response that matches the ID in the URL and has been
         assigned to the current user.
         """
-        qs = responses_models.Response.objects.moderator_queue()
-        # TODO: Restrict by user
-        return generics.get_object_or_404(qs, pk=self.kwargs['response_pk'])
+        assignment = generics.get_object_or_404(
+            responses_models.ResponseAssignedToUser.objects.not_expired(),
+            user=self.request.user,
+            response_id=self.kwargs['response_pk']
+        )
+        return assignment.response
 
+    @transaction.atomic
     def perform_create(self, serializer):
+        response = self.get_response_for_user()
         serializer.save(
-            response=self.get_response_for_user(),
+            response=response,
             moderator=self.request.user,
         )
 
+        # Clear the assignment to the user.
+        self.request.user.response_assignment.delete()
+
         # TODO: Check if response can be approved to send over to the Play
         # Store in here.
+        # response.approved = True
+        # response.save(update_fields=('approved',))
