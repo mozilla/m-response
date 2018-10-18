@@ -35,6 +35,16 @@ export default class Api {
     }
   }
 
+  async getExtraUserMeta () {
+    return {
+      karma: {
+        points: 180,
+        responsesCount: 50,
+        moderationsCount: 20
+      }
+    }
+  }
+
   async getReview () {
     const res = {
       'id': faker.random.number(100000),

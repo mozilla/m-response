@@ -9,6 +9,7 @@ export const DASHBOARD_URL = '/dashboard/'
 export const PROFILE_URL = '/profile/'
 export const SETTINGS_URL = '/profile/edit/'
 export const RESPOND_URL = '/respond/'
+export const MODERATE_URL = '/moderate/'
 
 // Helper Functions
 export const staticAsset = url => `/static/${url}`

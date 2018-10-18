@@ -1,0 +1,113 @@
+@import '../../styles/main';
+
+.moderate-card {
+    width: 350px;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    border-top: 4px solid $blue;
+    background-color: white;
+    padding: 15px;
+
+    &-header {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+        &-image {
+            height: 25px;
+            width: 25px;
+            margin-right: 15px;
+        }
+
+        &-row-container {
+            width: 100%;
+        }
+
+        &-row {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 3px;
+        }
+
+        &-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: $grey;
+        }
+
+        &-meta {
+            font-size: 8pt;
+            color: $light-grey;
+        }
+
+    }
+
+    &-review {
+        padding-bottom: 10px;
+        border-bottom: 2px solid $light-grey;
+
+        &-comment {
+            font-size: 0.8rem;
+            line-height: 20px;
+            height: 90px;
+            overflow: hidden;
+            color: $grey;
+
+            &--expanded {
+                height: auto;
+            }
+        }
+    
+        &-footer {
+            font-size: 14px;
+            // padding-top: 10px;
+            padding-bottom: 15px;
+    
+            &-date {
+                float: left;
+                font-weight: 500;
+                font-size: 0.7rem;
+                color: $light-grey;
+            }
+        }
+    }
+
+    &-response {
+        padding-top: 10px;
+        
+        &-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: $grey;
+        }
+
+        &-comment {
+            font-size: 0.8rem;
+            line-height: 20px;
+        }
+    
+        &-footer {
+            font-size: 14px;
+            padding-bottom: 15px;
+    
+            &-date {
+                float: left;
+                font-weight: 500;
+                font-size: 0.7rem;
+                color: $light-grey;
+            }
+        }
+    }
+
+
+    &-expand-trigger {
+        margin-left: 5px;
+        text-decoration: underline;
+        color: $blue;
+        font-weight: 600;
+        cursor: pointer;
+    }
+}

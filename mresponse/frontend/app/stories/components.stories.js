@@ -9,6 +9,7 @@ import InputField from '../src/components/input-field/index'
 import LoginForm from '../src/components/login-form/index'
 import HighlightedText from '../src/components/highlighted-text/index'
 import StandardButton from '../src/components/buttons/index'
+import ToggleButton from '../src/components/buttons/toggle'
 import SignUpForm from '../src/components/signup-form/index'
 import ForgotPasswordForm from '../src/components/forgot-password-form/index'
 import TagField from '../src/components/tag-field/index'
@@ -18,6 +19,7 @@ import ProgressBar from '../src/components/progress-bar'
 import ResponseCard from '../src/components/response-card'
 import HomePageCard from '../src/components/home-page-card'
 import RespondCard from '../src/components/respond-card'
+import ModerateCard from '../src/components/moderate-card'
 import RatingStars from '../src/components/rating-stars'
 import AlertPrompt from '../src/components/alert-prompt'
 import { staticAsset } from '../src/utils/urls'
@@ -49,6 +51,12 @@ storiesOf('Components', module)
   .add('Highlighted Text', () => <HighlightedText text="Test Text" />)
   .add('Button', () => (
     <StandardButton label="Test Button" onClick={action('Button Press!')} />
+  ))
+  .add('Toggle Button', () => (
+    <ToggleButton
+      label="Test Button"
+      onClick={action('Toggle Press!')}
+      icon={staticAsset('media/icons/smile.svg')} />
   ))
   .add('Login Form', () => (
     <LoginForm
@@ -88,6 +96,19 @@ storiesOf('Components', module)
       date={Date.now()}
       review='The script that help you predetermine or offer suggestions is full of bugs and annoying in fact delays your typing speed. This cause you to get frustrated and use simple search engine that offer no search script.. F.fox on mobile also is slow at times always snooping on your search history, delaying on response.. Well...?'
       rating={3}
+      productName='Firefox 59.0.2'
+      productImage={staticAsset('media/firefox.png')}
+      androidVersion='Android 7.07'
+    />
+  ))
+  .add('Moderate Card', () => (
+    <ModerateCard
+      reviewAuthor='Tesh Taddy'
+      reviewDate={Date.now()}
+      reviewText='The script that help you predetermine or offer suggestions is full of bugs and annoying in fact delays your typing speed. This cause you to get frustrated and use simple search engine that offer no search script.. F.fox on mobile also is slow at times always snooping on your search history, delaying on response.. Well...?'
+      reviewRating={3}
+      responseText='I would like to help with organizing your bookmarks. Firefox for Android has easy bookmarking. This article will show you how to create and access your bookmarks. http://mzl.la/1PZ8VwS Please let us know if this is helpful by leaving an updated review. '
+      responseDate={Date.now()}
       productName='Firefox 59.0.2'
       productImage={staticAsset('media/firefox.png')}
       androidVersion='Android 7.07'
