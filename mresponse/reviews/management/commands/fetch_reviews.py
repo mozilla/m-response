@@ -18,6 +18,9 @@ class Command(BaseCommand):
 
         while results:
             for review in results['reviews']:
+                if Review.objects.filter(play_store_review_id=review['reviewId']).exists():
+                    return
+
                 if len(review['comments']) == 1:
                     comment = review['comments'][0]['userComment']
                     kwargs = {
