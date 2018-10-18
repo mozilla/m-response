@@ -1,3 +1,6 @@
+// App
+export const BASE_URL = process.env.REACT_APP_BASE_URL || ''
+
 // React App Routes
 export const WELCOME_URL = '/'
 export const LOGIN_URL = '/account/login/'

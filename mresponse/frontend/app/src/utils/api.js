@@ -1,7 +1,8 @@
 import { staticAsset } from '@utils/urls'
 
 export default class Api {
-  constructor (token) {
+  constructor (baseUrl, token) {
+    this.baseUrl = baseUrl
     this.token = token
   }
 
@@ -12,7 +13,7 @@ export default class Api {
     }
     options.headers = headers
 
-    return fetch(path, options)
+    return fetch(`${this.baseUrl}${path}`, options)
   }
 
   async getConfig () {
@@ -43,15 +44,19 @@ export default class Api {
   }
 
   async getReview () {
-    let response = await this.fetch(`/api/review/`)
-    if (response.status === 200) {
-      return response.json().then(json => {
-        return this.serializeReview(json)
-      })
-    } else if (response.status === 404) {
-      // No review assigned to this user
-    } else if (response.status === 401) {
-      // User is not logged in
+    try {
+      let response = await this.fetch(`/api/review/`)
+      if (response.status === 200) {
+        return response.json().then(json => {
+          return this.serializeReview(json)
+        })
+      } else if (response.status === 404) {
+        // No review assigned to this user
+      } else if (response.status === 401) {
+        // User is not logged in
+      }
+    } catch (e) {
+      console.error(e)
     }
   }
 
