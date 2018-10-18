@@ -21,9 +21,6 @@ class ResponseAssignedToUser(models.Model):
 
     objects = query.ResponseAssignedToUserQuerySet.as_manager()
 
-    class Meta:
-        unique_together = ('user', 'response',)
-
     @property
     def assignment_expires_at(self):
         return self.assigned_at + query.ASSIGNMENT_TIMEOUT
@@ -59,7 +56,7 @@ class Response(models.Model):
         # Free user from any expired assignments.
         ResponseAssignedToUser.objects.filter(user=user).expired().delete()
 
-        # Create or get response assiment for that user.
+        # Create or get response assignment for that user.
         response, created = ResponseAssignedToUser.objects.get_or_create(
             user=user,
             response=self,

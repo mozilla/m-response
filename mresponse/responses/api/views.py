@@ -55,6 +55,7 @@ class GetResponse(generics.RetrieveAPIView):
             )
 
             # If user's assignment is not expired, update the assignment date.
+            # Expired assignments are deleted in the assign_to_user.
             response = users_response_assignment.response
             response.assign_to_user(
                 self.request.user
