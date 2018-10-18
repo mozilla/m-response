@@ -26,6 +26,19 @@ export default class Api {
       .then(response => response.json())
   }
 
+  async getExtraUserMeta () {
+    const res = await this.fetch(`/api/users/me/`)
+    return res.json().then(json => {
+      return {
+        karma: {
+          points: json.profile.karma_points,
+          responsesCount: json.profile.response_count,
+          moderationsCount: json.profile.moderation_count
+        }
+      }
+    })
+  }
+
   serializeReview (json) {
     return {
       id: json.id,

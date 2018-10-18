@@ -1,10 +1,9 @@
 import { push } from 'connected-react-router'
 import { LOGIN_URL, DASHBOARD_URL, LOGOUT_URL } from '@utils/urls'
-import Auth from '@utils/auth'
-import Api from '@utils/mock-api'
+import { connectApi } from '@redux/util/api-wrapper'
 
+import Auth from '@utils/auth'
 const auth = new Auth()
-const api = new Api()
 
 export const LOGIN_ATTEMPT = 'LOGIN_ATTEMPT'
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
@@ -124,12 +123,11 @@ export const updateExtraUserMeta = meta => ({
   meta
 })
 
-export const fetchExtraUserMeta = () => async (dispatch) => {
+export const fetchExtraUserMeta = () => connectApi(api => async (dispatch) => {
   try {
     const meta = await api.getExtraUserMeta()
     return dispatch(updateExtraUserMeta(meta))
   } catch (err) {
-    console.error(err)
     return dispatch(loginError(err))
   }
-}
+})
