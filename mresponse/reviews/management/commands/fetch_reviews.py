@@ -3,16 +3,16 @@ from datetime import datetime
 from django.conf import settings
 from django.core.management.base import BaseCommand
 
-from mozapkpublisher.common.googleplay import connect
-from mresponse.applications import Application
-from mresponse.reviews import Review
+from mozapkpublisher.common.googleplay import _connect
+from mresponse.applications.models import Application
+from mresponse.reviews.models import Review
 
 
 class Command(BaseCommand):
     help = "Fetches all available reviews from Google playstore"
 
     def get_reviews(self, package_name):
-        service = connect(settings.PLAY_ACCOUNT, settings.PLAY_CREDENTIALS_PATH)
+        service = _connect(settings.PLAY_ACCOUNT, settings.PLAY_CREDENTIALS_PATH)
         reviews_service = service.reviews()
         results = reviews_service.list(packageName=package_name).execute()
 
@@ -42,7 +42,7 @@ class Command(BaseCommand):
                     packageName=package_name, token=nextPageToken
                 ).execute()
             else:
-                results = None
+                break
 
     def handle(self, *args, **kwargs):
         for application in Application.objects.all():
