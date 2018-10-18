@@ -1,8 +1,7 @@
 import { staticAsset } from '@utils/urls'
 
 export default class Api {
-  constructor (baseUrl, token) {
-    this.baseUrl = baseUrl
+  constructor (token) {
     this.token = token
   }
 
@@ -13,7 +12,7 @@ export default class Api {
     }
     options.headers = headers
 
-    return fetch(`${this.baseUrl}${path}`, options)
+    return fetch(path, options)
   }
 
   async getConfig () {
