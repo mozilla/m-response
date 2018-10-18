@@ -18,7 +18,10 @@ export default class AlertPrompt extends React.Component {
         `}>
           <div className='alert-prompt-header'>
             <span className='alert-prompt-header-title'>
-              <img className='alert-prompt-header-title-icon' src={isError ? '' : staticAsset('media/icons/check_circle.svg')} alt='' />
+              { isError
+                ? null
+                : <img className='alert-prompt-header-title-icon' src={staticAsset('media/icons/check_circle.svg')} alt='' />
+              }
               { title }
             </span>
             <img

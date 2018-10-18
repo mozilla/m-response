@@ -3,14 +3,16 @@ import { connectApi } from '@redux/util/api-wrapper'
 export const UPDATE_MOD_RESPONSE = 'UPDATE_MOD_RESPONSE'
 export const UPDATE_MODERATION = 'UPDATE_MODERATION'
 
-export const fetchNextResponse = () => connectApi(api => async (dispatch, getState) => {
+export const fetchNextResponse = (cb = () => null) => connectApi(api => async (dispatch, getState) => {
   try {
     const response = await api.getResponse()
+    cb(null, null)
     return dispatch({
       type: UPDATE_MOD_RESPONSE,
       response
     })
   } catch (e) {
+    cb(null, e)
     return dispatch({
       type: UPDATE_MOD_RESPONSE,
       response: null
@@ -23,13 +25,13 @@ export const updateCurrentModeration = moderation => ({
   moderation
 })
 
-export const submitModeration = cb => connectApi(api => async (dispatch, getState) => {
+export const submitModeration = (cb = () => null) => connectApi(api => async (dispatch, getState) => {
   const { moderate: { currentResponse, currentResponseModeration } } = getState()
   try {
     if (currentResponse) {
       const res = await api.submitModeration(currentResponse.id, currentResponseModeration)
       cb(res.detail, null)
-      return dispatch(fetchNextResponse())
+      return dispatch(fetchNextResponse(cb))
     }
   } catch (e) {
     cb(null, e)

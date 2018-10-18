@@ -17,7 +17,7 @@ const mapStateToProps = (state, props) => ({
 const mapDispatchToProps = (dispatch, props) => {
   return {
     back: () => dispatch(push(DASHBOARD_URL)),
-    fetchNewReviews: () => dispatch(fetchNewReviews()),
+    fetchNewReviews: cb => dispatch(fetchNewReviews(cb)),
     fetchNextReview: () => dispatch(fetchNextReview()),
     onResponseUpdate: response => dispatch(updateCurrentResponse(response)),
     skipReview: () => dispatch(skipReview()),
