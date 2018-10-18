@@ -1,3 +1,4 @@
+from django.db import transaction
 from django.utils.translation import ugettext_lazy as _
 
 from rest_framework import exceptions, generics, permissions, views
@@ -23,12 +24,16 @@ class CreateResponse(generics.CreateAPIView):
         )
         return generics.get_object_or_404(qs, pk=self.kwargs['review_pk'])
 
+    @transaction.atomic
     def perform_create(self, serializer):
         review = self.get_review_for_user()
         serializer.save(
             review=review,
             author=self.request.user,
         )
+        review.assigned_to = None
+        review.assigned_to_user_at = None
+        review.save()
 
 
 class GetResponse(generics.RetrieveAPIView):
