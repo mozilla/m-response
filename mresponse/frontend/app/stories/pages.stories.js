@@ -141,19 +141,19 @@ storiesOf('Pages', module)
   .add('Moderate', () => (
     <ModeratePage
       back={action('Go Back to dashboard')}
-      review={{
-        author: 'Ted Taddy',
-        rating: 3,
-        text: 'The script that help you predetermine or offer suggestions is full of bugs and annoying in fact delays your typing speed. This cause you to get frustrated and use simple search engine that offer no search script.. F.fox on mobile also is slow at times always snooping on your search history, delaying on response.. Well...?',
-        product: {
-          name: 'Firefox 59.0.2',
-          image: staticAsset('media/firefox.png')
-        },
-        androidVersion: 'Android 7.07',
-        dateSubmitted: Date.now()
-      }}
       response={{
-        text: 'I would like to help with organizing your bookmarks. Firefox for Android has easy bookmarking. This article will show you how to create and access your bookmarks. http://mzl.la/1PZ8VwS Please let us know if this is helpful by leaving an updated review. '
+        text: 'I would like to help with organizing your bookmarks. Firefox for Android has easy bookmarking. This article will show you how to create and access your bookmarks. http://mzl.la/1PZ8VwS Please let us know if this is helpful by leaving an updated review. ',
+        review: {
+          author: 'Ted Taddy',
+          rating: 3,
+          text: 'The script that help you predetermine or offer suggestions is full of bugs and annoying in fact delays your typing speed. This cause you to get frustrated and use simple search engine that offer no search script.. F.fox on mobile also is slow at times always snooping on your search history, delaying on response.. Well...?',
+          product: {
+            name: 'Firefox 59.0.2',
+            image: staticAsset('media/firefox.png')
+          },
+          androidVersion: 'Android 7.07',
+          dateSubmitted: Date.now()
+        }
       }}
       submitModeration={cb => null}
       fetchReview={() => true}

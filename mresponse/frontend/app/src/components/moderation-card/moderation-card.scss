@@ -1,6 +1,6 @@
 @import '../../styles/main';
 
-.moderate-card {
+.moderation-card {
     width: 350px;
     height: auto;
     border-radius: 5px;
@@ -52,7 +52,7 @@
         &-comment {
             font-size: 0.8rem;
             line-height: 20px;
-            max-height: 90px;
+            height: 90px;
             overflow: hidden;
             color: $grey;
 

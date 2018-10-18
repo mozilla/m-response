@@ -18,6 +18,7 @@ export default class ModerateCard extends React.Component {
       responseDate,
       productImage,
       productName,
+      productVersion,
       androidVersion
     } = this.props
 
@@ -34,11 +35,11 @@ export default class ModerateCard extends React.Component {
           <div className='moderate-card-header-row-container'>
             <div className='moderate-card-header-row'>
               <span className='moderate-card-header-title'>{reviewAuthor}</span>
-              <span className='moderate-card-header-meta'>{androidVersion}</span>
+              <span className='moderate-card-header-meta'>Android {androidVersion}</span>
             </div>
             <div className='moderate-card-header-row'>
               <RatingStars rating={reviewRating} />
-              <span className='moderate-card-header-meta'>{productName}</span>
+              <span className='moderate-card-header-meta'>{productName} {productVersion.name}</span>
             </div>
           </div>
         </div>

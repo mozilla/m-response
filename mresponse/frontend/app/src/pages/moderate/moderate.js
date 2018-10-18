@@ -22,23 +22,23 @@ export default class ModeratePage extends React.Component {
       relevant: false,
       personal: false
     },
-    karmaAwarded: 10
+    karmaAwarded: 10,
+    messages: []
   }
 
   componentWillMount () {
-    this.props.fetchNewResponse()
+    this.props.fetchNextResponse()
   }
 
   render () {
     const {
       back,
-      review,
       response
       // nextReview
     } = this.props
     const {
       isModerating,
-      successMessage,
+      messages,
       criteria,
       karmaAwarded
     } = this.state
@@ -47,23 +47,27 @@ export default class ModeratePage extends React.Component {
       <div className='moderate-page'>
         <Toolbar title='Moderate' invertBackIcon={true} onBack={back} />
 
-        {successMessage ? (
+        {messages.map((message, index) => (
           <AlertPrompt
-            className='moderate-page-alert-prompt'
-            title={'Success'}
-            message={successMessage} />
-        ) : null}
+            key={`moderate-alert-${index}`}
+            className='respond-page-alert-prompt'
+            title={message.title}
+            message={message.text}
+            isError={message.isError} />
+        ))}
 
         <ModerateCard
-          className='moderate-page-review'
-          reviewAuthor={review.author}
-          reviewDate={review.dateSubmitted}
-          reviewText={review.text}
-          reviewRating={review.rating}
+          className='moderate-page-response'
+          reviewAuthor={response.review.author}
+          reviewDate={response.review.dateSubmitted}
+          reviewText={response.review.text}
+          reviewRating={response.review.rating}
           responseText={response.text}
-          productName={review.product.name}
-          productImage={review.product.image}
-          androidVersion={review.androidVersion}
+          responseDate={response.submittedAt}
+          productName={response.review.product.name}
+          productImage={response.review.product.image}
+          productVersion={response.review.product.version || {}}
+          androidVersion={response.review.androidVersion}
         />
 
         {isModerating ? (
@@ -153,9 +157,9 @@ export default class ModeratePage extends React.Component {
                 label='Moderate'
                 className='moderate-page-actions-moderate'
                 onClick={this.setIsModerating} />
-              <span
+              {/* <span
                 className='moderate-page-actions-skip'
-                onClick={this.props.skipReview}>Skip</span>
+                onClick={this.props.skipReview}>Skip</span> */}
             </div>
           )}
 
@@ -176,9 +180,27 @@ export default class ModeratePage extends React.Component {
 
   submitModeration = () => {
     // TODO @ REDUX STAGE: SUBMIT LOGIC...
-    console.log({
+    this.props.onModerationUpdate({
       criteria: this.state.criteria,
       karma: this.state.karmaAwarded
+    })
+    this.props.submitModeration((successMessage, err) => {
+      let message = {}
+      if (err) {
+        message = {
+          title: 'Error!',
+          text: err,
+          isError: true
+        }
+      } else {
+        message = {
+          title: 'Success',
+          text: successMessage,
+          isError: false
+        }
+      }
+      this.setState({ messages: [message, ...this.state.messages] })
+      this.refreshData()
     })
   }
 
@@ -186,8 +208,11 @@ export default class ModeratePage extends React.Component {
 
   refreshData = () => this.setState({
     isModerating: false,
-    isDoneEditing: false,
-    hasSubmitted: false,
-    response: ''
+    criteria: {
+      positive: false,
+      relevant: false,
+      personal: false
+    },
+    karmaAwarded: 10
   })
 }
