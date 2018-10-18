@@ -612,4 +612,3 @@ if env.get('BASIC_AUTH_ENABLED', 'false').lower().strip() == 'true':
         BASIC_AUTH_WHITELISTED_HTTP_HOSTS = (
             env['BASIC_AUTH_WHITELISTED_HTTP_HOSTS'].split(',')
         )
-
