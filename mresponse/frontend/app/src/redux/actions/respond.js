@@ -4,13 +4,20 @@ export const UPDATE_REVIEWS = 'UPDATE_REVIEWS'
 export const UPDATE_RESPONSE = 'UPDATE_RESPONSE'
 
 export const fetchNewReviews = () => connectApi(api => async (dispatch, getState) => {
-  const currentReview = await api.getReview()
-  // const nextReview = await api.getReview()
-  return dispatch({
-    type: UPDATE_REVIEWS,
-    currentReview
-    // nextReview
-  })
+  try {
+    const currentReview = await api.getReview()
+    // const nextReview = await api.getReview()
+    return dispatch({
+      type: UPDATE_REVIEWS,
+      currentReview
+      // nextReview
+    })
+  } catch (e) {
+    return dispatch({
+      type: UPDATE_REVIEWS,
+      currentReview: null
+    })
+  }
 })
 
 export const fetchNextReview = () => connectApi(api => async (dispatch, getState) => {
@@ -23,7 +30,7 @@ export const fetchNextReview = () => connectApi(api => async (dispatch, getState
       nextReview
     })
   } else {
-    return dispatch(fetchNewReviews(api))
+    return dispatch(fetchNewReviews())
   }
 })
 

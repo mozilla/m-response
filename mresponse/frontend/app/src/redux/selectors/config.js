@@ -1,4 +1,4 @@
-export const getAppConfig = state => state.config.appConfig || {}
+export const getAppConfig = state => state.config.appConfig || { languages: [] }
 export const getHomeConfig = state => state.config.homeConfig || {}
 
 export const getRespondQueue = state => getHomeConfig(state)['respond_queue'] || 0

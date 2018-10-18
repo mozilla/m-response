@@ -87,5 +87,4 @@ export default class Api {
       throw Error({ detail: 'An error happened!' })
     }
   }
-
 }

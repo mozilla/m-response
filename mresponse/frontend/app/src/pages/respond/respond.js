@@ -47,6 +47,7 @@ export default class RespondPage extends React.Component {
             review={review.text}
             rating={review.rating}
             productName={review.product.name}
+            productVersion={review.product.version}
             productImage={review.product.image}
             androidVersion={review.androidVersion}
           />
@@ -158,7 +159,6 @@ export default class RespondPage extends React.Component {
               isError: true
             }
           } else {
-            alert(successMessage)
             message = {
               title: 'Success',
               text: successMessage,

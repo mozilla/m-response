@@ -12,6 +12,7 @@ export default ({
   rating,
   productImage,
   productName,
+  productVersion,
   androidVersion
 }) => {
   return (
@@ -23,11 +24,11 @@ export default ({
         <div className='respond-card-header-row-container'>
           <div className='respond-card-header-row'>
             <span className='respond-card-header-title'>{author}</span>
-            <span className='respond-card-header-meta'>{androidVersion}</span>
+            <span className='respond-card-header-meta'>Android {androidVersion}</span>
           </div>
           <div className='respond-card-header-row'>
             <RatingStars rating={rating} />
-            <span className='respond-card-header-meta'>{productName}</span>
+            <span className='respond-card-header-meta'>{productName} {productVersion.name}</span>
           </div>
         </div>
       </div>

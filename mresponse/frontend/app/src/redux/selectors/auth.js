@@ -25,7 +25,6 @@ export const getProfile = state => {
     responsesCount: 0,
     moderationsCount: 0
   }
-  console.log(karma)
 
   return {
     name: meta.name,

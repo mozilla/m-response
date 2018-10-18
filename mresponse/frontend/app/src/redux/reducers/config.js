@@ -1,8 +1,8 @@
 import { UPDATE_APP_CONFIG, UPDATE_HOME_CONFIG } from '@redux/actions'
 
 const initial = {
-  appConfig: {},
-  homeConfig: {}
+  appConfig: null,
+  homeConfig: null
 }
 
 export default (state = initial, action) => {

@@ -6,16 +6,18 @@ export default class Api {
     this.token = token
   }
 
-  async fetch (path, options = {}) {
+  async fetch (path, options = {}, isPublic = false) {
     let headers = options.headers || {}
-    headers['Authorization'] = 'Bearer ' + this.token
+    if (!isPublic) {
+      headers['Authorization'] = 'Bearer ' + this.token
+    }
     options.headers = headers
 
     return fetch(`${this.baseUrl}${path}`, options)
   }
 
   async getConfig () {
-    return this.fetch(`/api/config/`)
+    return this.fetch(`/api/config/`, {}, true)
       .then(response => response.json())
   }
 
@@ -26,7 +28,6 @@ export default class Api {
 
   async getReview () {
     let response = await this.fetch(`/api/review/`)
-
     if (response.status === 200) {
       return response.json().then(json => {
         return {
@@ -52,7 +53,7 @@ export default class Api {
   }
 
   async submitResponse (reviewId, response) {
-    await this.fetch(`/api/respond/${reviewId}/`, {
+    const res = await this.fetch(`/api/response/create/${reviewId}/`, {
       method: 'POST',
       body: JSON.stringify({
         text: response
@@ -61,7 +62,7 @@ export default class Api {
         'Content-Type': 'application/json'
       }
     })
-
+    console.error(res.json())
     return { detail: 'Thank you for your effort and so making Mozilla better for all of us!' }
   }
 
