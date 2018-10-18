@@ -44,19 +44,17 @@ export default class Api {
   }
 
   async getReview () {
-    try {
-      let response = await this.fetch(`/api/review/`)
-      if (response.status === 200) {
-        return response.json().then(json => {
-          return this.serializeReview(json)
-        })
-      } else if (response.status === 404) {
-        // No review assigned to this user
-      } else if (response.status === 401) {
-        // User is not logged in
-      }
-    } catch (e) {
-      console.error(e)
+    let response = await this.fetch(`/api/review/`)
+    if (response.status === 200) {
+      return response.json().then(json => {
+        return this.serializeReview(json)
+      })
+    } else if (response.status === 404) {
+      return response.json().then(json => {
+        throw json.detail
+      })
+    } else if (response.status === 401) {
+      // User is not logged in
     }
   }
 
@@ -73,7 +71,9 @@ export default class Api {
         }
       })
     } else if (response.status === 404) {
-      // No response
+      return response.json().then(json => {
+        throw json.detail
+      })
     } else if (response.status === 401) {
       // User is not logged in
     }

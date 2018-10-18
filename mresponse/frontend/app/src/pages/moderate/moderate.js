@@ -27,7 +27,11 @@ export default class ModeratePage extends React.Component {
   }
 
   componentWillMount () {
-    this.props.fetchNextResponse()
+    this.props.fetchNextResponse((successMessage, err) => {
+      if (err) {
+        this.pushMessage(err, true)
+      }
+    })
   }
 
   render () {
@@ -56,21 +60,23 @@ export default class ModeratePage extends React.Component {
             isError={message.isError} />
         ))}
 
-        <ModerateCard
-          className='moderate-page-response'
-          reviewAuthor={response.review.author}
-          reviewDate={response.review.dateSubmitted}
-          reviewText={response.review.text}
-          reviewRating={response.review.rating}
-          responseText={response.text}
-          responseDate={response.submittedAt}
-          productName={response.review.product.name}
-          productImage={response.review.product.image}
-          productVersion={response.review.product.version || {}}
-          androidVersion={response.review.androidVersion}
-        />
+        {response ? (
+          <ModerateCard
+            className='moderate-page-response'
+            reviewAuthor={response.review.author}
+            reviewDate={response.review.dateSubmitted}
+            reviewText={response.review.text}
+            reviewRating={response.review.rating}
+            responseText={response.text}
+            responseDate={response.submittedAt}
+            productName={response.review.product.name}
+            productImage={response.review.product.image}
+            productVersion={response.review.product.version || {}}
+            androidVersion={response.review.androidVersion}
+          />
+        ) : null}
 
-        {isModerating ? (
+        {response && isModerating ? (
           <div className='moderate-page-form'>
             <div className='moderate-page-form-row'>
               <span className='moderate-page-form-row-title'>Is the response positive in tone?</span>
@@ -143,7 +149,7 @@ export default class ModeratePage extends React.Component {
           </div>
         ) : null}
 
-        {isModerating
+        {response ? isModerating
           ? (
             <div className='moderate-page-actions'>
               <Button
@@ -161,7 +167,7 @@ export default class ModeratePage extends React.Component {
                 className='moderate-page-actions-skip'
                 onClick={this.props.skipReview}>Skip</span> */}
             </div>
-          )}
+          ) : null}
 
       </div>
     )
@@ -185,26 +191,32 @@ export default class ModeratePage extends React.Component {
       karma: this.state.karmaAwarded
     })
     this.props.submitModeration((successMessage, err) => {
-      let message = {}
       if (err) {
-        message = {
-          title: 'Error!',
-          text: err,
-          isError: true
-        }
+        this.pushMessage(err, true)
       } else {
-        message = {
-          title: 'Success',
-          text: successMessage,
-          isError: false
-        }
+        this.pushMessage(successMessage)
       }
-      this.setState({ messages: [message, ...this.state.messages] })
       this.refreshData()
     })
   }
 
-  validateModeration = () => true
+  pushMessage = (text, isError = false) => {
+    let message = {}
+    if (isError) {
+      message = {
+        title: 'Error!',
+        text,
+        isError: true
+      }
+    } else {
+      message = {
+        title: 'Success',
+        text,
+        isError: false
+      }
+    }
+    this.setState({ messages: [message, ...this.state.messages] })
+  }
 
   refreshData = () => this.setState({
     isModerating: false,
