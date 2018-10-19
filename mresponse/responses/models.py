@@ -1,9 +1,11 @@
 from django.conf import settings
 from django.db import models
+from django.db.models import Count, Q
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 from mresponse.responses import query
+from mresponse.reviews.utils import reply_to_review
 
 
 class ResponseAssignedToUser(models.Model):
@@ -44,6 +46,7 @@ class Response(models.Model):
     )
     text = models.TextField()
     submitted_at = models.DateTimeField(default=timezone.now, editable=False)
+    play_store_reply_id = models.CharField(max_length=255, default='', blank=True)
 
     objects = query.ResponseQuerySet.as_manager()
 
@@ -66,3 +69,51 @@ class Response(models.Model):
         if not created:
             response_assignment.assigned_at = timezone.now()
             response_assignment.save(update_fields=('assigned_at',))
+
+    def submitted_to_play_store(self):
+        """
+        Returns True if the response has been submitted to the Play store
+        """
+        return self.play_store_reply_id != ''
+
+    def can_submit_to_play_store(self):
+        """
+        Returns True if the response satisifies the moderation criteria so
+        can be submitted to the Play store
+        """
+        # Criteria defined in https://github.com/torchbox/m-response/issues/54
+        aggs = self.moderations.aggregate(
+            total_moderations_count=Count('id'),
+            positive_in_tone_count=Count('id', filter=Q(positive_in_tone=True)),
+            addressing_the_issue_count=Count('id', filter=Q(addressing_the_issue=True)),
+            personal_count=Count('id', filter=Q(personal=True)),
+        )
+
+        if aggs['total_moderations_count'] < 3:
+            return False
+
+        if aggs['positive_in_tone_count'] < 3:
+            return False
+
+        if aggs['addressing_the_issue_count'] < 2:
+            return False
+
+        if aggs['personal_count'] < 1:
+            return False
+
+        return True
+
+    def submit_to_play_store(self):
+        """
+        Submits the response to the play store
+        """
+        if self.submitted_to_play_store():
+            raise Exception("This response has already been submitted to the Play store")
+
+        if not getattr(settings, 'PLAY_STORE_SUBMIT_REPLY_ENABLED', False):
+            return
+
+        reply = reply_to_review(self.review.application, self.review.play_store_review_id, self.text)
+
+        self.play_store_reply_id = reply['TODO']
+        self.save(update_fields=['play_store_reply_id'])
