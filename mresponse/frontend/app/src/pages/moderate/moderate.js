@@ -163,9 +163,9 @@ export default class ModeratePage extends React.Component {
                 label='Moderate'
                 className='moderate-page-actions-moderate'
                 onClick={this.setIsModerating} />
-              {/* <span
+              <span
                 className='moderate-page-actions-skip'
-                onClick={this.props.skipReview}>Skip</span> */}
+                onClick={this.props.skipModeration}>Skip</span>
             </div>
           ) : null}
 

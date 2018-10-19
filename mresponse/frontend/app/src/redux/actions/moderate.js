@@ -37,3 +37,13 @@ export const submitModeration = (cb = () => null) => connectApi(api => async (di
     cb(null, e)
   }
 })
+
+export const skipModeration = (cb = () => null) => connectApi(api => async (dispatch, getState) => {
+  const { moderate: { currentResponse } } = getState()
+  try {
+    await api.skipModeration(currentResponse.id)
+    return dispatch(fetchNextResponse(cb))
+  } catch (e) {
+    console.error(e)
+  }
+})
