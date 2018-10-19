@@ -473,6 +473,7 @@ if env.get('BASIC_AUTH_ENABLED', 'false').lower().strip() == 'true':
     # Insert basic auth as a first middleware to be checked first, before
     # anything else.
     MIDDLEWARE.insert(0, 'baipw.middleware.BasicAuthIPWhitelistMiddleware')
+    MIDDLEWARE.insert(0, 'mresponse.api.middleware.SkipBasicAuthForAPI')
 
     # This is the credentials users will have to use to access the site.
     BASIC_AUTH_LOGIN = env.get('BASIC_AUTH_LOGIN', 'mresponse')
@@ -573,6 +574,8 @@ REST_FRAMEWORK = {
     ),
 }
 
+
+# CORS headers
 CORS_ORIGIN_WHITELIST = [
     'mresponse.local:8000',
     'mresponse.local:3000',
