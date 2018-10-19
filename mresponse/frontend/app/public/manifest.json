@@ -1,0 +1,21 @@
+{
+    "name": "Mozilla: Respond",
+    "short_name": "M Respond",
+    "theme_color": "#323232",
+    "background_color": "#323232",
+    "display": "standalone",
+    "scope": "/",
+    "start_url": "/",
+    "icons": [
+      {
+        "src": "/static/media/pwa-icon.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      },
+      {
+        "src": "/static/media/pwa-icon--large.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ]
+  }
