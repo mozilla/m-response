@@ -8,7 +8,7 @@ from django.utils import timezone
 
 import pytz
 from mozapkpublisher.common.googleplay import _connect
-from mresponse.applications.models import Application
+from mresponse.applications.models import Application, ApplicationVersion
 from mresponse.reviews.models import Review
 
 logger = logging.getLogger('mresponse.reviews.fetch_reviews')
@@ -23,6 +23,8 @@ class Command(BaseCommand):
         service = _connect(settings.PLAY_ACCOUNT, settings.PLAY_CREDENTIALS_PATH)
         reviews_service = service.reviews()
         results = reviews_service.list(packageName=application.package).execute()
+
+        versions_cache = {}
 
         while results:
             time_of_last_review = None
@@ -50,6 +52,23 @@ class Command(BaseCommand):
                             int(comment['lastModified']['seconds'])
                         ), pytz.UTC)
                     }
+
+                    # Application version
+                    if 'appVersionCode' in comment:
+                        version_code = comment['appVersionCode']
+
+                        if version_code not in versions_cache:
+                            version, created = ApplicationVersion.objects.get_or_create(
+                                application=application,
+                                code=version_code,
+                                defaults={
+                                    'name': comment['appVersionName']
+                                }
+                            )
+
+                            versions_cache[version_code] = version
+
+                        kwargs['application_version'] = versions_cache[version_code]
 
                     # Stop when we reach a review that's older than one week
                     if kwargs['last_modified'] < timezone.now() - timedelta(days=7):
