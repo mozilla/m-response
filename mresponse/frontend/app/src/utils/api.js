@@ -57,7 +57,7 @@ export default class Api {
   }
 
   generateLanguageParam (languages) {
-    return `lang=${languages.reduce((a, b) => (a + ',' + b))}`
+    return `lang=${languages.split(',')}`
   }
 
   async getReview (languages, getNextReview = false) {
@@ -86,7 +86,7 @@ export default class Api {
 
   async getResponse (languages) {
     let params = '?'
-    if (languages) {
+    if (languages && languages.length) {
       params = params + this.generateLanguageParam(languages)
     }
 
