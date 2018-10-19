@@ -101,8 +101,9 @@ class SkipResponse(views.APIView):
     def post(self, *args, format=None, **kwargs):
         try:
             response_assignment = (
-                responses_models.ResponseAssignedToUser.objects.not_expired().get(
-                    user=self.request.user
+                responses_models.ResponseAssignedToUser.objects.get(
+                    user=self.request.user,
+                    response_id=kwargs['response_pk'],
                 )
             )
         except responses_models.ResponseAssignedToUser.DoesNotExist:

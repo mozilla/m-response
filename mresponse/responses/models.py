@@ -57,12 +57,12 @@ class Response(models.Model):
         ResponseAssignedToUser.objects.filter(user=user).expired().delete()
 
         # Create or get response assignment for that user.
-        response, created = ResponseAssignedToUser.objects.get_or_create(
+        response_assignment, created = ResponseAssignedToUser.objects.get_or_create(
             user=user,
             response=self,
         )
 
         # If assignment already exists, update the assignment time.
         if not created:
-            response.assigned_at = timezone.now()
-            response.save(update_fields=('assigned_at',))
+            response_assignment.assigned_at = timezone.now()
+            response_assignment.save(update_fields=('assigned_at',))
