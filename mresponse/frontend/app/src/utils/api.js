@@ -137,4 +137,8 @@ export default class Api {
   async skipReview (reviewId) {
     await this.fetch(`/api/review/skip/${reviewId}/`, { method: 'POST' })
   }
+
+  async skipModeration (modId) {
+    await this.fetch(`/api/response/skip/${modId}/`, { method: 'POST' })
+  }
 }
