@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import { push } from 'connected-react-router'
 
 import { getCurrentResponse } from '@redux/selectors'
-import { fetchNextResponse, updateCurrentModeration, submitModeration } from '@redux/actions'
+import { fetchNextResponse, updateCurrentModeration, submitModeration, skipResponse } from '@redux/actions'
 import { DASHBOARD_URL } from '@utils/urls'
 import ModeratePage from './moderate'
 
@@ -19,7 +19,8 @@ const mapDispatchToProps = (dispatch, props) => ({
     'karma_points': karma,
     'submitted_at': Date.now()
   })),
-  submitModeration: cb => dispatch(submitModeration(cb))
+  submitModeration: cb => dispatch(submitModeration(cb)),
+  skipResponse: () => dispatch(skipResponse())
 })
 
 export default connect(
