@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='review',
             name='review_language',
-            field=models.CharField(default='', max_length=5),
+            field=models.CharField(default='', max_length=5, blank=True),
             preserve_default=False,
         ),
     ]
