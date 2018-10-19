@@ -46,8 +46,8 @@ export const submitModeration = (cb = () => null) =>
     }
   )
 
-export const skipResponse = (cb = () => null) => 
-  connectApi(api => 
+export const skipResponse = (cb = () => null) =>
+  connectApi(api =>
     async (dispatch, getState) => {
       const { moderate: { currentResponse } } = getState()
       try {
