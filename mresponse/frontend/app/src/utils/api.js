@@ -56,8 +56,21 @@ export default class Api {
     }
   }
 
-  async getReview (getNextReview = false) {
-    let response = await this.fetch(getNextReview ? `/api/review/next/` : `/api/review/`)
+  generateLanguageParam (languages) {
+    return `lang=${languages.split(',')}`
+  }
+
+  async getReview (languages, getNextReview = false) {
+    let params = '?'
+    if (languages) {
+      params = params + this.generateLanguageParam(languages)
+    }
+
+    const url = getNextReview
+      ? `/api/review/next/${params}`
+      : `/api/review/${params}`
+
+    let response = await this.fetch(url)
     if (response.status === 200) {
       return response.json().then(json => {
         return this.serializeReview(json)
@@ -71,8 +84,13 @@ export default class Api {
     }
   }
 
-  async getResponse () {
-    let response = await this.fetch(`/api/response/`)
+  async getResponse (languages) {
+    let params = '?'
+    if (languages && languages.length) {
+      params = params + this.generateLanguageParam(languages)
+    }
+
+    let response = await this.fetch(`/api/response/${params}`)
     if (response.status === 200) {
       return response.json().then(json => {
         return {

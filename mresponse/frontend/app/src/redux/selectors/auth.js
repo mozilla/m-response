@@ -1,12 +1,16 @@
 import { getSupportedLanguages } from './config'
 
+export const getSpokenLanguages = state => {
+  return JSON.parse(state.auth.profile.user_metadata.languages)
+}
+
 export const getProfile = state => {
   const { profile, extraUserMeta } = state.auth
   const meta = profile.user_metadata || {
     name: '',
     languages: '[]'
   }
-  const spokenLangauges = JSON.parse(meta.languages)
+  const spokenLangauges = getSpokenLanguages(state)
 
   const languages = getSupportedLanguages(state)
     .filter(language => {
