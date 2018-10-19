@@ -9,5 +9,6 @@ urlpatterns = [
     path('response/', include('mresponse.responses.api.urls')),
     path('moderation/', include('mresponse.moderations.api.urls')),
     path('users/', include('mresponse.users.api.urls')),
+    path('images/', include('mresponse.images.api.urls', namespace='images')),
     path('homepage/', include('mresponse.homepage.api.urls')),
 ]
