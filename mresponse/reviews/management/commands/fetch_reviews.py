@@ -5,6 +5,7 @@ from django.core.management.base import BaseCommand
 from django.db import transaction
 from django.utils import timezone
 
+import pytz
 from mozapkpublisher.common.googleplay import _connect
 from mresponse.applications.models import Application
 from mresponse.reviews.models import Review
@@ -35,12 +36,12 @@ class Command(BaseCommand):
                     kwargs = {
                         'play_store_review_id': review['reviewId'],
                         'android_sdk_version': comment.get('androidOsVersion'),
-                        'author_name': review['authorName'],
+                        'author_name': review.get('authorName', ''),
                         'review_text': comment['text'],
                         'review_rating': comment['starRating'],
-                        'last_modified': datetime.fromtimestamp(
+                        'last_modified': timezone.make_aware(datetime.fromtimestamp(
                             int(comment['lastModified']['seconds'])
-                        )
+                        ), pytz.UTC)
                     }
 
                     # Stop when we reach a review that's older than one week
