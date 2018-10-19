@@ -31,7 +31,7 @@ class Review(models.Model):
         related_name='+'
     )
     review_text = models.TextField()
-    review_language = models.CharField(max_length=5, blank=True)
+    review_language = models.CharField(max_length=30, blank=True)
     review_rating = models.SmallIntegerField(choices=REVIEW_RATING_CHOICES)
     last_modified = models.DateTimeField()
     assigned_to = models.OneToOneField(
