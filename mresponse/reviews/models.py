@@ -4,6 +4,7 @@ from django.utils import timezone, translation
 from django.utils.translation import ugettext_lazy as _
 
 from mresponse.reviews import query as reviews_query
+from mresponse.utils import android as android_utils
 
 STAR_RATING_STRING = translation.ngettext_lazy('%d star', '%d stars')
 
