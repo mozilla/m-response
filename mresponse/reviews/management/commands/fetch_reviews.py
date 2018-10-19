@@ -1,3 +1,4 @@
+import logging
 from datetime import datetime, timedelta
 
 from django.conf import settings
@@ -10,17 +11,22 @@ from mozapkpublisher.common.googleplay import _connect
 from mresponse.applications.models import Application
 from mresponse.reviews.models import Review
 
+logger = logging.getLogger('mresponse.reviews.fetch_reviews')
+
 
 class Command(BaseCommand):
     help = "Fetches all available reviews from Google playstore"
 
     @transaction.atomic
     def get_reviews(self, application):
+        logger.info("Fetching new reviews for application: %s", application)
         service = _connect(settings.PLAY_ACCOUNT, settings.PLAY_CREDENTIALS_PATH)
         reviews_service = service.reviews()
         results = reviews_service.list(packageName=application.package).execute()
 
         while results:
+            time_of_last_review = None
+
             for review in results['reviews']:
                 # Reviews are returned in reverse-chronological order so this import
                 # can stop importing when it reaches a target date/time. This target is
@@ -49,10 +55,16 @@ class Command(BaseCommand):
                     if kwargs['last_modified'] < timezone.now() - timedelta(days=7):
                         return
 
-                    # TODO: Add application version
                     obj = Review(**kwargs)
                     obj.application = application
                     obj.save()
+
+                    time_of_last_review = kwargs['last_modified']
+
+            if len(results['reviews']) > 0:
+                logger.info("Fetched %d reviews (%s)", len(results['reviews']), time_of_last_review)
+            else:
+                logger.info("Fetched 0 reviews")
 
             if results['tokenPagination']['nextPageToken']:
                 nextPageToken = results['tokenPagination']['nextPageToken']
