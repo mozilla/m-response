@@ -71,6 +71,7 @@ INSTALLED_APPS = [
     'corsheaders',
 
     'mresponse.applications',
+    'mresponse.images',
     'mresponse.moderations',
     'mresponse.responses',
     'mresponse.reviews',
