@@ -4,14 +4,14 @@ from rest_framework import exceptions, generics, permissions, response, views
 
 from mresponse.reviews import models as reviews_models
 from mresponse.reviews.api import serializers as reviews_serializers
-from mresponse.utils import queryset
+from mresponse.utils import queryset as queryset_utils
 
 
 class Review(generics.RetrieveAPIView):
     """
     Get a review and assign it to user.
     """
-    queryset = reviews_models.Review.objects.unresponded().select_related(
+    queryset = reviews_models.Review.objects.responder_queue().select_related(
         'application',
         'application_version',
         'response',
@@ -24,6 +24,13 @@ class Review(generics.RetrieveAPIView):
         kwargs['show_response_url'] = True
         kwargs['show_skip_url'] = True
         return super().get_serializer(*args, **kwargs)
+
+    def get_languages_list(self):
+        try:
+            lang_list = self.request.GET['lang'].split(',')
+        except KeyError:
+            return []
+        return [l.strip() for l in lang_list if l.strip()]
 
     def choose_review_for_user(self):
         """
@@ -42,9 +49,28 @@ class Review(generics.RetrieveAPIView):
 
         # Otherwise try to elect  a review that is avaialble in the
         # queue and assign it to user.
-        review = queryset.get_random_entry(
-            self.get_queryset().responder_queue()
-        )
+        base_queryset = self.get_queryset()
+
+        # Prioritise English
+        querysets = [
+            base_queryset.languages(['en']),
+        ]
+
+        # Then prioritise users' languages
+        languages_list = self.get_languages_list()
+        if languages_list:
+            querysets.append(base_queryset.languages(languages_list))
+
+        # Then prioritise everything else
+        querysets.append(base_queryset)
+
+        for queryset in querysets:
+            review = queryset_utils.get_random_entry(
+                queryset
+            )
+            if review is not None:
+                break
+
         if review is None:
             raise exceptions.NotFound(
                 detail=_('No reviews available in the queue.')
