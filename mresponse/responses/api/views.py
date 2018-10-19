@@ -1,7 +1,7 @@
 from django.db import transaction
 from django.utils.translation import ugettext_lazy as _
 
-from rest_framework import exceptions, generics, permissions, views
+from rest_framework import exceptions, generics, permissions, response, views
 
 from mresponse.responses import models as responses_models
 from mresponse.responses.api import serializers as responses_serializers
@@ -110,3 +110,4 @@ class SkipResponse(views.APIView):
                 detail=_('User has no assigned response of this ID.')
             )
         response_assignment.delete()
+        return response.Response()
