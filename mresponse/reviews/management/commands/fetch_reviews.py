@@ -38,6 +38,7 @@ class Command(BaseCommand):
                         'android_sdk_version': comment.get('androidOsVersion'),
                         'author_name': review.get('authorName', ''),
                         'review_text': comment['text'],
+                        'review_language': comment['reviewerLanguage'],
                         'review_rating': comment['starRating'],
                         'last_modified': timezone.make_aware(datetime.fromtimestamp(
                             int(comment['lastModified']['seconds'])
