@@ -165,7 +165,7 @@ export default class ModeratePage extends React.Component {
                 onClick={this.setIsModerating} />
               <span
                 className='moderate-page-actions-skip'
-                onClick={this.props.skipModeration}>Skip</span>
+                onClick={this.props.skipResponse}>Skip</span>
             </div>
           ) : null}
 

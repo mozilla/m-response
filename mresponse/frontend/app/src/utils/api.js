@@ -57,7 +57,7 @@ export default class Api {
   }
 
   generateLanguageParam (languages) {
-    return `lang=${languages.split(',')}`
+    return `lang=${languages.join(',')}`
   }
 
   async getReview (languages, getNextReview = false) {
@@ -138,7 +138,7 @@ export default class Api {
     await this.fetch(`/api/review/skip/${reviewId}/`, { method: 'POST' })
   }
 
-  async skipModeration (modId) {
-    await this.fetch(`/api/response/skip/${modId}/`, { method: 'POST' })
+  async skipResponse (responseId) {
+    await this.fetch(`/api/response/skip/${responseId}/`, { method: 'POST' })
   }
 }
