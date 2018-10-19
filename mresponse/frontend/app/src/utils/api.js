@@ -56,8 +56,8 @@ export default class Api {
     }
   }
 
-  async getReview () {
-    let response = await this.fetch(`/api/review/`)
+  async getReview (getNextReview = false) {
+    let response = await this.fetch(getNextReview ? `/api/review/next` : `/api/review/`)
     if (response.status === 200) {
       return response.json().then(json => {
         return this.serializeReview(json)

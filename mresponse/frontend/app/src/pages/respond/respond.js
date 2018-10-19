@@ -27,8 +27,8 @@ export default class RespondPage extends React.Component {
   render () {
     const {
       back,
-      review
-      // nextReview
+      review,
+      nextReview
     } = this.props
     const { isResponding, isDoneEditing, response, messages } = this.state
 
@@ -112,18 +112,19 @@ export default class RespondPage extends React.Component {
             </div>
           ) : null}
 
-        {/* {!isResponding ? (
-            <ReviewCard
-              className='respond-page-next-review'
-              author={nextReview.author}
-              date={nextReview.lastModified}
-              review={nextReview.text}
-              rating={nextReview.rating}
-              productName={nextReview.product.name}
-              productImage={nextReview.product.image}
-              androidVersion={nextReview.androidVersion}
-            />
-          ) : null} */}
+        {nextReview && !isResponding ? (
+          <ReviewCard
+            className='respond-page-next-review'
+            author={nextReview.author}
+            date={nextReview.lastModified}
+            review={nextReview.text}
+            rating={nextReview.rating}
+            productName={nextReview.product.name}
+            productImage={nextReview.product.image}
+            productVersion={nextReview.product.version || {}}
+            androidVersion={nextReview.androidVersion}
+          />
+        ) : null}
 
       </div>
     )
@@ -151,7 +152,7 @@ export default class RespondPage extends React.Component {
   submitResponse = () => {
     const isValid = this.validateResponse()
     if (this.props.review.assignmentExpiration - Date.now() < 0) {
-      this.props.fetchNextReview()
+      this.props.fetchNewReviews()
       return null
     }
 
