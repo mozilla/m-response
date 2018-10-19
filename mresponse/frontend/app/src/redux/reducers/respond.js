@@ -10,12 +10,12 @@ export default (state = initial, action) => {
   switch (action.type) {
     case UPDATE_REVIEWS: {
       const {
-        currentReview
-        // nextReview
+        currentReview,
+        nextReview
       } = action
       return Object.assign({}, state, {
         currentReview,
-        // nextReview,
+        nextReview,
         currentReviewResponse: ''
       })
     }

@@ -5,13 +5,13 @@ export const UPDATE_RESPONSE = 'UPDATE_RESPONSE'
 
 export const fetchNewReviews = (cb = () => null) => connectApi(api => async (dispatch, getState) => {
   try {
-    const currentReview = await api.getReview()
-    // const nextReview = await api.getReview()
+    const currentReview = await api.getReview(false)
+    const nextReview = await api.getReview(true)
     cb(null, null)
     return dispatch({
       type: UPDATE_REVIEWS,
-      currentReview
-      // nextReview
+      currentReview,
+      nextReview
     })
   } catch (err) {
     cb(null, err)
@@ -25,7 +25,7 @@ export const fetchNewReviews = (cb = () => null) => connectApi(api => async (dis
 export const fetchNextReview = (cb = () => null) => connectApi(api => async (dispatch, getState) => {
   const { respond } = getState()
   if (respond.nextReview != null) {
-    const nextReview = await api.getReview()
+    const nextReview = await api.getReview(true)
     cb(null, null)
     return dispatch({
       type: UPDATE_REVIEWS,
@@ -33,7 +33,7 @@ export const fetchNextReview = (cb = () => null) => connectApi(api => async (dis
       nextReview
     })
   } else {
-    return dispatch(fetchNewReviews(cb))
+    return dispatch(fetchNewReviews())
   }
 })
 
@@ -48,7 +48,7 @@ export const submitResponse = (cb = () => null) => connectApi(api => async (disp
     if (currentReview) {
       const res = await api.submitResponse(currentReview.id, currentReviewResponse)
       cb(res.detail, null)
-      return dispatch(fetchNextReview(cb))
+      return dispatch(fetchNewReviews())
     }
   } catch (e) {
     cb(null, e)
@@ -59,7 +59,7 @@ export const skipReview = (cb = () => null) => connectApi(api => async (dispatch
   const { respond: { currentReview } } = getState()
   try {
     await api.skipReview(currentReview.id)
-    return dispatch(fetchNextReview(cb))
+    return dispatch(fetchNewReviews(cb))
   } catch (e) {
     console.error(e)
   }
