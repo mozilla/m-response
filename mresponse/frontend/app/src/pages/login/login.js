@@ -11,6 +11,7 @@ class LoginPage extends React.Component {
   constructor (props) {
     super(props)
     this.signupForm = React.createRef()
+    this.props.history.push(LOGIN_URL)
   }
 
   render () {

@@ -12,7 +12,7 @@ export default class LoginForm extends React.Component {
   render () {
     return (
       <div className="login-form">
-        <h2 className="login-form-title">Sign In</h2>
+        <h2 className="login-form-title">Log in</h2>
         <HighlightedText
           text={this.state.status}
           className="login-form-status"
@@ -52,7 +52,7 @@ export default class LoginForm extends React.Component {
           <span className="login-form-signup">
             Don't have an account yet?
             <span onClick={() => this.props.goToSignup()} className="login-form-signup-link">
-              Register
+              Sign Up
             </span>
           </span>
         </form>
