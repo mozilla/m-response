@@ -5,8 +5,9 @@
   min-height: 100vh;
   background-color: $off-white;
 
-  display: grid;
-  grid-template-rows: auto 1fr auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   padding-left: 20px;
   padding-right: 20px;
@@ -16,19 +17,19 @@
     user-select: none;
     margin: 0 auto;
     width: 6rem;
-    padding: 30px;
+    padding-top: 46px;
+    padding-bottom: 28px;
   }
 
   .page-content {
     display: flex;
-    justify-content: center;
     flex-direction: column;
     grid-row: 2;
     text-align: center;
   }
 
   .brand-container {
-    margin-bottom: 80px;
+    margin-bottom: 25px;
     .welcome-image {
       width: 200px;
     }
@@ -46,26 +47,23 @@
     }
 
     .info-desc {
-      max-width: 600px;
+      max-width: 3  00px;
       text-align: center;
-      // color: white;
+      font-family: 'Open Sans';
       font-size: 1rem;
-      margin: 20px;
+      margin-top: 8px;
     }
   }
 
   .continue-button {
-    width: 80%;
+    width: 150px;
+    height: 42px;
     max-width: 300px;
-    margin: 60px auto 0;
-    color: white;
-    font-size: 1rem;
+    margin: 39px auto 0;
   }
 
   footer {
-    grid-row: 3;
-    padding: 30px;
-    font-size: 0.9rem;
+    padding: 15px;
     text-align: center;
     .footer-link {
       cursor: pointer;

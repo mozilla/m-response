@@ -24,6 +24,8 @@ import RatingStars from '../src/components/rating-stars'
 import AlertPrompt from '../src/components/alert-prompt'
 import { staticAsset } from '../src/utils/urls'
 
+import '../src/App.scss'
+
 storiesOf('Components', module)
   .addDecorator(backgroundColor(['#24172A', '#ffffff', '#dcdde1', '#000000']))
   .add('Logo', () => <Logo />)
