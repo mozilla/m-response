@@ -2,7 +2,7 @@
 
 .form-field {
   &-outer {
-    height: 50px;
+    height: 45px;
     background-color: $grey !important;
     opacity: 0.8;
     transition: opacity 0.1s;
@@ -39,7 +39,6 @@
     padding: 0;
     background-color: transparent;
     color: black;
-    font-size: 14px;
 
     &:focus {
       color: black;
