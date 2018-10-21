@@ -43,6 +43,7 @@ export default class TagField extends React.Component {
   render () {
     const { focused } = this.state
     const { className, icon, placeholder } = this.props
+    console.log(this.state.suggestions)
     return (
       <div
         className={`tag-field-outer ${className} ${
