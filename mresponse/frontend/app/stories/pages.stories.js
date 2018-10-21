@@ -97,6 +97,7 @@ storiesOf('Pages', module)
       back={action('Go Back to dashboard')}
       editProfile={action('Go to settings page')}
       profile={profile}
+      updateKarma={() => true}
     />
   ))
   .add('Settings', () => (

@@ -2,9 +2,12 @@
 
 .profile {
   min-height: 100vh;
-  background-color: #f9f9fa;
+  background-color: #F9F9FA;
 
   &-toolbar {
+    height: auto;
+    padding-top: 35px;
+    padding-bottom: 20px;
     background-color: $grey;
     
     &-title {
@@ -18,7 +21,8 @@
     flex-direction: column;
     align-items: center;
     
-    padding-top: 20px;
+    padding-left: 18px;
+    padding-right: 18px;
     padding-bottom: 60px;
     margin-bottom: 60px;
     
@@ -27,16 +31,16 @@
     &-container {
       display: grid;
       grid-template-columns: 100px auto;
-      grid-column-gap: 20px;
+      grid-column-gap: 18px;
       width: 100%;
       max-width: 680px;
     }
 
-    &-avatar {      
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto;
+    &-avatar {     
+      height: 80px;
+      width: 80px; 
+      border: 2px solid white;
+      border-radius: 6px;
     }
 
     &-meta {
@@ -44,14 +48,15 @@
       flex-direction: column;
 
       &-name {
-        font-size: 1.2rem;
-        font-weight: 600;
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-top: 10px;
         margin-bottom: 10px;
         color: white;
       }
   
       &-languages {
-        color: $light-grey;
+        color: #b1b1b3;
         font-size: 0.8rem;
         display: flex;
         align-items: center;
@@ -63,11 +68,11 @@
     }
 
     &-karma {
+      height: 62px;
       position: absolute;
       top: calc(100% - 30px);
-      left: 10px;
-      right: 10px;
-      height: 60px;
+      left: 18px;
+      right: 18px;
       margin: 0 auto;
       max-width: 680px;
 
@@ -78,7 +83,7 @@
       
       background-color: white;
       box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-      border-radius: 5px;
+      border-radius: 4px;
   
       &-group {
         flex: 1;
@@ -89,16 +94,16 @@
         &-value {
           color: white;
           font-weight: 600;
-          font-size: 0.8rem;
+          font-size: 0.9rem;
           margin-bottom: 5px;
           // background-color: $blue;
-          padding: 2px 8px 4px 8px;
+          padding: 6px 25px 6px 25px;
           border-radius: 100px;
         }
   
         &-label {
-          color: $grey;
-          font-size: 0.7rem;
+          color: $light-grey;
+          font-size: 11px;
         }
 
         &:nth-of-type(1) {
@@ -119,6 +124,10 @@
           }
         }
 
+      }
+
+      &-seperator {
+        color: rgba(151, 151, 151, 0.3);
       }
     }
 
@@ -145,15 +154,16 @@
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 20px;
+    bottom: 75px;
     margin: 0 auto;
     width: 140px;
+    height: 42px;
 
     color: black;
     font-weight: 700;
     background-color: transparent;
     border: 2px solid $grey;
-    font-size: 15px;
+    font-size: 14px;
   }
 
   &-response-history {
