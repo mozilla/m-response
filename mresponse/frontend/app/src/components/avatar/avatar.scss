@@ -34,15 +34,15 @@
 
   &-karma {
     position: absolute;
-    bottom: -10px;
-    right: 40px;
+    bottom: 0px;
+    right: 39px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 
     height: 25px;
     min-width: 40px;
-    background-color: black;
+    background-image: linear-gradient(to bottom, #292929, black);
     border-radius: 25px;
 
     &-icon {
