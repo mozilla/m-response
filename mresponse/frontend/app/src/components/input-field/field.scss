@@ -3,10 +3,10 @@
 .form-field {
   &-outer {
     height: 45px;
-    background-color: $grey !important;
+    background-color: $light-grey  !important;
     opacity: 0.8;
     transition: opacity 0.1s;
-    border-bottom: 1px solid $grey;
+    border-bottom: 1px solid $light-grey;
 
     &--shifted {
       opacity: 1;
@@ -47,6 +47,10 @@
     &::placeholder {
       color: #adadad;
       opacity: 1;
+    }
+
+    &:invalid {
+      box-shadow: none !important;
     }
   }
 }

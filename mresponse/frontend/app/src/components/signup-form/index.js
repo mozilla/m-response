@@ -9,7 +9,7 @@ import Button from '@components/buttons'
 export default class SignUpForm extends React.Component {
   status = {
     name: "Welcome! What's your name?",
-    email: "Awesome! and what's your email address?",
+    email: 'Almost done! Enter your email and create a password.',
     password: 'Cool! and what password would you like to use?',
     passwordConfirm: 'Nearly There! Enter the password again.',
     incorrectConfirm: "Oops! Your passwords don't match",
@@ -18,7 +18,7 @@ export default class SignUpForm extends React.Component {
     passwordNoNumber: 'Oops! Your password must contain at least one number',
     invalidLanguagesCount: 'Sorry! You need to know at least one language.',
     languages:
-      'Nice! Now, What language(s) can communicate in, or rather respond best in?'
+      'Nice! What language(s) can you read and write?'
   }
 
   state = {
@@ -33,7 +33,7 @@ export default class SignUpForm extends React.Component {
 
   render () {
     const {
-      title,
+      subtitle,
       fields,
       canContinue,
       validate,
@@ -52,7 +52,9 @@ export default class SignUpForm extends React.Component {
     }
     return (
       <div className="signup-form">
-        <h2 className="signup-form-title">{title}</h2>
+        <h2 className="signup-form-title">Sign Up</h2>
+        <span className="signup-form-subtitle">{subtitle}</span>
+
         <HighlightedText
           text={this.state.status}
           className="signup-form-status"
@@ -75,7 +77,7 @@ export default class SignUpForm extends React.Component {
     [
       {
         prepare: () => this.setStatus(this.status.name),
-        title: 'Signup - Step 1/3',
+        subtitle: '1 of 3',
         fields: (
           <React.Fragment>
             <InputField
@@ -93,12 +95,12 @@ export default class SignUpForm extends React.Component {
       },
       {
         prepare: () => this.setStatus(this.status.languages),
-        title: 'Signup - Step 2/3',
+        subtitle: '2 of 3',
         fields: (
           <React.Fragment>
             <TagField
               className="signup-form-field"
-              placeholder="Enter your languages"
+              placeholder="Language"
               suggestions={this.props.supportedLanguages || []}
               onChange={languages => this.setState({ languages })}
             />
@@ -117,7 +119,7 @@ export default class SignUpForm extends React.Component {
       },
       {
         prepare: () => this.setStatus(this.status.email),
-        title: 'Signup - Step 3/3',
+        subtitle: '3 of 3',
         fields: (
           <React.Fragment>
             <InputField
@@ -195,7 +197,7 @@ export default class SignUpForm extends React.Component {
 
           return true
         },
-        buttonText: 'Create Account',
+        buttonText: 'Finish',
         buttonPress: () =>
           this.props.createAccount({
             email: this.state.email,

@@ -75,6 +75,12 @@ storiesOf('Pages', module)
       login={action('Login')}
       createAccount={action('Create Account')}
       forgotPassword={action('Forgot Password')}
+      supportedLanguages={[
+        { id: 'EN', text: 'English' },
+        { id: 'ES', text: 'Spanish' },
+        { id: 'FR', text: 'French' },
+        { id: 'RU', text: 'Russian' }
+      ]}
     />
   ))
   .add('Home', () => (
