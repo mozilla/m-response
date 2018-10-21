@@ -89,7 +89,7 @@ storiesOf('Pages', module)
       updateAppConfig={() => null}
       updateHomeConfig={() => null}
       respondQueue={2000}
-      moderateQueue={1000} 
+      moderateQueue={1000}
       updateKarma={() => true}
     />
   ))
