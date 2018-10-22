@@ -3,27 +3,30 @@
 .alert-prompt {
     width: 350px;
     height: auto;
-    border-radius: 5px;
+    border-radius: 4px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     border-top: 4px solid  #3ada75;
     background-color: white;
-    padding: 15px;
+    padding: 12px;
 
     &-header {
         position: relative;
-        height: 40px;
+        height: 25px;
 
         &-title {
             position: absolute;
+            top: -3px;
             left: 0;
             right: 0;
-            margin: 0 auto;
+            margin: auto;
 
             display: flex;
             align-items: center;
             text-align: center;
             justify-content: center;
-            font-weight: 600;
+            font-weight: 700;
+            font-size: 14px;
+            line-height: 22px;
             color: $grey;
 
             &-icon {
@@ -35,17 +38,18 @@
 
         &-close {
             position: absolute;
-            top: 3px;
-            right: 5px;
-            height: 12px;
-            width: 12px;
+            top: 0px;
+            right: 6px;
+            height: 14px;
+            width: 14px;
             cursor: pointer;
         }
     }
 
     &-message {
         color: $grey;
-        font-size: 0.9rem;
+        font-size: 14px;
+        line-height: 24px;
     }
 
     &--dismissed {

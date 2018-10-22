@@ -36,10 +36,10 @@
   background-color: white;
   color: $grey;
 
-  font-size: 1rem;
+  font-size: 14px;
   font-weight: 500;
 
-  border: 2px solid #dcdbdf;
+  border: 1px solid #dcdbdf;
   border-radius: 3px;
   user-select: none;
   cursor: pointer;
@@ -51,7 +51,7 @@
   }
 
   &--toggled {
-    border: 3px solid $blue;
+    border: 2px solid $blue;
     color: $blue;
   }
 

@@ -3,9 +3,9 @@
 .moderate-card {
     width: 350px;
     height: auto;
-    border-radius: 5px;
+    border-radius: 4px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    border-top: 4px solid $blue;
+    border-top: 2px solid $blue;
     background-color: white;
     padding: 15px;
 
@@ -15,9 +15,10 @@
         justify-content: flex-start;
 
         &-image {
-            height: 25px;
-            width: 25px;
-            margin-right: 15px;
+            height: 40px;
+            width: 40px;
+            margin-right: 11px;
+            margin-bottom: 6px;
         }
 
         &-row-container {
@@ -29,17 +30,18 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 3px;
+            margin-bottom: 2px;
         }
 
         &-title {
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 12px;
+            line-height: 18px;
             color: $grey;
         }
 
         &-meta {
-            font-size: 8pt;
+            font-size: 12px;
             color: $light-grey;
         }
 
@@ -47,14 +49,21 @@
 
     &-review {
         padding-bottom: 10px;
-        border-bottom: 2px solid $light-grey;
+        border-bottom: 1px solid #d7d7db;
 
         &-comment {
-            font-size: 0.8rem;
-            line-height: 20px;
             max-height: 90px;
             overflow: hidden;
+            font-size: 14px;
+            line-height: 24px;
             color: $grey;
+            margin-top: 11px;
+            margin-bottom: 7px;
+
+            &-text {
+                padding: 0;
+                margin: 0;
+            }
 
             &--expanded {
                 height: auto;
@@ -62,14 +71,13 @@
         }
     
         &-footer {
-            font-size: 14px;
+            font-size: 12px;
             // padding-top: 10px;
             padding-bottom: 15px;
     
             &-date {
                 float: left;
                 font-weight: 500;
-                font-size: 0.7rem;
                 color: $light-grey;
             }
         }
@@ -77,26 +85,27 @@
 
     &-response {
         padding-top: 10px;
+        font-size: 14px;
         
         &-title {
-            font-size: 0.8rem;
-            font-weight: 600;
+            font-weight: 700;
             color: $grey;
         }
 
         &-comment {
-            font-size: 0.8rem;
-            line-height: 20px;
+            padding: 0;
+            margin: 0;
+            margin-top: 3px;
+            margin-bottom: 5px;
+            line-height: 24px;
         }
     
         &-footer {
-            font-size: 14px;
+            font-size: 12px;
             padding-bottom: 15px;
     
             &-date {
                 float: left;
-                font-weight: 500;
-                font-size: 0.7rem;
                 color: $light-grey;
             }
         }
