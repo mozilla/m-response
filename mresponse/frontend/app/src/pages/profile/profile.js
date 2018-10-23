@@ -11,6 +11,13 @@ import { staticAsset } from '@utils/urls'
 import './profile.scss'
 
 export default class ProfilePage extends React.Component {
+  state = { pictureUpload: null, picture: this.props.profile.picture }
+
+  constructor (props) {
+    super(props)
+    this.avatarUploadField = React.createRef()
+  }
+
   componentDidMount () {
     this.props.updateKarma()
   }
@@ -19,7 +26,6 @@ export default class ProfilePage extends React.Component {
     const {
       profile: {
         name,
-        picture,
         karma,
         languages
       },
@@ -39,7 +45,23 @@ export default class ProfilePage extends React.Component {
         <section className='profile-header'>
           <div className='profile-header-container'>
             <div className="profile-header-avatar">
-              <Avatar src={picture || ''} />
+              <Avatar
+                src={this.state.picture || ''}
+                onClick={() => this.avatarUploadField.current.click()}
+                editable/>
+              <input
+                ref={this.avatarUploadField}
+                id="file-input"
+                type="file"
+                name="avatar"
+                style={{ display: 'none' }}
+                accept="image/*"
+                onClick={event => {
+                  event.target.value = null
+                }}
+                onInput={event => this.handleFileUpload(event)}
+              />
+
             </div>
 
             <div className="profile-header-meta">
@@ -110,6 +132,17 @@ export default class ProfilePage extends React.Component {
 
       </div>
     )
+  }
+
+  handleFileUpload = event => {
+    const file = event.target.files[0]
+    this.props.uploadAvatar(file)
+    this.setState({ pictureUpload: file })
+    const reader = new FileReader()
+    reader.onload = event => {
+      this.setState({ picture: event.target.result })
+    }
+    reader.readAsDataURL(file)
   }
 }
 

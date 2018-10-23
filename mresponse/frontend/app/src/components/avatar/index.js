@@ -12,7 +12,7 @@ const Avatar = ({ src, coverIcon, className = '', editable, onClick, karma }) =>
         <div className="avatar-cover" onClick={onClick}>
           <img
             className="avatar-cover-icon"
-            src={coverIcon || staticAsset('media/icons/camera.svg')}
+            src={coverIcon || staticAsset('media/icons/change-avatar.svg')}
             alt=''
           />
         </div>

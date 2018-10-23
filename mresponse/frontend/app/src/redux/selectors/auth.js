@@ -1,3 +1,4 @@
+import { BASE_URL } from '@utils/urls'
 import { getSupportedLanguages } from './config'
 
 export const getSpokenLanguages = state => {
@@ -31,8 +32,9 @@ export const getProfile = state => {
   }
 
   return {
+    id: profile.user_id,
     name: meta.name,
-    picture: profile.picture,
+    picture: `${BASE_URL}${meta.picture}` || profile.picture,
     email: profile.email,
     languages,
     karma
