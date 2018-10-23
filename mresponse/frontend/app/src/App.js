@@ -10,6 +10,7 @@ import ProfilePage from '@pages/profile'
 import SettingsPage from '@pages/settings'
 import RespondPage from '@pages/respond'
 import ModeratePage from '@pages/moderate'
+import NotFoundPage from '@pages/notfound'
 
 import createStore from '@redux/store'
 import { updateAppConfig } from '@redux/actions'
@@ -69,6 +70,9 @@ class App extends Component {
                 path={MODERATE_URL}
                 redirect={WELCOME_URL}
                 component={ModeratePage}
+              />
+              <Route
+                component={props => <NotFoundPage isAuthenticated={store.getState().auth.isAuthenticated} {...props} />}
               />
             </Switch>
           </ConnectedRouter>
