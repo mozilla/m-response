@@ -1,6 +1,9 @@
 @import '../../styles/main';
 
 .settings {
+  display: grid;
+  grid-template-rows: 1fr auto;
+
   min-height: 100vh;
   background-color: $off-white;
 
@@ -11,10 +14,8 @@
       text-align: center;
       cursor: pointer;
       font-weight: 700;
-      
-      &:hover {
-        text-decoration: underline;
-      }
+      font-size: 14px;
+      text-decoration: underline;
     }
 
     &-title {
@@ -79,6 +80,7 @@
     flex-direction: column;
     margin: 20px auto 0;
     max-width: 800px;
+    padding-bottom: 130px;
 
     &-status {
       margin-bottom: 20px;
@@ -90,10 +92,11 @@
     }
 
     &-row {
-      width: 100%;
       display: flex;
       align-items: center;
       margin-bottom: 10px;
+      padding-left: 24px;
+      padding-right: 24px;
       
       &-input {
         flex: 1;
@@ -106,18 +109,18 @@
 
         display: flex;
         align-items: center;
-        padding-left: 10px;
-        font-size: 0.8rem;
         font-weight: 700;
       }
     }
   }
 
   &-logout-button {
+    grid-row: 2;
     position: absolute;
+    top: -90px;
     left: 0;
     right: 0;
-    bottom: 80px;
+
     margin: 0 auto;
     width: 140px;
 
@@ -129,16 +132,13 @@
   }
 
   &-change-pass-button {
-    font-size: 0.75rem;
+    font-size: 12px;
     height: 35px;
   }
 
   &-footer {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    
+    grid-row: 2;
+    position: relative;
     height: 60px;
     background-color: #f2f2f2;
 
@@ -156,7 +156,6 @@
         width: 100%;
         text-align: center;
         color: $grey;
-        font-size: 0.8rem;
       }
     }
 

@@ -18,78 +18,79 @@ export default class SettingsPage extends React.Component {
   render () {
     return (
       <div className="settings">
-        <Toolbar
-          title="Edit Profile"
-          rightComponent={
-            <span
-              className="settings-toolbar-done-link"
-              onClick={() => this.saveProfile()}
-            >
-              Done
-            </span>
-          }
-          backArrowClassName='settings-toolbar-back-link'
-          onBack={this.props.back}
-        />
-
-        <section className="settings-form">
-          <HighlightedText
-            text={this.state.status}
-            className="settings-form-status"
-            textClassName="settings-form-status-text"
+        <div className="settings-content">
+          <Toolbar
+            title="Edit Profile"
+            rightComponent={
+              <span
+                className="settings-toolbar-done-link"
+                onClick={() => this.saveProfile()}
+              >
+                Done
+              </span>
+            }
+            backArrowClassName='settings-toolbar-back-link'
+            onBack={this.props.back}
           />
-          <div className="settings-form-row">
-            <span className="settings-form-row-label">Name</span>
-            <InputField
-              key="name-field"
-              className="settings-form-row-input"
-              placeholder="Name"
-              type="text"
-              value={this.state.name}
-              onChange={event => this.setState({ name: event.target.value })}
+
+          <section className="settings-form">
+            <HighlightedText
+              text={this.state.status}
+              className="settings-form-status"
+              textClassName="settings-form-status-text"
             />
-          </div>
+            <div className="settings-form-row">
+              <span className="settings-form-row-label">Name</span>
+              <InputField
+                key="name-field"
+                className="settings-form-row-input"
+                placeholder="Name"
+                type="text"
+                value={this.state.name}
+                onChange={event => this.setState({ name: event.target.value })}
+              />
+            </div>
 
-          <div className="settings-form-row">
-            <span className="settings-form-row-label">Email</span>
-            <InputField
-              key="email-field"
-              className="settings-form-row-input"
-              placeholder="Email"
-              type="email"
-              value={this.state.email}
-              disabled={true}
-              onChange={event => this.setState({ email: event.target.value })}
-            />
-          </div>
+            <div className="settings-form-row">
+              <span className="settings-form-row-label">Email</span>
+              <InputField
+                key="email-field"
+                className="settings-form-row-input"
+                placeholder="Email"
+                type="email"
+                value={this.state.email}
+                disabled={true}
+                onChange={event => this.setState({ email: event.target.value })}
+              />
+            </div>
 
-          <div className="settings-form-row">
-            <span className="settings-form-row-label">Languages</span>
-            <TagField
-              key="languages-field"
-              className="settings-form-row-input"
-              placeholder="Enter your languages"
-              tags={this.state.languages}
-              onChange={languages => this.setState({ languages })}
-              suggestions={this.props.supportedLanguages || []}
-            />
-          </div>
+            <div className="settings-form-row">
+              <span className="settings-form-row-label">Languages</span>
+              <TagField
+                key="languages-field"
+                className="settings-form-row-input"
+                placeholder="Enter your languages"
+                tags={this.state.languages}
+                onChange={languages => this.setState({ languages })}
+                suggestions={this.props.supportedLanguages || []}
+              />
+            </div>
 
-          <div className="settings-form-row">
-            <span className="settings-form-row-label">Password</span>
-            <Button
-              className='settings-change-pass-button'
-              label='Reset Password'
-              onClick={this.resetPass} />
-          </div>
-        </section>
-
-        <Button
-          className='settings-logout-button'
-          label='Log Out'
-          onClick={this.props.logout} />
+            <div className="settings-form-row">
+              <span className="settings-form-row-label">Password</span>
+              <Button
+                className='settings-change-pass-button'
+                label='Reset Password'
+                onClick={this.resetPass} />
+            </div>
+          </section>
+        </div>
 
         <footer className='settings-footer'>
+          <Button
+            className='settings-logout-button'
+            label='Log Out'
+            onClick={this.props.logout} />
           <div className='settings-footer-inner'>
             <a target='_blank' href={this.props.legalUrl} className='settings-footer-inner-link'>Legal</a>
             <a target='_blank' href={this.props.privacyUrl} className='settings-footer-inner-link'>Privacy</a>
