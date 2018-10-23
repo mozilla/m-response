@@ -49,103 +49,113 @@ export default class ModeratePage extends React.Component {
 
     return (
       <div className='moderate-page'>
-        <Toolbar title='Moderate' invertBackIcon={true} onBack={back} />
+        <Toolbar
+          className='moderate-page-toolbar'
+          title='Moderate'
+          invertBackIcon={true}
+          onBack={back} />
 
         {messages.map((message, index) => (
-          <AlertPrompt
-            key={`moderate-alert-${index}`}
-            className='respond-page-alert-prompt'
-            title={message.title}
-            message={message.text}
-            isError={message.isError} />
+          <div className='moderate-page-container'>
+            <AlertPrompt
+              key={`moderate-alert-${index}`}
+              className='respond-page-alert-prompt'
+              title={message.title}
+              message={message.text}
+              isError={message.isError} />
+          </div>
         ))}
 
         {response ? (
-          <ModerateCard
-            className='moderate-page-response'
-            reviewAuthor={response.review.author}
-            reviewDate={response.review.dateSubmitted}
-            reviewText={response.review.text}
-            reviewRating={response.review.rating}
-            responseText={response.text}
-            responseDate={response.submittedAt}
-            productName={response.review.product.name}
-            productImage={response.review.product.image}
-            productVersion={response.review.product.version || {}}
-            androidVersion={response.review.androidVersion}
-          />
+          <div className='moderate-page-container'>
+            <ModerateCard
+              className='moderate-page-response'
+              reviewAuthor={response.review.author}
+              reviewDate={response.review.dateSubmitted}
+              reviewText={response.review.text}
+              reviewRating={response.review.rating}
+              responseText={response.text}
+              responseDate={response.submittedAt}
+              productName={response.review.product.name}
+              productImage={response.review.product.image}
+              productVersion={response.review.product.version || {}}
+              androidVersion={response.review.androidVersion}
+            />
+          </div>
         ) : null}
 
         {response && isModerating ? (
-          <div className='moderate-page-form'>
-            <div className='moderate-page-form-row'>
-              <span className='moderate-page-form-row-title'>Is the response positive in tone?</span>
-              <div className='moderate-page-form-row-buttons'>
-                <ToggleButton
-                  label="Yes!"
-                  toggled={criteria.positive === true}
-                  onClick={() => this.toggleCriteria('positive')}
-                  icon={staticAsset('media/icons/smile.svg')} />
-                <ToggleButton
-                  label="Not Really"
-                  toggled={criteria.positive === false}
-                  onClick={() => this.toggleCriteria('positive')}
-                  icon={staticAsset('media/icons/sad.svg')} />
+          <div className='moderate-page-container'>
+            <div className='moderate-page-form'>
+              <div className='moderate-page-form-row'>
+                <span className='moderate-page-form-row-title'>Is the response positive in tone?</span>
+                <div className='moderate-page-form-row-buttons'>
+                  <ToggleButton
+                    label="Yes!"
+                    toggled={criteria.positive === true}
+                    onClick={() => this.toggleCriteria('positive')}
+                    icon={staticAsset('media/icons/smile.svg')} />
+                  <ToggleButton
+                    label="Not Really"
+                    toggled={criteria.positive === false}
+                    onClick={() => this.toggleCriteria('positive')}
+                    icon={staticAsset('media/icons/sad.svg')} />
+                </div>
               </div>
-            </div>
 
-            <div className='moderate-page-form-row'>
-              <span className='moderate-page-form-row-title'>Does the response address the issue?</span>
-              <div className='moderate-page-form-row-buttons'>
-                <ToggleButton
-                  label="Yes!"
-                  toggled={criteria.relevant === true}
-                  onClick={() => this.toggleCriteria('relevant')}
-                  icon={staticAsset('media/icons/smile.svg')} />
-                <ToggleButton
-                  label="Not Really"
-                  toggled={criteria.relevant === false}
-                  onClick={() => this.toggleCriteria('relevant')}
-                  icon={staticAsset('media/icons/sad.svg')} />
+              <div className='moderate-page-form-row'>
+                <span className='moderate-page-form-row-title'>Does the response address the issue?</span>
+                <div className='moderate-page-form-row-buttons'>
+                  <ToggleButton
+                    label="Yes!"
+                    toggled={criteria.relevant === true}
+                    onClick={() => this.toggleCriteria('relevant')}
+                    icon={staticAsset('media/icons/smile.svg')} />
+                  <ToggleButton
+                    label="Not Really"
+                    toggled={criteria.relevant === false}
+                    onClick={() => this.toggleCriteria('relevant')}
+                    icon={staticAsset('media/icons/sad.svg')} />
+                </div>
               </div>
-            </div>
 
-            <div className='moderate-page-form-row'>
-              <span className='moderate-page-form-row-title'>Is the response personal?</span>
-              <div className='moderate-page-form-row-buttons'>
-                <ToggleButton
-                  label="Yes!"
-                  toggled={criteria.personal === true}
-                  onClick={() => this.toggleCriteria('personal')}
-                  icon={staticAsset('media/icons/smile.svg')} />
-                <ToggleButton
-                  label="Not Really"
-                  toggled={criteria.personal === false}
-                  onClick={() => this.toggleCriteria('personal')}
-                  icon={staticAsset('media/icons/sad.svg')} />
+              <div className='moderate-page-form-row'>
+                <span className='moderate-page-form-row-title'>Is the response personal?</span>
+                <div className='moderate-page-form-row-buttons'>
+                  <ToggleButton
+                    label="Yes!"
+                    toggled={criteria.personal === true}
+                    onClick={() => this.toggleCriteria('personal')}
+                    icon={staticAsset('media/icons/smile.svg')} />
+                  <ToggleButton
+                    label="Not Really"
+                    toggled={criteria.personal === false}
+                    onClick={() => this.toggleCriteria('personal')}
+                    icon={staticAsset('media/icons/sad.svg')} />
+                </div>
               </div>
-            </div>
 
-            <div className='moderate-page-form-row'>
-              <span className='moderate-page-form-row-title'>Reward Responder:</span>
-              <div className='moderate-page-form-row-karma'>
-                <span className='moderate-page-form-row-karma-label'>{karmaAwarded} Karma</span>
-                <Slider
-                  min={0}
-                  max={20}
-                  defaultValue={karmaAwarded}
-                  onChange={val => this.setState({ karmaAwarded: val })}
-                  className='moderate-page-form-row-karma-slider'
-                  handleStyle={{
-                    border: 'solid 2px black',
-                    backgroundColor: 'black'
-                  }}
-                  trackStyle={{
-                    backgroundColor: 'black'
-                  }} />
+              <div className='moderate-page-form-row'>
+                <span className='moderate-page-form-row-title'>Reward Responder:</span>
+                <div className='moderate-page-form-row-karma'>
+                  <span className='moderate-page-form-row-karma-label'>{karmaAwarded} Karma</span>
+                  <Slider
+                    min={0}
+                    max={20}
+                    defaultValue={karmaAwarded}
+                    onChange={val => this.setState({ karmaAwarded: val })}
+                    className='moderate-page-form-row-karma-slider'
+                    handleStyle={{
+                      border: 'solid 2px black',
+                      backgroundColor: 'black'
+                    }}
+                    trackStyle={{
+                      backgroundColor: 'black'
+                    }} />
+                </div>
               </div>
-            </div>
 
+            </div>
           </div>
         ) : null}
 
@@ -153,7 +163,7 @@ export default class ModeratePage extends React.Component {
           ? (
             <div className='moderate-page-actions'>
               <Button
-                label='Submit Moderation'
+                label='Submit'
                 className='moderate-page-actions-moderate'
                 onClick={this.submitModeration} />
             </div>

@@ -38,7 +38,7 @@ export const submitModeration = (cb = () => null) =>
         if (currentResponse) {
           const res = await api.submitModeration(currentResponse.id, currentResponseModeration)
           cb(res.detail, null)
-          return dispatch(fetchNextResponse(cb))
+          return dispatch(fetchNextResponse())
         }
       } catch (e) {
         cb(null, e)
@@ -52,7 +52,7 @@ export const skipResponse = (cb = () => null) =>
       const { moderate: { currentResponse } } = getState()
       try {
         await api.skipResponse(currentResponse.id)
-        return dispatch(fetchNextResponse(cb))
+        return dispatch(fetchNextResponse())
       } catch (e) {
         console.error(e)
       }

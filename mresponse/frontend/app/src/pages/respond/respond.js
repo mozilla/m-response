@@ -34,7 +34,11 @@ export default class RespondPage extends React.Component {
 
     return (
       <div className='respond-page'>
-        <Toolbar title='Respond' invertBackIcon={true} onBack={back} />
+        <Toolbar
+          className='respond-page-toolbar'
+          title='Respond'
+          invertBackIcon={true}
+          onBack={back} />
 
         {messages.map(message => (
           <AlertPrompt
@@ -45,17 +49,19 @@ export default class RespondPage extends React.Component {
         ))}
 
         {review ? (
-          <ReviewCard
-            className='respond-page-review'
-            author={review.author}
-            date={review.lastModified}
-            review={review.text}
-            rating={review.rating}
-            productName={review.product.name}
-            productVersion={review.product.version || {}}
-            productImage={review.product.image}
-            androidVersion={review.androidVersion}
-          />
+          <div className='respond-page-container'>
+            <ReviewCard
+              className='respond-page-review'
+              author={review.author}
+              date={review.lastModified}
+              review={review.text}
+              rating={review.rating}
+              productName={review.product.name}
+              productVersion={review.product.version || {}}
+              productImage={review.product.image}
+              androidVersion={review.androidVersion}
+            />
+          </div>
         ) : null}
 
         {review && isResponding && !isDoneEditing ? (
@@ -83,9 +89,11 @@ export default class RespondPage extends React.Component {
         ) : null}
 
         {review && isResponding & isDoneEditing ? (
-          <div className='respond-page-preview-response'>
-            <span className='respond-page-preview-response-caption'>Your Response</span>
-            <p className='respond-page-preview-response-content'>{response}</p>
+          <div className='respond-page-container'>
+            <div className='respond-page-preview-response'>
+              <span className='respond-page-preview-response-caption'>Your Response</span>
+              <p className='respond-page-preview-response-content'>{response}</p>
+            </div>
           </div>
         ) : null}
 
@@ -94,7 +102,7 @@ export default class RespondPage extends React.Component {
             <div className='respond-page-actions'>
               <Button
                 label='Submit for Moderation'
-                className='respond-page-actions-respond'
+                className='respond-page-actions-submit'
                 onClick={this.submitResponse} />
               <span
                 className='respond-page-actions-skip'
@@ -113,17 +121,19 @@ export default class RespondPage extends React.Component {
           ) : null}
 
         {nextReview && !isResponding ? (
-          <ReviewCard
-            className='respond-page-next-review'
-            author={nextReview.author}
-            date={nextReview.lastModified}
-            review={nextReview.text}
-            rating={nextReview.rating}
-            productName={nextReview.product.name}
-            productImage={nextReview.product.image}
-            productVersion={nextReview.product.version || {}}
-            androidVersion={nextReview.androidVersion}
-          />
+          <div className='respond-page-container'>
+            <ReviewCard
+              className='respond-page-next-review'
+              author={nextReview.author}
+              date={nextReview.lastModified}
+              review={nextReview.text}
+              rating={nextReview.rating}
+              productName={nextReview.product.name}
+              productImage={nextReview.product.image}
+              productVersion={nextReview.product.version || {}}
+              androidVersion={nextReview.androidVersion}
+            />
+          </div>
         ) : null}
 
       </div>
