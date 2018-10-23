@@ -51,3 +51,20 @@ class ReviewQuerySet(models.QuerySet):
         if user is not None:
             qs = qs | self.assigned_to_user(user)
         return qs
+
+    def language_q(self, language_string):
+        return models.Q(
+            review_language__istartswith=f'{language_string}_'
+        ) | models.Q(
+            review_language__istartswith=f'{language_string}-'
+        ) | models.Q(
+            review_language__iexact=language_string
+        )
+
+    def languages(self, languages_list):
+        if not languages_list:
+            raise ValueError('must provide at least one language')
+        q = models.Q()
+        for lang in languages_list:
+            q |= self.language_q(lang)
+        return self.filter(q)
