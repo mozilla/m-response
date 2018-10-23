@@ -1,8 +1,8 @@
 import { push } from 'connected-react-router'
 import { LOGIN_URL, DASHBOARD_URL, LOGOUT_URL } from '@utils/urls'
 import { connectApi } from '@redux/util/api-wrapper'
-
 import Auth from '@utils/auth'
+
 const auth = new Auth()
 
 export const LOGIN_ATTEMPT = 'LOGIN_ATTEMPT'
@@ -123,11 +123,33 @@ export const updateExtraUserMeta = meta => ({
   meta
 })
 
-export const fetchExtraUserMeta = () => connectApi(api => async (dispatch) => {
-  try {
-    const meta = await api.getExtraUserMeta()
-    return dispatch(updateExtraUserMeta(meta))
-  } catch (err) {
-    return dispatch(loginError(err))
+export const fetchExtraUserMeta = () => connectApi(api =>
+  async (dispatch) => {
+    try {
+      const meta = await api.getExtraUserMeta()
+      return dispatch(updateExtraUserMeta(meta))
+    } catch (err) {
+      return dispatch(loginError(err))
+    }
   }
-})
+)
+
+export const uploadAvatar = file => connectApi(api =>
+  async (dispatch, getState) => {
+    const state = getState()
+    const { auth: { token, profile } } = state
+    try {
+      const picture = await api.uploadAvatar(file)
+      const updatedProfile = await auth.updateUserMetadata(profile.user_id, token, {
+        ...profile.user_metadata,
+        picture
+      })
+      return dispatch({
+        type: SET_PROFILE,
+        profile: updatedProfile
+      })
+    } catch (e) {
+      console.error(e)
+    }
+  }
+)

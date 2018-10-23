@@ -141,4 +141,14 @@ export default class Api {
   async skipResponse (responseId) {
     await this.fetch(`/api/response/skip/${responseId}/`, { method: 'POST' })
   }
+
+  async uploadAvatar (file) {
+    const formData = new FormData()
+    formData.append('image', file)
+    const res = await this.fetch(`/api/images/upload/`, {
+      method: 'POST',
+      body: formData
+    })
+    return res.json().then(json => json.src)
+  }
 }
