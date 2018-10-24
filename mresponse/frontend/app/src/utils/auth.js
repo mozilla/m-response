@@ -1,17 +1,27 @@
 import auth0 from 'auth0-js'
 
 const connection = 'Username-Password-Authentication'
-const domain = process.env.REACT_APP_AUTH_DOMAIN
-const clientID = process.env.REACT_APP_AUTH_CLIENT_ID
 const redirectUri = window.location.origin + '/callback'
-const audience = process.env.REACT_APP_AUTH_AUDIENCE
+
+const isProduction = () => window.location.host === 'respond.mozilla.community'
+
+const stagingDomain = process.env.REACT_APP_STAGING_AUTH_DOMAIN
+const productionDomain = process.env.REACT_APP_PRODUCTION_AUTH_DOMAIN
+const productionClientID = process.env.REACT_APP_PRODUCTION_AUTH_CLIENT_ID
+const stagingClientID = process.env.REACT_APP_STAGING_AUTH_CLIENT_ID
+const productionAudience = process.env.REACT_APP_PRODUCTION_AUTH_AUDIENCE
+const stagingAudience = process.env.REACT_APP_STAGING_AUTH_AUDIENCE
+
+const getDomain = () => isProduction() ? productionDomain : stagingDomain
+const getClientID = () => isProduction() ? productionClientID : stagingClientID
+const getAudience = () => isProduction() ? productionAudience : stagingAudience
 
 export default class Auth {
   auth = new auth0.WebAuth({
-    domain,
-    clientID,
+    domain: getDomain(),
+    clientID: getClientID(),
     redirectUri,
-    audience,
+    audience: getAudience(),
     responseType: 'token id_token',
     scope: 'openid read:current_user update:current_user_metadata',
     prompt: 'none'
@@ -85,7 +95,7 @@ export default class Auth {
   getUser (token, userId) {
     return new Promise((resolve, reject) => {
       const auth0Manage = new auth0.Management({
-        domain,
+        domain: getDomain(),
         token
       })
       auth0Manage.getUser(userId, (err, authResult) => {
@@ -100,7 +110,7 @@ export default class Auth {
   updateUserMetadata (userId, token, metadata) {
     return new Promise((resolve, reject) => {
       const auth0Manage = new auth0.Management({
-        domain,
+        domain: getDomain(),
         token
       })
       auth0Manage.patchUserMetadata(userId, metadata, (err, authResult) => {
