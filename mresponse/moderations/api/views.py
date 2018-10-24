@@ -25,6 +25,7 @@ class CreateModeration(generics.CreateAPIView):
     @transaction.atomic
     def perform_create(self, serializer):
         response = self.get_response_for_user()
+
         moderation = serializer.save(
             response=response,
             moderator=self.request.user,
@@ -33,10 +34,9 @@ class CreateModeration(generics.CreateAPIView):
         # Clear the assignment to the user.
         self.request.user.response_assignment.delete()
 
-        # TODO: Check if response can be approved to send over to the Play
-        # Store in here.
-        # response.approved = True
-        # response.save(update_fields=('approved',))
+        # Send response to play store
+        if not response.submitted_to_play_store and response.can_submit_to_play_store():
+            return response.submit_to_play_store()
 
         # Update user's karma points
         user_profile = response.author.profile
