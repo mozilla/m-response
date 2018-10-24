@@ -1,16 +1,12 @@
 import { staticAsset } from '@utils/urls'
 
 export default class Api {
-  constructor (baseUrl, token) {
+  constructor (baseUrl) {
     this.baseUrl = baseUrl
-    this.token = token
   }
 
   async fetch (path, options = {}, isPublic = false) {
     let headers = options.headers || {}
-    if (!isPublic) {
-      headers['Authorization'] = 'Bearer ' + this.token
-    }
     options.headers = headers
 
     return fetch(`${this.baseUrl}${path}`, options)

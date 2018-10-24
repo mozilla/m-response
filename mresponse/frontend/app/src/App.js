@@ -5,7 +5,6 @@ import { ConnectedRouter } from 'connected-react-router'
 import { PersistGate } from 'redux-persist/integration/react'
 
 import WelcomePage from '@pages/welcome'
-import LoginPage from '@pages/login'
 import HomePage from '@pages/home'
 import ProfilePage from '@pages/profile'
 import SettingsPage from '@pages/settings'

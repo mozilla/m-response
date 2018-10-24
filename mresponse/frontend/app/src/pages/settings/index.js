@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import { push } from 'connected-react-router'
 
 import { SETTINGS_URL, PROFILE_URL } from '@utils/urls'
-import { logout, updateProfile, forgetPassword } from '@redux/actions'
+import { updateProfile } from '@redux/actions'
 import {
   getProfile,
   getSupportedLanguages,
@@ -20,11 +20,9 @@ const mapStateToProps = (state, props) => ({
   cookiesUrl: getCookiesUrl(state)
 })
 const mapDispatchToProps = (dispatch, props) => ({
-  logout: () => dispatch(logout()),
   back: () => dispatch(push(PROFILE_URL)),
   editProfile: () => dispatch(push(SETTINGS_URL)),
-  saveProfile: profile => dispatch(updateProfile(profile)),
-  resetPassword: email => dispatch(forgetPassword(email))
+  saveProfile: profile => dispatch(updateProfile(profile))
 })
 
 export default connect(
