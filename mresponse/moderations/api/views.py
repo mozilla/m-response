@@ -35,7 +35,7 @@ class CreateModeration(generics.CreateAPIView):
         self.request.user.response_assignment.delete()
 
         # Send response to play store
-        if not response.submitted_to_play_store() and response.can_submit_to_play_store():
+        if not response.submitted_to_play_store and response.can_submit_to_play_store():
             return response.submit_to_play_store()
 
         # Update user's karma points
