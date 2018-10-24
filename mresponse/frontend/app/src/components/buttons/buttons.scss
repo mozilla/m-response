@@ -10,13 +10,15 @@
   color: white;
 
   font-size: 14px;
-  font-weight: 600;
+  font-weight: bold;
 
   border: none;
-  border-radius: 3px;
+  border-radius: 2px;
   user-select: none;
   cursor: pointer;
   outline: 0;
+
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.1);
 
   &-icon {
     margin-right: 10px;
