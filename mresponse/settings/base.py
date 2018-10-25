@@ -581,9 +581,8 @@ CORS_ORIGIN_WHITELIST = [
 
 
 # Google Play store integration settings
-if 'PLAY_ACCOUNT' in os.environ:
-    REVIEWS_API_KEY = env.get('REVIEWS_API_KEY')
-    REVIEWS_API_URL = env.get('REVIEWS_API_URL')
+REVIEWS_API_KEY = env.get('REVIEWS_API_KEY')
+REVIEWS_API_URL = env.get('REVIEWS_API_URL')
 
-    if os.environ.get('PLAY_STORE_SUBMIT_REPLY_ENABLED', 'false').lower() == 'true':
-        PLAY_STORE_SUBMIT_REPLY_ENABLED = True
+if os.environ.get('PLAY_STORE_SUBMIT_REPLY_ENABLED', 'false').lower() == 'true':
+    PLAY_STORE_SUBMIT_REPLY_ENABLED = True
