@@ -35,7 +35,7 @@ class Config(views.APIView):
         response_dict = collections.OrderedDict()
         response_dict['languages'] = self.get_languages()
         response_dict['response_guide_book_url'] = (
-            'https://docs.google.com/document/d/1dtTS0hAIYyf9JWoqPc_S2tg2XmdptVYI06koGCZwiXc/'
+            'https://docs.google.com/document/d/e/2PACX-1vQds-2DY62ztTCyaoyVr5myp5ZszUFhAyfGueTz5OF9Gi5UibS9LoMxAFkkMhlaH133WF6M3bggD8K4/pub'
         )
         response_dict['feedback_url'] = (
             'https://github.com/torchbox/m-response/issues/new')
