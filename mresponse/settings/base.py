@@ -505,10 +505,7 @@ REST_FRAMEWORK = {
 }
 
 # CORS headers
-CORS_ORIGIN_WHITELIST = [
-    'mresponse.local:8000',
-    'mresponse.local:3000',
-]
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Google Play store integration settings
 REVIEWS_API_KEY = env.get('REVIEWS_API_KEY')

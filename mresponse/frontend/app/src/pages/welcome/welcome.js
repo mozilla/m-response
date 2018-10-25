@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import Button from '@components/buttons'
 import { staticAsset } from '@utils/urls'
 import './welcome.scss'
 
@@ -29,18 +28,11 @@ export default class WelcomePage extends React.Component {
               Mozilla on Google Play store reviews
             </span>
           </section>
-          <Button
-            label="Let's Start"
-            className="continue-button"
-            onClick={this.props.continue}
-          />
+          <a href="oidc/authenticate">Let's Start</a>
         </div>
         <footer>
           <span className="footer-text">
-            Already a contributor?{' '}
-            <span onClick={this.props.login} className="footer-link">
-              Login
-            </span>
+            Already a contributor?{' '} <a href="oidc/authenticate/">Login</a>
           </span>
         </footer>
       </div>
