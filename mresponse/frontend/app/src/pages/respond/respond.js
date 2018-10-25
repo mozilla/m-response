@@ -79,6 +79,7 @@ export default class RespondPage extends React.Component {
                   className='respond-page-edit-response-form-text'
                   name="response-text"
                   value={response}
+                  placeholder='Add Your Response'
                   onChange={this.updateResponse} />
                 <Button
                   label='Done'
