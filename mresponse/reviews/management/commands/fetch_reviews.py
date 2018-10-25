@@ -1,5 +1,5 @@
-import time
 import logging
+import time
 from datetime import datetime, timedelta
 
 from django.conf import settings
