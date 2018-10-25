@@ -89,18 +89,19 @@ class Command(BaseCommand):
             else:
                 logger.info("Fetched 0 reviews")
 
-            if results['tokenPagination']['nextPageToken']:
-                # Sleep for a minute
-                logger.info("Sleep for a minute before next request")
-                time.sleep(60)
-
+            try:
                 nextPageToken = results['tokenPagination']['nextPageToken']
-                params = {'packageName': application.package, 'token': nextPageToken}
-                response = requests.get(settings.REVIEWS_API_URL, params=params, headers=headers)
-                response.raise_for_status()
-                results = response.json()
-            else:
-                break
+            except KeyError:
+                return
+
+            # Sleep for a minute
+            logger.info("Sleep for a minute before next request")
+            time.sleep(60)
+
+            params = {'packageName': application.package, 'token': nextPageToken}
+            response = requests.get(settings.REVIEWS_API_URL, params=params, headers=headers)
+            response.raise_for_status()
+            results = response.json()
 
     def handle(self, *args, **kwargs):
         for application in Application.objects.all():
