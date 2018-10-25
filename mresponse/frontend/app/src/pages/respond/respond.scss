@@ -9,8 +9,8 @@
 
     &-toolbar {
         height: auto;
-        padding-top: 35px;
-        padding-bottom: 20px;
+        padding-top: 36px;
+        padding-bottom: 8px;
     }
 
     &-alert-prompt {
@@ -130,13 +130,19 @@
             width: 116px;
             height: 42px;
             background-color: $orange;
-            font-weight: 700;
+            background-color: #ff4c1d;
             margin-right: 24px;
             margin-left: 24px;
         }
 
         &-skip {
-            font-weight: 700;
+            width: 26px;
+            height: 24px;
+            font-size: 12px;
+            font-weight: bold;
+            line-height: 2;
+            text-align: center;
+            color: $grey;
             cursor: pointer;
             user-select: none;
             text-decoration: underline; 
