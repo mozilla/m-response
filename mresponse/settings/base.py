@@ -1,11 +1,9 @@
 """
 Django settings for mresponse project.
 """
-import base64
 import logging
 import os
 import sys
-import tempfile
 import urllib
 
 import cryptography.x509
@@ -584,11 +582,8 @@ CORS_ORIGIN_WHITELIST = [
 
 # Google Play store integration settings
 if 'PLAY_ACCOUNT' in os.environ:
-    PLAY_ACCOUNT = os.environ['PLAY_ACCOUNT']
-
-    with tempfile.NamedTemporaryFile(delete=False) as credentials_file:
-        credentials_file.write(base64.b64decode(os.environ['PLAY_CREDENTIALS']))
-        PLAY_CREDENTIALS_PATH = credentials_file.name
+    REVIEWS_API_KEY = env.get('REVIEWS_API_KEY')
+    REVIEWS_API_URL = env.get('REVIEWS_API_URL')
 
     if os.environ.get('PLAY_STORE_SUBMIT_REPLY_ENABLED', 'false').lower() == 'true':
         PLAY_STORE_SUBMIT_REPLY_ENABLED = True

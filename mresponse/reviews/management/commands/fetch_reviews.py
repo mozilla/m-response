@@ -6,8 +6,9 @@ from django.core.management.base import BaseCommand
 from django.db import transaction
 from django.utils import timezone
 
+import requests
+
 import pytz
-from mozapkpublisher.common.googleplay import _connect
 from mresponse.applications.models import Application, ApplicationVersion
 from mresponse.reviews.models import Review
 
@@ -20,9 +21,12 @@ class Command(BaseCommand):
     @transaction.atomic
     def get_reviews(self, application):
         logger.info("Fetching new reviews for application: %s", application)
-        service = _connect(settings.PLAY_ACCOUNT, settings.PLAY_CREDENTIALS_PATH)
-        reviews_service = service.reviews()
-        results = reviews_service.list(packageName=application.package).execute()
+
+        params = {'packageName': application.package}
+        headers = {'x-api-key': settings.REVIEWS_API_KEY}
+        response = requests.get(settings.REVIEWS_API_URL, params=params, headers=headers)
+        response.raise_for_status()
+        results = response.json()
 
         versions_cache = {}
 
@@ -87,9 +91,10 @@ class Command(BaseCommand):
 
             if results['tokenPagination']['nextPageToken']:
                 nextPageToken = results['tokenPagination']['nextPageToken']
-                results = reviews_service.list(
-                    packageName=application.package, token=nextPageToken
-                ).execute()
+                params = {'packageName': application.package, 'token': nextPageToken}
+                response = requests.get(settings.REVIEWS_API_URL, params=params, headers=headers)
+                response.raise_for_status()
+                results = response.json()
             else:
                 break
 
