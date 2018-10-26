@@ -1,4 +1,5 @@
 import logging
+import time
 from datetime import datetime, timedelta
 
 from django.conf import settings
@@ -32,7 +33,6 @@ class Command(BaseCommand):
 
         while results:
             time_of_last_review = None
-
             for review in results['reviews']:
                 # Reviews are returned in reverse-chronological order so this import
                 # can stop importing when it reaches a target date/time. This target is
@@ -89,14 +89,19 @@ class Command(BaseCommand):
             else:
                 logger.info("Fetched 0 reviews")
 
-            if results['tokenPagination']['nextPageToken']:
+            try:
                 nextPageToken = results['tokenPagination']['nextPageToken']
-                params = {'packageName': application.package, 'token': nextPageToken}
-                response = requests.get(settings.REVIEWS_API_URL, params=params, headers=headers)
-                response.raise_for_status()
-                results = response.json()
-            else:
-                break
+            except KeyError:
+                return
+
+            # Sleep for a minute
+            logger.info("Sleep for a minute before next request")
+            time.sleep(60)
+
+            params = {'packageName': application.package, 'token': nextPageToken}
+            response = requests.get(settings.REVIEWS_API_URL, params=params, headers=headers)
+            response.raise_for_status()
+            results = response.json()
 
     def handle(self, *args, **kwargs):
         for application in Application.objects.all():
