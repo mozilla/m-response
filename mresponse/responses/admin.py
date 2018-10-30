@@ -15,3 +15,20 @@ class ModerationInline(admin_utils.ViewOnlyModelAdmin, admin.StackedInline):
 class ResponseAdmin(admin.ModelAdmin):
     inlines = (ModerationInline,)
     readonly_fields = ['submitted_at']
+    list_display = (
+        'get_review_text',
+        'get_review_rating',
+        'text',
+        'approved',
+        'submitted_to_play_store',
+    )
+
+    def get_review_text(self, obj):
+        return obj.review.review_text
+
+    get_review_text.short_description = 'Review'
+
+    def get_review_rating(self, obj):
+        return obj.review.review_rating
+
+    get_review_rating.short_description = 'Rating'
