@@ -75,14 +75,6 @@ export default class SettingsPage extends React.Component {
                 suggestions={this.props.supportedLanguages || []}
               />
             </div>
-
-            <div className="settings-form-row">
-              <span className="settings-form-row-label">Password</span>
-              <Button
-                className='settings-change-pass-button'
-                label='Reset Password'
-                onClick={this.resetPass} />
-            </div>
           </section>
         </div>
 
@@ -143,13 +135,6 @@ export default class SettingsPage extends React.Component {
     return this.setStatus(STATUS.saved)
   }
 
-  resetPass = () => {
-    if (this.state.email) {
-      this.props.resetPassword(this.state.email)
-      this.setStatus(STATUS.passReset)
-    }
-  }
-
   setStatus = reason => this.setState({ status: reason })
 }
 
@@ -157,6 +142,5 @@ const STATUS = {
   saved: 'Great! Your profile was updated.',
   invalidName: "Pardon, You don't have a name?",
   invalidEmail: "Awesome! and what's your email address?",
-  passReset: 'Done! Please check your email for a reset link.',
   invalidLanguagesCount: 'Sorry! You need to know at least one language.'
 }
