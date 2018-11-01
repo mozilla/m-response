@@ -66,9 +66,8 @@ export const uploadAvatar = file => connectApi(api =>
   async (dispatch, getState) => {
     try {
       const picture = await api.uploadAvatar(file)
-      const metadata = {}
-      metadata.avatar = picture
-      const updatedProfile = await api.updateProfile(metadata)
+      console.log(`UploadAvatar picture: ${picture}`)
+      const updatedProfile = await api.getProfile()
       return dispatch({
         type: SET_PROFILE,
         profile: updatedProfile

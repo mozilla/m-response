@@ -155,7 +155,10 @@ export default class Api {
     formData.append('image', file)
     const res = await this.fetch(`/api/images/upload/`, {
       method: 'POST',
-      body: formData
+      body: formData,
+      headers: {
+        'X-CSRFToken': Cookie.get('csrftoken')
+      }
     })
     return res.json().then(json => json.src)
   }
