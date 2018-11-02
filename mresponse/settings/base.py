@@ -4,12 +4,9 @@ Django settings for mresponse project.
 import logging
 import os
 import sys
-import urllib
 
-import cryptography.x509
 import dj_database_url
 import raven
-import requests
 from raven.exceptions import InvalidGitRepository
 
 logger = logging.getLogger(__name__)
@@ -514,6 +511,7 @@ REVIEWS_API_URL = env.get('REVIEWS_API_URL')
 if os.environ.get('PLAY_STORE_SUBMIT_REPLY_ENABLED', 'false').lower() == 'true':
     PLAY_STORE_SUBMIT_REPLY_ENABLED = True
 
+
 # Django OIDC
 def _username_algo(email):
     import base64
@@ -525,6 +523,7 @@ def _username_algo(email):
         from django.utils.encoding import smart_str as smart_bytes
 
     return base64.urlsafe_b64encode(hashlib.sha1(smart_bytes(email)).digest()).rstrip(b'=')
+
 
 OIDC_OP_AUTHORIZATION_ENDPOINT = env.get('OIDC_OP_AUTHORIZATION_ENDPOINT')
 OIDC_OP_TOKEN_ENDPOINT = env.get('OIDC_OP_TOKEN_ENDPOINT')

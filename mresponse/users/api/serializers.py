@@ -11,6 +11,7 @@ class MyUserProfileSerializer(serializers.ModelSerializer):
         fields = ('karma_points', 'moderation_count', 'response_count',
                   'languages', 'name', 'avatar')
 
+
 class MyUserMetaSerializer(serializers.ModelSerializer):
     class Meta:
         model = users_models.UserProfile
