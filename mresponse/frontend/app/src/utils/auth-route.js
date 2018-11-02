@@ -1,5 +1,6 @@
 import Api from '@utils/api'
 import { BASE_URL } from '@utils/urls'
+import LoginPage from '@pages/login'
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
@@ -11,7 +12,8 @@ function authenticatedComponent (WrappedComponent, redirect, authRequired) {
       super(props)
       this.state = {
         isAuthenticated: false,
-        isAuthenticating: true
+        isAuthenticating: true,
+        hasAccount: false
       }
     }
     componentDidMount () {
@@ -21,7 +23,8 @@ function authenticatedComponent (WrappedComponent, redirect, authRequired) {
           console.log(`Authentication data ${JSON.stringify(data)}`)
           this.setState({
             isAuthenticated: true,
-            isAuthenticating: false
+            isAuthenticating: false,
+            hasAccount: data.profile.languages !== ''
           })
         }, (error) => {
           this.setState({ isAuthenticating: false })
@@ -34,7 +37,11 @@ function authenticatedComponent (WrappedComponent, redirect, authRequired) {
         return null
       }
       const allow = authRequired ? this.state.isAuthenticated : true
+      console.log(`Auth state: ${JSON.stringify(this.state)}`)
       if (allow) {
+        if (!this.state.hasAccount && this.state.isAuthenticated) {
+          return <LoginPage {...this.props}/>
+        }
         return <WrappedComponent {...this.props} />
       }
       return <Redirect to={redirect} />
