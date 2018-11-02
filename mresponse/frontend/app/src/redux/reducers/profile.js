@@ -1,4 +1,4 @@
-import { SET_PROFILE, UPDATE_EXTRA_USER_META } from '@redux/actions'
+import { SET_PROFILE, UPDATE_EXTRA_USER_META, LOGOUT } from '@redux/actions'
 
 const initialState = {
   isAuthenticated: false,
@@ -17,6 +17,9 @@ export default (state = initialState, action) => {
       return Object.assign({}, state, {
         extraUserMeta: meta
       })
+    }
+    case LOGOUT: {
+      return initialState
     }
     default:
       return state

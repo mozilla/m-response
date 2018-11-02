@@ -16,9 +16,9 @@ function authenticatedComponent (WrappedComponent, redirect, authRequired) {
         hasAccount: false
       }
     }
-    async componentDidMount () {
+    componentDidMount () {
       const api = new Api(BASE_URL)
-      await api.isAuthenticated().then(
+      api.isAuthenticated().then(
         data => {
           console.log(`Authentication data ${JSON.stringify(data)}`)
           this.setState({

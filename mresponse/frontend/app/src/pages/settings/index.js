@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import { push } from 'connected-react-router'
 
 import { SETTINGS_URL, PROFILE_URL } from '@utils/urls'
-import { updateProfile } from '@redux/actions'
+import { updateProfile, logout } from '@redux/actions'
 import {
   getProfile,
   getSupportedLanguages,
@@ -22,7 +22,8 @@ const mapStateToProps = (state, props) => ({
 const mapDispatchToProps = (dispatch, props) => ({
   back: () => dispatch(push(PROFILE_URL)),
   editProfile: () => dispatch(push(SETTINGS_URL)),
-  saveProfile: profile => dispatch(updateProfile(profile))
+  saveProfile: profile => dispatch(updateProfile(profile)),
+  logout: () => dispatch(logout())
 })
 
 export default connect(

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { BACKEND_LOGOUT_URL } from '@utils/urls'
 import Toolbar from '@components/toolbar'
 import HighlightedText from '@components/highlighted-text'
 import InputField from '@components/input-field'
@@ -8,6 +9,16 @@ import Button from '@components/buttons'
 import './settings.scss'
 
 export default class SettingsPage extends React.Component {
+  constructor (props) {
+    super(props)
+    this.handleLogout = this.handleLogout.bind(this)
+  }
+
+  handleLogout () {
+    this.props.logout()
+    window.location.href = BACKEND_LOGOUT_URL
+  }
+
   state = {
     status: '',
     name: this.props.profile.name || '',
@@ -82,7 +93,7 @@ export default class SettingsPage extends React.Component {
           <Button
             className='settings-logout-button'
             label='Log Out'
-            onClick={this.props.logout} />
+            onClick={this.handleLogout} />
           <div className='settings-footer-inner'>
             <a target='_blank' href={this.props.legalUrl} className='settings-footer-inner-link'>Legal</a>
             <a target='_blank' href={this.props.privacyUrl} className='settings-footer-inner-link'>Privacy</a>

@@ -7,7 +7,8 @@ export * from './moderate'
 
 export const getSpokenLanguages = state => {
   let languages = '[]'
-  if (state.profile && state.profile.profile.languages !== '') {
+  console.log(`getSpokenLanguages: ${JSON.stringify(state)}`)
+  if (state.profile && state.profile.profile && state.profile.profile.languages !== '') {
     console.log(`getSpokenLanguages ${JSON.stringify(state.profile.profile.languages)}`)
     languages = state.profile.profile.languages
   }
@@ -15,8 +16,6 @@ export const getSpokenLanguages = state => {
 }
 
 export const getProfile = state => {
-  console.log(JSON.stringify(state.profile))
-
   const profile = state.profile.profile
   const extraUserMeta = state.profile.extraUserMeta
   const meta = profile || {

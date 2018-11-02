@@ -1,4 +1,7 @@
-from rest_framework import generics, permissions, status, views, response
+from django.contrib.auth import logout as user_logout
+from django.shortcuts import redirect
+
+from rest_framework import generics, permissions, response, status, views
 
 from mresponse.users.api import serializers as users_serializers
 
@@ -23,3 +26,8 @@ class MyUserMeta(views.APIView):
             return response.Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+def logout(request):
+    user_logout(request)
+    return redirect('/')

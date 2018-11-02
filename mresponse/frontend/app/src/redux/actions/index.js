@@ -6,6 +6,7 @@ export * from './moderate'
 
 // TODO fix missing function implementations
 export const SET_PROFILE = 'SET_PROFILE'
+export const LOGOUT = 'LOGOUT'
 export const UPDATE_EXTRA_USER_META = 'UPDATE_EXTRA_USER_META'
 
 export const updateExtraUserMeta = meta => ({
@@ -77,3 +78,9 @@ export const uploadAvatar = file => connectApi(api =>
     }
   }
 )
+
+export const logout = () => dispatch => {
+  return dispatch({
+    type: LOGOUT
+  })
+}
