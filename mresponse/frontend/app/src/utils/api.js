@@ -181,7 +181,6 @@ export default class Api {
       }
     })
     return res.json().then(json => {
-      console.log(`POST updateProfile: ${json}`)
       return json.src
     })
   }

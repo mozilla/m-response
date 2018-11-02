@@ -7,9 +7,7 @@ export * from './moderate'
 
 export const getSpokenLanguages = state => {
   let languages = '[]'
-  console.log(`getSpokenLanguages: ${JSON.stringify(state)}`)
   if (state.profile && state.profile.profile && state.profile.profile.languages !== '') {
-    console.log(`getSpokenLanguages ${JSON.stringify(state.profile.profile.languages)}`)
     languages = state.profile.profile.languages
   }
   return JSON.parse(languages)
@@ -42,7 +40,6 @@ export const getProfile = state => {
     responsesCount: 0,
     moderationsCount: 0
   }
-  console.log(`Get profile meta: ${JSON.stringify(meta)}`)
 
   const result = {
     id: meta.username,
@@ -52,8 +49,6 @@ export const getProfile = state => {
     languages: languages,
     karma
   }
-
-  console.log(`Get profile result: ${JSON.stringify(result)}`)
 
   return result
 }

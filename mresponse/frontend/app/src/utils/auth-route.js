@@ -20,7 +20,6 @@ function authenticatedComponent (WrappedComponent, redirect, authRequired) {
       const api = new Api(BASE_URL)
       api.isAuthenticated().then(
         data => {
-          console.log(`Authentication data ${JSON.stringify(data)}`)
           this.setState({
             isAuthenticated: true,
             isAuthenticating: false,
@@ -28,7 +27,7 @@ function authenticatedComponent (WrappedComponent, redirect, authRequired) {
           })
         }, (error) => {
           this.setState({ isAuthenticating: false })
-          console.log(JSON.stringify(error))
+          console.log(error)
         }
       )
     }
@@ -37,7 +36,6 @@ function authenticatedComponent (WrappedComponent, redirect, authRequired) {
         return null
       }
       const allow = authRequired ? this.state.isAuthenticated : !this.state.isAuthenticated
-      console.log(`Auth state: ${JSON.stringify(this.state)}`)
       if (allow) {
         if (!this.state.hasAccount && this.state.isAuthenticated) {
           return <LoginPage {...this.props}/>
