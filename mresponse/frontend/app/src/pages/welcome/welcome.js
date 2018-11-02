@@ -1,10 +1,25 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { staticAsset } from '@utils/urls'
+import Button from '@components/buttons'
+import { staticAsset, DASHBOARD_URL } from '@utils/urls'
 import './welcome.scss'
 
 export default class WelcomePage extends React.Component {
+  constructor (props) {
+    super(props)
+    this.handleContinue = this.handleContinue.bind(this)
+  }
+
+  handleContinue () {
+    console.log(`Welcome state: ${JSON.stringify(this.props.profile)}`)
+    if (this.props.profile.isAuthenticated) {
+      this.props.history.push(DASHBOARD_URL)
+    } else {
+      window.location.href = '/oidc/authenticate'
+    }
+  }
+
   render () {
     return (
       <div className="welcome-page">
@@ -28,11 +43,18 @@ export default class WelcomePage extends React.Component {
               Mozilla on Google Play store reviews
             </span>
           </section>
-          <a href="oidc/authenticate">Let's Start</a>
+          <Button
+            label="Let's Start"
+            className="continue-button"
+            onClick={this.handleContinue}
+          />
         </div>
         <footer>
           <span className="footer-text">
-            Already a contributor?{' '} <a href="oidc/authenticate/">Login</a>
+            Already a contributor?{' '}
+            <span onClick={this.handleContinue} className="footer-link">
+              Login
+            </span>
           </span>
         </footer>
       </div>
