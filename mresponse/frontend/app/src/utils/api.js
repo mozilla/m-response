@@ -125,7 +125,8 @@ export default class Api {
         text: response
       }),
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-CSRFToken': Cookie.get('csrftoken')
       }
     })
     return { detail: 'Thank you for your effort and so making Mozilla better for all of us!' }
@@ -136,18 +137,29 @@ export default class Api {
       method: 'POST',
       body: JSON.stringify(moderation),
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-CSRFToken': Cookie.get('csrftoken')
       }
     })
     return { detail: 'Thank you for your effort and so making Mozilla better for all of us!' }
   }
 
   async skipReview (reviewId) {
-    await this.fetch(`/api/review/skip/${reviewId}/`, { method: 'POST' })
+    await this.fetch(`/api/review/skip/${reviewId}/`, {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': Cookie.get('csrftoken')
+      }
+    })
   }
 
   async skipResponse (responseId) {
-    await this.fetch(`/api/response/skip/${responseId}/`, { method: 'POST' })
+    await this.fetch(`/api/response/skip/${responseId}/`, {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': Cookie.get('csrftoken')
+      }
+    })
   }
 
   async uploadAvatar (file) {
@@ -167,7 +179,10 @@ export default class Api {
     formData.append('image', file)
     const res = await this.fetch(`/api/images/upload/`, {
       method: 'POST',
-      body: formData
+      body: formData,
+      headers: {
+        'X-CSRFToken': Cookie.get('csrftoken')
+      }
     })
     return res.json().then(json => json.src)
   }
