@@ -47,6 +47,7 @@ class Response(models.Model):
     text = models.TextField()
     submitted_at = models.DateTimeField(default=timezone.now, editable=False)
     submitted_to_play_store = models.BooleanField(default=False)
+    staff_approved = models.BooleanField(default=False)
 
     objects = query.ResponseQuerySet.as_manager()
 
@@ -93,6 +94,9 @@ class Response(models.Model):
             return False
 
         if aggs['personal_count'] < 1:
+            return False
+
+        if not self.staff_approved:
             return False
 
         self.approved = True
