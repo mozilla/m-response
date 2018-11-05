@@ -22,17 +22,12 @@ export const getProfile = state => {
     avatar: '',
     email: ''
   }
-  const spokenLangauges = getSpokenLanguages(state)
+  const spokenLanguages = getSpokenLanguages(state)
   const languages = getSupportedLanguages(state)
     .filter(language => {
-      let speaksLanguage = false
-      spokenLangauges.map(code => {
-        if (code === language.id) {
-          speaksLanguage = true
-        }
-        return code
+      return spokenLanguages.some(code => {
+        return (code === language.id)
       })
-      return speaksLanguage
     })
 
   const karma = extraUserMeta.karma || {
