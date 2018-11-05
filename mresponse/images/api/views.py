@@ -81,6 +81,10 @@ class Upload(views.APIView):
             uploaded_at=timezone.now(),
         )
 
+        profile = self.request.user.profile
+        profile.avatar = image.file.url
+        profile.save()
+
         return response.Response({
             'id': image.id,
             'src': image.file.url,

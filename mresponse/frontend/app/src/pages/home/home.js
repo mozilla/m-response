@@ -11,6 +11,7 @@ export default class HomePage extends React.Component {
     this.props.updateAppConfig()
     this.props.updateHomeConfig()
     this.props.updateKarma()
+    this.props.updateProfile()
   }
 
   render () {

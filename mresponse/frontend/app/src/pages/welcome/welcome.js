@@ -2,10 +2,24 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import Button from '@components/buttons'
-import { staticAsset } from '@utils/urls'
+import { staticAsset, DASHBOARD_URL } from '@utils/urls'
 import './welcome.scss'
 
 export default class WelcomePage extends React.Component {
+  constructor (props) {
+    super(props)
+    this.handleContinue = this.handleContinue.bind(this)
+  }
+
+  handleContinue () {
+    console.log(`Welcome state: ${JSON.stringify(this.props.profile)}`)
+    if (this.props.profile.isAuthenticated) {
+      this.props.history.push(DASHBOARD_URL)
+    } else {
+      window.location.href = '/oidc/authenticate'
+    }
+  }
+
   render () {
     return (
       <div className="welcome-page">
@@ -32,13 +46,13 @@ export default class WelcomePage extends React.Component {
           <Button
             label="Let's Start"
             className="continue-button"
-            onClick={this.props.continue}
+            onClick={this.handleContinue}
           />
         </div>
         <footer>
           <span className="footer-text">
             Already a contributor?{' '}
-            <span onClick={this.props.login} className="footer-link">
+            <span onClick={this.handleContinue} className="footer-link">
               Login
             </span>
           </span>

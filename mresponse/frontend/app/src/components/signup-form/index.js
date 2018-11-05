@@ -9,25 +9,14 @@ import Button from '@components/buttons'
 export default class SignUpForm extends React.Component {
   status = {
     name: "Welcome! What's your name?",
-    email: 'Almost done! Enter your email and create a password.',
-    password: 'Cool! and what password would you like to use?',
-    passwordConfirm: 'Nearly There! Enter the password again.',
-    incorrectConfirm: "Oops! Your passwords don't match",
-    passwordTooShort: 'Oops! Your password must be at least 8 characters long',
-    passwordNoLetter: 'Oops! Your password must contain at least one letter',
-    passwordNoNumber: 'Oops! Your password must contain at least one number',
     invalidLanguagesCount: 'Sorry! You need to know at least one language.',
-    languages:
-      'Nice! What language(s) can you read and write?'
+    languages: 'Nice! What language(s) can you read and write?'
   }
 
   state = {
     status: this.props.status || this.status.name,
     step: 0,
     name: '',
-    email: '',
-    password: '',
-    passwordConfirm: '',
     languages: []
   }
 
@@ -115,96 +104,16 @@ export default class SignUpForm extends React.Component {
             return false
           }
         },
-        buttonText: 'Next'
-      },
-      {
-        prepare: () => this.setStatus(this.status.email),
-        subtitle: '3 of 3',
-        fields: (
-          <React.Fragment>
-            <InputField
-              key="email-field"
-              className="signup-form-field"
-              placeholder="Email"
-              type="email"
-              value={this.state.email}
-              onChange={event => this.setState({ email: event.target.value })}
-              onFocus={() => this.setStatus(this.status.email)}
-            />
-            <InputField
-              key="password-field"
-              className="signup-form-field"
-              placeholder="Password"
-              type="password"
-              onChange={event =>
-                this.setState({ password: event.target.value })
-              }
-              onFocus={() => this.setStatus(this.status.password)}
-              disabled={!this.state.email.length}
-            />
-            <InputField
-              key="password-confirm-field"
-              className="signup-form-field"
-              placeholder="Confirm Password"
-              type="password"
-              onChange={event =>
-                this.setState({ passwordConfirm: event.target.value })
-              }
-              onFocus={() => this.setStatus(this.status.passwordConfirm)}
-              disabled={!this.state.password.length}
-            />
-          </React.Fragment>
-        ),
-        canContinue: !(
-          this.state.email &&
-          this.state.password &&
-          this.state.passwordConfirm
-        ),
-        validate: () => {
-          // Validate password strength
-          if (this.state.password.length < 8) {
-            this.setStatus(this.status.passwordTooShort)
-            return false
-          }
-
-          let passwordHasLetter = false
-          let passwordHasNumber = false
-
-          for (let char of this.state.password) {
-            if (char.match(/[a-z]/i)) {
-              passwordHasLetter = true
-            }
-            if (char.match(/[0-9]/i)) {
-              passwordHasNumber = true
-            }
-          }
-
-          if (!passwordHasLetter) {
-            this.setStatus(this.status.passwordNoLetter)
-            return false
-          }
-
-          if (!passwordHasNumber) {
-            this.setStatus(this.status.passwordNoNumber)
-            return false
-          }
-
-          // Validate passwords match
-          if (this.state.password !== this.state.passwordConfirm) {
-            this.setStatus(this.status.incorrectConfirm)
-            return false
-          }
-
-          return true
-        },
         buttonText: 'Finish',
-        buttonPress: () =>
-          this.props.createAccount({
-            email: this.state.email,
+        buttonPress: () => {
+          this.props.updateProfile({
             name: this.state.name,
-            password: this.state.password,
             languages: this.state.languages.map(({ id }) => id)
           })
+          console.log(`Signup finish state: ${JSON.stringify(this.state)}`)
+          console.log(`Redirecting: ${JSON.stringify(this.props.successUrl)}`)
+          this.props.history.push(this.props.successUrl)
+        }
       }
     ][this.state.step]
 

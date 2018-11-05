@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { BACKEND_LOGOUT_URL } from '@utils/urls'
 import Toolbar from '@components/toolbar'
 import HighlightedText from '@components/highlighted-text'
 import InputField from '@components/input-field'
@@ -8,6 +9,16 @@ import Button from '@components/buttons'
 import './settings.scss'
 
 export default class SettingsPage extends React.Component {
+  constructor (props) {
+    super(props)
+    this.handleLogout = this.handleLogout.bind(this)
+  }
+
+  handleLogout () {
+    this.props.logout()
+    window.location.href = BACKEND_LOGOUT_URL
+  }
+
   state = {
     status: '',
     name: this.props.profile.name || '',
@@ -75,14 +86,6 @@ export default class SettingsPage extends React.Component {
                 suggestions={this.props.supportedLanguages || []}
               />
             </div>
-
-            <div className="settings-form-row">
-              <span className="settings-form-row-label">Password</span>
-              <Button
-                className='settings-change-pass-button'
-                label='Reset Password'
-                onClick={this.resetPass} />
-            </div>
           </section>
         </div>
 
@@ -90,7 +93,7 @@ export default class SettingsPage extends React.Component {
           <Button
             className='settings-logout-button'
             label='Log Out'
-            onClick={this.props.logout} />
+            onClick={this.handleLogout} />
           <div className='settings-footer-inner'>
             <a target='_blank' href={this.props.legalUrl} className='settings-footer-inner-link'>Legal</a>
             <a target='_blank' href={this.props.privacyUrl} className='settings-footer-inner-link'>Privacy</a>
@@ -143,13 +146,6 @@ export default class SettingsPage extends React.Component {
     return this.setStatus(STATUS.saved)
   }
 
-  resetPass = () => {
-    if (this.state.email) {
-      this.props.resetPassword(this.state.email)
-      this.setStatus(STATUS.passReset)
-    }
-  }
-
   setStatus = reason => this.setState({ status: reason })
 }
 
@@ -157,6 +153,5 @@ const STATUS = {
   saved: 'Great! Your profile was updated.',
   invalidName: "Pardon, You don't have a name?",
   invalidEmail: "Awesome! and what's your email address?",
-  passReset: 'Done! Please check your email for a reset link.',
   invalidLanguagesCount: 'Sorry! You need to know at least one language.'
 }

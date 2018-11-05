@@ -1,16 +1,13 @@
 import { staticAsset } from '@utils/urls'
+import Cookie from 'js-cookie'
 
 export default class Api {
-  constructor (baseUrl, token) {
+  constructor (baseUrl) {
     this.baseUrl = baseUrl
-    this.token = token
   }
 
   async fetch (path, options = {}, isPublic = false) {
     let headers = options.headers || {}
-    if (!isPublic) {
-      headers['Authorization'] = 'Bearer ' + this.token
-    }
     options.headers = headers
 
     return fetch(`${this.baseUrl}${path}`, options)
@@ -35,6 +32,17 @@ export default class Api {
           responsesCount: json.profile.response_count,
           moderationsCount: json.profile.moderation_count
         }
+      }
+    })
+  }
+
+  async getProfile () {
+    const res = await this.fetch(`/api/users/me/`)
+    return res.json().then(json => {
+      json.profile.id = json.username
+      json.profile.email = json.email
+      return {
+        profile: json.profile
       }
     })
   }
@@ -147,8 +155,46 @@ export default class Api {
     formData.append('image', file)
     const res = await this.fetch(`/api/images/upload/`, {
       method: 'POST',
+      body: formData,
+      headers: {
+        'X-CSRFToken': Cookie.get('csrftoken')
+      }
+    })
+    return res.json().then(json => json.src)
+  }
+  async updateUserMeta (file) {
+    const formData = new FormData()
+    formData.append('image', file)
+    const res = await this.fetch(`/api/images/upload/`, {
+      method: 'POST',
       body: formData
     })
     return res.json().then(json => json.src)
+  }
+  async updateProfile (metadata) {
+    const res = await this.fetch(`/api/users/me/usermeta`, {
+      method: 'POST',
+      body: JSON.stringify(metadata),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': Cookie.get('csrftoken')
+      }
+    })
+    return res.json().then(json => {
+      return json.src
+    })
+  }
+  isAuthenticated () {
+    return this.fetch(`/api/users/me/`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(response => {
+      if (response.ok) {
+        return response.json()
+      }
+      throw response
+    })
   }
 }

@@ -4,12 +4,9 @@ Django settings for mresponse project.
 import logging
 import os
 import sys
-import urllib
 
-import cryptography.x509
 import dj_database_url
 import raven
-import requests
 from raven.exceptions import InvalidGitRepository
 
 logger = logging.getLogger(__name__)
@@ -163,8 +160,8 @@ else:
 # Django authentication backends
 
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'django.contrib.auth.backends.RemoteUserBackend',
+    'mozilla_django_oidc.auth.OIDCAuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend'
 ]
 
 
@@ -497,88 +494,15 @@ if env.get('BASIC_AUTH_ENABLED', 'false').lower().strip() == 'true':
         )
 
 
-# JSON Web Token authentication settings
-def get_auth0_certificate(auth0_url):
-    if not auth0_url:
-        return
-    response = requests.get(
-        urllib.parse.urljoin(auth0_url, '/.well-known/jwks.json'),
-        timeout=10
-    )
-    jwks = response.json()
-    cert = '\n'.join([
-        '-----BEGIN CERTIFICATE-----',
-        jwks['keys'][0]['x5c'][0],
-        '-----END CERTIFICATE-----',
-    ])
-    certificate = cryptography.x509.load_pem_x509_certificate(
-        cert.encode('utf-8'),
-        cryptography.hazmat.backends.default_backend(),
-    )
-    return certificate.public_key()
-
-
-AUTH0_DOMAIN = AUTH0_URL = None
-
-if 'AUTH0_DOMAIN' in env:
-    AUTH0_DOMAIN = env['AUTH0_DOMAIN']
-    AUTH0_URL = urllib.parse.urlunsplit([
-        'https',
-        AUTH0_DOMAIN,
-        '/',
-        None,
-        None,
-    ])
-
-
-JWT_PUBLIC_KEY = JWT_AUDIENCE = JWT_ISSUER = None
-
-if AUTH0_URL:
-    try:
-        JWT_PUBLIC_KEY = get_auth0_certificate(AUTH0_URL)
-    except requests.exceptions.RequestException:
-        logger.exception(
-            'Could not obtain certificate for Auth0 JWT authentication.'
-        )
-    else:
-        JWT_ISSUER = AUTH0_URL
-
-
-# Set your Auth0 API key as JWT_AUDIENCE
-if 'JWT_AUDIENCE' in env:
-    JWT_AUDIENCE = env['JWT_AUDIENCE']
-
-
-# JWT_AUTH
-JWT_AUTH = None
-if JWT_PUBLIC_KEY and JWT_PUBLIC_KEY and JWT_ISSUER:
-    JWT_AUTH = {
-        'JWT_PAYLOAD_GET_USERNAME_HANDLER': (
-            'mresponse.users.utils.jwt_get_username_from_payload_handler'
-        ),
-        'JWT_ALGORITHM': 'RS256',
-        'JWT_AUTH_HEADER_PREFIX': 'Bearer',
-        'JWT_AUDIENCE': JWT_AUDIENCE,
-        'JWT_PUBLIC_KEY': JWT_PUBLIC_KEY,
-        'JWT_ISSUER': JWT_ISSUER,
-    }
-
-
 # Django REST Framework settings
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-    ),
+    )
 }
 
-
 # CORS headers
-CORS_ORIGIN_WHITELIST = [
-    'mresponse.local:8000',
-    'mresponse.local:3000',
-]
-
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Google Play store integration settings
 REVIEWS_API_KEY = env.get('REVIEWS_API_KEY')
@@ -586,3 +510,27 @@ REVIEWS_API_URL = env.get('REVIEWS_API_URL')
 
 if os.environ.get('PLAY_STORE_SUBMIT_REPLY_ENABLED', 'false').lower() == 'true':
     PLAY_STORE_SUBMIT_REPLY_ENABLED = True
+
+
+# Django OIDC
+def _username_algo(email):
+    import base64
+    import hashlib
+
+    try:
+        from django.utils.encoding import smart_bytes
+    except ImportError:
+        from django.utils.encoding import smart_str as smart_bytes
+
+    return base64.urlsafe_b64encode(hashlib.sha1(smart_bytes(email)).digest()).rstrip(b'=')
+
+
+OIDC_OP_AUTHORIZATION_ENDPOINT = env.get('OIDC_OP_AUTHORIZATION_ENDPOINT')
+OIDC_OP_TOKEN_ENDPOINT = env.get('OIDC_OP_TOKEN_ENDPOINT')
+OIDC_OP_USER_ENDPOINT = env.get('OIDC_OP_USER_ENDPOINT')
+OIDC_RP_CLIENT_ID = env.get('OIDC_RP_CLIENT_ID')
+OIDC_RP_CLIENT_SECRET = env.get('OIDC_RP_CLIENT_SECRET')
+OIDC_OP_DOMAIN = env.get('OIDC_OP_DOMAIN')
+OIDC_USERNAME_ALGO = _username_algo
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
