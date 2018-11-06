@@ -6,6 +6,8 @@ from mresponse.reviews import models as reviews_models
 from mresponse.reviews.api import serializers as reviews_serializers
 from mresponse.utils import queryset as queryset_utils
 
+MAX_REVIEW_RATING = 2
+
 
 class Review(generics.RetrieveAPIView):
     """
@@ -15,7 +17,7 @@ class Review(generics.RetrieveAPIView):
         'application',
         'application_version',
         'response',
-    )
+    ).filter(review_rating__lte=MAX_REVIEW_RATING)
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = reviews_serializers.ReviewSerializer
 
@@ -90,7 +92,7 @@ class NextReview(generics.RetrieveAPIView):
         'application',
         'application_version',
         'response',
-    )
+    ).filter(review_rating__lte=MAX_REVIEW_RATING)
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = reviews_serializers.ReviewSerializer
 
