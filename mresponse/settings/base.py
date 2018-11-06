@@ -494,7 +494,7 @@ if env.get('BASIC_AUTH_ENABLED', 'false').lower().strip() == 'true':
         )
 
 if env.get('ENABLE_MFA_ADMIN', 'false').lower().strip() == 'true':
-    MIDDLEWARE.insert(0, 'mresponse.utils.auth.admin_mfa_middleware')
+    MIDDLEWARE.append('mresponse.utils.auth.admin_mfa_middleware')
 
 # Django REST Framework settings
 REST_FRAMEWORK = {
