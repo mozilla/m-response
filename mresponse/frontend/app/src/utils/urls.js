@@ -13,7 +13,7 @@ export const PROFILE_URL = '/profile/'
 export const SETTINGS_URL = '/profile/edit/'
 export const RESPOND_URL = '/respond/'
 export const MODERATE_URL = '/moderate/'
-export const BACKEND_LOGOUT_URL = '/api/users/me/logout'
+export const BACKEND_LOGOUT_URL = '/api/users/me/logout/'
 
 // Helper Functions
 export const staticAsset = url => `/static/${url}`

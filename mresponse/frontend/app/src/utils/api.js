@@ -187,7 +187,7 @@ export default class Api {
     return res.json().then(json => json.src)
   }
   async updateProfile (metadata) {
-    const res = await this.fetch(`/api/users/me/usermeta`, {
+    const res = await this.fetch(`/api/users/me/usermeta/`, {
       method: 'POST',
       body: JSON.stringify(metadata),
       headers: {

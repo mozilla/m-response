@@ -110,8 +110,7 @@ export default class SignUpForm extends React.Component {
             name: this.state.name,
             languages: this.state.languages.map(({ id }) => id)
           })
-          console.log(`Signup finish state: ${JSON.stringify(this.state)}`)
-          console.log(`Redirecting: ${JSON.stringify(this.props.successUrl)}`)
+
           this.props.history.push(this.props.successUrl)
         }
       }

@@ -16,7 +16,7 @@ export default class WelcomePage extends React.Component {
     if (this.props.profile.isAuthenticated) {
       this.props.history.push(DASHBOARD_URL)
     } else {
-      window.location.href = '/oidc/authenticate'
+      window.location.replace('/oidc/authenticate')
     }
   }
 

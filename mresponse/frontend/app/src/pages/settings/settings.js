@@ -16,7 +16,7 @@ export default class SettingsPage extends React.Component {
 
   handleLogout () {
     this.props.logout()
-    window.location.href = BACKEND_LOGOUT_URL
+    window.location.replace(BACKEND_LOGOUT_URL)
   }
 
   state = {
