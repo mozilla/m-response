@@ -160,7 +160,7 @@ else:
 # Django authentication backends
 
 AUTHENTICATION_BACKENDS = [
-    'mozilla_django_oidc.auth.OIDCAuthenticationBackend',
+    'mresponse.utils.auth.MFAAuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend'
 ]
 
@@ -493,6 +493,8 @@ if env.get('BASIC_AUTH_ENABLED', 'false').lower().strip() == 'true':
             env['BASIC_AUTH_WHITELISTED_HTTP_HOSTS'].split(',')
         )
 
+if env.get('ENABLE_MFA_ADMIN', 'false').lower().strip() == 'true':
+    MIDDLEWARE.insert(0, 'mresponse.utils.auth.admin_mfa_middleware')
 
 # Django REST Framework settings
 REST_FRAMEWORK = {
