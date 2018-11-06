@@ -1,4 +1,3 @@
-import { BASE_URL } from '@utils/urls'
 import { getSupportedLanguages } from '@redux/selectors'
 
 export * from './config'
@@ -39,7 +38,7 @@ export const getProfile = state => {
   const result = {
     id: meta.username,
     name: meta.name,
-    picture: `${BASE_URL}${meta.avatar}`,
+    picture: meta.avatar,
     email: meta.email,
     languages: languages,
     karma
