@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import { Provider } from 'react-redux'
-import { Route, Switch } from 'react-router-dom'
+import { Switch } from 'react-router-dom'
 import { ConnectedRouter } from 'connected-react-router'
 import { PersistGate } from 'redux-persist/integration/react'
 
 import WelcomePage from '@pages/welcome'
-import LoginPage from '@pages/login'
 import HomePage from '@pages/home'
 import ProfilePage from '@pages/profile'
 import SettingsPage from '@pages/settings'
@@ -13,14 +12,11 @@ import RespondPage from '@pages/respond'
 import ModeratePage from '@pages/moderate'
 
 import createStore from '@redux/store'
-import { loginCallback, logoutCallback, updateAppConfig } from '@redux/actions'
+import { updateAppConfig } from '@redux/actions'
 import AuthRoute from '@utils/auth-route'
 import {
   WELCOME_URL,
-  LOGIN_URL,
   DASHBOARD_URL,
-  CALLBACK_URL,
-  LOGOUT_URL,
   PROFILE_URL,
   SETTINGS_URL,
   RESPOND_URL,
@@ -45,54 +41,34 @@ class App extends Component {
                 path={WELCOME_URL}
                 redirect={DASHBOARD_URL}
                 authenticated={false}
-                component={props => <WelcomePage {...props} />}
-              />
-              <AuthRoute
-                path={'/account/'}
-                redirect={DASHBOARD_URL}
-                authenticated={false}
-                component={props => <LoginPage {...props} />}
+                component={WelcomePage}
               />
               <AuthRoute
                 path={DASHBOARD_URL}
-                redirect={LOGIN_URL}
-                component={props => <HomePage {...props} />}
+                redirect={WELCOME_URL}
+                component={HomePage}
               />
               <AuthRoute
                 path={PROFILE_URL}
-                redirect={LOGIN_URL}
+                redirect={WELCOME_URL}
                 exact
-                component={props => <ProfilePage {...props} />}
+                component={ProfilePage}
               />
               <AuthRoute
                 path={SETTINGS_URL}
-                redirect={LOGIN_URL}
+                redirect={WELCOME_URL}
                 exact
-                component={props => <SettingsPage {...props} />}
+                component={SettingsPage}
               />
               <AuthRoute
                 path={RESPOND_URL}
-                redirect={LOGIN_URL}
-                component={props => <RespondPage {...props} />}
+                redirect={WELCOME_URL}
+                component={RespondPage}
               />
               <AuthRoute
                 path={MODERATE_URL}
-                redirect={LOGIN_URL}
-                component={props => <ModeratePage {...props} />}
-              />
-              <Route
-                path={CALLBACK_URL}
-                component={props => {
-                  store.dispatch(loginCallback())
-                  return null
-                }}
-              />
-              <Route
-                path={LOGOUT_URL}
-                component={props => {
-                  store.dispatch(logoutCallback())
-                  return null
-                }}
+                redirect={WELCOME_URL}
+                component={ModeratePage}
               />
             </Switch>
           </ConnectedRouter>

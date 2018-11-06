@@ -20,6 +20,7 @@ export default class ProfilePage extends React.Component {
 
   componentDidMount () {
     this.props.updateKarma()
+    this.props.updateProfile()
   }
 
   render () {

@@ -1,17 +1,15 @@
 import React from 'react'
-import { Route, withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 
 import './login.scss'
 import { FORGOT_PASSWORD_URL, LOGIN_URL, SIGNUP_URL, staticAsset } from '@utils/urls'
-import LoginForm from '@components/login-form'
 import SignupForm from '@components/signup-form'
-import ForgotPasswordForm from '@components/forgot-password-form'
+import { DASHBOARD_URL } from '../../utils/urls'
 
 class LoginPage extends React.Component {
   constructor (props) {
     super(props)
     this.signupForm = React.createRef()
-    this.props.history.push(LOGIN_URL)
   }
 
   render () {
@@ -32,35 +30,13 @@ class LoginPage extends React.Component {
         </header>
 
         <section className="login-page-content">
-          <Route
-            path={LOGIN_URL}
-            component={() => (
-              <LoginForm
-                login={this.props.login}
-                status={this.props.status}
-                goToSignup={() => this.props.history.push(SIGNUP_URL)}
-                forgotPassword={() =>
-                  this.props.history.push(FORGOT_PASSWORD_URL)
-                }
-              />
-            )}
-          />
-          <Route
-            path={SIGNUP_URL}
-            component={() => (
-              <SignupForm
-                ref={this.signupForm}
-                status={this.props.status}
-                supportedLanguages={this.props.supportedLanguages}
-                createAccount={this.props.createAccount}
-              />
-            )}
-          />
-          <Route
-            path={FORGOT_PASSWORD_URL}
-            component={() => (
-              <ForgotPasswordForm resetPassword={this.props.forgotPassword} />
-            )}
+          <SignupForm
+            ref={this.signupForm}
+            status={this.props.status}
+            supportedLanguages={this.props.supportedLanguages}
+            updateProfile={this.props.updateProfile}
+            successUrl={DASHBOARD_URL}
+            history={this.props.history}
           />
         </section>
       </div>
