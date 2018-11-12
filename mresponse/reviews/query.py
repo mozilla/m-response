@@ -45,7 +45,6 @@ class ReviewQuerySet(models.QuerySet):
         qs = (
             self.unresponded()
             & self.rating_range(1, 2)
-            & self.newer_than_1_week()
             & self.not_assigned_to_any_user()
         )
         if user is not None:
