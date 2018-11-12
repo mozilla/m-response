@@ -1,0 +1,25 @@
+{
+    "name": "m-response",
+    "description": "Crowdsourcing Mozilla responses to Google Play Store reviews",
+    "repository": {
+        "url": "https://github.com/torchbox/m-response",
+        "license": "MPL2",
+        "type": "git",
+        "clone": "https://github.com/torchbox/m-response.git"
+    },
+    "bugs": {
+        "list": "https://github.com/torchbox/m-response/issues",
+        "report": "https://github.com/torchbox/m-response/issues/new"
+    },
+    "urls": {
+        "prod": "https://respond.mozilla.community"
+    },
+    "keywords": [
+        "python",
+        "html",
+        "js",
+        "css",
+        "django",
+        "react"
+    ]
+}
