@@ -4,7 +4,7 @@ import { push } from 'connected-react-router'
 import { fetchNewReviews, fetchNextReview, updateCurrentResponse, submitResponse, skipReview } from '@redux/actions'
 import { getCurrentReview, getNextReview } from '@redux/selectors'
 
-import { DASHBOARD_URL } from '@utils/urls'
+import { DASHBOARD_URL, GUIDE_BOOK_URL } from '@utils/urls'
 
 import RespondPage from './respond'
 
@@ -12,7 +12,7 @@ const mapStateToProps = (state, props) => ({
   review: getCurrentReview(state),
   nextReview: getNextReview(state),
   response: state.respond.currentReviewResponse,
-  guideBookUrl: '#'
+  guideBookUrl: GUIDE_BOOK_URL
 })
 const mapDispatchToProps = (dispatch, props) => {
   return {

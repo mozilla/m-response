@@ -17,3 +17,6 @@ export const BACKEND_LOGOUT_URL = '/api/users/me/logout/'
 
 // Helper Functions
 export const staticAsset = url => `/static/${url}`
+
+// External URLs
+export const GUIDE_BOOK_URL = 'https://mzl.la/cannedresponses'
