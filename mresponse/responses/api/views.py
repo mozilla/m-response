@@ -53,11 +53,14 @@ class GetResponse(generics.RetrieveAPIView):
     def choose_response_for_user(self):
         try:
             # Get assignment assigned to user first if there's any.
-            users_response_assignment = (
-                responses_models.ResponseAssignedToUser.objects.not_expired().get(
-                    user=self.request.user
-                )
+
+            # Workaround: `not_expired` queryset cannot be chained with filters
+            not_expired = responses_models.ResponseAssignedToUser.objects.not_expired()
+            not_expired_pks = not_expired.values_list('pk', flat=True)
+            not_expired_qs = responses_models.ResponseAssignedToUser.objects.filter(
+                pk__in=not_expired_pks
             )
+            users_response_assignment = not_expired_qs.distinct().get(user=self.request.user)
 
             # If user's assignment is not expired, update the assignment date.
             # Expired assignments are deleted in the assign_to_user.
