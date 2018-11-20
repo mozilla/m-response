@@ -76,15 +76,8 @@ class GetResponse(generics.RetrieveAPIView):
             self.request.user
         ).not_authored_by(self.request.user)
 
-        querysets = (
-            base_queryset.two_or_more_moderations(),
-            base_queryset.one_moderation(),
-            base_queryset.no_moderations(),
-        )
-        for qs in querysets:
-            chosen_response = queryset.get_random_entry(qs)
-            if chosen_response is not None:
-                break
+        chosen_response = queryset.get_random_entry(base_queryset.two_or_less_moderations())
+
         if chosen_response is None:
             raise exceptions.NotFound(
                 'No responses available in the moderator queue.'
