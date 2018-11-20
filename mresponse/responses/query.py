@@ -23,6 +23,9 @@ class ResponseQuerySet(models.QuerySet):
     def two_or_more_moderations(self):
         return self.annotate_moderations_count().filter(moderations_count__gte=2)
 
+    def two_or_less_moderations(self):
+        return self.annotate_moderations_count().filter(moderations_count__lte=2)
+
     def not_moderated_by(self, user):
         return self.exclude(moderations__moderator_id=user.pk)
 
