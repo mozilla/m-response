@@ -112,6 +112,7 @@ class ResponseAdmin(admin.ModelAdmin):
     inlines = (ModerationInline,)
     readonly_fields = ['submitted_at']
     list_display = (
+        'pk',
         'get_review_text',
         'get_review_rating',
         'text',
