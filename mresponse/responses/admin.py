@@ -26,7 +26,7 @@ class ResponseAdmin(admin.ModelAdmin):
         'get_review_text',
         'get_review_rating',
         'text',
-        'approved',
+        'get_community_approval',
         'staff_approved',
         'submitted_to_play_store',
     )
@@ -41,3 +41,8 @@ class ResponseAdmin(admin.ModelAdmin):
         return obj.review.review_rating
 
     get_review_rating.short_description = 'Rating'
+
+    def get_community_approval(self, obj):
+        return obj.is_community_approved()
+
+    get_community_approval.short_description = 'Approved'

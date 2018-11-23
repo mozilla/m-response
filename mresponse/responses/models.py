@@ -71,11 +71,9 @@ class Response(models.Model):
             response_assignment.assigned_at = timezone.now()
             response_assignment.save(update_fields=('assigned_at',))
 
-    def can_submit_to_play_store(self):
-        """
-        Returns True if the response satisifies the moderation criteria so
-        can be submitted to the Play store
-        """
+    def is_community_approved(self):
+        """Returns True if the response is moderated by the community"""
+
         # Criteria defined in https://github.com/torchbox/m-response/issues/54
         aggs = self.moderations.aggregate(
             total_moderations_count=Count('id'),
@@ -94,6 +92,17 @@ class Response(models.Model):
             return False
 
         if aggs['personal_count'] < 1:
+            return False
+
+        return True
+
+    def can_submit_to_play_store(self):
+        """
+        Returns True if the response satisifies the moderation criteria so
+        can be submitted to the Play store
+        """
+
+        if not self.is_community_approved():
             return False
 
         if not self.staff_approved:
