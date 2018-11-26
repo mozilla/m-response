@@ -1,5 +1,10 @@
+import csv
+from datetime import timedelta
+
 from django.contrib import admin
 from django.db.models import Count, Q
+from django.http import HttpResponse
+from django.utils import timezone
 
 from import_export import resources
 from import_export.admin import ExportMixin
@@ -20,6 +25,43 @@ def staff_approve_responses(modeladmin, request, qs):
 
 
 staff_approve_responses.short_description = 'Approve responses (staff)'
+
+
+def get_activity_csv(modeladmin, request, qs):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="activity.csv"'
+    writer = csv.writer(response)
+    writer.writerow([
+        'active_users', 'responses_submitted', 'responses_pass', 'responses_declined', 'responses_queued'
+    ])
+
+    last_week = timezone.now() - timedelta(days=7)
+    responses = responses_models.Response.objects.all()
+    moderations = moderations_models.Moderation.objects.all()
+    responses_last_week = responses.filter(submitted_at__gte=last_week)
+    moderations_last_week = moderations.filter(submitted_at__gte=last_week)
+    users_pk = []
+    users_pk += list(moderations_last_week.values_list('moderator', flat=True))
+    users_pk += list(responses_last_week.values_list('author', flat=True))
+    active_users = len(set(users_pk))
+    responses_submitted = responses.count()
+    responses_pass = responses.pass_criteria().count()
+    responses_queued = responses.two_or_less_moderations().count()
+    responses_declined = responses.annotate_pass_criteria().filter(
+        total_moderations_count__gte=3,
+        positive_in_tone_count__lt=3,
+        addressing_the_issue_count__lt=2,
+        personal_count__lt=1
+    ).count()
+
+    writer.writerow([
+        active_users, responses_submitted, responses_pass, responses_declined, responses_queued
+    ])
+
+    return response
+
+
+get_activity_csv.short_description = 'Get activity CSV'
 
 
 class ModerationsCountFilter(admin.SimpleListFilter):
@@ -127,20 +169,7 @@ class ResponseResource(resources.ModelResource):
 
     def get_export_queryset(self, *args, **kwargs):
         qs = super(ResponseResource, self).get_export_queryset(*args, **kwargs)
-        qs = qs.annotate(
-            total_moderations_count=Count('moderations')
-        ).annotate(
-            positive_in_tone_count=Count('moderations', filter=Q(
-                moderations__positive_in_tone=True))
-        ).annotate(
-            addressing_the_issue_count=Count('moderations', filter=Q(
-                moderations__addressing_the_issue=True))
-        ).annotate(
-            personal_count=Count('moderations', filter=Q(
-                moderations__personal=True))
-        )
-
-        return qs.distinct()
+        return qs.annotate_moderation_criteria()
 
     def dehydrate_review_text(self, obj):
         return obj.review.review_text
@@ -175,7 +204,10 @@ class ResponseAdmin(ExportMixin, admin.ModelAdmin):
         ModerationsCountFilter, PositiveToneCountFilter,
         AddressingIssueCountFilter, PersonalCountFilter
     )
-    actions = [staff_approve_responses]
+    actions = [
+        staff_approve_responses,
+        get_activity_csv
+    ]
 
     def get_review_text(self, obj):
         return obj.review.review_text

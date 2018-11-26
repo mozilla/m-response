@@ -8,6 +8,28 @@ class ResponseQuerySet(models.QuerySet):
     def annotate_moderations_count(self):
         return self.annotate(moderations_count=models.Count('moderations'))
 
+    def annotate_pass_criteria(self):
+        return self.annotate(
+            total_moderations_count=models.Count('moderations')
+        ).annotate(
+            positive_in_tone_count=models.Count('moderations', filter=models.Q(
+                moderations__positive_in_tone=True))
+        ).annotate(
+            addressing_the_issue_count=models.Count('moderations', filter=models.Q(
+                moderations__addressing_the_issue=True))
+        ).annotate(
+            personal_count=models.Count('moderations', filter=models.Q(
+                moderations__personal=True))
+        ).distinct()
+
+    def pass_criteria(self):
+        return self.annotate_pass_criteria().filter(
+            total_moderations_count__gte=3,
+            positive_in_tone_count__gte=3,
+            addressing_the_issue_count__gte=2,
+            personal_count__gte=1
+        )
+
     def not_approved(self):
         return self.filter(approved=False)
 
