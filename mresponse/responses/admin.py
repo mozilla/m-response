@@ -20,13 +20,13 @@ staff_approve_responses.short_description = 'Approve responses (staff)'
 
 
 class ModerationsCountFilter(admin.SimpleListFilter):
-    title = 'Moderations'
+    title = 'num. of moderations'
     parameter_name = 'moderations'
 
     def lookups(self, request, model_admin):
         return (
-            ('yes', 'Yes'),
-            ('no', 'No')
+            ('yes', '3'),
+            ('no', 'Less than 3')
         )
 
     def queryset(self, request, queryset):
@@ -39,13 +39,13 @@ class ModerationsCountFilter(admin.SimpleListFilter):
 
 
 class PositiveToneCountFilter(admin.SimpleListFilter):
-    title = 'Positive tone'
+    title = 'positive tone'
     parameter_name = 'positive_tone'
 
     def lookups(self, request, model_admin):
         return (
-            ('yes', 'Yes'),
-            ('no', 'No')
+            ('yes', '3'),
+            ('no', 'Less than 3')
         )
 
     def queryset(self, request, queryset):
@@ -62,13 +62,13 @@ class PositiveToneCountFilter(admin.SimpleListFilter):
 
 
 class AddressingIssueCountFilter(admin.SimpleListFilter):
-    title = 'Addressing issue'
+    title = 'addressing issue'
     parameter_name = 'addressing_issue'
 
     def lookups(self, request, model_admin):
         return (
-            ('yes', 'Yes'),
-            ('no', 'No')
+            ('yes', '2'),
+            ('no', 'Less than 2')
         )
 
     def queryset(self, request, queryset):
@@ -90,8 +90,8 @@ class PersonalCountFilter(admin.SimpleListFilter):
 
     def lookups(self, request, model_admin):
         return (
-            ('yes', 'Yes'),
-            ('no', 'No')
+            ('yes', '1'),
+            ('no', 'Less than 1')
         )
 
     def queryset(self, request, queryset):
