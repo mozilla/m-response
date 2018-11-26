@@ -66,6 +66,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'corsheaders',
+    'import_export',
 
     'mresponse.applications',
     'mresponse.images',

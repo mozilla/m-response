@@ -1,6 +1,9 @@
 from django.contrib import admin
 from django.db.models import Count, Q
 
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
+from import_export.fields import Field
 from mresponse.moderations import models as moderations_models
 from mresponse.responses import models as responses_models
 from mresponse.utils import admin as admin_utils
@@ -107,8 +110,54 @@ class PersonalCountFilter(admin.SimpleListFilter):
         return qs.distinct()
 
 
+class ResponseResource(resources.ModelResource):
+    review_text = Field()
+    review_rating = Field()
+    community_approved = Field()
+
+    class Meta:
+        model = responses_models.Response
+        fields = (
+            'pk', 'text', 'staff_approved', 'submitted_to_play_store',
+            'positive_in_tone_count', 'addressing_the_issue_count', 'personal_count'
+        )
+
+    def get_queryset(self):
+        qs = super(ResponseResource, self).get_queryset()
+        qs = qs.annotate(
+            total_moderations_count=Count('moderations')
+        ).annotate(
+            positive_in_tone_count=Count('moderations', filter=Q(
+                moderations__positive_in_tone=True))
+        ).annotate(
+            addressing_the_issue_count=Count('moderations', filter=Q(
+                moderations__addressing_the_issue=True))
+        ).annotate(
+            personal_count=Count('moderations', filter=Q(
+                moderations__personal=True))
+        )
+
+        return qs.distinct()
+
+    def dehydrate_review_text(self, obj):
+        return obj.review.review_text
+
+    def dehydrate_review_rating(self, obj):
+        return obj.review.review_rating
+
+    def dehydrate_community_approved(self, obj):
+        criteria = [
+            obj.total_moderations_count >= 3,
+            obj.positive_in_tone_count >= 3,
+            obj.addressing_the_issue_count >= 2,
+            obj.personal_count >= 1
+        ]
+        return all(criteria)
+
+
 @admin.register(responses_models.Response)
-class ResponseAdmin(admin.ModelAdmin):
+class ResponseAdmin(ImportExportModelAdmin):
+    resource_class = ResponseResource
     inlines = (ModerationInline,)
     readonly_fields = ['submitted_at']
     list_display = (
