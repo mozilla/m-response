@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.db.models import Count, Q
 
 from import_export import resources
-from import_export.admin import ImportExportModelAdmin
+from import_export.admin import ExportMixin
 from import_export.fields import Field
 from mresponse.moderations import models as moderations_models
 from mresponse.responses import models as responses_models
@@ -114,16 +114,19 @@ class ResponseResource(resources.ModelResource):
     review_text = Field()
     review_rating = Field()
     community_approved = Field()
+    total_moderations_count = Field(attribute='total_moderations_count')
+    positive_in_tone_count = Field(attribute='positive_in_tone_count')
+    addressing_the_issue_count = Field(attribute='addressing_the_issue_count')
+    personal_count = Field(attribute='personal_count')
 
     class Meta:
         model = responses_models.Response
         fields = (
-            'pk', 'text', 'staff_approved', 'submitted_to_play_store',
-            'positive_in_tone_count', 'addressing_the_issue_count', 'personal_count'
+            'id', 'text', 'staff_approved', 'submitted_to_play_store'
         )
 
-    def get_queryset(self):
-        qs = super(ResponseResource, self).get_queryset()
+    def get_export_queryset(self, *args, **kwargs):
+        qs = super(ResponseResource, self).get_export_queryset(*args, **kwargs)
         qs = qs.annotate(
             total_moderations_count=Count('moderations')
         ).annotate(
@@ -156,7 +159,7 @@ class ResponseResource(resources.ModelResource):
 
 
 @admin.register(responses_models.Response)
-class ResponseAdmin(ImportExportModelAdmin):
+class ResponseAdmin(ExportMixin, admin.ModelAdmin):
     resource_class = ResponseResource
     inlines = (ModerationInline,)
     readonly_fields = ['submitted_at']
