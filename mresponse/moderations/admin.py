@@ -8,6 +8,7 @@ class ModerationAdmin(admin.ModelAdmin):
     readonly_fields = ['submitted_at']
     list_display = (
         'pk',
+        'get_review',
         'get_response',
         'get_moderator',
         'positive_in_tone',
@@ -28,3 +29,8 @@ class ModerationAdmin(admin.ModelAdmin):
         return obj.response.text
 
     get_response.short_description = 'Response'
+
+    def get_review(self, obj):
+        return obj.response.review.review_text
+
+    get_review.short_description = 'Review'
