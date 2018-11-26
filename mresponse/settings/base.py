@@ -524,7 +524,8 @@ def _username_algo(email):
     except ImportError:
         from django.utils.encoding import smart_str as smart_bytes
 
-    return base64.urlsafe_b64encode(hashlib.sha1(smart_bytes(email)).digest()).rstrip(b'=')
+    return base64.urlsafe_b64encode(
+        hashlib.sha1(smart_bytes(email)).digest()).rstrip(b'=').decode('utf-8')
 
 
 OIDC_OP_AUTHORIZATION_ENDPOINT = env.get('OIDC_OP_AUTHORIZATION_ENDPOINT')
