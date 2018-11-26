@@ -6,3 +6,25 @@ from mresponse.moderations import models as moderations_models
 @admin.register(moderations_models.Moderation)
 class ModerationAdmin(admin.ModelAdmin):
     readonly_fields = ['submitted_at']
+    list_display = (
+        'pk',
+        'get_response',
+        'get_moderator',
+        'positive_in_tone',
+        'addressing_the_issue',
+        'personal',
+        'karma_points',
+        'submitted_at'
+    )
+
+    def get_moderator(self, obj):
+        if obj.moderator.profile and obj.moderator.profile.name:
+            return obj.moderator.profile.name
+        return obj.moderator.email
+
+    get_moderator.short_description = 'Moderator'
+
+    def get_response(self, obj):
+        return obj.response.text
+
+    get_response.short_description = 'Response'
