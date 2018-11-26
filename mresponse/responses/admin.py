@@ -116,7 +116,6 @@ class ResponseAdmin(admin.ModelAdmin):
         'get_review_text',
         'get_review_rating',
         'text',
-        'approved',
         'staff_approved',
         'submitted_to_play_store',
     )
