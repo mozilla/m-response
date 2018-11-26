@@ -25,8 +25,8 @@ class ModerationsCountFilter(admin.SimpleListFilter):
 
     def lookups(self, request, model_admin):
         return (
-            ('yes', '3'),
-            ('no', 'Less than 3')
+            ('yes', '3 or more - pass'),
+            ('no', 'Less than 3 - fail')
         )
 
     def queryset(self, request, queryset):
@@ -44,8 +44,8 @@ class PositiveToneCountFilter(admin.SimpleListFilter):
 
     def lookups(self, request, model_admin):
         return (
-            ('yes', '3'),
-            ('no', 'Less than 3')
+            ('yes', '3 or more - pass'),
+            ('no', 'Less than 3 - fail')
         )
 
     def queryset(self, request, queryset):
@@ -67,8 +67,8 @@ class AddressingIssueCountFilter(admin.SimpleListFilter):
 
     def lookups(self, request, model_admin):
         return (
-            ('yes', '2'),
-            ('no', 'Less than 2')
+            ('yes', '2 or more - pass'),
+            ('no', 'Less than 2 - fail')
         )
 
     def queryset(self, request, queryset):
@@ -90,8 +90,8 @@ class PersonalCountFilter(admin.SimpleListFilter):
 
     def lookups(self, request, model_admin):
         return (
-            ('yes', '1'),
-            ('no', 'Less than 1')
+            ('yes', '1 or more - pass'),
+            ('no', 'Less than 1 - fail')
         )
 
     def queryset(self, request, queryset):
