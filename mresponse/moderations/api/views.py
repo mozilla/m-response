@@ -34,10 +34,6 @@ class CreateModeration(generics.CreateAPIView):
         # Clear the assignment to the user.
         self.request.user.response_assignment.delete()
 
-        # Send response to play store
-        if not response.submitted_to_play_store and response.can_submit_to_play_store():
-            return response.submit_to_play_store()
-
         # Update user's karma points
         user_profile = response.author.profile
         user_profile.karma_points = models.F('karma_points') + moderation.karma_points
