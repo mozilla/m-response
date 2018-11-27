@@ -33,7 +33,8 @@ def get_activity_csv(modeladmin, request, qs):
     response['Content-Disposition'] = 'attachment; filename="activity.csv"'
     writer = csv.writer(response)
     writer.writerow([
-        'active_users', 'responses_submitted', 'responses_pass', 'responses_declined', 'responses_queued'
+        'active_users', 'responses_submitted', 'responses_pass', 'responses_declined',
+        'responses_queued', 'responses_staff_approved'
     ])
 
     last_week = timezone.now() - timedelta(days=7)
@@ -54,9 +55,11 @@ def get_activity_csv(modeladmin, request, qs):
         addressing_the_issue_count__lt=2,
         personal_count__lt=1
     ).count()
+    responses_staff_approved = responses.filter(staff_approved=True).count()
 
     writer.writerow([
-        active_users, responses_submitted, responses_pass, responses_declined, responses_queued
+        active_users, responses_submitted, responses_pass, responses_declined,
+        responses_queued, responses_staff_approved
     ])
 
     return response
