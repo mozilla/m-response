@@ -76,6 +76,7 @@ export default class RespondPage extends React.Component {
               </div>
               <form className='respond-page-edit-response-form' onSubmit={this.saveResponseInput}>
                 <textarea
+                  maxlength="340"
                   className='respond-page-edit-response-form-text'
                   name="response-text"
                   value={response}
