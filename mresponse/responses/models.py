@@ -6,6 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from mresponse.responses import query
 from mresponse.reviews.utils import reply_to_review
+from mresponse.utils.queryset import PlaystoreUploadException
 
 
 class ResponseAssignedToUser(models.Model):
@@ -108,8 +109,14 @@ class Response(models.Model):
         """
         Submits the response to the play store
         """
+
         if self.submitted_to_play_store:
-            raise Exception("This response has already been submitted to the Play store")
+            msg = 'Response {} already submitted to playstore'.format(self.pk)
+            raise PlaystoreUploadException(msg)
+
+        if not self.can_submit_to_play_store():
+            msg = 'Response {} is not allowed to be submitted to playstore'.format(self.pk)
+            raise PlaystoreUploadException(msg)
 
         if not getattr(settings, 'PLAY_STORE_SUBMIT_REPLY_ENABLED', False):
             return
