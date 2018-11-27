@@ -1,7 +1,7 @@
 import csv
 from datetime import timedelta
 
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.db.models import Count, Q
 from django.http import HttpResponse
 from django.utils import timezone
@@ -12,6 +12,7 @@ from import_export.fields import Field
 from mresponse.moderations import models as moderations_models
 from mresponse.responses import models as responses_models
 from mresponse.utils import admin as admin_utils
+from mresponse.utils.queryset import PlaystoreUploadException
 
 
 class ModerationInline(admin_utils.ViewOnlyModelAdmin, admin.StackedInline):
@@ -62,6 +63,17 @@ def get_activity_csv(modeladmin, request, qs):
 
 
 get_activity_csv.short_description = 'Get activity CSV'
+
+
+def upload_to_playstore(modeladmin, request, qs):
+    for obj in qs:
+        try:
+            obj.submit_to_play_store()
+        except PlaystoreUploadException as e:
+            messages.error(request, str(e))
+
+
+upload_to_playstore.short_description = 'Upload to playstore'
 
 
 class ModerationsCountFilter(admin.SimpleListFilter):
@@ -206,7 +218,8 @@ class ResponseAdmin(ExportMixin, admin.ModelAdmin):
     )
     actions = [
         staff_approve_responses,
-        get_activity_csv
+        get_activity_csv,
+        upload_to_playstore
     ]
 
     def get_review_text(self, obj):
