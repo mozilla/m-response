@@ -66,3 +66,11 @@ http://mresponse.local/
 
 On the backend you need to set two environment variables - ``AUTH0_DOMAIN`` and
 ``JWT_ISSUER``.
+
+Data Retrieval from the Google Playstore
+~~~~~~~~~~~~~~~~~~~
+
+To retrieve (download) reviews and publish (upload) responses on the Google Playstore, there is a small service.
+This service lives in its own repo: https://github.com/mozilla/m-response-api
+
+
