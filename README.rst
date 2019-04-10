@@ -49,6 +49,9 @@ Start the server
 
 Then you can visit administration panel at http://localhost:8000/admin/.
 
+The application uses external authentication. To log-in locally please do it
+through the administration interface instead.
+
 Auth0 Configuration
 ~~~~~~~~~~~~~~~~~~~
 
