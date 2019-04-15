@@ -128,6 +128,7 @@
     "@storybook/addon-links": "^3.4.11",
     "@storybook/addons": "^3.4.11",
     "@storybook/react": "^3.4.11",
-    "@storybook/storybook-deployer": "^2.3.0"
+    "@storybook/storybook-deployer": "^2.3.0",
+    "webpack-bundle-tracker": "^0.4.2-beta"
   }
 }

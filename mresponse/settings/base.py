@@ -17,6 +17,7 @@ env = os.environ.copy()
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
+WEBPACK_DIR = os.path.join(PROJECT_DIR, 'frontend', 'app')
 
 
 # Switch off DEBUG mode explicitly in the base settings.
@@ -67,6 +68,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'import_export',
+    'webpack_loader',
 
     'mresponse.applications',
     'mresponse.images',
@@ -214,7 +216,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # applications which are used by default.
 # https://docs.djangoproject.com/en/stable/ref/settings/#staticfiles-dirs
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'mresponse/frontend/app/build/static'),
+    os.path.join(WEBPACK_DIR, 'build', 'static'),
 ]
 
 
@@ -538,3 +540,18 @@ OIDC_OP_DOMAIN = env.get('OIDC_OP_DOMAIN')
 OIDC_USERNAME_ALGO = _username_algo
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+
+# Webpack
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'BUNDLE_DIR_NAME': 'app/',
+        'STATS_FILE': os.path.join(WEBPACK_DIR, 'webpack-stats.json'),
+    }
+}
+
+
+# Whitenoise
+
+WHITENOISE_ROOT = os.path.join(BASE_DIR, 'public')
