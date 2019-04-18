@@ -164,29 +164,28 @@ export default class ModeratePage extends React.Component {
                 </div>
               </div>
 
+              <div className='moderate-page-actions moderate-page-actions--form'>
+                <Button
+                  label='Submit'
+                  className='moderate-page-actions-moderate'
+                  onClick={this.submitModeration} />
+              </div>
+
             </div>
           </div>
         ) : null}
 
-        {response ? isModerating
-          ? (
-            <div className='moderate-page-actions'>
-              <Button
-                label='Submit'
-                className='moderate-page-actions-moderate'
-                onClick={this.submitModeration} />
-            </div>
-          ) : (
-            <div className='moderate-page-actions'>
-              <Button
-                label='Moderate'
-                className='moderate-page-actions-moderate'
-                onClick={this.setIsModerating} />
-              <span
-                className='moderate-page-actions-skip'
-                onClick={this.props.skipResponse}>Skip</span>
-            </div>
-          ) : null}
+        {response && !isModerating &&
+          <div className='moderate-page-actions'>
+            <Button
+              label='Moderate'
+              className='moderate-page-actions-moderate'
+              onClick={this.setIsModerating} />
+            <span
+              className='moderate-page-actions-skip'
+              onClick={this.props.skipResponse}>Skip</span>
+          </div>
+        }
 
       </div>
     )
