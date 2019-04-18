@@ -96,12 +96,12 @@ export default class ModeratePage extends React.Component {
                   <ToggleButton
                     label="Yes!"
                     toggled={criteria.positive === true}
-                    onClick={() => this.toggleCriteria('positive', true)}
+                    handleClick={() => this.toggleCriteria('positive', true)}
                     icon={staticAsset('media/icons/smile.svg')} />
                   <ToggleButton
                     label="Not Really"
                     toggled={criteria.positive === false}
-                    onClick={() => this.toggleCriteria('positive', false)}
+                    handleClick={() => this.toggleCriteria('positive', false)}
                     icon={staticAsset('media/icons/sad.svg')} />
                 </div>
               </div>
@@ -115,12 +115,12 @@ export default class ModeratePage extends React.Component {
                   <ToggleButton
                     label="Yes!"
                     toggled={criteria.relevant === true}
-                    onClick={() => this.toggleCriteria('relevant', true)}
+                    handleClick={() => this.toggleCriteria('relevant', true)}
                     icon={staticAsset('media/icons/smile.svg')} />
                   <ToggleButton
                     label="Not Really"
                     toggled={criteria.relevant === false}
-                    onClick={() => this.toggleCriteria('relevant', false)}
+                    handleClick={() => this.toggleCriteria('relevant', false)}
                     icon={staticAsset('media/icons/sad.svg')} />
                 </div>
               </div>
@@ -134,12 +134,12 @@ export default class ModeratePage extends React.Component {
                   <ToggleButton
                     label="Yes!"
                     toggled={criteria.personal === true}
-                    onClick={() => this.toggleCriteria('personal', true)}
+                    handleClick={() => this.toggleCriteria('personal', true)}
                     icon={staticAsset('media/icons/smile.svg')} />
                   <ToggleButton
                     label="Not Really"
                     toggled={criteria.personal === false}
-                    onClick={() => this.toggleCriteria('personal', false)}
+                    handleClick={() => this.toggleCriteria('personal', false)}
                     icon={staticAsset('media/icons/sad.svg')} />
                 </div>
               </div>
@@ -168,7 +168,9 @@ export default class ModeratePage extends React.Component {
                 <Button
                   label='Submit'
                   className='moderate-page-actions-moderate'
-                  onClick={this.submitModeration} />
+                  onClick={this.submitModeration}
+                  disabled={!this.allCriteriaAnswered(criteria)}
+                />
               </div>
 
             </div>
@@ -197,6 +199,13 @@ export default class ModeratePage extends React.Component {
         ...this.state.criteria,
         [option]: value
       }
+    })
+  }
+
+  allCriteriaAnswered = (criteria) => {
+    return Object.entries(criteria).every(criteria => {
+      const [, value] = criteria
+      return value !== null
     })
   }
 
