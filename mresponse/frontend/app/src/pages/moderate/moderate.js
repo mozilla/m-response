@@ -88,23 +88,29 @@ export default class ModeratePage extends React.Component {
           <div className='moderate-page-container'>
             <div className='moderate-page-form'>
               <div className='moderate-page-form-row'>
-                <span className='moderate-page-form-row-title'>Is the response positive in tone?</span>
+                <span className='moderate-page-form-row-title'>
+                  Is the response {' '}
+                  <span className="moderate-page-form-row-emphasis">positive in tone?</span>
+                </span>
                 <div className='moderate-page-form-row-buttons'>
                   <ToggleButton
                     label="Yes!"
-                    toggled={criteria.positive === true}
+                    toggled={true}
                     onClick={() => this.toggleCriteria('positive')}
                     icon={staticAsset('media/icons/smile.svg')} />
                   <ToggleButton
                     label="Not Really"
-                    toggled={criteria.positive === false}
+                    toggled={false}
                     onClick={() => this.toggleCriteria('positive')}
                     icon={staticAsset('media/icons/sad.svg')} />
                 </div>
               </div>
 
               <div className='moderate-page-form-row'>
-                <span className='moderate-page-form-row-title'>Does the response address the issue?</span>
+                <span className='moderate-page-form-row-title'>
+                  Does the response {' ' }
+                  <span className="moderate-page-form-row-emphasis">address the issue?</span>
+                </span>
                 <div className='moderate-page-form-row-buttons'>
                   <ToggleButton
                     label="Yes!"
@@ -120,7 +126,10 @@ export default class ModeratePage extends React.Component {
               </div>
 
               <div className='moderate-page-form-row'>
-                <span className='moderate-page-form-row-title'>Is the response personal?</span>
+                <span className='moderate-page-form-row-title'>
+                  Is the response {' ' }
+                  <span className="moderate-page-form-row-emphasis">personal?</span>
+                </span>
                 <div className='moderate-page-form-row-buttons'>
                   <ToggleButton
                     label="Yes!"
