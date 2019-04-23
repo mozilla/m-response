@@ -8,10 +8,10 @@ const ToggleButton = ({ label, className, disabled = false, icon, toggled, handl
       className={`
         toggle-button
         ${disabled ? 'toggle-button--disabled' : ''}
-        ${toggled === (true || false) ? 'toggle-button--toggled' : ''}
+        ${toggled ? 'toggle-button--toggled' : ''}
         ${className}
       `}
-      onClick={() => handleClick()}
+      onClick={handleClick}
       disabled={disabled}
     >
       { icon ? <img src={icon} className='toggle-button-icon' alt='' /> : null }
