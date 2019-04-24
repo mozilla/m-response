@@ -38,8 +38,8 @@ export default class ModeratePage extends React.Component {
     const {
       back,
       response
-      // nextReview
     } = this.props
+
     const {
       isModerating,
       messages,
@@ -188,25 +188,21 @@ export default class ModeratePage extends React.Component {
               onClick={this.props.skipResponse}>Skip</span>
           </div>
         }
-
       </div>
     )
   }
 
   toggleCriteria = (option, value) => {
-    this.setState({
+    this.setState((state) => ({
       criteria: {
-        ...this.state.criteria,
+        ...state.criteria,
         [option]: value
       }
-    })
+    }))
   }
 
   allCriteriaAnswered = (criteria) => {
-    return Object.entries(criteria).every(criteria => {
-      const [, value] = criteria
-      return value !== null
-    })
+    return Object.entries(criteria).every(([, value]) => value !== null)
   }
 
   setIsModerating = () => this.setState({
