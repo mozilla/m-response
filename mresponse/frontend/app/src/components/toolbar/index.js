@@ -13,11 +13,7 @@ export default class Toolbar extends React.Component {
           {leftComponent || (
             <img
               src={staticAsset('media/icons/arrow-left.svg')}
-              className={`
-                toolbar-back-link
-                ${invertBackIcon ? 'toolbar-back-link--inverted' : ''}
-                ${backArrowClassName}
-              `}
+              className={`toolbar-back-link ${backArrowClassName} ${invertBackIcon ? 'toolbar-back-link--inverted' : ''}`}
               onClick={onBack}
               alt=''
             />
