@@ -30,6 +30,17 @@ Compile static assets
 The watcher (`yarn start`) has to be run locally (outside VM). We use Node
 8 LTS and Yarn stable.
 
+Linting
+~~~~~~~
+
+[ESLint](https://eslint.org/) and [stylelint] have been configured, along with [Prettier](https://prettier.io/).
+
+If you are using Visual Studio Code (VSCode) ensure you have the following extensions installed:
+
+- Eslint: [dbaeumer.vscode-eslint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+- Prettier: [esbenp.prettier-vscode](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+- Stylelint: [shinnn.stylelint](https://marketplace.visualstudio.com/items?itemName=shinnn.stylelint)
+
 Create database and administrator user
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
