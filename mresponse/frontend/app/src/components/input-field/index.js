@@ -59,12 +59,12 @@ export default class InputField extends React.Component {
 }
 
 InputField.propTypes = {
-  className: PropTypes.string.optional,
-  icon: PropTypes.string.optional,
-  placeholder: PropTypes.string.optional,
-  type: PropTypes.string.optional,
-  value: PropTypes.string.optional,
-  onChange: PropTypes.func.optional,
-  onFocus: PropTypes.func.optional,
-  disabled: PropTypes.bool.optional
+  className: PropTypes.string,
+  icon: PropTypes.string,
+  placeholder: PropTypes.string,
+  type: PropTypes.string,
+  value: PropTypes.string,
+  onChange: PropTypes.func,
+  onFocus: PropTypes.func,
+  disabled: PropTypes.bool
 }

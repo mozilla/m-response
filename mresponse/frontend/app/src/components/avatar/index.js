@@ -33,11 +33,11 @@ const Avatar = ({ src, coverIcon, className = '', editable, onClick, karma }) =>
 
 Avatar.propTypes = {
   src: PropTypes.string.isRequired,
-  className: PropTypes.string.optional,
-  editable: PropTypes.bool.optional,
-  onClick: PropTypes.bool.optional,
-  coverIcon: PropTypes.string.optional,
-  karma: PropTypes.string.optional
+  className: PropTypes.string,
+  editable: PropTypes.bool,
+  onClick: PropTypes.func,
+  coverIcon: PropTypes.string,
+  karma: PropTypes.number
 }
 
 export default Avatar

@@ -140,11 +140,11 @@ TagField.defaultProps = {
 }
 
 TagField.propTypes = {
-  className: PropTypes.string.optional,
-  icon: PropTypes.string.optional,
-  placeholder: PropTypes.string.optional,
-  type: PropTypes.string.optional,
-  onChange: PropTypes.func.optional,
+  className: PropTypes.string,
+  icon: PropTypes.string,
+  placeholder: PropTypes.string,
+  type: PropTypes.string,
+  onChange: PropTypes.func,
   suggestions: PropTypes.array.isRequired,
-  tags: PropTypes.array.optional
+  tags: PropTypes.array
 }

@@ -14,8 +14,8 @@ export default class Toolbar extends React.Component {
             <img
               src={staticAsset('media/icons/arrow-left.svg')}
               className={`
-                toolbar-back-link 
-                ${invertBackIcon ? 'toolbar-back-link--inverted' : ''} 
+                toolbar-back-link
+                ${invertBackIcon ? 'toolbar-back-link--inverted' : ''}
                 ${backArrowClassName}
               `}
               onClick={onBack}
@@ -36,7 +36,7 @@ export default class Toolbar extends React.Component {
 }
 
 Toolbar.propTypes = {
-  leftComponent: PropTypes.element.optional,
-  rightComponent: PropTypes.element.optional,
-  title: PropTypes.string.optional
+  leftComponent: PropTypes.element,
+  rightComponent: PropTypes.element,
+  title: PropTypes.string
 }

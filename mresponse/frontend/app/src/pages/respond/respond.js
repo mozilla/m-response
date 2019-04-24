@@ -74,9 +74,9 @@ export default class RespondPage extends React.Component {
                   icon={staticAsset('media/icons/book.svg')}
                   onClick={this.openGuideBook} />
               </div>
-              <form className='respond-page-edit-response-form' onSubmit={this.saveResponseInput}>
+              <form className='respond-page-edit-response-form'>
                 <textarea
-                  maxlength="340"
+                  maxLength="340"
                   className='respond-page-edit-response-form-text'
                   name="response-text"
                   value={response}
@@ -84,7 +84,8 @@ export default class RespondPage extends React.Component {
                   onChange={this.updateResponse} />
                 <Button
                   label='Done'
-                  className='respond-page-edit-response-form-submit' />
+                  className='respond-page-edit-response-form-submit'
+                  onClick={this.saveResponseInput} />
               </form>
             </div>
           </div>

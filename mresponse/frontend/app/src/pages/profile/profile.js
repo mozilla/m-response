@@ -149,8 +149,6 @@ export default class ProfilePage extends React.Component {
 
 ProfilePage.propTypes = {
   profile: PropTypes.object.isRequired,
-  logout: PropTypes.func.isRequired,
   back: PropTypes.func.isRequired,
   editProfile: PropTypes.func.isRequired
-
 }
