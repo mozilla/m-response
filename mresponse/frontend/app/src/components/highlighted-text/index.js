@@ -12,6 +12,6 @@ export default HighlightedText
 
 HighlightedText.propTypes = {
   text: PropTypes.string.isRequired,
-  className: PropTypes.string.optional,
-  textClassName: PropTypes.string.optional
+  className: PropTypes.string,
+  textClassName: PropTypes.string
 }
