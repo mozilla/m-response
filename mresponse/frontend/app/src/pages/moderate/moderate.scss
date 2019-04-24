@@ -46,11 +46,15 @@
           display: flex;
           flex-direction: column;
           margin-bottom: 15px;
-            
+
             &-title {
               font-size: 14px;
               line-height: 24px;
               margin-bottom: 5px;
+            }
+
+            &-emphasis {
+              font-weight: 700;
             }
 
             &-buttons {
@@ -86,6 +90,10 @@
         align-items: center;
         justify-content: center;
         margin-top: 16px;
+
+        &--form {
+          margin-bottom: 10px;
+        }
 
         &-moderate {
             height: 42px;
