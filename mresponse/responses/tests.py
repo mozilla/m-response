@@ -5,9 +5,9 @@ from django.test import TestCase
 
 from mresponse.applications.models import Application
 from mresponse.reviews.models import Review
-from mresponse.users.tests import (get_untrusted_user,
-                                   get_first_level_trusted_user,
-                                   get_second_level_trusted_user)
+from mresponse.users.tests import (get_first_level_trusted_user,
+                                   get_second_level_trusted_user,
+                                   get_untrusted_user)
 
 from .api.serializers import ResponseSerializer
 
