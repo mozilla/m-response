@@ -1,9 +1,8 @@
 from django.conf import settings
 from django.db import models
 
-from .constants import (
-    FIRST_LEVEL_TRUSTED_CONTRIBUTOR, SECOND_LEVEL_TRUSTED_CONTRIBUTOR
-)
+from .constants import (FIRST_LEVEL_TRUSTED_CONTRIBUTOR,
+                        SECOND_LEVEL_TRUSTED_CONTRIBUTOR)
 
 
 class UserProfile(models.Model):

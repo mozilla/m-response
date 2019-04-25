@@ -2,9 +2,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.test import TestCase
 
-from .constants import (
-    FIRST_LEVEL_TRUSTED_CONTRIBUTOR, SECOND_LEVEL_TRUSTED_CONTRIBUTOR
-)
+from .constants import (FIRST_LEVEL_TRUSTED_CONTRIBUTOR,
+                        SECOND_LEVEL_TRUSTED_CONTRIBUTOR)
 
 User = get_user_model()
 
