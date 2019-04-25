@@ -36,7 +36,10 @@ class ResponseSerializer(serializers.ModelSerializer):
     def save(self, **kwargs):
         author = kwargs.get('author', None)
         if author:
-            kwargs['approved'] = author.profile.can_skip_response_moderation
+            kwargs['approved'] = \
+                author.profile.can_skip_community_response_moderation
+            kwargs['staff_approved'] = \
+                author.profile.can_skip_staff_response_moderation
         super().save(**kwargs)
 
     def get_moderation_url(self, instance):

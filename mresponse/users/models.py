@@ -29,7 +29,7 @@ class UserProfile(models.Model):
         return self.user.moderations.count()
 
     @property
-    def can_skip_response_moderation(self):
+    def can_skip_community_response_moderation(self):
         """
         Returns whether responses submitted by the user need to be community
         moderated, according to membership of the appropriate user Group(s).
@@ -37,3 +37,12 @@ class UserProfile(models.Model):
         return self.user.groups.filter(name__in=[
             FIRST_LEVEL_TRUSTED_CONTRIBUTOR, SECOND_LEVEL_TRUSTED_CONTRIBUTOR
         ]).exists()
+
+    @property
+    def can_skip_staff_response_moderation(self):
+        """
+        Returns whether responses submitted by the user need to be staff
+        moderated, according to membership of the appropriate user Group.
+        """
+        return self.user.groups.filter(
+            name=SECOND_LEVEL_TRUSTED_CONTRIBUTOR).exists()

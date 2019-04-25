@@ -37,14 +37,26 @@ def get_serializer(author):
 
 class TestResponseSerializer(TestCase):
 
-    def test_cannot_skip_moderation_if_not_trusted(self):
+    def test_cannot_skip_community_moderation_if_not_trusted(self):
         serializer = get_serializer(get_untrusted_user())
         self.assertFalse(serializer.instance.approved)
 
-    def test_can_skip_moderation_with_first_level_user(self):
+    def test_can_skip_community_moderation_with_first_level_user(self):
         serializer = get_serializer(get_first_level_trusted_user())
         self.assertTrue(serializer.instance.approved)
 
-    def test_can_skip_moderation_with_second_level_user(self):
+    def test_can_skip_community_moderation_with_second_level_user(self):
         serializer = get_serializer(get_second_level_trusted_user())
         self.assertTrue(serializer.instance.approved)
+
+    def test_cannot_skip_staff_moderation_if_not_trusted(self):
+        serializer = get_serializer(get_untrusted_user())
+        self.assertFalse(serializer.instance.staff_approved)
+
+    def test_cannot_skip_staff_moderation_with_first_level_user(self):
+        serializer = get_serializer(get_first_level_trusted_user())
+        self.assertFalse(serializer.instance.staff_approved)
+
+    def test_can_skip_staff_moderation_with_second_level_user(self):
+        serializer = get_serializer(get_second_level_trusted_user())
+        self.assertTrue(serializer.instance.staff_approved)

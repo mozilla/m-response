@@ -29,20 +29,38 @@ def get_untrusted_user():
 
 class TestUsers(TestCase):
 
-    def test_first_level_trusted_can_skip_response_moderation(self):
+    def test_first_level_trusted_can_skip_community_response_moderation(self):
         user = get_first_level_trusted_user()
-        self.assertTrue(user.profile.can_skip_response_moderation)
+        self.assertTrue(user.profile.can_skip_community_response_moderation)
 
-    def test_second_level_trusted_can_skip_response_moderation(self):
+    def test_second_level_trusted_can_skip_community_response_moderation(self):
         user = get_second_level_trusted_user()
-        self.assertTrue(user.profile.can_skip_response_moderation)
+        self.assertTrue(user.profile.can_skip_community_response_moderation)
 
-    def test_cannot_skip_response_moderation_no_user_groups(self):
+    def test_cannot_skip_communinty_response_moderation_no_user_groups(self):
         user = get_untrusted_user()
-        self.assertFalse(user.profile.can_skip_response_moderation)
+        self.assertFalse(user.profile.can_skip_community_response_moderation)
 
-    def test_cannot_skip_response_moderation_non_trusted_group(self):
+    def test_cannot_skip_community_response_moderation_non_trusted_group(self):
         user = get_untrusted_user()
         group = Group.objects.create(name='Untrusted')
         user.groups.add(group)
-        self.assertFalse(user.profile.can_skip_response_moderation)
+        self.assertFalse(user.profile.can_skip_community_response_moderation)
+
+    def test_first_level_trusted_cannot_skip_staff_response_moderation(self):
+        user = get_first_level_trusted_user()
+        self.assertFalse(user.profile.can_skip_staff_response_moderation)
+
+    def test_second_level_trusted_can_skip_staff_response_moderation(self):
+        user = get_second_level_trusted_user()
+        self.assertTrue(user.profile.can_skip_staff_response_moderation)
+
+    def test_cannot_skip_staff_response_moderation_no_user_groups(self):
+        user = get_untrusted_user()
+        self.assertFalse(user.profile.can_skip_staff_response_moderation)
+
+    def test_cannot_skip_staff_response_moderation_non_trusted_group(self):
+        user = get_untrusted_user()
+        group = Group.objects.create(name='Untrusted')
+        user.groups.add(group)
+        self.assertFalse(user.profile.can_skip_staff_response_moderation)
