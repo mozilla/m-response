@@ -18,9 +18,9 @@ export default class ModeratePage extends React.Component {
     hasSubmitted: false,
     response: this.props.response || '',
     criteria: {
-      positive: false,
-      relevant: false,
-      personal: false
+      positive: null,
+      relevant: null,
+      personal: null
     },
     karmaAwarded: 10,
     messages: []
@@ -38,8 +38,8 @@ export default class ModeratePage extends React.Component {
     const {
       back,
       response
-      // nextReview
     } = this.props
+
     const {
       isModerating,
       messages,
@@ -88,49 +88,58 @@ export default class ModeratePage extends React.Component {
           <div className='moderate-page-container'>
             <div className='moderate-page-form'>
               <div className='moderate-page-form-row'>
-                <span className='moderate-page-form-row-title'>Is the response positive in tone?</span>
+                <span className='moderate-page-form-row-title'>
+                  Is the response {' '}
+                  <span className="moderate-page-form-row-emphasis">positive in tone?</span>
+                </span>
                 <div className='moderate-page-form-row-buttons'>
                   <ToggleButton
                     label="Yes!"
                     toggled={criteria.positive === true}
-                    onClick={() => this.toggleCriteria('positive')}
+                    handleClick={() => this.toggleCriteria('positive', true)}
                     icon={staticAsset('media/icons/smile.svg')} />
                   <ToggleButton
                     label="Not Really"
                     toggled={criteria.positive === false}
-                    onClick={() => this.toggleCriteria('positive')}
+                    handleClick={() => this.toggleCriteria('positive', false)}
                     icon={staticAsset('media/icons/sad.svg')} />
                 </div>
               </div>
 
               <div className='moderate-page-form-row'>
-                <span className='moderate-page-form-row-title'>Does the response address the issue?</span>
+                <span className='moderate-page-form-row-title'>
+                  Does the response {' ' }
+                  <span className="moderate-page-form-row-emphasis">address the issue?</span>
+                </span>
                 <div className='moderate-page-form-row-buttons'>
                   <ToggleButton
                     label="Yes!"
                     toggled={criteria.relevant === true}
-                    onClick={() => this.toggleCriteria('relevant')}
+                    handleClick={() => this.toggleCriteria('relevant', true)}
                     icon={staticAsset('media/icons/smile.svg')} />
                   <ToggleButton
                     label="Not Really"
                     toggled={criteria.relevant === false}
-                    onClick={() => this.toggleCriteria('relevant')}
+                    handleClick={() => this.toggleCriteria('relevant', false)}
                     icon={staticAsset('media/icons/sad.svg')} />
                 </div>
               </div>
 
               <div className='moderate-page-form-row'>
-                <span className='moderate-page-form-row-title'>Is the response personal?</span>
+                <span className='moderate-page-form-row-title'>
+                  Is the response {' ' }
+                  <span className="moderate-page-form-row-emphasis">personal?</span>
+                </span>
                 <div className='moderate-page-form-row-buttons'>
                   <ToggleButton
                     label="Yes!"
                     toggled={criteria.personal === true}
-                    onClick={() => this.toggleCriteria('personal')}
+                    handleClick={() => this.toggleCriteria('personal', true)}
                     icon={staticAsset('media/icons/smile.svg')} />
                   <ToggleButton
                     label="Not Really"
                     toggled={criteria.personal === false}
-                    onClick={() => this.toggleCriteria('personal')}
+                    handleClick={() => this.toggleCriteria('personal', false)}
                     icon={staticAsset('media/icons/sad.svg')} />
                 </div>
               </div>
@@ -155,38 +164,45 @@ export default class ModeratePage extends React.Component {
                 </div>
               </div>
 
+              <div className='moderate-page-actions moderate-page-actions--form'>
+                <Button
+                  label='Submit'
+                  className='moderate-page-actions-moderate'
+                  onClick={this.submitModeration}
+                  disabled={!this.allCriteriaAnswered(criteria)}
+                />
+              </div>
+
             </div>
           </div>
         ) : null}
 
-        {response ? isModerating
-          ? (
-            <div className='moderate-page-actions'>
-              <Button
-                label='Submit'
-                className='moderate-page-actions-moderate'
-                onClick={this.submitModeration} />
-            </div>
-          ) : (
-            <div className='moderate-page-actions'>
-              <Button
-                label='Moderate'
-                className='moderate-page-actions-moderate'
-                onClick={this.setIsModerating} />
-              <span
-                className='moderate-page-actions-skip'
-                onClick={this.props.skipResponse}>Skip</span>
-            </div>
-          ) : null}
-
+        {response && !isModerating &&
+          <div className='moderate-page-actions'>
+            <Button
+              label='Moderate'
+              className='moderate-page-actions-moderate'
+              onClick={this.setIsModerating} />
+            <span
+              className='moderate-page-actions-skip'
+              onClick={this.props.skipResponse}>Skip</span>
+          </div>
+        }
       </div>
     )
   }
 
-  toggleCriteria = option => {
-    const { criteria } = this.state
-    criteria[option] = !criteria[option]
-    this.setState({ criteria })
+  toggleCriteria = (option, value) => {
+    this.setState((state) => ({
+      criteria: {
+        ...state.criteria,
+        [option]: value
+      }
+    }))
+  }
+
+  allCriteriaAnswered = (criteria) => {
+    return Object.entries(criteria).every(([, value]) => value !== null)
   }
 
   setIsModerating = () => this.setState({
