@@ -9,11 +9,8 @@ from ..constants import (
 
 def add_groups(apps, schema_editor):
     Group = apps.get_model('auth', 'Group')
-    Group.objects.bulk_create([
-        Group(name=FIRST_LEVEL_TRUSTED_CONTRIBUTOR),
-        Group(name=SECOND_LEVEL_TRUSTED_CONTRIBUTOR)
-    ])
-
+    Group.objects.get_or_create(name=FIRST_LEVEL_TRUSTED_CONTRIBUTOR)
+    Group.objects.get_or_create(name=SECOND_LEVEL_TRUSTED_CONTRIBUTOR)
 
 def remove_groups(apps, schema_editor):
     Group = apps.get_model('auth', 'Group')
