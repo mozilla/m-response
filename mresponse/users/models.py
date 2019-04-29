@@ -1,9 +1,6 @@
 from django.conf import settings
 from django.db import models
 
-from .constants import (FIRST_LEVEL_TRUSTED_CONTRIBUTOR,
-                        SECOND_LEVEL_TRUSTED_CONTRIBUTOR)
-
 
 class UserProfile(models.Model):
     user = models.OneToOneField(
@@ -31,17 +28,6 @@ class UserProfile(models.Model):
     def can_skip_community_response_moderation(self):
         """
         Returns whether responses submitted by the user need to be community
-        moderated, according to membership of the appropriate user Group(s).
+        moderated.
         """
-        return self.user.groups.filter(name__in=[
-            FIRST_LEVEL_TRUSTED_CONTRIBUTOR, SECOND_LEVEL_TRUSTED_CONTRIBUTOR
-        ]).exists()
-
-    @property
-    def can_skip_staff_response_moderation(self):
-        """
-        Returns whether responses submitted by the user need to be staff
-        moderated, according to membership of the appropriate user Group.
-        """
-        return self.user.groups.filter(
-            name=SECOND_LEVEL_TRUSTED_CONTRIBUTOR).exists()
+        return self.user.has_perm('responses.can_bypass_community_moderation')
