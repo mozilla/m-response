@@ -7,9 +7,9 @@ from django.core.management.base import BaseCommand
 from django.db import transaction
 from django.utils import timezone
 
+import pytz
 import requests
 
-import pytz
 from mresponse.applications.models import Application, ApplicationVersion
 from mresponse.reviews.models import Review
 
