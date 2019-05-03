@@ -18,20 +18,22 @@ class UserFactory(factory.django.DjangoModelFactory):
 
 
 class BypassCommunityModerationUserFactory(UserFactory):
+    username = 'andrea'
 
     @factory.post_generation
     def user_permissions(self, create, extracted, **kwargs):
-        if not create:
-            # Simple build, do nothing.
-            return
-
-        if extracted:
-            # A list of permissions were passed in, use them
-            for permission in extracted:
-                self.user_permissions.add(permission)
-
         self.user_permissions.add(
             Permission.objects.get(codename='can_bypass_community_moderation')
+        )
+
+
+class BypassStaffModerationUserFactory(UserFactory):
+    username = 'sarah'
+
+    @factory.post_generation
+    def user_permissions(self, create, extracted, **kwargs):
+        self.user_permissions.add(
+            Permission.objects.get(codename='can_bypass_staff_moderation')
         )
 
 
