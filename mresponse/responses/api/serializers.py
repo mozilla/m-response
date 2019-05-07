@@ -33,6 +33,15 @@ class ResponseSerializer(serializers.ModelSerializer):
         if not show_skip_url:
             del self.fields['skip_url']
 
+    def save(self, **kwargs):
+        author = kwargs.get('author', None)
+        if author:
+            if author.has_perm('responses.can_bypass_community_moderation'):
+                kwargs['approved'] = True
+            if author.has_perm('responses.can_bypass_staff_moderation'):
+                kwargs['staff_approved'] = True
+        super().save(**kwargs)
+
     def get_moderation_url(self, instance):
         return reverse.reverse(
             'create_moderation',

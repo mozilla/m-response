@@ -52,6 +52,12 @@ class Response(models.Model):
 
     objects = query.ResponseQuerySet.as_manager()
 
+    class Meta:
+        permissions = (
+            ("can_bypass_community_moderation", "Can bypass community moderation"),
+            ("can_bypass_staff_moderation", "Can bypass staff moderation"),
+        )
+
     def __str__(self):
         return _('Response to review #%(review_id)s') % {
             'review_id': self.review.play_store_review_id,

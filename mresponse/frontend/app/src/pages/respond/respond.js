@@ -28,8 +28,12 @@ export default class RespondPage extends React.Component {
     const {
       back,
       review,
-      nextReview
+      nextReview,
+      profile: {
+        canSkipModeration
+      }
     } = this.props
+
     const { isResponding, isDoneEditing, response, messages } = this.state
 
     return (
@@ -104,7 +108,7 @@ export default class RespondPage extends React.Component {
           ? isDoneEditing ? (
             <div className='respond-page-actions'>
               <Button
-                label='Submit for Moderation'
+                label={`${canSkipModeration ? 'Submit' : 'Submit for Moderation'}`}
                 className='respond-page-actions-submit'
                 onClick={this.submitResponse} />
               <span

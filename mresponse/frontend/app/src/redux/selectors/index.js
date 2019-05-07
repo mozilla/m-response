@@ -13,9 +13,19 @@ export const getSpokenLanguages = state => {
 }
 
 export const getProfile = state => {
-  const profile = state.profile.profile
-  const extraUserMeta = state.profile.extraUserMeta
-  const meta = profile || {
+  const {
+    profile: {
+      profile: userProfile,
+      profile: {
+        can_skip_community_response_moderation: canSkipModeration
+      },
+      extraUserMeta: {
+        karma: userKarma
+      }
+    }
+  } = state
+
+  const meta = userProfile || {
     name: '',
     languages: '[]',
     avatar: '',
@@ -29,7 +39,7 @@ export const getProfile = state => {
       })
     })
 
-  const karma = extraUserMeta.karma || {
+  const karma = userKarma || {
     points: 0,
     responsesCount: 0,
     moderationsCount: 0
@@ -40,8 +50,9 @@ export const getProfile = state => {
     name: meta.name,
     picture: meta.avatar,
     email: meta.email,
-    languages: languages,
-    karma
+    languages,
+    karma,
+    canSkipModeration
   }
 
   return result
