@@ -1,10 +1,10 @@
 import datetime
-import factory
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
 from django.test import TestCase
 
+import factory
 from mresponse.applications.models import Application
 from mresponse.reviews.models import Review
 from mresponse.users.tests import (BypassCommunityModerationUserFactory,
