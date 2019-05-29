@@ -10,6 +10,5 @@ class ModerationSerializer(serializers.ModelSerializer):
             'positive_in_tone',
             'addressing_the_issue',
             'personal',
-            'karma_points',
             'submitted_at',
         )

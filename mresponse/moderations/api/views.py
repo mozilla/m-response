@@ -5,6 +5,8 @@ from rest_framework import generics, permissions
 from mresponse.moderations.api import serializers as moderations_serializers
 from mresponse.responses import models as responses_models
 
+MODERATION_KARMA_POINTS_AMOUNT = 1
+
 
 class CreateModeration(generics.CreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
@@ -36,5 +38,7 @@ class CreateModeration(generics.CreateAPIView):
 
         # Update user's karma points
         user_profile = response.author.profile
-        user_profile.karma_points = models.F('karma_points') + moderation.karma_points
+        user_profile.karma_points = (
+            models.F('karma_points') + MODERATION_KARMA_POINTS_AMOUNT
+        )
         user_profile.save(update_fields=('karma_points',))

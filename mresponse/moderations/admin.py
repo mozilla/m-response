@@ -14,7 +14,6 @@ class ModerationAdmin(admin.ModelAdmin):
         'positive_in_tone',
         'addressing_the_issue',
         'personal',
-        'karma_points',
         'submitted_at'
     )
 
