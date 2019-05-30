@@ -28,7 +28,7 @@ class CreateModeration(generics.CreateAPIView):
     def perform_create(self, serializer):
         response = self.get_response_for_user()
 
-        moderation = serializer.save(
+        serializer.save(
             response=response,
             moderator=self.request.user,
         )
