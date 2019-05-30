@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Provider } from 'react-redux'
-import { Switch } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom'
 import { ConnectedRouter } from 'connected-react-router'
 import { PersistGate } from 'redux-persist/integration/react'
 
@@ -72,7 +72,7 @@ class App extends Component {
                 component={ModeratePage}
               />
               <Route
-                component={props => <NotFoundPage isAuthenticated={store.getState().auth.isAuthenticated} {...props} />}
+                component={props => <NotFoundPage isAuthenticated={store.getState().profile.profile} {...props} />}
               />
             </Switch>
           </ConnectedRouter>
