@@ -28,4 +28,3 @@ class LeaderboardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Leaderboard
         fields = ('id', 'date', 'records', )
-

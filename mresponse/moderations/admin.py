@@ -35,7 +35,6 @@ class ModerationAdmin(admin.ModelAdmin):
     get_review.short_description = 'Review'
 
 
-
 @admin.register(moderations_models.Approval)
 class ApprovalAdmin(admin.ModelAdmin):
     pass

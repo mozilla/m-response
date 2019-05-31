@@ -1,4 +1,4 @@
-from rest_framework import exceptions, generics
+from rest_framework import generics
 
 from mresponse.leaderboard.api.serializers import LeaderboardSerializer
 from mresponse.leaderboard.models import Leaderboard
