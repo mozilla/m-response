@@ -9,8 +9,9 @@ class LeaderboardView(generics.RetrieveAPIView):
     queryset = Leaderboard.objects.all()
 
     def get_object(self):
+        Leaderboard.objects.generate_weekly_leaderboard()
         try:
             return self.get_queryset().current_week()
         except Leaderboard.DoesNotExist:
             # If the leaderboard does not exist, generate a new one.
-            return self.get_queryset().generate_weekly_leaderboard()
+            return Leaderboard.objects.generate_weekly_leaderboard()
