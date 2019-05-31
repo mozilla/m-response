@@ -5,6 +5,7 @@ from django.utils.encoding import force_text
 from rest_framework import generics, permissions, response, status, views
 
 from mresponse.moderations.api import serializers as moderations_serializers
+from mresponse.moderations.models import Approval
 from mresponse.responses import models as responses_models
 from mresponse.responses.api.permissions import \
     BypassStaffOrCommunityModerationPermission
@@ -60,33 +61,31 @@ class ApproveResponse(ModerationMixin, views.APIView):
     def post(self, request, *args, **kwargs):
         assigned_response = self.get_response_for_user()
 
-        change_message = (
-            'Approved response bypassing community moderation.'
-        )
+        approval_type = Approval.COMMUNITY
 
         if request.user.has_perm('can_bypass_staff_moderation'):
-            change_message = (
-                'Approved response bypassing staff moderation.'
-            )
+            approval_type = Approval.STAFF
             assigned_response.staff_approved = True
 
         assigned_response.approved = True
         assigned_response.save(update_fields=['staff_approved', 'approved'])
 
-        # Add Django admin log entry.
-        LogEntry.objects.log_action(
-            user_id=request.user.pk,
-            content_type_id=ContentType.objects.get_for_model(
-                assigned_response
-            ).pk,
-            object_id=assigned_response.pk,
-            object_repr=force_text(assigned_response),
-            action_flag=CHANGE,
-            change_message=change_message
+        # Create approval record
+        Approval.objects.create(
+            response=assigned_response,
+            approval_type=approval_type,
+            approver=self.request.user
         )
 
         # Delete user's assignment to this response.
         self.request.user.response_assignment.delete()
+
+        # Give approver a karma point
+        moderator_profile = self.request.user.profile
+        moderator_profile.karma_points = (
+            models.F('karma_points') + MODERATION_KARMA_POINTS_AMOUNT
+        )
+        moderator_profile.save(update_fields=('karma_points',))
 
         # Return empty response.
         return response.Response({

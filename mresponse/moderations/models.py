@@ -28,3 +28,29 @@ class Moderation(models.Model):
 
     def __str__(self):
         return str(_('Moderation'))
+
+
+class Approval(models.Model):
+    COMMUNITY = 1
+    STAFF = 2
+    APPROVAL_TYPE_CHOICES = (
+        (COMMUNITY, _('community')),
+        (STAFF, _('staff')),
+    )
+    response = models.ForeignKey(
+        'responses.Response',
+        models.PROTECT,
+        related_name='approvals',
+    )
+    approver = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        models.PROTECT,
+        related_name='+'
+    )
+    approval_type = models.PositiveSmallIntegerField(
+        choices=APPROVAL_TYPE_CHOICES
+    )
+    approved_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return str(_('Approval'))
