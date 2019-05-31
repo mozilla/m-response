@@ -541,6 +541,12 @@ OIDC_USERNAME_ALGO = _username_algo
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
+# Enable Django login with an environment variable when the OIDC login is not
+# or cannot be set up.
+DJANGO_LOGIN_ENABLED = (
+    os.environ.get('DJANGO_LOGIN_ENABLED', 'false').lower() == 'true'
+)
+
 
 # Webpack
 
