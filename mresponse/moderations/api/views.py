@@ -1,6 +1,4 @@
-from django.contrib.admin.models import CHANGE, ContentType, LogEntry
 from django.db import models, transaction
-from django.utils.encoding import force_text
 
 from rest_framework import generics, permissions, response, status, views
 
