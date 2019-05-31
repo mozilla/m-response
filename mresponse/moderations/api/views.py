@@ -36,9 +36,9 @@ class CreateModeration(generics.CreateAPIView):
         # Clear the assignment to the user.
         self.request.user.response_assignment.delete()
 
-        # Update user's karma points
-        user_profile = response.author.profile
-        user_profile.karma_points = (
+        # Give moderator karma points.
+        moderator_profile = self.request.user.profile
+        moderator_profile.karma_points = (
             models.F('karma_points') + MODERATION_KARMA_POINTS_AMOUNT
         )
-        user_profile.save(update_fields=('karma_points',))
+        moderator_profile.save(update_fields=('karma_points',))
