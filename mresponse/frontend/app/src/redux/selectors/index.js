@@ -13,6 +13,10 @@ export const getSpokenLanguages = state => {
 }
 
 export const getProfile = state => {
+  if (!state.profile.profile) {
+    return null
+  }
+
   const {
     profile: {
       profile: userProfile,

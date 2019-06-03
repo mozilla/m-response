@@ -25,6 +25,11 @@ export default class HomePage extends React.Component {
       goToRespondMode,
       goToModerateMode
     } = this.props
+
+    if (!profile) {
+      return null
+    }
+
     return (
       <div className='home-page'>
         <header className='home-page-header'>
