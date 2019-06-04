@@ -13,6 +13,7 @@ import './moderate.scss'
 
 export default class ModeratePage extends React.Component {
   state = {
+    isModerating: false,
     isDoneEditing: false,
     hasSubmitted: false,
     response: this.props.response || '',
@@ -26,9 +27,25 @@ export default class ModeratePage extends React.Component {
   }
 
   componentWillMount () {
-    this.props.fetchNextResponse((successMessage, err) => {
+    const {
+      fetchNextResponse,
+      profile: {
+        canSkipModeration
+      }
+    } = this.props
+
+    fetchNextResponse((successMessage, err) => {
       if (err) {
         this.pushMessage(err, true)
+      }
+    })
+
+    // If the user is not trusted,
+    // set isModerating to show the form immediately
+    this.setState(state => {
+      return {
+        ...state,
+        isModerating: !canSkipModeration
       }
     })
   }
@@ -36,10 +53,14 @@ export default class ModeratePage extends React.Component {
   render () {
     const {
       back,
-      response
+      response,
+      profile: {
+        canSkipModeration
+      }
     } = this.props
 
     const {
+      isModerating,
       messages,
       criteria,
       karmaAwarded
@@ -84,103 +105,109 @@ export default class ModeratePage extends React.Component {
               />
             </div>
 
-            <div className='moderate-page-container'>
-              <div className='moderate-page-form'>
-                <div className='moderate-page-form-row'>
-                  <span className='moderate-page-form-row-title'>
-                    Is the response {' '}
-                    <span className="moderate-page-form-row-emphasis">positive in tone?</span>
-                  </span>
-                  <div className='moderate-page-form-row-buttons'>
-                    <ToggleButton
-                      label="Yes!"
-                      toggled={criteria.positive === true}
-                      handleClick={() => this.toggleCriteria('positive', true)}
-                      icon={staticAsset('media/icons/smile.svg')} />
-                    <ToggleButton
-                      label="Not Really"
-                      toggled={criteria.positive === false}
-                      handleClick={() => this.toggleCriteria('positive', false)}
-                      icon={staticAsset('media/icons/sad.svg')} />
+            {isModerating &&
+              <div className='moderate-page-container'>
+                <div className='moderate-page-form'>
+                  <div className='moderate-page-form-row'>
+                    <span className='moderate-page-form-row-title'>
+                      Is the response {' '}
+                      <span className="moderate-page-form-row-emphasis">positive in tone?</span>
+                    </span>
+                    <div className='moderate-page-form-row-buttons'>
+                      <ToggleButton
+                        label="Yes!"
+                        toggled={criteria.positive === true}
+                        handleClick={() => this.toggleCriteria('positive', true)}
+                        icon={staticAsset('media/icons/smile.svg')} />
+                      <ToggleButton
+                        label="Not Really"
+                        toggled={criteria.positive === false}
+                        handleClick={() => this.toggleCriteria('positive', false)}
+                        icon={staticAsset('media/icons/sad.svg')} />
+                    </div>
+                  </div>
+
+                  <div className='moderate-page-form-row'>
+                    <span className='moderate-page-form-row-title'>
+                      Does the response {' ' }
+                      <span className="moderate-page-form-row-emphasis">address the issue?</span>
+                    </span>
+                    <div className='moderate-page-form-row-buttons'>
+                      <ToggleButton
+                        label="Yes!"
+                        toggled={criteria.relevant === true}
+                        handleClick={() => this.toggleCriteria('relevant', true)}
+                        icon={staticAsset('media/icons/smile.svg')} />
+                      <ToggleButton
+                        label="Not Really"
+                        toggled={criteria.relevant === false}
+                        handleClick={() => this.toggleCriteria('relevant', false)}
+                        icon={staticAsset('media/icons/sad.svg')} />
+                    </div>
+                  </div>
+
+                  <div className='moderate-page-form-row'>
+                    <span className='moderate-page-form-row-title'>
+                      Is the response {' ' }
+                      <span className="moderate-page-form-row-emphasis">personal?</span>
+                    </span>
+                    <div className='moderate-page-form-row-buttons'>
+                      <ToggleButton
+                        label="Yes!"
+                        toggled={criteria.personal === true}
+                        handleClick={() => this.toggleCriteria('personal', true)}
+                        icon={staticAsset('media/icons/smile.svg')} />
+                      <ToggleButton
+                        label="Not Really"
+                        toggled={criteria.personal === false}
+                        handleClick={() => this.toggleCriteria('personal', false)}
+                        icon={staticAsset('media/icons/sad.svg')} />
+                    </div>
+                  </div>
+
+                  <div className='moderate-page-form-row'>
+                    <span className='moderate-page-form-row-title'>Reward Responder:</span>
+                    <div className='moderate-page-form-row-karma'>
+                      <span className='moderate-page-form-row-karma-label'>{karmaAwarded} Karma</span>
+                      <Slider
+                        min={0}
+                        max={20}
+                        defaultValue={karmaAwarded}
+                        onChange={val => this.setState({ karmaAwarded: val })}
+                        className='moderate-page-form-row-karma-slider'
+                        handleStyle={{
+                          border: 'solid 2px black',
+                          backgroundColor: 'black'
+                        }}
+                        trackStyle={{
+                          backgroundColor: 'black'
+                        }} />
+                    </div>
+                  </div>
+
+                  <div className='moderate-page-actions moderate-page-actions--form'>
+                    <Button
+                      label='Submit'
+                      className='moderate-page-actions-moderate'
+                      onClick={this.submitModeration}
+                      disabled={!this.allCriteriaAnswered(criteria)}
+                    />
                   </div>
                 </div>
-
-                <div className='moderate-page-form-row'>
-                  <span className='moderate-page-form-row-title'>
-                    Does the response {' ' }
-                    <span className="moderate-page-form-row-emphasis">address the issue?</span>
-                  </span>
-                  <div className='moderate-page-form-row-buttons'>
-                    <ToggleButton
-                      label="Yes!"
-                      toggled={criteria.relevant === true}
-                      handleClick={() => this.toggleCriteria('relevant', true)}
-                      icon={staticAsset('media/icons/smile.svg')} />
-                    <ToggleButton
-                      label="Not Really"
-                      toggled={criteria.relevant === false}
-                      handleClick={() => this.toggleCriteria('relevant', false)}
-                      icon={staticAsset('media/icons/sad.svg')} />
-                  </div>
-                </div>
-
-                <div className='moderate-page-form-row'>
-                  <span className='moderate-page-form-row-title'>
-                    Is the response {' ' }
-                    <span className="moderate-page-form-row-emphasis">personal?</span>
-                  </span>
-                  <div className='moderate-page-form-row-buttons'>
-                    <ToggleButton
-                      label="Yes!"
-                      toggled={criteria.personal === true}
-                      handleClick={() => this.toggleCriteria('personal', true)}
-                      icon={staticAsset('media/icons/smile.svg')} />
-                    <ToggleButton
-                      label="Not Really"
-                      toggled={criteria.personal === false}
-                      handleClick={() => this.toggleCriteria('personal', false)}
-                      icon={staticAsset('media/icons/sad.svg')} />
-                  </div>
-                </div>
-
-                <div className='moderate-page-form-row'>
-                  <span className='moderate-page-form-row-title'>Reward Responder:</span>
-                  <div className='moderate-page-form-row-karma'>
-                    <span className='moderate-page-form-row-karma-label'>{karmaAwarded} Karma</span>
-                    <Slider
-                      min={0}
-                      max={20}
-                      defaultValue={karmaAwarded}
-                      onChange={val => this.setState({ karmaAwarded: val })}
-                      className='moderate-page-form-row-karma-slider'
-                      handleStyle={{
-                        border: 'solid 2px black',
-                        backgroundColor: 'black'
-                      }}
-                      trackStyle={{
-                        backgroundColor: 'black'
-                      }} />
-                  </div>
-                </div>
-
-                <div className='moderate-page-actions moderate-page-actions--form'>
-                  <Button
-                    label='Submit'
-                    className='moderate-page-actions-moderate'
-                    onClick={this.submitModeration}
-                    disabled={!this.allCriteriaAnswered(criteria)}
-                  />
-                </div>
-
               </div>
-            </div>
+            }
 
             <div className='moderate-page-actions'>
+              {canSkipModeration && !isModerating &&
+                <Button
+                  label='Moderate'
+                  className='moderate-page-actions-moderate'
+                  onClick={this.setIsModerating} />
+              }
               <span
                 className='moderate-page-actions-skip'
                 onClick={() => {
-                  this.refreshData()
-                  this.props.skipResponse()
+                  this.handleSkip()
                 }}>Skip</span>
             </div>
           </Fragment>
@@ -190,7 +217,8 @@ export default class ModeratePage extends React.Component {
   }
 
   toggleCriteria = (option, value) => {
-    this.setState((state) => ({
+    this.setState(state => ({
+      ...state,
       criteria: {
         ...state.criteria,
         [option]: value
@@ -201,6 +229,13 @@ export default class ModeratePage extends React.Component {
   allCriteriaAnswered = (criteria) => {
     return Object.entries(criteria).every(([, value]) => value !== null)
   }
+
+  setIsModerating = () => this.setState(state => {
+    return {
+      ...state,
+      isModerating: true
+    }
+  })
 
   submitModeration = () => {
     // TODO @ REDUX STAGE: SUBMIT LOGIC...
@@ -214,7 +249,7 @@ export default class ModeratePage extends React.Component {
       } else {
         this.pushMessage(successMessage)
       }
-      this.refreshData()
+      this.resetData()
     })
   }
 
@@ -233,15 +268,45 @@ export default class ModeratePage extends React.Component {
         isError: false
       }
     }
-    this.setState({ messages: [message, ...this.state.messages] })
+    this.setState(state => {
+      return { messages: [message, ...state.messages] }
+    })
   }
 
-  refreshData = () => this.setState({
-    criteria: {
-      positive: null,
-      relevant: null,
-      personal: null
-    },
-    karmaAwarded: 10
+  resetData = () => this.setState(state => {
+    return {
+      ...state,
+      criteria: {
+        positive: null,
+        relevant: null,
+        personal: null
+      },
+      karmaAwarded: 10
+    }
   })
+
+  resetForm = () => this.setState(state => {
+    return {
+      ...state,
+      // Hide form again if trusted user
+      isModerating: false
+    }
+  })
+
+  handleSkip = () => {
+    const {
+      skipResponse,
+      profile: {
+        canSkipModeration
+      }
+    } = this.props
+
+    if (canSkipModeration) {
+      this.resetForm()
+    }
+
+    this.resetData()
+
+    skipResponse()
+  }
 }
