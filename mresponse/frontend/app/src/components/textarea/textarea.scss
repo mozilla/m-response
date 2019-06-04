@@ -11,12 +11,12 @@
       line-height: 1.6;
 
       &::placeholder {
-          color: rgba(#38383d, 0.3);
+          color: rgba(#38383d, 0.15);
       }
 
       &:focus {
         outline: none;
-        border-color: $light-grey;
+        border-color: $border-color-dark;
       }
     }
 }

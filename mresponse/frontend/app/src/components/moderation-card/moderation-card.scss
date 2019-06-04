@@ -40,14 +40,14 @@
 
         &-meta {
             font-size: 8pt;
-            color: $light-grey;
+            color: $grey-light;
         }
 
     }
 
     &-review {
         padding-bottom: 10px;
-        border-bottom: 2px solid $light-grey;
+        border-bottom: 2px solid $grey-light;
 
         &-comment {
             font-size: 0.8rem;
@@ -60,24 +60,24 @@
                 height: auto;
             }
         }
-    
+
         &-footer {
             font-size: 14px;
             // padding-top: 10px;
             padding-bottom: 15px;
-    
+
             &-date {
                 float: left;
                 font-weight: 500;
                 font-size: 0.7rem;
-                color: $light-grey;
+                color: $grey-light;
             }
         }
     }
 
     &-response {
         padding-top: 10px;
-        
+
         &-title {
             font-size: 0.8rem;
             font-weight: 600;
@@ -88,16 +88,16 @@
             font-size: 0.8rem;
             line-height: 20px;
         }
-    
+
         &-footer {
             font-size: 14px;
             padding-bottom: 15px;
-    
+
             &-date {
                 float: left;
                 font-weight: 500;
                 font-size: 0.7rem;
-                color: $light-grey;
+                color: $grey-light;
             }
         }
     }
