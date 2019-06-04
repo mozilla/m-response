@@ -49,7 +49,7 @@
 
     &-review {
         padding-bottom: 10px;
-        border-bottom: 1px solid #d7d7db;
+        border-bottom: 1px solid $border-color;
 
         &-comment {
             max-height: 90px;
@@ -69,12 +69,12 @@
                 height: auto;
             }
         }
-    
+
         &-footer {
             font-size: 12px;
             // padding-top: 10px;
             padding-bottom: 15px;
-    
+
             &-date {
                 float: left;
                 font-weight: 500;
@@ -86,7 +86,7 @@
     &-response {
         padding-top: 10px;
         font-size: 14px;
-        
+
         &-title {
             font-weight: 700;
             color: $grey;
@@ -99,11 +99,11 @@
             margin-bottom: 5px;
             line-height: 24px;
         }
-    
+
         &-footer {
             font-size: 12px;
             padding-bottom: 15px;
-    
+
             &-date {
                 float: left;
                 color: $light-grey;

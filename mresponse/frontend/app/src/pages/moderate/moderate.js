@@ -8,6 +8,7 @@ import ModerateCard from '@components/moderate-card'
 import Button from '@components/buttons'
 import ToggleButton from '@components/buttons/toggle'
 import AlertPrompt from '@components/alert-prompt'
+import Textarea from '@components/textarea'
 import { staticAsset } from '@utils/urls'
 import './moderate.scss'
 
@@ -23,7 +24,8 @@ export default class ModeratePage extends React.Component {
       personal: null
     },
     karmaAwarded: 10,
-    messages: []
+    messages: [],
+    feedbackMessage: ''
   }
 
   componentWillMount () {
@@ -37,7 +39,10 @@ export default class ModeratePage extends React.Component {
   render () {
     const {
       back,
-      response
+      response,
+      profile: {
+        canSkipModeration
+      }
     } = this.props
 
     const {
@@ -90,7 +95,7 @@ export default class ModeratePage extends React.Component {
               <div className='moderate-page-form-row'>
                 <span className='moderate-page-form-row-title'>
                   Is the response {' '}
-                  <span className="moderate-page-form-row-emphasis">positive in tone?</span>
+                  <span className="moderate-page-form-row-strong">positive in tone?</span>
                 </span>
                 <div className='moderate-page-form-row-buttons'>
                   <ToggleButton
@@ -109,7 +114,7 @@ export default class ModeratePage extends React.Component {
               <div className='moderate-page-form-row'>
                 <span className='moderate-page-form-row-title'>
                   Does the response {' ' }
-                  <span className="moderate-page-form-row-emphasis">address the issue?</span>
+                  <span className="moderate-page-form-row-strong">address the issue?</span>
                 </span>
                 <div className='moderate-page-form-row-buttons'>
                   <ToggleButton
@@ -128,7 +133,7 @@ export default class ModeratePage extends React.Component {
               <div className='moderate-page-form-row'>
                 <span className='moderate-page-form-row-title'>
                   Is the response {' ' }
-                  <span className="moderate-page-form-row-emphasis">personal?</span>
+                  <span className="moderate-page-form-row-strong">personal?</span>
                 </span>
                 <div className='moderate-page-form-row-buttons'>
                   <ToggleButton
@@ -143,6 +148,23 @@ export default class ModeratePage extends React.Component {
                     icon={staticAsset('media/icons/sad.svg')} />
                 </div>
               </div>
+
+              {canSkipModeration &&
+                <div className='moderate-page-form-row'>
+                  <span className='moderate-page-form-row-title'>
+                    Feedback message {' ' }
+                    <span className="moderate-page-form-row-em">(optional)</span>
+                  </span>
+                  <div>
+                    <Textarea
+                      key="name-field"
+                      type="textarea"
+                      value={this.state.feedbackMessage}
+                      onChange={event => this.setState({ feedbackMessage: event.target.value })}
+                    />
+                  </div>
+                </div>
+              }
 
               <div className='moderate-page-form-row'>
                 <span className='moderate-page-form-row-title'>Reward Responder:</span>
@@ -214,7 +236,8 @@ export default class ModeratePage extends React.Component {
     // TODO @ REDUX STAGE: SUBMIT LOGIC...
     this.props.onModerationUpdate({
       criteria: this.state.criteria,
-      karma: this.state.karmaAwarded
+      karma: this.state.karmaAwarded,
+      feedbackMessage: this.state.feedbackMessage
     })
     this.props.submitModeration((successMessage, err) => {
       if (err) {
