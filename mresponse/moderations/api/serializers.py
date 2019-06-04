@@ -12,4 +12,23 @@ class ModerationSerializer(serializers.ModelSerializer):
             'personal',
             'karma_points',
             'submitted_at',
+            'feedback_message',
         )
+
+    def validate_feedback_message(self, value):
+        # If value is absent, just return it.
+        if not value:
+            return value
+
+        # Do not allow leaving feedback message by non-trusted users.
+        user = self.context['request'].user
+
+        if (
+            not user.has_perm('can_bypass_staff_moderation')
+            or not user.has_perm('can_bypass_community_moderation')
+        ):
+            raise serializers.ValidationError(
+                'Feedback message can be only added by trusted users.'
+            )
+
+        return value

@@ -35,6 +35,9 @@ class Moderation(models.Model):
         )
     )
     submitted_at = models.DateTimeField(default=timezone.now, editable=False)
+    feedback_message = models.TextField(
+        blank=True, help_text=_('Feedback message left by a reviewer')
+    )
 
     def __str__(self):
         return str(_('Moderation'))
