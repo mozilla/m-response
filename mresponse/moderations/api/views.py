@@ -5,6 +5,8 @@ from rest_framework import generics, permissions
 from mresponse.moderations.api import serializers as moderations_serializers
 from mresponse.responses import models as responses_models
 
+MODERATION_KARMA_POINTS_AMOUNT = 1
+
 
 class CreateModeration(generics.CreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
@@ -26,7 +28,7 @@ class CreateModeration(generics.CreateAPIView):
     def perform_create(self, serializer):
         response = self.get_response_for_user()
 
-        moderation = serializer.save(
+        serializer.save(
             response=response,
             moderator=self.request.user,
         )
@@ -34,7 +36,9 @@ class CreateModeration(generics.CreateAPIView):
         # Clear the assignment to the user.
         self.request.user.response_assignment.delete()
 
-        # Update user's karma points
-        user_profile = response.author.profile
-        user_profile.karma_points = models.F('karma_points') + moderation.karma_points
-        user_profile.save(update_fields=('karma_points',))
+        # Give moderator karma points.
+        moderator_profile = self.request.user.profile
+        moderator_profile.karma_points = (
+            models.F('karma_points') + MODERATION_KARMA_POINTS_AMOUNT
+        )
+        moderator_profile.save(update_fields=('karma_points',))

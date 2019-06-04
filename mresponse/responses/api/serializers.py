@@ -39,6 +39,7 @@ class ResponseSerializer(serializers.ModelSerializer):
             if author.has_perm('responses.can_bypass_community_moderation'):
                 kwargs['approved'] = True
             if author.has_perm('responses.can_bypass_staff_moderation'):
+                kwargs['approved'] = True
                 kwargs['staff_approved'] = True
         super().save(**kwargs)
 
