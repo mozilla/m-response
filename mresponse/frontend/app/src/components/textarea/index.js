@@ -10,7 +10,8 @@ export default class Textarea extends React.Component {
       value,
       onChange,
       disabled,
-      rows = 3
+      rows = 3,
+      maxLength
     } = this.props
     return (
       <textarea
@@ -20,6 +21,7 @@ export default class Textarea extends React.Component {
         value={value}
         rows={rows}
         onChange={onChange}
+        { ...(maxLength && { maxLength: maxLength }) }
       />
     )
   }
@@ -30,5 +32,6 @@ Textarea.propTypes = {
   value: PropTypes.string,
   onChange: PropTypes.func,
   onFocus: PropTypes.func,
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
+  maxLength: PropTypes.int
 }

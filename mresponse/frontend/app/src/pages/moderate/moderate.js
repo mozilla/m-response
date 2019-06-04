@@ -157,8 +157,6 @@ export default class ModeratePage extends React.Component {
                   </span>
                   <div>
                     <Textarea
-                      key="name-field"
-                      type="textarea"
                       value={this.state.feedbackMessage}
                       onChange={event => this.setState({ feedbackMessage: event.target.value })}
                     />
