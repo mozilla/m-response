@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import './textarea.scss'
 
-export default class InputField extends React.Component {
+export default class Textarea extends React.Component {
   render () {
     const {
       placeholder,
@@ -25,7 +25,7 @@ export default class InputField extends React.Component {
   }
 }
 
-InputField.propTypes = {
+Textarea.propTypes = {
   placeholder: PropTypes.string,
   value: PropTypes.string,
   onChange: PropTypes.func,
