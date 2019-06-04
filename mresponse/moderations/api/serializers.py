@@ -16,9 +16,6 @@ class ModerationSerializer(serializers.ModelSerializer):
         )
 
     def validate_feedback_message(self, value):
-        """
-        Check that the blog post is about Django.
-        """
         # If value is absent, just return it.
         if not value:
             return value
