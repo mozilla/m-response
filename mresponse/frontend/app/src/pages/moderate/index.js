@@ -12,11 +12,10 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = (dispatch, props) => ({
   back: () => dispatch(push(DASHBOARD_URL)),
   fetchNextResponse: cb => dispatch(fetchNextResponse(cb)),
-  onModerationUpdate: ({ criteria, karma }) => dispatch(updateCurrentModeration({
+  onModerationUpdate: ({ criteria }) => dispatch(updateCurrentModeration({
     'positive_in_tone': criteria.positive,
     'addressing_the_issue': criteria.relevant,
     'personal': criteria.personal,
-    'karma_points': karma,
     'submitted_at': Date.now()
   })),
   submitModeration: cb => dispatch(submitModeration(cb)),
