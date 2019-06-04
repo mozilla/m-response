@@ -21,7 +21,7 @@ export default class Textarea extends React.Component {
         value={value}
         rows={rows}
         onChange={onChange}
-        { ...(maxLength && { maxLength: maxLength }) }
+        { ...(maxLength && { maxLength }) }
       />
     )
   }
