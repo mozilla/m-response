@@ -16,12 +16,14 @@ from mresponse.utils.queryset import PlaystoreUploadException
 
 
 class ModerationInline(admin_utils.ViewOnlyModelAdmin, admin.StackedInline):
+    extra = 0
     model = moderations_models.Moderation
     show_change_link = True
     readonly_fields = ['submitted_at']
 
 
 class ApprovalInline(admin_utils.ViewOnlyModelAdmin, admin.StackedInline):
+    extra = 0
     model = moderations_models.Approval
     show_change_link = True
     readonly_fields = ['approved_at']
