@@ -142,7 +142,7 @@ export default class Api {
       }
     })
 
-    if (response.status !== 201) {
+    if (!response.ok) {
       const errorMessage = { detail: 'Unable to submit moderation' }
       throw errorMessage
     }
@@ -158,7 +158,7 @@ export default class Api {
       }
     })
 
-    if (response.status !== 200) {
+    if (!response.ok) {
       const errorMessage = { detail: 'Unable to approve the response' }
       throw errorMessage
     }
