@@ -5,6 +5,7 @@ import ModerateCard from '@components/moderate-card'
 import Button from '@components/buttons'
 import ToggleButton from '@components/buttons/toggle'
 import AlertPrompt from '@components/alert-prompt'
+import Textarea from '@components/textarea'
 import { staticAsset } from '@utils/urls'
 import './moderate.scss'
 
@@ -19,7 +20,8 @@ export default class ModeratePage extends React.Component {
       relevant: null,
       personal: null
     },
-    messages: []
+    messages: [],
+    feedbackMessage: ''
   }
 
   componentWillMount () {
@@ -160,6 +162,21 @@ export default class ModeratePage extends React.Component {
                     </div>
                   </div>
 
+                  {canSkipModeration &&
+                    <div className='moderate-page-form-row'>
+                      <span className='moderate-page-form-row-title'>
+                        Feedback message {' ' }
+                        <span className="moderate-page-form-row-em">(optional)</span>
+                      </span>
+                      <div>
+                        <Textarea
+                          value={this.state.feedbackMessage}
+                          onChange={event => this.setState({ feedbackMessage: event.target.value })}
+                        />
+                      </div>
+                    </div>
+                  }
+
                   <div className='moderate-page-actions moderate-page-actions--form'>
                     <Button
                       label='Submit'
@@ -215,7 +232,8 @@ export default class ModeratePage extends React.Component {
   submitModeration = () => {
     // TODO @ REDUX STAGE: SUBMIT LOGIC...
     this.props.onModerationUpdate({
-      criteria: this.state.criteria
+      criteria: this.state.criteria,
+      feedbackMessage: this.state.feedbackMessage
     })
     this.props.submitModeration((successMessage, err) => {
       if (err) {

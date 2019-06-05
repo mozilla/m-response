@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
   height: 50px;
   background-color: $grey;
   color: white;
@@ -41,8 +41,8 @@
   font-size: 14px;
   font-weight: 500;
 
-  border: 1px solid #dcdbdf;
-  border-radius: 3px;
+  border: 2px solid $border-color;
+  border-radius: 2px;
   user-select: none;
   cursor: pointer;
   outline: 0;

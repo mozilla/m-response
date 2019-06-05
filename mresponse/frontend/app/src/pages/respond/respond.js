@@ -4,6 +4,7 @@ import Toolbar from '@components/toolbar'
 import ReviewCard from '@components/respond-card'
 import Button from '@components/buttons'
 import AlertPrompt from '@components/alert-prompt'
+import Textarea from '@components/textarea'
 import { staticAsset } from '@utils/urls'
 import './respond.scss'
 
@@ -79,13 +80,13 @@ export default class RespondPage extends React.Component {
                   onClick={this.openGuideBook} />
               </div>
               <form className='respond-page-edit-response-form'>
-                <textarea
-                  maxLength="340"
-                  className='respond-page-edit-response-form-text'
-                  name="response-text"
+                <Textarea
+                  maxLength={340}
                   value={response}
                   placeholder='Add Your Response'
-                  onChange={this.updateResponse} />
+                  onChange={this.updateResponse}
+                  rows={6}
+                />
                 <Button
                   label='Done'
                   className='respond-page-edit-response-form-submit'
