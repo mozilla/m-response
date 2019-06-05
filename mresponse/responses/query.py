@@ -62,4 +62,6 @@ class ResponseAssignedToUserQuerySet(models.QuerySet):
         )
 
     def not_expired(self):
-        return self.difference(self.expired())
+        return self.filter(
+            assigned_at__gte=timezone.now() - ASSIGNMENT_TIMEOUT
+        )
