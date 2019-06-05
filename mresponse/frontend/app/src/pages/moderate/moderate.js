@@ -288,7 +288,6 @@ export default class ModeratePage extends React.Component {
   resetForm = () => this.setState(state => {
     return {
       ...state,
-      // Hide form again if trusted user
       isModerating: false
     }
   })
