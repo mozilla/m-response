@@ -1,8 +1,5 @@
 import React from 'react'
 
-import Slider from 'rc-slider'
-import 'rc-slider/assets/index.css'
-
 import Toolbar from '@components/toolbar'
 import ModerateCard from '@components/moderate-card'
 import Button from '@components/buttons'
@@ -22,7 +19,6 @@ export default class ModeratePage extends React.Component {
       relevant: null,
       personal: null
     },
-    karmaAwarded: 10,
     messages: []
   }
 
@@ -43,8 +39,7 @@ export default class ModeratePage extends React.Component {
     const {
       isModerating,
       messages,
-      criteria,
-      karmaAwarded
+      criteria
     } = this.state
 
     return (
@@ -144,26 +139,6 @@ export default class ModeratePage extends React.Component {
                 </div>
               </div>
 
-              <div className='moderate-page-form-row'>
-                <span className='moderate-page-form-row-title'>Reward Responder:</span>
-                <div className='moderate-page-form-row-karma'>
-                  <span className='moderate-page-form-row-karma-label'>{karmaAwarded} Karma</span>
-                  <Slider
-                    min={0}
-                    max={20}
-                    defaultValue={karmaAwarded}
-                    onChange={val => this.setState({ karmaAwarded: val })}
-                    className='moderate-page-form-row-karma-slider'
-                    handleStyle={{
-                      border: 'solid 2px black',
-                      backgroundColor: 'black'
-                    }}
-                    trackStyle={{
-                      backgroundColor: 'black'
-                    }} />
-                </div>
-              </div>
-
               <div className='moderate-page-actions moderate-page-actions--form'>
                 <Button
                   label='Submit'
@@ -213,8 +188,7 @@ export default class ModeratePage extends React.Component {
   submitModeration = () => {
     // TODO @ REDUX STAGE: SUBMIT LOGIC...
     this.props.onModerationUpdate({
-      criteria: this.state.criteria,
-      karma: this.state.karmaAwarded
+      criteria: this.state.criteria
     })
     this.props.submitModeration((successMessage, err) => {
       if (err) {
@@ -250,7 +224,6 @@ export default class ModeratePage extends React.Component {
       positive: false,
       relevant: false,
       personal: false
-    },
-    karmaAwarded: 10
+    }
   })
 }
