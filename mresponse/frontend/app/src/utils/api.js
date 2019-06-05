@@ -133,7 +133,7 @@ export default class Api {
   }
 
   async submitModeration (responseId, moderation) {
-    await this.fetch(`/api/moderation/create/${responseId}/`, {
+    let response = await this.fetch(`/api/moderation/create/${responseId}/`, {
       method: 'POST',
       body: JSON.stringify(moderation),
       headers: {
@@ -141,6 +141,12 @@ export default class Api {
         'X-CSRFToken': Cookie.get('csrftoken')
       }
     })
+
+    if (response.status !== 201) {
+      const errorMessage = { detail: 'Unable to submit moderation' }
+      throw errorMessage
+    }
+
     return { detail: 'Thank you for your effort and so making Mozilla better for all of us!' }
   }
 
