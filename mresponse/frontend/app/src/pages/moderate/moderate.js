@@ -189,13 +189,21 @@ export default class ModeratePage extends React.Component {
               </div>
             }
 
-            <div className='moderate-page-actions'>
-              {canSkipModeration && !isModerating &&
+            {canSkipModeration && !isModerating &&
+              <div className='moderate-page-actions moderate-page-actions--trusted'>
+                <Button
+                  label='Approve'
+                  className='moderate-page-actions-approve'
+                  onClick={this.submitApproval}
+                  icon={staticAsset('media/icons/check-white.svg')} />
                 <Button
                   label='Moderate'
                   className='moderate-page-actions-moderate'
                   onClick={this.setIsModerating} />
-              }
+              </div>
+            }
+
+            <div className='moderate-page-actions'>
               <span
                 className='moderate-page-actions-skip'
                 onClick={() => {
@@ -240,6 +248,17 @@ export default class ModeratePage extends React.Component {
         this.pushMessage(err, true)
       } else {
         this.pushMessage(successMessage)
+      }
+      this.resetData()
+    })
+  }
+
+  submitApproval = () => {
+    this.props.submitApproval((message, err) => {
+      if (err) {
+        this.pushMessage(message, true)
+      } else {
+        this.pushMessage(message)
       }
       this.resetData()
     })
