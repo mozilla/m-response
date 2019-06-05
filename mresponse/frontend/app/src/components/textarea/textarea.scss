@@ -11,7 +11,7 @@
       line-height: 1.6;
 
       &::placeholder {
-          color: rgba(#38383d, 0.15);
+          color: rgba($placeholder-color, 0.15);
       }
 
       &:focus {
