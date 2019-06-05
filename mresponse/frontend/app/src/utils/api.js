@@ -144,6 +144,22 @@ export default class Api {
     return { detail: 'Thank you for your effort and so making Mozilla better for all of us!' }
   }
 
+  async submitApproval (responseId) {
+    let response = await this.fetch(`/api/moderation/approve/${responseId}/`, {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': Cookie.get('csrftoken')
+      }
+    })
+
+    if (response.status !== 200) {
+      const errorMessage = { detail: 'Unable to approve the response' }
+      throw errorMessage
+    }
+
+    return { detail: 'Thank you for your effort and so making Mozilla better for all of us!' }
+  }
+
   async skipReview (reviewId) {
     await this.fetch(`/api/review/skip/${reviewId}/`, {
       method: 'POST',
@@ -174,6 +190,7 @@ export default class Api {
     })
     return res.json().then(json => json.src)
   }
+
   async updateUserMeta (file) {
     const formData = new FormData()
     formData.append('image', file)
@@ -186,6 +203,7 @@ export default class Api {
     })
     return res.json().then(json => json.src)
   }
+
   async updateProfile (metadata) {
     const res = await this.fetch(`/api/users/me/usermeta/`, {
       method: 'POST',
@@ -199,6 +217,7 @@ export default class Api {
       return json.src
     })
   }
+
   isAuthenticated () {
     return this.fetch(`/api/users/me/`, {
       method: 'GET',
