@@ -1,11 +1,7 @@
 from django.conf import settings
-from django.core import validators
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
-
-KARMA_MIN_VALUE = 0
-KARMA_MAX_VALUE = 20
 
 
 class Moderation(models.Model):
@@ -28,12 +24,6 @@ class Moderation(models.Model):
     personal = models.BooleanField(
         verbose_name=_('is the response personal?')
     )
-    karma_points = models.PositiveSmallIntegerField(
-        validators=(
-            validators.MinValueValidator(KARMA_MIN_VALUE),
-            validators.MaxValueValidator(KARMA_MAX_VALUE),
-        )
-    )
     submitted_at = models.DateTimeField(default=timezone.now, editable=False)
     feedback_message = models.TextField(
         blank=True, help_text=_('Feedback message left by a reviewer')
@@ -41,3 +31,29 @@ class Moderation(models.Model):
 
     def __str__(self):
         return str(_('Moderation'))
+
+
+class Approval(models.Model):
+    COMMUNITY = 1
+    STAFF = 2
+    APPROVAL_TYPE_CHOICES = (
+        (COMMUNITY, _('community')),
+        (STAFF, _('staff')),
+    )
+    response = models.ForeignKey(
+        'responses.Response',
+        models.PROTECT,
+        related_name='approvals',
+    )
+    approver = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        models.PROTECT,
+        related_name='+'
+    )
+    approval_type = models.PositiveSmallIntegerField(
+        choices=APPROVAL_TYPE_CHOICES
+    )
+    approved_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return str(_('Approval'))

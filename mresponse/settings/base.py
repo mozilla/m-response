@@ -72,6 +72,7 @@ INSTALLED_APPS = [
 
     'mresponse.applications',
     'mresponse.images',
+    'mresponse.leaderboard',
     'mresponse.moderations',
     'mresponse.responses',
     'mresponse.reviews',

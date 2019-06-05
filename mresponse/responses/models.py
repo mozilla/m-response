@@ -78,11 +78,16 @@ class Response(models.Model):
             response_assignment.assigned_at = timezone.now()
             response_assignment.save(update_fields=('assigned_at',))
 
-    def can_submit_to_play_store(self):
+    def is_community_approved(self):
         """
-        Returns True if the response satisifies the moderation criteria so
-        can be submitted to the Play store
+        Check if the community has approved the response. If it has been
+        pre-approved, return that status.
         """
+
+        # It might have been approved by the community already.
+        if self.approved:
+            return True
+
         # Criteria defined in https://github.com/torchbox/m-response/issues/54
         aggs = self.moderations.aggregate(
             total_moderations_count=Count('id'),
@@ -103,13 +108,21 @@ class Response(models.Model):
         if aggs['personal_count'] < 1:
             return False
 
-        if not self.staff_approved:
-            return False
-
+        # Update the status in the database.
         self.approved = True
         self.save(update_fields=['approved'])
 
         return True
+
+    def can_submit_to_play_store(self):
+        """
+        Returns True if the response satisifies the moderation
+        criteria so can be submitted to the Play store.
+
+        The response has to be approved by the community and staff
+        before it can be sent off.
+        """
+        return self.staff_approved and self.is_community_approved()
 
     def submit_to_play_store(self):
         """
@@ -127,6 +140,7 @@ class Response(models.Model):
         if not getattr(settings, 'PLAY_STORE_SUBMIT_REPLY_ENABLED', False):
             return
 
+        # Make API call.
         reply_to_review(self.review.application, self.review.play_store_review_id, self.text)
 
         self.submitted_to_play_store = True

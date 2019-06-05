@@ -14,7 +14,6 @@ class ModerationAdmin(admin.ModelAdmin):
         'positive_in_tone',
         'addressing_the_issue',
         'personal',
-        'karma_points',
         'submitted_at'
     )
 
@@ -34,3 +33,8 @@ class ModerationAdmin(admin.ModelAdmin):
         return obj.response.review.review_text
 
     get_review.short_description = 'Review'
+
+
+@admin.register(moderations_models.Approval)
+class ApprovalAdmin(admin.ModelAdmin):
+    pass

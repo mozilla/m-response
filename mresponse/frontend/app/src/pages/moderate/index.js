@@ -17,7 +17,6 @@ const mapDispatchToProps = (dispatch, props) => ({
     'positive_in_tone': criteria.positive,
     'addressing_the_issue': criteria.relevant,
     'personal': criteria.personal,
-    'karma_points': karma,
     'submitted_at': Date.now(),
     'feedback_message': feedbackMessage
   })),

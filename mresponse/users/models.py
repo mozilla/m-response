@@ -30,4 +30,7 @@ class UserProfile(models.Model):
         Returns whether responses submitted by the user need to be community
         moderated.
         """
-        return self.user.has_perm('responses.can_bypass_community_moderation')
+        return (
+            self.user.has_perm('responses.can_bypass_community_moderation')
+            or self.user.has_perm('responses.can_bypass_staff_moderation')
+        )
