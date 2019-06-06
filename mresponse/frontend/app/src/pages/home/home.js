@@ -2,6 +2,7 @@ import React from 'react'
 
 import Avatar from '@components/avatar'
 import HomePageCard from '@components/home-page-card'
+import Leaderboard from '@components/leaderboard'
 import { staticAsset } from '@utils/urls'
 
 import './home.scss'
@@ -56,7 +57,9 @@ export default class HomePage extends React.Component {
             icon={staticAsset('media/icons/moderate.svg')}
             title='Moderate'
             subtitle={`Queue: ${Number(moderateQueue).toLocaleString()}`}
-            onClick={goToModerateMode}/>
+            onClick={goToModerateMode} />
+          <Leaderboard
+            className="home-page-leaderboard" />
         </section>
 
         <footer className='home-page-footer'>
@@ -64,13 +67,13 @@ export default class HomePage extends React.Component {
             className='home-page-footer-link'
             href={feedbackLink}
             target='_blank'>
-                        Submit Feedback
+              Submit Feedback
           </a>
           <a
             className='home-page-footer-link'
             href={aboutLink}
             target='_blank'>
-                        About
+              About
           </a>
         </footer>
       </div>
