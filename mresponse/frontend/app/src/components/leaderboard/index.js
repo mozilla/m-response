@@ -7,7 +7,8 @@ import './leaderboard.scss'
 const Leaderboard = ({ className, leaderboard }) => {
   // Get the first, second and third to place on the podium
   // Add a position prop
-  const [first, second, third, ...rest] = leaderboard.map((user, index) => ({ ...user, position: index + 1 }))
+  const [first, second, third, ...rest] = leaderboard.map((user, index) =>
+    ({ ...user, position: index + 1 })).slice(0, 5)
 
   // Strip out any undefined entries
   const podiumUsers = [first, second, third].filter(Boolean)
