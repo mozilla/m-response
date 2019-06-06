@@ -106,6 +106,10 @@
         margin: 0 auto 6px auto;
       }
 
+      #{$root}-avatar-image--fallback {
+        margin-top: 20px;
+      }
+
       #{$root}-position {
         top: 0;
         right: 8px;
