@@ -225,7 +225,7 @@ export default class Api {
   }
 
   async getLeaderboard () {
-    const res = await this.fetch(`/api/leaderboard`)
+    const res = await this.fetch(`/api/leaderboard/`)
     if (res.ok) {
       return res.json().then(json => {
         return json.records
