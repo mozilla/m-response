@@ -203,13 +203,23 @@ export default class ModeratePage extends React.Component {
               </div>
             }
 
-            <div className='moderate-page-actions'>
-              <span
-                className='moderate-page-actions-skip'
-                onClick={() => {
-                  this.handleSkip()
-                }}>Skip</span>
-            </div>
+            {canSkipModeration && isModerating ? (
+              <div className='moderate-page-actions'>
+                <span
+                  className='moderate-page-actions-skip'
+                  onClick={() => {
+                    this.resetAll()
+                  }}>Back</span>
+              </div>
+            ) : (
+              <div className='moderate-page-actions'>
+                <span
+                  className='moderate-page-actions-skip'
+                  onClick={() => {
+                    this.handleSkip()
+                  }}>Skip</span>
+              </div>
+            )}
           </Fragment>
         ) : null}
       </div>
