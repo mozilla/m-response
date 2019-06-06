@@ -21,7 +21,7 @@ const mapDispatchToProps = (dispatch, props) => ({
     'feedback_message': feedbackMessage
   })),
   submitModeration: cb => dispatch(submitModeration(cb)),
-  skipResponse: () => dispatch(skipResponse()),
+  skipResponse: cb => dispatch(skipResponse(cb)),
   submitApproval: cb => dispatch(submitApproval(cb))
 })
 

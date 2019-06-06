@@ -336,6 +336,10 @@ export default class ModeratePage extends React.Component {
 
     this.resetAll()
 
-    skipResponse()
+    skipResponse((message, err) => {
+      if (err) {
+        this.pushMessage(message, true)
+      }
+    })
   }
 }
