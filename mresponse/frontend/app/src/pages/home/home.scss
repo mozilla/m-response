@@ -43,6 +43,10 @@
         }
     }
 
+    &-leaderboard {
+        grid-column: 1 / span 2;
+    }
+
     &-card {
         width: 100% !important;
         min-width: 0;
