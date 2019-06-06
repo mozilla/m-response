@@ -249,7 +249,7 @@ export default class ModeratePage extends React.Component {
       } else {
         this.pushMessage(successMessage)
       }
-      this.resetData()
+      this.resetAll()
     })
   }
 
@@ -260,7 +260,7 @@ export default class ModeratePage extends React.Component {
       } else {
         this.pushMessage(message)
       }
-      this.resetData()
+      this.resetAll()
     })
   }
 
@@ -284,6 +284,22 @@ export default class ModeratePage extends React.Component {
     })
   }
 
+  resetAll = () => {
+    const {
+      profile: {
+        canSkipModeration
+      }
+    } = this.props
+
+    // Clear form data
+    this.resetData()
+
+    // Reset the form to it's hidden for trusted users
+    if (canSkipModeration) {
+      this.resetForm()
+    }
+  }
+
   resetData = () => this.setState(state => {
     return {
       ...state,
@@ -291,7 +307,8 @@ export default class ModeratePage extends React.Component {
         positive: null,
         relevant: null,
         personal: null
-      }
+      },
+      feedbackMessage: ''
     }
   })
 
@@ -304,17 +321,10 @@ export default class ModeratePage extends React.Component {
 
   handleSkip = () => {
     const {
-      skipResponse,
-      profile: {
-        canSkipModeration
-      }
+      skipResponse
     } = this.props
 
-    if (canSkipModeration) {
-      this.resetForm()
-    }
-
-    this.resetData()
+    this.resetAll()
 
     skipResponse()
   }
