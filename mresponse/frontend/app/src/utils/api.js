@@ -176,12 +176,19 @@ export default class Api {
   }
 
   async skipResponse (responseId) {
-    await this.fetch(`/api/response/skip/${responseId}/`, {
+    let response = await this.fetch(`/api/response/skip/${responseId}/`, {
       method: 'POST',
       headers: {
         'X-CSRFToken': Cookie.get('csrftoken')
       }
     })
+
+    if (!response.ok) {
+      const errorMessage = { detail: 'Unable to skip' }
+      throw errorMessage
+    }
+
+    return response
   }
 
   async uploadAvatar (file) {
