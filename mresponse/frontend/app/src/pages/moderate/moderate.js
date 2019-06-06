@@ -107,8 +107,8 @@ export default class ModeratePage extends React.Component {
                 <div className='moderate-page-form'>
                   <div className='moderate-page-form-row'>
                     <span className='moderate-page-form-row-title'>
-                      Is the response {' '}
-                      <span className="moderate-page-form-row-emphasis">positive in tone?</span>
+                      Does this response {' '}
+                      <span className="moderate-page-form-row-strong">feel friendly?</span>
                     </span>
                     <div className='moderate-page-form-row-buttons'>
                       <ToggleButton
@@ -126,8 +126,8 @@ export default class ModeratePage extends React.Component {
 
                   <div className='moderate-page-form-row'>
                     <span className='moderate-page-form-row-title'>
-                      Does the response {' ' }
-                      <span className="moderate-page-form-row-emphasis">address the issue?</span>
+                      Is this response {' '}
+                      <span className="moderate-page-form-row-strong">technically accurate?</span>
                     </span>
                     <div className='moderate-page-form-row-buttons'>
                       <ToggleButton
@@ -145,8 +145,8 @@ export default class ModeratePage extends React.Component {
 
                   <div className='moderate-page-form-row'>
                     <span className='moderate-page-form-row-title'>
-                      Is the response {' ' }
-                      <span className="moderate-page-form-row-emphasis">personal?</span>
+                      <span className="moderate-page-form-row-strong">Would you reuse this response</span>{' '}
+                      for a similar question?
                     </span>
                     <div className='moderate-page-form-row-buttons'>
                       <ToggleButton
@@ -165,7 +165,7 @@ export default class ModeratePage extends React.Component {
                   {canSkipModeration &&
                     <div className='moderate-page-form-row'>
                       <span className='moderate-page-form-row-title'>
-                        Feedback message {' ' }
+                        Feedback message {' '}
                         <span className="moderate-page-form-row-em">(optional)</span>
                       </span>
                       <div>
