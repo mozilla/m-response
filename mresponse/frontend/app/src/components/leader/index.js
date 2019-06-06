@@ -1,15 +1,19 @@
 import React from 'react'
+import { staticAsset } from '@utils/urls'
 
 import './leader.scss'
 
-const Leader = ({ className, name, position, score, leader, onPodium }) =>
+const Leader = ({ className, user: { name, avatar }, position, score, onPodium }) =>
   <div className={
     `leader ${className || ''}
     ${onPodium ? 'leader--on-podium' : ''}
-    ${leader ? 'leader--is-leader' : ''}
   `}>
     <div className="leader-avatar">
-      <img className="leader-avatar-image" src="https://fillmurray.com/64/64" alt=""/>
+      <img
+        className={`leader-avatar-image ${!avatar ? 'leader-avatar-image--fallback' : ''}`}
+        src={avatar || staticAsset('media/icons/user.svg')}
+        alt=''
+      />
     </div>
     <span className="leader-position">
       <span className="leader-position-number">{position}</span>

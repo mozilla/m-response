@@ -3,6 +3,7 @@ import { getSupportedLanguages } from '@redux/selectors'
 export * from './config'
 export * from './respond'
 export * from './moderate'
+export * from './leaderboard'
 
 export const getSpokenLanguages = state => {
   let languages = '[]'

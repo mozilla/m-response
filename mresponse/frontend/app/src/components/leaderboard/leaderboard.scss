@@ -3,14 +3,27 @@
 .leaderboard {
   width: 100%;
 
+  &-title {
+    text-align: center;
+    font-family: $heading-font;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.13;
+  }
+
   &-podium {
     display: flex;
     flex-direction: row;
-    padding: 8px 44px;
+    justify-content: space-evenly;
+    max-width: 250px;
+    margin: 0 auto;
+    padding: 0 44px 8px;
 
     .leader {
       width: 33%;
+      max-width: 80px;
 
+      // Put the top user in the middle
       &:nth-child(1) { order: 2; }
       &:nth-child(2) { order: 1; }
       &:nth-child(3) { order: 3; }

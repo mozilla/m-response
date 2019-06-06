@@ -13,6 +13,7 @@ export default class HomePage extends React.Component {
     this.props.updateHomeConfig()
     this.props.updateKarma()
     this.props.updateProfile()
+    this.props.updateLeaderboard()
   }
 
   render () {
@@ -24,7 +25,8 @@ export default class HomePage extends React.Component {
       respondQueue,
       moderateQueue,
       goToRespondMode,
-      goToModerateMode
+      goToModerateMode,
+      leaderboard
     } = this.props
 
     if (!profile) {
@@ -58,8 +60,10 @@ export default class HomePage extends React.Component {
             title='Moderate'
             subtitle={`Queue: ${Number(moderateQueue).toLocaleString()}`}
             onClick={goToModerateMode} />
+
           <Leaderboard
-            className="home-page-leaderboard" />
+            className="home-page-leaderboard"
+            leaderboard={leaderboard} />
         </section>
 
         <footer className='home-page-footer'>

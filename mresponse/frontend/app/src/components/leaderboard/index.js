@@ -1,21 +1,34 @@
 import React from 'react'
 
-import Leader from '@components/leader';
+import Leader from '@components/leader'
 
 import './leaderboard.scss'
 
-const Leaderboard = ({ children, className }) => {
+const Leaderboard = ({ className, leaderboard }) => {
+  // Get the first, second and third to place on the podium
+  // Add a position prop
+  const [first, second, third, ...rest] = leaderboard.map((user, index) => ({ ...user, position: index + 1 }))
+
+  // Strip out any undefined entries
+  const podiumUsers = [first, second, third].filter(Boolean)
+
   return (
     <div className={`leaderboard ${className}`}>
-      <div className="leaderboard-podium">
-        <Leader onPodium leader position="1" name="Terry" score="10000" />
-        <Leader onPodium position="2" name="Colin Montgommery" score="15000" />
-        <Leader onPodium position="3" name="Mr Bubz" score="9000" />
-      </div>
-      <div className="leaderboard-list">
-        <Leader position="4" name="Nicola" score="8600" />
-        <Leader position="22" name="Tony Malviya" score="8700" />
-      </div>
+      <h2 className="leaderboard-title">This week’s high flyers</h2>
+      {podiumUsers &&
+        <div className="leaderboard-podium">
+          {podiumUsers.map(({ id, ...rest }) =>
+            <Leader key={id} {...rest} onPodium />
+          )}
+        </div>
+      }
+      {rest &&
+        <div className="leaderboard-list">
+          {rest.map(({ id, ...rest }) =>
+            <Leader key={id} {...rest} />
+          )}
+        </div>
+      }
     </div>
   )
 }
