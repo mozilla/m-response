@@ -28,7 +28,7 @@ class LeaderboardView(generics.RetrieveAPIView):
 
         # Set records_limit to 10 if not set
         try:
-            kwargs['records_limit'] = int(self.request.GET['records_limit'])
+            kwargs['records_limit'] = abs(int(self.request.GET['records_limit']))
         except (KeyError, ValueError):
             kwargs['records_limit'] = 10
 
