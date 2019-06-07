@@ -2,7 +2,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_cookie
 
-from rest_framework import generics
+from rest_framework import generics, permissions
 
 from mresponse.leaderboard.api.serializers import LeaderboardSerializer
 from mresponse.leaderboard.models import Leaderboard
@@ -13,6 +13,7 @@ from mresponse.leaderboard.models import Leaderboard
 class LeaderboardView(generics.RetrieveAPIView):
     serializer_class = LeaderboardSerializer
     queryset = Leaderboard.objects.all()
+    permission_classes = (permissions.IsAuthenticated, )
 
     def get_object(self):
         try:
