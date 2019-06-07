@@ -23,8 +23,16 @@ class LeaderboardRecordSerializer(serializers.ModelSerializer):
 
 
 class LeaderboardSerializer(serializers.ModelSerializer):
-    records = LeaderboardRecordSerializer(many=True)
+    records = serializers.SerializerMethodField()
+
+    def __init__(self, *args, **kwargs):
+        self.records_limit = kwargs.pop('records_limit', 10)
+        super().__init__(*args, **kwargs)
 
     class Meta:
         model = Leaderboard
         fields = ('id', 'date', 'records', )
+
+    def get_records(self, instance):
+        records = instance.records.order_by('-score')[:self.records_limit]
+        return LeaderboardRecordSerializer(records, many=True).data

@@ -11,7 +11,7 @@ class UserProfile(models.Model):
     karma_points = models.PositiveIntegerField(default=0)
     languages = models.CharField(max_length=500)
     name = models.CharField(max_length=500)
-    avatar = models.CharField(max_length=500)
+    avatar = models.CharField(max_length=500, blank=True, null=True)
 
     def __str__(self):
         return str(self.user)

@@ -19,3 +19,15 @@ class LeaderboardView(generics.RetrieveAPIView):
         except Leaderboard.DoesNotExist:
             # If the leaderboard does not exist, generate a new one.
             return Leaderboard.objects.generate_weekly_leaderboard()
+
+    def get_serializer(self, *args, **kwargs):
+        serializer_class = self.get_serializer_class()
+        kwargs['context'] = self.get_serializer_context()
+
+        # Set records_limit to 10 if not set
+        try:
+            kwargs['records_limit'] = int(self.request.GET['records_limit'])
+        except (KeyError, ValueError):
+            kwargs['records_limit'] = 10
+
+        return serializer_class(*args, **kwargs)
