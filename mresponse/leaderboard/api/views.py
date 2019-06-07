@@ -1,5 +1,6 @@
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
+from django.views.decorators.vary import vary_on_cookie
 
 from rest_framework import generics
 
@@ -8,7 +9,7 @@ from mresponse.leaderboard.models import Leaderboard
 
 
 # Cache leaderboard for an hour
-@method_decorator(cache_page(60 * 60 * 1), name='retrieve')
+@method_decorator([vary_on_cookie, cache_page(60 * 60 * 1)], name='retrieve')
 class LeaderboardView(generics.RetrieveAPIView):
     serializer_class = LeaderboardSerializer
     queryset = Leaderboard.objects.all()
