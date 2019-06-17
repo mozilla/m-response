@@ -6,6 +6,6 @@ class BypassStaffOrCommunityModerationPermission(permissions.BasePermission):
 
     def has_permission(self, request, view):
         return (
-            request.user.has_perm('can_bypass_staff_moderation')
-            or request.user.has_perm('can_bypass_community_moderation')
+            request.user.has_perm('responses.can_bypass_staff_moderation')
+            or request.user.has_perm('responses.can_bypass_community_moderation')
         )

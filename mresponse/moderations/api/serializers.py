@@ -23,8 +23,8 @@ class ModerationSerializer(serializers.ModelSerializer):
         user = self.context['request'].user
 
         if (
-            not user.has_perm('can_bypass_staff_moderation')
-            or not user.has_perm('can_bypass_community_moderation')
+            not user.has_perm('responses.can_bypass_staff_moderation')
+            or not user.has_perm('responses.can_bypass_community_moderation')
         ):
             raise serializers.ValidationError(
                 'Feedback message can be only added by trusted users.'

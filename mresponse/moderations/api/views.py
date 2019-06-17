@@ -61,7 +61,7 @@ class ApproveResponse(ModerationMixin, views.APIView):
 
         approval_type = Approval.COMMUNITY
 
-        if request.user.has_perm('can_bypass_staff_moderation'):
+        if request.user.has_perm('responses.can_bypass_staff_moderation'):
             approval_type = Approval.STAFF
             assigned_response.staff_approved = True
 
