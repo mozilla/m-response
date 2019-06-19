@@ -52,9 +52,10 @@ jobs:
         - python manage.py test
     - stage: test
       name: test front-end
-      install: yarn --cwd mresponse/frontend/app install --frozen-lockfile
-      script:
+      install:
         - cd  mresponse/frontend/app
+        - yarn install --frozen-lockfile
+      script:
         - yarn  build
         - yarn  test --ci
     - stage: lint
@@ -63,5 +64,4 @@ jobs:
         - cd mresponse/frontend/app
         - yarn install --frozen-lockfile
       script:
-        - cd mresponse/frontend/app
         - yarn lint
