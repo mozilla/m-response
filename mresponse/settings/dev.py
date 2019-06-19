@@ -1,12 +1,3 @@
-import os
-
-# Set Auth0 environment variables for dev environment
-os.environ.setdefault('AUTH0_DOMAIN', 'nathan-tbx.eu.auth0.com')
-os.environ.setdefault(
-    'JWT_AUDIENCE',
-    'https://nathan-tbx.eu.auth0.com/api/v2/'
-)
-
 from .base import *  # noqa isort:skip
 
 # Debugging to be enabled locally only
@@ -34,6 +25,10 @@ AUTH_PASSWORD_VALIDATORS = []
 
 # Disable forcing HTTPS locally since development server supports HTTP only.
 SECURE_SSL_REDIRECT = False
+
+
+# Use Django admin instead of OIDC
+DJANGO_LOGIN_ENABLED = True
 
 
 # Import settings from local.py file if it exists. Please use it to keep

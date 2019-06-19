@@ -6,6 +6,8 @@ PRODUCTION_APP_INSTANCE = 'mresponse-production'
 
 STAGING_APP_INSTANCE = 'mresponse-staging'
 
+DEV_APP_INSTANCE = 'mozilla-respond-qa'
+
 LOCAL_MEDIA_FOLDER = '/vagrant/media'
 LOCAL_DATABASE_NAME = 'mresponse'
 
@@ -86,6 +88,43 @@ def deploy_staging(c):
 def staging_shell(c):
     open_heroku_shell(c, STAGING_APP_INSTANCE)
 
+
+#####
+# Dev
+#####
+
+
+@task
+def pull_dev_data(c):
+    pull_database_from_heroku(c, DEV_APP_INSTANCE)
+
+
+@task
+def pull_dev_media(c):
+    pull_media_from_s3_heroku(c, DEV_APP_INSTANCE)
+
+
+@task
+def push_dev_media(c):
+    raise RuntimeError('Please check the configuration of the fabfile before using it.')
+    push_media_to_s3_heroku(c, DEV_APP_INSTANCE)
+
+
+@task
+def push_dev_data(c):
+    raise RuntimeError('Please check the configuration of the fabfile before using it.')
+    push_database_to_heroku(c, DEV_APP_INSTANCE)
+
+
+@task
+def deploy_dev(c):
+    deploy_to_heroku(c, DEV_APP_INSTANCE, local_branch='phase-2',
+                     remote_branch='master')
+
+
+@task
+def dev_shell(c):
+    open_heroku_shell(c, DEV_APP_INSTANCE)
 
 #######
 # Local

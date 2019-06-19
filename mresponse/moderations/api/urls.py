@@ -8,4 +8,9 @@ urlpatterns = [
         views.CreateModeration.as_view(),
         name='create_moderation'
     ),
+    path(
+        'approve/<int:response_pk>/',
+        views.ApproveResponse.as_view(),
+        name='approve'
+    ),
 ]

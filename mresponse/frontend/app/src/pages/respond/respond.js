@@ -4,6 +4,7 @@ import Toolbar from '@components/toolbar'
 import ReviewCard from '@components/respond-card'
 import Button from '@components/buttons'
 import AlertPrompt from '@components/alert-prompt'
+import Textarea from '@components/textarea'
 import { staticAsset } from '@utils/urls'
 import './respond.scss'
 
@@ -28,8 +29,12 @@ export default class RespondPage extends React.Component {
     const {
       back,
       review,
-      nextReview
+      nextReview,
+      profile: {
+        canSkipModeration
+      }
     } = this.props
+
     const { isResponding, isDoneEditing, response, messages } = this.state
 
     return (
@@ -74,17 +79,18 @@ export default class RespondPage extends React.Component {
                   icon={staticAsset('media/icons/book.svg')}
                   onClick={this.openGuideBook} />
               </div>
-              <form className='respond-page-edit-response-form' onSubmit={this.saveResponseInput}>
-                <textarea
-                  maxlength="340"
-                  className='respond-page-edit-response-form-text'
-                  name="response-text"
+              <form className='respond-page-edit-response-form'>
+                <Textarea
+                  maxLength={340}
                   value={response}
                   placeholder='Add Your Response'
-                  onChange={this.updateResponse} />
+                  onChange={this.updateResponse}
+                  rows={6}
+                />
                 <Button
                   label='Done'
-                  className='respond-page-edit-response-form-submit' />
+                  className='respond-page-edit-response-form-submit'
+                  onClick={this.saveResponseInput} />
               </form>
             </div>
           </div>
@@ -103,7 +109,7 @@ export default class RespondPage extends React.Component {
           ? isDoneEditing ? (
             <div className='respond-page-actions'>
               <Button
-                label='Submit for Moderation'
+                label={`${canSkipModeration ? 'Submit' : 'Submit for Moderation'}`}
                 className='respond-page-actions-submit'
                 onClick={this.submitResponse} />
               <span

@@ -2,9 +2,9 @@
 
 html {
     font-size: 12px;
-  
+
     * {
-        font-family: 'Open Sans', serif;
+        font-family: $body-font;
     }
 
     @include for-tablet-landscape-up() {
@@ -19,4 +19,3 @@ html {
     //     font-size: 14px;
     // }
 }
-  

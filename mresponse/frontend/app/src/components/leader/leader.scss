@@ -1,0 +1,119 @@
+@import '../../styles/main.scss';
+
+.leader {
+  $root: &;
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+
+  &-avatar {
+    width: 40px;
+    height: 40px;
+    margin: 0 8px 0 0;
+    border-radius: 100%;
+    overflow: hidden;
+    background: $grey;
+    text-align: center;
+  }
+
+  &-avatar-image {
+    width: 100%;
+    height: 100%;
+
+    &--fallback {
+      width: 18px;
+      height: 18px;
+      margin-top: 10px;
+    }
+  }
+
+  &-position {
+    position: relative;
+    background: #3fe1b0;
+    width: 21px;
+    height: 21px;
+    border-radius: 100%;
+    margin: 0 8px 0 0;
+  }
+
+  &-position-number {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 12px;
+    transform: translate(-50%, 0px);
+    line-height: 0;
+  }
+
+  &-score {
+    color: $grey-light;
+    line-height: 1.75;
+    flex: 1;
+    text-align: right;
+  }
+
+  // Change styles for podium leaders
+  &--on-podium {
+    flex-direction: column;
+    text-align: center;
+    padding: 0 8px 8px 8px;
+
+    #{$root}-avatar {
+      width: 52px;
+      height: 52px;
+      margin: 12px auto 8px auto;
+      border: 2px solid $teal;
+    }
+
+    #{$root}-avatar-image--fallback {
+      width: 22px;
+      height: 22px;
+      margin-top: 15px;
+    }
+
+    #{$root}-position {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      margin: 0;
+    }
+
+    #{$root}-position-number {
+      transform: translate(-50%, 0px);
+    }
+
+    #{$root}-name {
+      max-width: 65px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.75;
+    }
+
+    #{$root}-score {
+      text-align: center;
+    }
+
+    // Top user
+    &:first-child {
+      padding: 2px 8px 8px 8px;
+
+      #{$root}-avatar {
+        width: 64px;
+        height: 64px;
+        margin: 0 auto 6px auto;
+      }
+
+      #{$root}-avatar-image--fallback {
+        margin-top: 20px;
+      }
+
+      #{$root}-position {
+        top: 0;
+        right: 8px;
+      }
+    }
+  }
+}

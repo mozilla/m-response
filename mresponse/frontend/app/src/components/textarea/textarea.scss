@@ -1,0 +1,22 @@
+@import '../../styles/main';
+
+.form-field {
+    &-textarea {
+      width: calc(100% - 20px);
+      padding: 10px;
+      background-color: $off-white;
+      border-radius: 3px;
+      border: 0.5px solid $border-color;
+      font-size: 14px;
+      line-height: 1.6;
+
+      &::placeholder {
+          color: rgba($placeholder-color, 0.15);
+      }
+
+      &:focus {
+        outline: none;
+        border-color: $border-color-dark;
+      }
+    }
+}

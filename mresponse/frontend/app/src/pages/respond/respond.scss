@@ -45,7 +45,7 @@
         width: 100%;
         padding-top: 8px;
         background-color: white;
-        border-top: 0.5px solid #dcdbdf;     
+        border-top: 0.5px solid $border-color;
 
         &-content {
             margin: 0 auto;
@@ -58,7 +58,7 @@
             height: 36px;
             width: 112px;
             background-color: transparent !important;
-            border: 1px solid #DCDBDF;
+            border: 1px solid $border-color;
             color: $blue;
             font-size: 12px;
             font-weight: normal;
@@ -68,21 +68,6 @@
         &-form {
             width: 100%;
             padding-top: 8px;
-        }
-
-        &-form-text {
-            width: calc(100% - 20px);
-            min-height: 150px;
-            padding: 10px;
-            resize: vertical;
-            background-color: #f9f9fa;
-            border-radius: 3px;
-            border: 0.5px solid #dcdbdf;
-            font-size: 14px;
-
-            &::placeholder {
-                color: rgba(#38383d, 0.15);
-            }
         }
 
         &-form-submit {
@@ -100,7 +85,7 @@
         max-width: 380px;
         height: auto;
         width: auto;
-        
+
         margin-top: 10px;
         border-radius: 5px;
         box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
@@ -147,12 +132,12 @@
             color: $grey;
             cursor: pointer;
             user-select: none;
-            text-decoration: underline; 
+            text-decoration: underline;
         }
 
         &-submit {
             @extend .respond-page-actions-respond;
-            width: 222px; 
+            width: 222px;
         }
     }
 

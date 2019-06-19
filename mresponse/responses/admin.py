@@ -16,9 +16,17 @@ from mresponse.utils.queryset import PlaystoreUploadException
 
 
 class ModerationInline(admin_utils.ViewOnlyModelAdmin, admin.StackedInline):
+    extra = 0
     model = moderations_models.Moderation
     show_change_link = True
     readonly_fields = ['submitted_at']
+
+
+class ApprovalInline(admin_utils.ViewOnlyModelAdmin, admin.StackedInline):
+    extra = 0
+    model = moderations_models.Approval
+    show_change_link = True
+    readonly_fields = ['approved_at']
 
 
 def staff_approve_responses(modeladmin, request, qs):
@@ -205,7 +213,7 @@ class ResponseResource(resources.ModelResource):
 @admin.register(responses_models.Response)
 class ResponseAdmin(ExportMixin, admin.ModelAdmin):
     resource_class = ResponseResource
-    inlines = (ModerationInline,)
+    inlines = (ModerationInline, ApprovalInline, )
     readonly_fields = ['submitted_at']
     list_display = (
         'pk',

@@ -2,14 +2,14 @@
 
 .profile {
   min-height: 100vh;
-  background-color: #F9F9FA;
+  background-color: $off-white;
 
   &-toolbar {
     height: auto;
     padding-top: 35px;
     padding-bottom: 20px;
     background-color: $grey;
-    
+
     &-title {
       color: white;
     }
@@ -20,12 +20,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    
+
     padding-left: 18px;
     padding-right: 18px;
     padding-bottom: 60px;
     margin-bottom: 60px;
-    
+
     background-color: $grey;
 
     &-container {
@@ -36,9 +36,9 @@
       max-width: 680px;
     }
 
-    &-avatar {     
+    &-avatar {
       height: 80px;
-      width: 80px; 
+      width: 80px;
       border: 2px solid white;
       border-radius: 6px;
     }
@@ -54,7 +54,7 @@
         margin-bottom: 10px;
         color: white;
       }
-  
+
       &-languages {
         color: #b1b1b3;
         font-size: 0.8rem;
@@ -80,17 +80,17 @@
       flex-direction: row;
       justify-content: space-around;
       align-items: center;
-      
+
       background-color: white;
       box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
       border-radius: 4px;
-  
+
       &-group {
         flex: 1;
         display: flex;
         flex-direction: column;
-        align-items: center; 
-  
+        align-items: center;
+
         &-value {
           color: white;
           font-weight: 600;
@@ -100,9 +100,9 @@
           padding: 6px 25px 6px 25px;
           border-radius: 100px;
         }
-  
+
         &-label {
-          color: $light-grey;
+          color: $grey-light;
           font-size: 11px;
         }
 
