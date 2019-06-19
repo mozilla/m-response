@@ -39,13 +39,13 @@ jobs:
       install:
         - pip install -r requirements.txt
         - cd mresponse/frontend/app
-        - yarn  install --frozen-lockfile
-        - yarn  mresponse/frontend/app build
+        - yarn install --frozen-lockfile
+        - yarn build
+        - cd $TRAVIS_BUILD_DIR
       before_script:
         # Create a database
         - psql -c 'create database test_db;' -U postgres
       script:
-        - cd $TRAVIS_BUILD_DIR
         - python manage.py check
         - python manage.py makemigrations --check --noinput
         - python manage.py collectstatic --clear --noinput
