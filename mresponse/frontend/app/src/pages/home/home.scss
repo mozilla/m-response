@@ -1,7 +1,7 @@
 @import '../../styles/main.scss';
 
 .home-page {
-    background-color: #F9F9FA;
+    background-color: $off-white;
 
     &-header {
         display: grid;
@@ -29,7 +29,7 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-column-gap: 8px;
-        grid-row-gap: 8px; 
+        grid-row-gap: 8px;
         max-width: 400px;
         margin: 0 auto;
         position: absolute;
@@ -42,7 +42,11 @@
             max-width: 420px;
         }
     }
-    
+
+    &-leaderboard {
+        grid-column: 1 / span 2;
+    }
+
     &-card {
         width: 100% !important;
         min-width: 0;
@@ -61,7 +65,7 @@
         justify-content: space-around;
 
         padding-bottom: 25px;
-            
+
         &-link {
             color: $grey;
             font-size: 13px;

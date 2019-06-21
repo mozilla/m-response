@@ -1,0 +1,61 @@
+@import '../../styles/main';
+
+.notfound-page {
+  position: relative;
+  min-height: 100vh;
+  background-color: $off-white;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding-left: 20px;
+  padding-right: 20px;
+
+  .mozilla-logo {
+    grid-row: 1;
+    user-select: none;
+    margin: 0 auto;
+    width: 6rem;
+    padding-top: 46px;
+    padding-bottom: 28px;
+  }
+
+  .page-content {
+    display: flex;
+    flex-direction: column;
+    grid-row: 2;
+    text-align: center;
+  }
+
+  .info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .info-tagline {
+        font-family: $heading-font;
+        font-weight: 700;
+        font-size: 1.5rem;
+    }
+
+    .info-desc {
+      max-width: 3  00px;
+      text-align: center;
+      font-family: $body-font;
+      font-size: 1rem;
+      margin-top: 8px;
+    }
+  }
+
+  footer {
+    padding: 15px;
+    text-align: center;
+    .footer-link {
+      cursor: pointer;
+      text-decoration: underline;
+      font-weight: 600;
+      margin-left: 5px;
+    }
+  }
+}

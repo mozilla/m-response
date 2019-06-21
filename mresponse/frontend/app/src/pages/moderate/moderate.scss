@@ -39,18 +39,27 @@
         background-color: white;
         padding: 16px;
         padding-top: 8px;
-        padding-bottom: 5px;
+        padding-bottom: 0;
         margin-top: 8px;
 
         &-row {
           display: flex;
           flex-direction: column;
           margin-bottom: 15px;
-            
+
             &-title {
               font-size: 14px;
               line-height: 24px;
               margin-bottom: 5px;
+            }
+
+            &-strong {
+              font-weight: 700;
+            }
+
+            &-em {
+              font-weight: 200;
+              color: $grey-light;
             }
 
             &-buttons {
@@ -59,23 +68,6 @@
 
               .toggle-button {
                 margin-right: 16px;
-              }
-            }
-
-            &-karma {
-              text-align: center;
-              width: 216px;
-              margin: 0 auto;
-
-              &-label {
-                padding-top: 20px;
-                padding-bottom: 10px;
-                font-size: 14px;
-                font-weight: 700;
-              }
-
-              &-slider {
-                margin-top: 10px;
               }
             }
         }
@@ -87,21 +79,53 @@
         justify-content: center;
         margin-top: 16px;
 
+        &--form {
+          margin: 0 -16px 0;
+          padding: 16px;
+          background-color: $background-color;
+        }
+
+        &--trusted {
+          padding-bottom: 16px;
+        }
+
         &-moderate {
-            height: 42px;
-            width: 116px;
-            background-color: $blue;
-            font-weight: 700;
-            font-size: 14px;
-            margin-right: 30px;
-            margin-left: 30px;
+          height: 42px;
+          width: 116px;
+          background-color: $color-black;
+          font-weight: 700;
+          font-size: 14px;
+          margin-right: 6px;
+          margin-left: 6px;
+        }
+
+        &-approve {
+          height: 42px;
+          width: 116px;
+          background-color: transparent;
+          color: $color-black;
+          font-weight: 700;
+          font-size: 14px;
+          margin-right: 6px;
+          margin-left: 6px;
+          border: 2px solid $color-black;
+
+          & > .standard-button-icon {
+            width: 20px;
+            height: 20px;
+            background: $color-black;
+            border-radius: 100%;
+            padding: 2px;
+            box-sizing: border-box;
+          }
         }
 
         &-skip {
-            font-weight: 700;
-            cursor: pointer;
-            user-select: none;
-            text-decoration: underline;
+          font-size: 14px;
+          font-weight: 700;
+          cursor: pointer;
+          user-select: none;
+          text-decoration: underline;
         }
     }
 

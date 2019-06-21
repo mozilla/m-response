@@ -11,7 +11,7 @@ class UserProfile(models.Model):
     karma_points = models.PositiveIntegerField(default=0)
     languages = models.CharField(max_length=500)
     name = models.CharField(max_length=500)
-    avatar = models.CharField(max_length=500)
+    avatar = models.CharField(max_length=500, blank=True, null=True)
 
     def __str__(self):
         return str(self.user)
@@ -23,3 +23,14 @@ class UserProfile(models.Model):
     @property
     def moderation_count(self):
         return self.user.moderations.count()
+
+    @property
+    def can_skip_community_response_moderation(self):
+        """
+        Returns whether responses submitted by the user need to be community
+        moderated.
+        """
+        return (
+            self.user.has_perm('responses.can_bypass_community_moderation')
+            or self.user.has_perm('responses.can_bypass_staff_moderation')
+        )

@@ -3,6 +3,7 @@ import { connectApi } from '@redux/util/api-wrapper'
 export * from './config'
 export * from './respond'
 export * from './moderate'
+export * from './leaderboard'
 
 // TODO fix missing function implementations
 export const SET_PROFILE = 'SET_PROFILE'

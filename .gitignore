@@ -32,4 +32,5 @@ wheels/
 
 # Frontend Tooling
 mresponse/frontend/app/.out/
+mresponse/frontend/app/webpack-stats.json
 *.log

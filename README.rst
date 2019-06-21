@@ -25,10 +25,10 @@ Compile static assets
    vagrant ssh
    cd mresponse/frontend/app/
    yarn install
-   yarn build
+   yarn start  # "yarn build" for the production build
 
-Or you can run those commands locally. There are known to be slow in a
-VM on some platforms. We use Node 8 LTS and Yarn stable.
+The watcher (`yarn start`) has to be run locally (outside VM). We use Node
+8 LTS and Yarn stable.
 
 Create database and administrator user
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -23,6 +23,8 @@ def api_root(request, format=None):
             'get_review', request=request, format=format)
         response_dict['response'] = reverse.reverse(
             'get_response', request=request, format=format)
+        response_dict['leaderboard'] = reverse.reverse(
+            'leaderboard', request=request, format=format)
     response_dict['config'] = reverse.reverse(
         'config', request=request, format=format)
     return response.Response(response_dict)

@@ -11,4 +11,5 @@ urlpatterns = [
     path('users/', include('mresponse.users.api.urls')),
     path('images/', include('mresponse.images.api.urls', namespace='images')),
     path('homepage/', include('mresponse.homepage.api.urls')),
+    path('leaderboard/', include('mresponse.leaderboard.api.urls')),
 ]
