@@ -83,6 +83,10 @@ class Command(BaseCommand):
                     obj.save()
 
                     time_of_last_review = kwargs['last_modified']
+                else:
+                    num_of_comments = len(review['comments'])
+                    review_id = review['reviewId']
+                    logger.info("Not fetching review: {}. Num of comments: {}".format(num_of_comments, review_id))
 
             if len(results['reviews']) > 0:
                 logger.info("Fetched %d reviews (%s)", len(results['reviews']), time_of_last_review)
