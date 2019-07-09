@@ -245,7 +245,8 @@ class ResponseAdmin(ExportMixin, admin.ModelAdmin):
     )
     list_filter = (
         ModerationsCountFilter, PositiveToneCountFilter,
-        AddressingIssueCountFilter, PersonalCountFilter
+        AddressingIssueCountFilter, PersonalCountFilter,
+        ModeratorResponseFilter
     )
     actions = [
         staff_approve_responses,
