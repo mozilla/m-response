@@ -16,7 +16,8 @@ class LeaderboardManager(models.Manager):
         from mresponse.leaderboard.models import LeaderboardRecord
 
         today = timezone.now().date()
-        start = today - timezone.timedelta(days=today.weekday())
+        # Generate a leaderboard since Monday last week till Sunday that week.
+        start = today - timezone.timedelta(days=today.weekday(), weeks=1)
         end = start + timezone.timedelta(days=6)
         start = datetime.datetime.combine(start, datetime.time.min)
         end = datetime.datetime.combine(end, datetime.time.max)
