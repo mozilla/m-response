@@ -189,9 +189,9 @@ class ModeratorResponseFilter(admin.SimpleListFilter):
         group_name = 'Moderator 1'
 
         if self.value() == 'yes':
-            return queryset.filter(user__groups__name=group_name).distinct()
+            return queryset.filter(author__groups__name=group_name).distinct()
         if self.value() == 'no':
-            return queryset.exclude(user__groups__name=group_name).distinct()
+            return queryset.exclude(author__groups__name=group_name).distinct()
         return queryset
 
 
