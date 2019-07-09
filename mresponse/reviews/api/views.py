@@ -63,9 +63,6 @@ class Review(generics.RetrieveAPIView):
         if languages_list:
             querysets.append(base_queryset.languages(languages_list))
 
-        # Then prioritise everything else
-        querysets.append(base_queryset)
-
         for queryset in querysets:
             review = queryset_utils.get_random_entry(
                 queryset
