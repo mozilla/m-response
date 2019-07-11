@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Provider } from 'react-redux'
-import { Switch } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom'
 import { ConnectedRouter } from 'connected-react-router'
 import { PersistGate } from 'redux-persist/integration/react'
 
@@ -10,6 +10,7 @@ import ProfilePage from '@pages/profile'
 import SettingsPage from '@pages/settings'
 import RespondPage from '@pages/respond'
 import ModeratePage from '@pages/moderate'
+import NotFoundPage from '@pages/notfound'
 
 import createStore from '@redux/store'
 import { updateAppConfig } from '@redux/actions'
@@ -69,6 +70,9 @@ class App extends Component {
                 path={MODERATE_URL}
                 redirect={WELCOME_URL}
                 component={ModeratePage}
+              />
+              <Route
+                component={props => <NotFoundPage isAuthenticated={store.getState().profile.profile} {...props} />}
               />
             </Switch>
           </ConnectedRouter>

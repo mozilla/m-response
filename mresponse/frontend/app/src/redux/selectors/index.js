@@ -3,6 +3,7 @@ import { getSupportedLanguages } from '@redux/selectors'
 export * from './config'
 export * from './respond'
 export * from './moderate'
+export * from './leaderboard'
 
 export const getSpokenLanguages = state => {
   let languages = '[]'
@@ -13,6 +14,10 @@ export const getSpokenLanguages = state => {
 }
 
 export const getProfile = state => {
+  if (!state.profile.profile) {
+    return null
+  }
+
   const {
     profile: {
       profile: userProfile,

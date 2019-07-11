@@ -7,6 +7,7 @@ from mresponse.reviews.api import serializers as reviews_serializers
 class ResponseSerializer(serializers.ModelSerializer):
     review = reviews_serializers.ReviewSerializer(read_only=True)
     moderation_url = serializers.SerializerMethodField()
+    approve_url = serializers.SerializerMethodField()
     skip_url = serializers.SerializerMethodField()
 
     class Meta:
@@ -16,6 +17,7 @@ class ResponseSerializer(serializers.ModelSerializer):
             'text',
             'submitted_at',
             'review',
+            'approve_url',
             'moderation_url',
             'skip_url',
         )
@@ -39,12 +41,20 @@ class ResponseSerializer(serializers.ModelSerializer):
             if author.has_perm('responses.can_bypass_community_moderation'):
                 kwargs['approved'] = True
             if author.has_perm('responses.can_bypass_staff_moderation'):
+                kwargs['approved'] = True
                 kwargs['staff_approved'] = True
         super().save(**kwargs)
 
     def get_moderation_url(self, instance):
         return reverse.reverse(
             'create_moderation',
+            kwargs={'response_pk': instance.pk},
+            request=self.context.get('request'),
+        )
+
+    def get_approve_url(self, instance):
+        return reverse.reverse(
+            'approve',
             kwargs={'response_pk': instance.pk},
             request=self.context.get('request'),
         )

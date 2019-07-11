@@ -72,6 +72,7 @@ INSTALLED_APPS = [
 
     'mresponse.applications',
     'mresponse.images',
+    'mresponse.leaderboard',
     'mresponse.moderations',
     'mresponse.responses',
     'mresponse.reviews',
@@ -540,6 +541,12 @@ OIDC_OP_DOMAIN = env.get('OIDC_OP_DOMAIN')
 OIDC_USERNAME_ALGO = _username_algo
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+# Enable Django login with an environment variable when the OIDC login is not
+# or cannot be set up.
+DJANGO_LOGIN_ENABLED = (
+    os.environ.get('DJANGO_LOGIN_ENABLED', 'false').lower() == 'true'
+)
 
 
 # Webpack
