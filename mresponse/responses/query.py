@@ -34,7 +34,9 @@ class ResponseQuerySet(models.QuerySet):
         return self.filter(approved=False)
 
     def moderator_queue(self):
-        return self.not_approved()
+        return self.not_approved().exclude(
+            author__user_permissions__codename='can_bypass_community_moderation'
+        )
 
     def no_moderations(self):
         return self.annotate_moderations_count().filter(moderations_count=0)
