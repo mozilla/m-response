@@ -10,13 +10,12 @@ User = get_user_model()
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = User
-        django_get_or_create = ("username",)
 
-    username = "jane"
+    username = factory.Sequence(lambda n: f'user{n}')
 
 
 class BypassCommunityModerationUserFactory(UserFactory):
-    username = "andrea"
+    username = factory.Sequence(lambda n: f'level_one_mod{n}')
 
     @factory.post_generation
     def user_permissions(self, create, extracted, **kwargs):

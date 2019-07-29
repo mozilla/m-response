@@ -1,4 +1,5 @@
 import datetime
+import json
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
@@ -9,8 +10,11 @@ from mresponse.reviews.models import Review
 from mresponse.users.tests import (BypassCommunityModerationUserFactory,
                                    BypassStaffModerationUserFactory,
                                    UserFactory)
+import rest_framework.test
+from rest_framework import status
 
 from .api.serializers import ResponseSerializer
+from .models import Response
 
 User = get_user_model()
 
@@ -68,3 +72,50 @@ class TestResponseSerializer(TestCase):
         user = BypassStaffModerationUserFactory()
         serializer = ResponseSerializerFactory(author=user)
         self.assertTrue(serializer.instance.staff_approved)
+
+
+class TestResponseQuery(TestCase):
+    def test_moderator_queue_with_no_approved_responses(self):
+        ResponseSerializerFactory()
+        self.assertEqual(1, Response.objects.moderator_queue().count())
+
+    def test_moderator_queue_with_one_approved_response(self):
+        ResponseSerializerFactory()
+        ResponseSerializerFactory.create(author=BypassCommunityModerationUserFactory())
+        self.assertEqual(1, Response.objects.moderator_queue().count())
+
+    def test_moderator_queue_with_two_approved_responses(self):
+        ResponseSerializerFactory.create(author=BypassCommunityModerationUserFactory())
+        ResponseSerializerFactory.create(author=BypassCommunityModerationUserFactory())
+        self.assertEqual(0, Response.objects.moderator_queue().count())
+
+
+class TestGetResponseView(TestCase):
+    def setUp(self):
+        self.client = rest_framework.test.APIClient()
+
+    def test_returning_no_responses_to_moderate_with_no_responses(self):
+        self.client.force_authenticate(user=UserFactory())
+        response = self.client.get('/api/response/')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(
+            json.loads(response.content.decode())['detail'],
+            'No responses available in the moderator queue.'
+        )
+
+    def test_returning_a_response_to_moderate(self):
+        self.client.force_authenticate(user=UserFactory())
+        ResponseSerializerFactory()
+        response = self.client.get('/api/response/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(json.loads(response.content.decode())['text'], 'test')
+
+    def test_returning_no_responses_to_moderate_for_approved_response(self):
+        self.client.force_authenticate(user=BypassCommunityModerationUserFactory())
+        ResponseSerializerFactory.create(author=BypassCommunityModerationUserFactory())
+        response = self.client.get('/api/response/')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(
+            json.loads(response.content.decode())['detail'],
+            'No responses available in the moderator queue.'
+        )
