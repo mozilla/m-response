@@ -4,14 +4,15 @@ import json
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
+import rest_framework.test
+from rest_framework import status
+
 import factory
 from mresponse.applications.models import Application
 from mresponse.reviews.models import Review
 from mresponse.users.tests import (BypassCommunityModerationUserFactory,
                                    BypassStaffModerationUserFactory,
                                    UserFactory)
-import rest_framework.test
-from rest_framework import status
 
 from .api.serializers import ResponseSerializer
 from .models import Response
