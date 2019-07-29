@@ -112,7 +112,7 @@ class TestGetResponseView(TestCase):
         self.assertEqual(json.loads(response.content.decode())['text'], 'test')
 
     def test_returning_no_responses_to_moderate_for_approved_response(self):
-        self.client.force_authenticate(user=BypassCommunityModerationUserFactory())
+        self.client.force_authenticate(user=UserFactory())
         ResponseSerializerFactory.create(author=BypassCommunityModerationUserFactory())
         response = self.client.get('/api/response/')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
