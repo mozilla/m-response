@@ -49,6 +49,7 @@ export default class RespondPage extends React.Component {
           <WelcomeModal
             forPage='respond'
             title='Welcome to Responding'
+            text='Responding to Play Store reviews conveys a strong message to our users that we care about their expirence and endeavour to reslove whatever issue they may be expirencing.'
             handleClose={this.closeWelcome.bind(this)} />
         ) : null}
 
