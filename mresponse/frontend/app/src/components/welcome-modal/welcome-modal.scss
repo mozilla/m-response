@@ -10,26 +10,49 @@
   top: 0;right: 0;bottom: 16px;left: 0;
   z-index: 9999;
 
-  &--for-respond {
-    border-color: $orange;
-  }
-
   &-icon {
     display: flex;
     justify-content: center;
     align-items: center;
 
     &-inner {
-      border: 6px solid $orange-dark;
+      border: 6px solid $grey-light;
       border-radius: 999px;
       padding: 28px;
     }
 
     img, svg {
       display: block;
-      color: $orange-dark;
       width: 55px;
       height: 55px;
+    }
+  }
+
+  &--for-respond {
+    border-color: $orange;
+
+    .welcome-modal-icon {
+      &-inner {
+        border-color: $orange-dark;
+      }
+
+      img, svg {
+        color: $orange-dark;
+      }
+    }
+  }
+
+  &--for-moderate {
+    border-color: $blue-lighter;
+
+    .welcome-modal-icon {
+      &-inner {
+        border-color: $blue-light;
+      }
+
+      img, svg {
+        color: $blue-light;
+      }
     }
   }
 
