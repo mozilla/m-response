@@ -18,7 +18,7 @@ export default class WelcomeModal extends React.Component {
   }
 
   render () {
-    const { className = '', title, forPage, handleClose } = this.props
+    const { className = '', title, text, forPage, handleClose } = this.props
     return (
       <div className={`welcome-modal ${className} welcome-modal--for-${forPage}`}>
         <div className='welcome-modal-inner'>
@@ -29,7 +29,7 @@ export default class WelcomeModal extends React.Component {
           </div>
           <div className='welcome-modal-intro'>
             <h1>{title}</h1>
-            <p>Responding to Play Store reviews conveys a strong message to our users that we care about their expirence and endeavour to reslove whatever issue they may be expirencing.</p>
+            <p>{text}</p>
           </div>
           <div className='welcome-modal-instructions'>
             <p>The critiera for a hight quality response is:</p>
@@ -61,6 +61,7 @@ export default class WelcomeModal extends React.Component {
 WelcomeModal.propTypes = {
   className: PropTypes.string,
   title: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
   forPage: PropTypes.string.isRequired,
   handleClose: PropTypes.func.isRequired
 }
