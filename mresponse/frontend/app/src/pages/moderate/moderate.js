@@ -6,6 +6,7 @@ import Button from '@components/buttons'
 import ToggleButton from '@components/buttons/toggle'
 import AlertPrompt from '@components/alert-prompt'
 import Textarea from '@components/textarea'
+import WelcomeModal from '@components/welcome-modal'
 import { staticAsset } from '@utils/urls'
 import './moderate.scss'
 
@@ -14,6 +15,7 @@ export default class ModeratePage extends React.Component {
     isModerating: false,
     isDoneEditing: false,
     hasSubmitted: false,
+    isWelcomeOpen: true,
     response: this.props.response || '',
     criteria: {
       positive: null,
@@ -46,6 +48,10 @@ export default class ModeratePage extends React.Component {
         isModerating: !canSkipModeration
       }
     })
+
+    // Check if welcome has already been closed
+    const hideWelcome = localStorage.getItem('hide-moderate-welcome')
+    if (hideWelcome) this.setState({ isWelcomeOpen: false })
   }
 
   render () {
@@ -60,11 +66,20 @@ export default class ModeratePage extends React.Component {
     const {
       isModerating,
       messages,
-      criteria
+      criteria,
+      isWelcomeOpen
     } = this.state
 
     return (
       <div className='moderate-page'>
+        {isWelcomeOpen ? (
+          <WelcomeModal
+            forPage='moderate'
+            title='Welcome to Moderating'
+            text='Moderating helps ensure the quality of our Play Store responses remains high while providing friendly, constructive feedback to our fellow contributors'
+            handleClose={this.closeWelcome.bind(this)} />
+        ) : null}
+
         <Toolbar
           className='moderate-page-toolbar'
           title='Moderate'
@@ -224,6 +239,11 @@ export default class ModeratePage extends React.Component {
         ) : null}
       </div>
     )
+  }
+
+  closeWelcome () {
+    this.setState({ isWelcomeOpen: false })
+    localStorage.setItem('hide-moderate-welcome', 'true')
   }
 
   toggleCriteria = (option, value) => {
