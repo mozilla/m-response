@@ -5,6 +5,7 @@ import ReviewCard from '@components/respond-card'
 import Button from '@components/buttons'
 import AlertPrompt from '@components/alert-prompt'
 import Textarea from '@components/textarea'
+import WelcomeModal from '@components/welcome-modal'
 import { staticAsset } from '@utils/urls'
 import './respond.scss'
 
@@ -13,6 +14,7 @@ export default class RespondPage extends React.Component {
     isResponding: false,
     isDoneEditing: false,
     hasSubmitted: false,
+    isWelcomeOpen: true,
     response: this.props.response || '',
     messages: []
   }
@@ -23,6 +25,10 @@ export default class RespondPage extends React.Component {
         this.pushMessage(err, true)
       }
     })
+
+    // Check if welcome has already been closed
+    const hideWelcome = localStorage.getItem('hide-respond-welcome')
+    if (hideWelcome) this.setState({ isWelcomeOpen: false })
   }
 
   render () {
@@ -35,10 +41,17 @@ export default class RespondPage extends React.Component {
       }
     } = this.props
 
-    const { isResponding, isDoneEditing, response, messages } = this.state
+    const { isResponding, isDoneEditing, isWelcomeOpen, response, messages } = this.state
 
     return (
       <div className='respond-page'>
+        {isWelcomeOpen ? (
+          <WelcomeModal
+            forPage='respond'
+            title='Welcome to Responding'
+            handleClose={this.closeWelcome.bind(this)} />
+        ) : null}
+
         <Toolbar
           className='respond-page-toolbar'
           title='Respond'
@@ -50,7 +63,8 @@ export default class RespondPage extends React.Component {
             className='respond-page-alert-prompt'
             title={message.title}
             message={message.text}
-            isError={message.isError} />
+            isError={message.isError}
+            key={message.title} />
         ))}
 
         {review ? (
@@ -146,6 +160,11 @@ export default class RespondPage extends React.Component {
 
       </div>
     )
+  }
+
+  closeWelcome () {
+    this.setState({ isWelcomeOpen: false })
+    localStorage.setItem('hide-respond-welcome', 'true')
   }
 
   openGuideBook = () => window.open(this.props.guideBookUrl)
