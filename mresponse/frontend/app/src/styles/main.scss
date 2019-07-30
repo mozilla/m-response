@@ -5,3 +5,8 @@
 // Style Modules
 @import 'vars';
 @import 'grid';
+
+// Utility styles
+.no_scroll {
+  overflow: hidden;
+}

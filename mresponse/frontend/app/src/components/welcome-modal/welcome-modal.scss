@@ -1,0 +1,94 @@
+@import '../../styles/main';
+
+.welcome-modal {
+  background-color: #fff;
+  border: 16px solid $grey-light;
+  max-width: 100vw;
+  max-height: 100vh;
+
+  position: absolute;
+  top: 0;right: 0;bottom: 16px;left: 0;
+  z-index: 9999;
+
+  &--for-respond {
+    border-color: $orange;
+  }
+
+  &-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &-inner {
+      border: 6px solid $orange-dark;
+      border-radius: 999px;
+      padding: 28px;
+    }
+
+    img, svg {
+      display: block;
+      color: $orange-dark;
+      width: 55px;
+      height: 55px;
+    }
+  }
+
+  &-inner {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+
+    box-sizing: border-box;
+  }
+
+  &-intro {
+    text-align: center;
+
+    h1 {
+      font-size: 1.4em;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+  }
+
+  &-instructions {
+    p {
+      text-align: center;
+    }
+
+    ol {
+      list-style: none;
+      counter-reset: my-awesome-counter;
+    }
+
+    ol li {
+      counter-increment: my-awesome-counter;
+      font-weight: bold;
+      margin: 16px 0;
+    }
+
+    ol li::before {
+      content: counter(my-awesome-counter);
+      color: #fff;
+      border-radius: 999px;
+      background-color: $grey;
+      padding: 1px 6px;
+      margin-right: 8px;
+      font-weight: normal
+    }
+  }
+
+  &-close-wrap {
+    button {
+      margin: 0 auto;
+    }
+  }
+
+  &-more-details {
+    text-align: center;
+  }
+}
