@@ -1,3 +1,5 @@
+@import '../../styles/main.scss';
+
 .home-page-card {
     display: flex;
     flex-direction: column;
@@ -22,6 +24,7 @@
         width: 60px;
         border-radius: 100%;
         margin-bottom: 10px;
+        background-color: #fff;
     }
 
     &-title {
@@ -31,6 +34,14 @@
 
     &-subtitle {
         color: #737373;
+    }
+
+    &-bg-orange {
+        background-color: $orange;
+    }
+
+    &-bg-blue-lighter {
+        background-color: $blue-lighter;
     }
 
 }

@@ -50,13 +50,14 @@ export default class HomePage extends React.Component {
 
         <section className='home-page-content'>
           <HomePageCard
-            dotColor='#FF4D1C'
-            icon={staticAsset('media/icons/respond.svg')}
+            icon={staticAsset('media/icons/respond-black.svg')}
+            bgColor='orange'
             title='Respond'
             subtitle={`Queue: ${Number(respondQueue).toLocaleString()}`}
             onClick={goToRespondMode} />
           <HomePageCard
-            icon={staticAsset('media/icons/moderate.svg')}
+            icon={staticAsset('media/icons/moderate-black.svg')}
+            bgColor='blue-lighter'
             title='Moderate'
             subtitle={`Queue: ${Number(moderateQueue).toLocaleString()}`}
             onClick={goToModerateMode} />
