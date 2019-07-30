@@ -6,11 +6,14 @@
     min-height: 100vh;
     background-color: $off-white;
     padding-bottom: 15px;
+    position: relative;
 
     &-toolbar {
         height: auto;
-        padding-top: 36px;
-        padding-bottom: 8px;
+        padding-top: 18px;
+        padding-bottom: 18px;
+        background-color: $orange;
+        margin-bottom: 8px;
     }
 
     &-alert-prompt {
