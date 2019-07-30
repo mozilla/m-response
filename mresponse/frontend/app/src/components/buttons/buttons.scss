@@ -8,6 +8,8 @@
   height: 50px;
   background-color: $grey;
   color: white;
+  padding-right: 16px;
+  padding-left: 16px;
 
   font-size: 14px;
   font-weight: bold;
@@ -59,5 +61,19 @@
 
   &--disabled {
     opacity: 0.4;
+  }
+}
+
+.link-button {
+  display: inline;
+  color: $blue;
+  text-decoration: underline;
+
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    cursor: pointer;
   }
 }
