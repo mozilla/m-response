@@ -45,7 +45,7 @@ export default class WelcomePage extends React.Component {
           </section>
           <Button
             label="Let's Start"
-            className="continue-button"
+            className="continue-button standard-button-wide"
             onClick={this.handleContinue}
           />
         </div>
