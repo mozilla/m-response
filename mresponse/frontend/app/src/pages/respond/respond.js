@@ -80,10 +80,10 @@ export default class RespondPage extends React.Component {
             <div className='respond-page-edit-response-content'>
               <div className='response-page-response-actions'>
                 <Button
-                  label='Guide Book'
+                  label='Canned Responses'
                   className='respond-page-edit-response-guide-button'
                   icon={staticAsset('media/icons/book.svg')}
-                  onClick={this.openGuideBook} />
+                  onClick={this.openCannedResponses} />
               </div>
               <form className='respond-page-edit-response-form'>
                 <Textarea
@@ -97,6 +97,11 @@ export default class RespondPage extends React.Component {
                   label='Done'
                   className='respond-page-edit-response-form-submit'
                   onClick={this.saveResponseInput} />
+                <Button
+                  type='link'
+                  label='Cancel'
+                  className='respond-page-edit-response-form-cancel'
+                  onClick={this.cancelResponseInput} />
               </form>
             </div>
           </div>
@@ -155,6 +160,8 @@ export default class RespondPage extends React.Component {
   }
 
   // openGuideBook = () => window.open(this.props.guideBookUrl)
+  openCannedResponses = () => {
+    console.log('opened sidebar')
   }
 
   setIsResponding = () => this.setState({
@@ -165,6 +172,11 @@ export default class RespondPage extends React.Component {
   saveResponseInput = e => {
     e.preventDefault()
     this.setState({ isDoneEditing: true })
+  }
+
+  cancelResponseInput = e => {
+    e.preventDefault()
+    this.setState({ isResponding: false, response: '' })
   }
 
   updateResponse = e => {

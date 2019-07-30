@@ -59,13 +59,17 @@
 
         &-guide-button {
             height: 36px;
-            width: 112px;
+            // width: 112px;
             background-color: transparent !important;
             border: 1px solid $border-color;
             color: $blue;
             font-size: 12px;
             font-weight: normal;
             box-shadow: none;
+
+            img {
+                max-height: 14px;
+            }
         }
 
         &-form {
@@ -79,6 +83,13 @@
             margin-right: 0 !important;
             margin: 0 auto !important;
             margin-top: 24px !important;
+        }
+
+        &-form-cancel {
+            display: block;
+            color: $color-black;
+            font-weight: bold;
+            margin: 16px auto;
         }
 
     }
@@ -119,8 +130,6 @@
         &-respond {
             width: 116px;
             height: 42px;
-            background-color: $orange;
-            background-color: #ff4c1d;
             margin-right: 24px;
             margin-left: 24px;
         }
