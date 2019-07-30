@@ -6,10 +6,8 @@
   justify-content: center;
 
   height: 50px;
-  background-color: $grey;
+  background-color: $color-black;
   color: white;
-  padding-right: 16px;
-  padding-left: 16px;
 
   font-size: 14px;
   font-weight: bold;
@@ -28,6 +26,11 @@
 
   &--disabled {
     opacity: 0.4;
+  }
+
+  &-wide {
+    padding-right: 16px;
+    padding-left: 16px;
   }
 }
 
