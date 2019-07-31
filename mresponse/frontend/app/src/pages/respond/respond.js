@@ -5,6 +5,8 @@ import ReviewCard from '@components/respond-card'
 import Button from '@components/buttons'
 import AlertPrompt from '@components/alert-prompt'
 import Textarea from '@components/textarea'
+import SideBar from '@components/side-bar'
+import CannedResponses from '@components/canned-responses'
 import { staticAsset } from '@utils/urls'
 import './respond.scss'
 
@@ -13,6 +15,7 @@ export default class RespondPage extends React.Component {
     isResponding: false,
     isDoneEditing: false,
     hasSubmitted: false,
+    isCannedMenuOpen: false,
     response: this.props.response || '',
     messages: []
   }
@@ -42,13 +45,23 @@ export default class RespondPage extends React.Component {
       messages
     } = this.state
 
+    const sideBarContent = (
+      <CannedResponses/>
+    )
+
     return (
       <div className='respond-page'>
-        <Toolbar
-          className='respond-page-toolbar'
-          title='Respond'
-          invertBackIcon={true}
-          onBack={back} />
+        <SideBar
+          title='Canned Responses'
+          handleClose={() => {}}
+          content={sideBarContent} />
+        <header>
+          <Toolbar
+            className='respond-page-toolbar'
+            title='Respond'
+            invertBackIcon={true}
+            onBack={back} />
+        </header>
 
         {messages.map(message => (
           <AlertPrompt
