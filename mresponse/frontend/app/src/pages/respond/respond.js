@@ -41,6 +41,7 @@ export default class RespondPage extends React.Component {
     const {
       isResponding,
       isDoneEditing,
+      isCannedMenuOpen,
       response,
       messages
     } = this.state
@@ -51,10 +52,10 @@ export default class RespondPage extends React.Component {
 
     return (
       <div className='respond-page'>
-        <SideBar
+        {isCannedMenuOpen ? <SideBar
           title='Canned Responses'
-          handleClose={() => {}}
-          content={sideBarContent} />
+          handleClose={this.toggCannedResponses.bind(this)}
+          content={sideBarContent} /> : null}
         <header>
           <Toolbar
             className='respond-page-toolbar'
@@ -96,7 +97,7 @@ export default class RespondPage extends React.Component {
                   label='Canned Responses'
                   className='respond-page-edit-response-guide-button'
                   icon={staticAsset('media/icons/book.svg')}
-                  onClick={this.openCannedResponses} />
+                  onClick={this.toggCannedResponses} />
               </div>
               <form className='respond-page-edit-response-form'>
                 <Textarea
@@ -173,8 +174,8 @@ export default class RespondPage extends React.Component {
   }
 
   // openGuideBook = () => window.open(this.props.guideBookUrl)
-  openCannedResponses = () => {
-    console.log('opened sidebar')
+  toggCannedResponses = () => {
+    window.requestAnimationFrame(t => { this.setState({ isCannedMenuOpen: !this.state.isCannedMenuOpen }) })
   }
 
   setIsResponding = () => this.setState({

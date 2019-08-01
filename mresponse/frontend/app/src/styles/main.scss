@@ -10,3 +10,17 @@
 .no_scroll {
   overflow: hidden;
 }
+
+@keyframes slideInRight {
+  from {
+    transform: translate3d(120%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity:0; }
+  to { opacity:1; }
+}

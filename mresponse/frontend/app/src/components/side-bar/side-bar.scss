@@ -9,6 +9,10 @@
   top: 0;right: 0;bottom: 16px;left: 0;
   z-index: 300;
 
+  animation-name: fadeIn;
+  animation-duration: .2s;
+  animation-fill-mode: both;
+
   &-inner {
     background-color: #fff;
     width: 80%;
@@ -17,6 +21,11 @@
     margin-left: auto;
 
     box-sizing: border-box;
+
+    animation-name: slideInRight;
+    animation-duration: .3s;
+    animation-delay: .2s;
+    animation-fill-mode: both;
   }
 
   &-close-button {
