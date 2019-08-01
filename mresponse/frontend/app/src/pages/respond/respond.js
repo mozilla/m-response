@@ -1,4 +1,6 @@
 import React from 'react'
+import { CSSTransitionGroup } from 'react-transition-group'
+import { FirstChild } from '@components/first-child'
 
 import Toolbar from '@components/toolbar'
 import ReviewCard from '@components/respond-card'
@@ -52,10 +54,19 @@ export default class RespondPage extends React.Component {
 
     return (
       <div className='respond-page'>
-        {isCannedMenuOpen ? <SideBar
-          title='Canned Responses'
-          handleClose={this.toggCannedResponses.bind(this)}
-          content={sideBarContent} /> : null}
+        <CSSTransitionGroup
+          transitionName='sideBarAnim'
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={300}
+          component={FirstChild}>
+          {isCannedMenuOpen ? <SideBar
+            className=''
+            title='Canned Responses'
+            handleClose={this.toggCannedResponses.bind(this)}
+            handleCloseOffWindow={this.toggCannedResponsesOffWindow.bind(this)}
+            content={sideBarContent} /> : null}
+        </CSSTransitionGroup>
+
         <header>
           <Toolbar
             className='respond-page-toolbar'
@@ -174,8 +185,13 @@ export default class RespondPage extends React.Component {
   }
 
   // openGuideBook = () => window.open(this.props.guideBookUrl)
-  toggCannedResponses = () => {
-    window.requestAnimationFrame(t => { this.setState({ isCannedMenuOpen: !this.state.isCannedMenuOpen }) })
+  toggCannedResponses = (e) => {
+    e.preventDefault()
+    this.setState({ isCannedMenuOpen: !this.state.isCannedMenuOpen })
+  }
+  toggCannedResponsesOffWindow = (e) => {
+    e.preventDefault()
+    if (e.currentTarget === e.target) this.setState({ isCannedMenuOpen: !this.state.isCannedMenuOpen })
   }
 
   setIsResponding = () => this.setState({

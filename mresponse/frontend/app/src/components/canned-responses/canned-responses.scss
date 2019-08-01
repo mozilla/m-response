@@ -2,6 +2,7 @@
 
 .canned-responses {
   height: calc(100vh - 42px);
+  overflow-x: hidden;
   overflow-y: auto;
 
   * {
@@ -56,10 +57,6 @@
     top:0;right:0;left:0;
     background-color: $background-color;
     min-height: 100%;
-
-    animation-name: slideInRight;
-    animation-duration: .3s;
-    animation-fill-mode: both;
     
     &-inner {
       padding: 0 16px;

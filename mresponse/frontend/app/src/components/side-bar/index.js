@@ -19,14 +19,14 @@ export default class SideBar extends React.Component {
   }
 
   render () {
-    const { className = '', title, content, handleClose } = this.props
+    const { className = '', title, content, handleClose, handleCloseOffWindow } = this.props
     const closeIcon = (
       <button className="side-bar-close-button" onClick={handleClose}>
         <Icon iconName='close'/>
       </button>
     )
     return (
-      <div className={`side-bar ${className}`}>
+      <div className={`side-bar ${className}`} onClick={handleCloseOffWindow}>
         <div className='side-bar-inner'>
           <Toolbar
             className='side-bar-toolbar'

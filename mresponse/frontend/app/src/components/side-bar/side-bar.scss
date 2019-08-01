@@ -9,9 +9,11 @@
   top: 0;right: 0;bottom: 16px;left: 0;
   z-index: 300;
 
-  animation-name: fadeIn;
-  animation-duration: .2s;
-  animation-fill-mode: both;
+  // opacity: 0;
+
+  // animation-name: fadeIn;
+  // animation-duration: .2s;
+  // animation-fill-mode: both;
 
   &-inner {
     background-color: #fff;
@@ -22,10 +24,10 @@
 
     box-sizing: border-box;
 
-    animation-name: slideInRight;
-    animation-duration: .3s;
-    animation-delay: .2s;
-    animation-fill-mode: both;
+    // animation-name: slideInRight;
+    // animation-duration: .3s;
+    // animation-delay: .2s;
+    // animation-fill-mode: both;
   }
 
   &-close-button {
@@ -41,5 +43,41 @@
     img, svg {
       display: block;
     }
+  }
+}
+
+.sideBarAnim-enter {
+  opacity: 0;
+  transition: opacity .2s ease-in-out;
+
+  .side-bar-inner {
+    transform: translate3d(120%, 0, 0);
+    transition: transform .3s ease-in-out .2s;
+  }
+}
+
+.sideBarAnim-enter.sideBarAnim-enter-active {
+  opacity: 1;
+
+  .side-bar-inner {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.sideBarAnim-leave {
+  opacity: 1;
+  transition: opacity .3s ease-in-out .4s;
+
+  .side-bar-inner {
+    transform: translate3d(0, 0, 0);
+    transition: transform .3s ease-in-out;
+  }
+}
+
+.sideBarAnim-leave.sideBarAnim-leave-active {
+  opacity: 0;
+
+  .side-bar-inner {
+    transform: translate3d(120%, 0, 0);
   }
 }
