@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Clipboard from 'clipboard'
 
 // import { staticAsset } from '@utils/urls'
 import Toolbar from '@components/toolbar'
@@ -11,8 +12,26 @@ export default class cannedResponses extends React.Component {
     isListOpen: false
   }
 
+  clipboard = new Clipboard('.copy-me', {
+    text: trigger => {
+      return trigger.innerHTML
+    }
+  })
+
   componentDidMount () {
-    console.log('wow look a component')
+    this.clipboard.on('success', e => {
+      // TODO: Add tooltip that copy was successful
+      e.clearSelection()
+    })
+
+    this.clipboard.on('error', e => {
+      console.error('Clipboard Action:', e.action)
+      console.error('Clipboard Trigger:', e.trigger)
+    })
+  }
+
+  componentWillUnmount () {
+    this.clipboard.destroy()
   }
 
   render () {
@@ -26,8 +45,8 @@ export default class cannedResponses extends React.Component {
       <div className={`canned-responses ${className}`}>
         <div className='canned-responses-inner'>
           {isListOpen ? <div className="canned-responses-list-options">
-          <Toolbar
-            className='canned-responses-toolbar'
+            <Toolbar
+              className='canned-responses-toolbar'
               title='This is a title'
               onBack={this.toggListOptions} />
             <div className="canned-responses-list-options-inner">
