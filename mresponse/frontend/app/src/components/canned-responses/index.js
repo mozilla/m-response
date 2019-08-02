@@ -4,9 +4,8 @@ import Clipboard from 'clipboard'
 import { CSSTransitionGroup } from 'react-transition-group'
 import { FirstChild } from '@components/first-child'
 
-// import { staticAsset } from '@utils/urls'
 import Toolbar from '@components/toolbar'
-// import Button from '@components/buttons'
+import { noty } from '@components/noty'
 import './canned-responses.scss'
 
 export default class cannedResponses extends React.Component {
@@ -22,7 +21,10 @@ export default class cannedResponses extends React.Component {
 
   componentDidMount () {
     this.clipboard.on('success', e => {
-      // TODO: Add tooltip feed back animation that copy was successful
+      noty({
+        text: 'Response copied',
+        icon: 'copy'
+      })
       e.clearSelection()
     })
 
@@ -75,18 +77,28 @@ export default class cannedResponses extends React.Component {
               </button>
             </li>
             <li>
-              <button>
+              <button onClick={this.toggListOptions}>
                 <span>Content box 2</span>
               </button>
             </li>
             <li>
-              <button>
+              <button onClick={this.toggListOptions}>
                 <span>Content box 3</span>
               </button>
             </li>
             <li>
-              <button>
+              <button onClick={this.toggListOptions}>
                 <span>Content box 4</span>
+              </button>
+            </li>
+            <li>
+              <button onClick={this.toggListOptions}>
+                <span>Content box 5</span>
+              </button>
+            </li>
+            <li>
+              <button onClick={this.toggListOptions}>
+                <span>Content box 6</span>
               </button>
             </li>
           </ul>
