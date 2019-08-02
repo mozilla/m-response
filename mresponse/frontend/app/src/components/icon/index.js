@@ -2,15 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 export default class Icon extends React.Component {
-  componentWillMount () {
-    const body = document.querySelector('body')
-    body.classList.add('no_scroll')
-  }
-
-  componentWillUnmount () {
-    const body = document.querySelector('body')
-    body.classList.remove('no_scroll')
-  }
   render () {
     const { className = '', iconName = '' } = this.props
     let icon = ''
