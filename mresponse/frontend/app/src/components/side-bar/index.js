@@ -1,9 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-// import { staticAsset } from '@utils/urls'
 import Toolbar from '@components/toolbar'
-// import Button from '@components/buttons'
 import Icon from '@components/icon'
 import './side-bar.scss'
 
