@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import Toolbar from '@components/toolbar'
 import Avatar from '@components/avatar'
-// import ProgressBar from '@components/progress-bar'
+import ProgressTable from '@components/progress-table'
 // import ResponseCard from '@components/response-card'
 import Button from '@components/buttons'
 import { staticAsset } from '@utils/urls'
@@ -101,19 +101,40 @@ export default class ProfilePage extends React.Component {
 
         </section>
 
-        {/* <section className="profile-awesome-progress">
-          <span className="profile-awesome-progress-title">Unlock Awesome Mode</span>
-          <ProgressBar
-            className='profile-awesome-progress-bar'
-            value={totalKarma}
-            maxValue={10000} />
-        </section> */}
+        <section className="profile-feedback-stats">
+          <p className="profile-title">Positive feedback stats</p>
+          <p className="profile-feedback-stats-title">This Week</p>
+          <ProgressTable data={[
+            {
+              title: 'Tone',
+              value: 0,
+              maxValue: 0
+            },
+            {
+              title: 'Issue',
+              value: 0,
+              maxValue: 0
+            },
+            {
+              title: 'Personal',
+              value: 0,
+              maxValue: 0
+            }
+          ]}></ProgressTable>
+        </section>
 
-        <Button
-          className='profile-edit-button'
-          label='Settings'
-          icon={staticAsset('media/icons/cog.svg')}
-          onClick={editProfile} />
+        <section className='profile-progress'>
+          <p className='profile-title'>Progress</p>
+          <p className='profile-progress-placeholder'>Your progress gauges require two weeks worth of data before they can be displayed</p>
+        </section>
+
+        <section className='profile-button-wrap'>
+          <Button
+            className='profile-edit-button'
+            label='Settings'
+            icon={staticAsset('media/icons/cog.svg')}
+            onClick={editProfile} />
+        </section>
 
         {/* <section className="profile-response-history">
           <div className="profile-response-history-header">
