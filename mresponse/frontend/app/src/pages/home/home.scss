@@ -67,10 +67,19 @@
         padding-bottom: 25px;
 
         &-link {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
             color: $grey;
             font-size: 13px;
             width: 100%;
             text-align: center;
+
+            &-icon-question {
+                padding: 0px 4px;
+                text-decoration: none;
+                display: inline-block;
+            }
         }
     }
 
