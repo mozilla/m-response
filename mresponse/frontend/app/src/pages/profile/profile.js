@@ -101,56 +101,60 @@ export default class ProfilePage extends React.Component {
 
         </section>
 
-        <section className="profile-feedback-stats">
-          <p className="profile-title">Positive feedback stats</p>
-          <p className="profile-feedback-stats-title">This Week</p>
-          <ProgressTable data={[
-            {
-              title: 'Tone',
-              value: 0,
-              maxValue: 0
-            },
-            {
-              title: 'Issue',
-              value: 0,
-              maxValue: 0
-            },
-            {
-              title: 'Personal',
-              value: 0,
-              maxValue: 0
-            }
-          ]}></ProgressTable>
-        </section>
+        <div className='profile-container'>
+          <div className=''>
+            <section className="profile-feedback-stats">
+              <p className="profile-title">Positive feedback stats</p>
+              <p className="profile-feedback-stats-title">This Week</p>
+              <ProgressTable data={[
+                {
+                  title: 'Tone',
+                  value: 0,
+                  maxValue: 0
+                },
+                {
+                  title: 'Issue',
+                  value: 0,
+                  maxValue: 0
+                },
+                {
+                  title: 'Personal',
+                  value: 0,
+                  maxValue: 0
+                }
+              ]}></ProgressTable>
+            </section>
 
-        <section className='profile-progress'>
-          <p className='profile-title'>Progress</p>
-          <p className='profile-progress-placeholder'>Your progress gauges require two weeks worth of data before they can be displayed</p>
-        </section>
-
-        <section className='profile-button-wrap'>
-          <Button
-            className='profile-edit-button'
-            label='Settings'
-            icon={staticAsset('media/icons/cog.svg')}
-            onClick={editProfile} />
-        </section>
-
-        {/* <section className="profile-response-history">
-          <div className="profile-response-history-header">
-            <span className="profile-response-history-header-title">Response History</span>
+            <section className='profile-progress'>
+              <p className='profile-title'>Progress</p>
+              <p className='profile-progress-placeholder'>Your progress gauges require two weeks worth of data before they can be displayed</p>
+            </section>
           </div>
-          <div className="profile-response-history-list">
-            {responses.map(({ response, date, product }) => (
-              <ResponseCard
-                className="profile-response-history-list-card"
-                response={response}
-                date={date}
-                productImage={product.image}
-                productName={product.name} />
-            ))}
-          </div>
-        </section> */}
+
+          <section className='profile-button-wrap'>
+            <Button
+              className='profile-edit-button'
+              label='Settings'
+              icon={staticAsset('media/icons/cog.svg')}
+              onClick={editProfile} />
+          </section>
+
+          {/* <section className="profile-response-history">
+            <div className="profile-response-history-header">
+              <span className="profile-response-history-header-title">Response History</span>
+            </div>
+            <div className="profile-response-history-list">
+              {responses.map(({ response, date, product }) => (
+                <ResponseCard
+                  className="profile-response-history-list-card"
+                  response={response}
+                  date={date}
+                  productImage={product.image}
+                  productName={product.name} />
+              ))}
+            </div>
+          </section> */}
+        </div>
 
       </div>
     )
