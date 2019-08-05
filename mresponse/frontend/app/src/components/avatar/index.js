@@ -7,8 +7,8 @@ import './avatar.scss'
 const Avatar = ({ src, coverIcon, className = '', editable, onClick, karma }) => {
   return (
     <div className={`avatar ${className}`}>
-      <img className="avatar-img" src={src} alt="" />
-      {editable || coverIcon ? (
+      <img className="avatar-img" src={src} alt="" onClick={onClick} />
+      {(editable || coverIcon) && !src ? (
         <div className="avatar-cover" onClick={onClick}>
           <img
             className="avatar-cover-icon"
@@ -32,7 +32,7 @@ const Avatar = ({ src, coverIcon, className = '', editable, onClick, karma }) =>
 }
 
 Avatar.propTypes = {
-  src: PropTypes.string.isRequired,
+  src: PropTypes.string,
   className: PropTypes.string,
   editable: PropTypes.bool,
   onClick: PropTypes.func,
