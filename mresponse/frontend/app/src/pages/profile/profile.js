@@ -1,9 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { CSSTransitionGroup } from 'react-transition-group'
+import { FirstChild } from '@components/first-child'
 
 import Toolbar from '@components/toolbar'
 import Avatar from '@components/avatar'
 import ProgressTable from '@components/progress-table'
+import SideBar from '@components/side-bar'
+import HelpDocs from '@components/help-docs'
+import Icon from '@components/icon'
 // import ResponseCard from '@components/response-card'
 import Button from '@components/buttons'
 import { staticAsset } from '@utils/urls'
@@ -11,7 +16,11 @@ import { staticAsset } from '@utils/urls'
 import './profile.scss'
 
 export default class ProfilePage extends React.Component {
-  state = { pictureUpload: null, picture: this.props.profile.picture }
+  state = {
+    pictureUpload: null,
+    isHelpDocsMenuOpen: false,
+    picture: this.props.profile.picture
+  }
 
   constructor (props) {
     super(props)
@@ -25,6 +34,10 @@ export default class ProfilePage extends React.Component {
 
   render () {
     const {
+      isHelpDocsMenuOpen
+    } = this.state
+
+    const {
       profile: {
         name,
         karma,
@@ -32,6 +45,16 @@ export default class ProfilePage extends React.Component {
       },
       editProfile
     } = this.props
+
+    const rightHelpMenu = (
+      <button className="toolbar-right-help-button" onClick={this.toggHelpDocsMenu}>
+        <Icon iconName='help'/>
+      </button>
+    )
+
+    const sideBarContent = (
+      <HelpDocs openTo='profile'/>
+    )
 
     return (
       <div className="profile">
@@ -41,6 +64,7 @@ export default class ProfilePage extends React.Component {
           titleClassName='profile-toolbar-title'
           title="Profile"
           onBack={this.props.back}
+          rightComponent={rightHelpMenu}
         />
 
         <section className='profile-header'>
@@ -156,8 +180,30 @@ export default class ProfilePage extends React.Component {
           </section> */}
         </div>
 
+        <CSSTransitionGroup
+          transitionName='sideBarAnim'
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={300}
+          component={FirstChild}>
+          {isHelpDocsMenuOpen ? <SideBar
+            className=''
+            title='Help and Documentation'
+            handleClose={this.toggHelpDocsMenu.bind(this)}
+            handleCloseOffWindow={this.toggHelpDocsMenuOffWindow.bind(this)}
+            content={sideBarContent} /> : null}
+        </CSSTransitionGroup>
+
       </div>
     )
+  }
+
+  toggHelpDocsMenu = (e) => {
+    e.preventDefault()
+    this.setState({ isHelpDocsMenuOpen: !this.state.isHelpDocsMenuOpen })
+  }
+  toggHelpDocsMenuOffWindow = (e) => {
+    e.preventDefault()
+    if (e.currentTarget === e.target) this.setState({ isHelpDocsMenuOpen: !this.state.isHelpDocsMenuOpen })
   }
 
   handleFileUpload = event => {
