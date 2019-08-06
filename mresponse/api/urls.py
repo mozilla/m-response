@@ -5,6 +5,7 @@ from mresponse.api import views
 urlpatterns = [
     path('', views.api_root),
     path('config/', views.Config.as_view(), name='config'),
+    path('canned_response/', include('mresponse.canned_response.api.urls')),
     path('review/', include('mresponse.reviews.api.urls')),
     path('response/', include('mresponse.responses.api.urls')),
     path('moderation/', include('mresponse.moderations.api.urls')),
