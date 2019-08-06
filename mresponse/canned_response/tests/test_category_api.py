@@ -41,3 +41,11 @@ class TestCannedCategoryApi(TestCase):
         response = self.client.get(reverse('canned_response:categories'))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data[0]['response_count'], 4)
+
+    def test_response_fields(self):
+        cat = make_category(name='category_1')
+        make_response(cat)
+        response = self.client.get(reverse('canned_response:categories'))
+        self.assertEqual(response.status_code, 200)
+        self.assertCountEqual(response.data[0].keys(), ('slug', 'responses', 'response_count', 'name'))
+        self.assertCountEqual(response.data[0]['responses'][0].keys(), ('id', 'text'))
