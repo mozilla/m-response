@@ -1,13 +1,21 @@
 import React from 'react'
+import { CSSTransitionGroup } from 'react-transition-group'
+import { FirstChild } from '@components/first-child'
 
 import Avatar from '@components/avatar'
 import HomePageCard from '@components/home-page-card'
 import Leaderboard from '@components/leaderboard'
+import SideBar from '@components/side-bar'
+import HelpDocs from '@components/help-docs'
+import Icon from '@components/icon'
 import { staticAsset } from '@utils/urls'
 
 import './home.scss'
 
 export default class HomePage extends React.Component {
+  state = {
+    isHelpDocsMenuOpen: false
+  }
   componentWillMount () {
     this.props.updateAppConfig()
     this.props.updateHomeConfig()
@@ -17,6 +25,10 @@ export default class HomePage extends React.Component {
   }
 
   render () {
+    const {
+      isHelpDocsMenuOpen
+    } = this.state
+
     const {
       profile,
       feedbackLink,
@@ -28,6 +40,10 @@ export default class HomePage extends React.Component {
       goToModerateMode,
       leaderboard
     } = this.props
+
+    const sideBarContent = (
+      <HelpDocs/>
+    )
 
     if (!profile) {
       return null
@@ -72,16 +88,45 @@ export default class HomePage extends React.Component {
             className='home-page-footer-link'
             href={feedbackLink}
             target='_blank'>
-              Submit Feedback
+            Submit Feedback
           </a>
           <a
             className='home-page-footer-link'
             href={aboutLink}
             target='_blank'>
-              About
+            About
+          </a>
+          <a
+            className='home-page-footer-link'
+            href={aboutLink}
+            onClick={this.toggHelpDocsMenu}>
+            <Icon iconName='help' className='home-page-footer-link-icon-question'></Icon>
+            Help Docs
           </a>
         </footer>
+
+        <CSSTransitionGroup
+          transitionName='sideBarAnim'
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={300}
+          component={FirstChild}>
+          {isHelpDocsMenuOpen ? <SideBar
+            className=''
+            title='Help and Documentation'
+            handleClose={this.toggHelpDocsMenu.bind(this)}
+            handleCloseOffWindow={this.toggHelpDocsMenuOffWindow.bind(this)}
+            content={sideBarContent} /> : null}
+        </CSSTransitionGroup>
       </div>
     )
+  }
+
+  toggHelpDocsMenu = (e) => {
+    e.preventDefault()
+    this.setState({ isHelpDocsMenuOpen: !this.state.isHelpDocsMenuOpen })
+  }
+  toggHelpDocsMenuOffWindow = (e) => {
+    e.preventDefault()
+    if (e.currentTarget === e.target) this.setState({ isHelpDocsMenuOpen: !this.state.isHelpDocsMenuOpen })
   }
 }

@@ -107,7 +107,7 @@ export default class RespondPage extends React.Component {
                 <Button
                   label='Canned Responses'
                   className='respond-page-edit-response-guide-button'
-                  icon={staticAsset('media/icons/book.svg')}
+                  icon={staticAsset('media/icons/sidebar.svg')}
                   onClick={this.toggCannedResponses} />
               </div>
               <form className='respond-page-edit-response-form'>
