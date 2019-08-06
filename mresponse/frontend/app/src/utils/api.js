@@ -253,4 +253,9 @@ export default class Api {
       throw response
     })
   }
+
+  async getCannedResponses () {
+    const res = await this.fetch(`/api/canned_response/`)
+    return res.json().then(json => (json))
+  }
 }

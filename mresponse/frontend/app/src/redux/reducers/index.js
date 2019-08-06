@@ -6,6 +6,7 @@ import config from './config'
 import respond from './respond'
 import moderate from './moderate'
 import leaderboard from './leaderboard'
+import cannedResponses from './canned-responses'
 
 export default combineReducers({
   errors,
@@ -13,5 +14,6 @@ export default combineReducers({
   respond,
   moderate,
   profile,
-  leaderboard
+  leaderboard,
+  cannedResponses
 })
