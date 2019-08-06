@@ -19,7 +19,8 @@ export default class RespondPage extends React.Component {
     hasSubmitted: false,
     isCannedMenuOpen: false,
     response: this.props.response || '',
-    messages: []
+    messages: [],
+    cannedResponses: []
   }
 
   componentWillMount () {
@@ -28,6 +29,7 @@ export default class RespondPage extends React.Component {
         this.pushMessage(err, true)
       }
     })
+    this.props.updateCannedResponses()
   }
 
   render () {

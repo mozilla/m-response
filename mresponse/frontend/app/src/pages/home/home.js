@@ -16,12 +16,14 @@ export default class HomePage extends React.Component {
   state = {
     isHelpDocsMenuOpen: false
   }
+
   componentWillMount () {
     this.props.updateAppConfig()
     this.props.updateHomeConfig()
     this.props.updateKarma()
     this.props.updateProfile()
     this.props.updateLeaderboard()
+    this.props.updateCannedResponses()
   }
 
   render () {
