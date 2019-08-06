@@ -72,6 +72,7 @@ INSTALLED_APPS = [
 
     'mresponse.applications',
     'mresponse.canned_response',
+    'mresponse.documentation',
     'mresponse.images',
     'mresponse.leaderboard',
     'mresponse.moderations',
