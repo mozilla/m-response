@@ -43,7 +43,8 @@ export default class ProfilePage extends React.Component {
         karma,
         languages
       },
-      editProfile
+      editProfile,
+      helpDocs
     } = this.props
 
     const rightHelpMenu = (
@@ -53,7 +54,7 @@ export default class ProfilePage extends React.Component {
     )
 
     const sideBarContent = (
-      <HelpDocs openTo='profile'/>
+      <HelpDocs helpData={helpDocs} openTo='profile'/>
     )
 
     return (

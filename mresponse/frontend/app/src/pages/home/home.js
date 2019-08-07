@@ -24,6 +24,7 @@ export default class HomePage extends React.Component {
     this.props.updateProfile()
     this.props.updateLeaderboard()
     this.props.updateCannedResponses()
+    this.props.updateHelpDocs()
   }
 
   render () {
@@ -40,11 +41,12 @@ export default class HomePage extends React.Component {
       moderateQueue,
       goToRespondMode,
       goToModerateMode,
-      leaderboard
+      leaderboard,
+      helpDocs
     } = this.props
 
     const sideBarContent = (
-      <HelpDocs/>
+      <HelpDocs helpData={helpDocs} />
     )
 
     if (!profile) {

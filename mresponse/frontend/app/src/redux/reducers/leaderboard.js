@@ -5,7 +5,7 @@ const initialState = []
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_LEADERBOARD: {
-      return action.leaderboard
+      return action.leaderboard || null
     }
     default:
       return state

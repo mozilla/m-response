@@ -3,11 +3,12 @@ import { push } from 'connected-react-router'
 
 import { DASHBOARD_URL, SETTINGS_URL } from '@utils/urls'
 import { fetchExtraUserMeta, fetchProfile, uploadAvatar } from '@redux/actions'
-import { getProfile } from '@redux/selectors'
+import { getProfile, getHelpDocs } from '@redux/selectors'
 import ProfilePage from './profile'
 
 const mapStateToProps = (state, props) => ({
-  profile: getProfile(state)
+  profile: getProfile(state),
+  helpDocs: getHelpDocs(state)
 })
 const mapDispatchToProps = (dispatch, props) => ({
   back: () => dispatch(push(DASHBOARD_URL)),
