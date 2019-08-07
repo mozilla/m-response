@@ -10,13 +10,15 @@ import './canned-responses.scss'
 
 export default class cannedResponses extends React.Component {
   state = {
-    isListOpen: false
+    isListOpen: false,
+    selectedResponse: {
+      name: '',
+      list: []
+    }
   }
 
   clipboard = new Clipboard('.copy-me', {
-    text: trigger => {
-      return trigger.innerHTML
-    }
+    text: e => (e.innerText)
   })
 
   componentDidMount () {
@@ -43,7 +45,8 @@ export default class cannedResponses extends React.Component {
     const { className = '', cannedData } = this.props
 
     const {
-      isListOpen
+      isListOpen,
+      selectedResponse
     } = this.state
 
     return (
@@ -58,61 +61,45 @@ export default class cannedResponses extends React.Component {
             {isListOpen ? <div className="canned-responses-list-options">
               <Toolbar
                 className='canned-responses-toolbar'
-                title='This is a title'
+                title={selectedResponse.name}
                 onBack={this.toggListOptions} />
               <div className="canned-responses-list-options-inner">
                 <p>Click/tap on a canned response to copy it to the clipboard</p>
-                <ul>
-                  <li><button className="copy-me">Lorem ipsum dolor sit amet consectetur adipiscing elit dui potenti, vehicula non orci a integer ultrices mollis praesent lobortis nullam, ante vulputate congue pellentesque dis arcu id molestie. Litora suspendisse facilisi at gravida duis vitae sagittis ornare mi sociis, laoreet vivamus blandit egestas proin commo ultricies, aliquet semper dapibus interdum nunc erat eget condimentum ullamcorper. Diam bibendum nisl dictum tempor mus pharetra, natoque ridiculus tempus class.</button></li>
-                  <li><button className="copy-me">Sit amet consectetur adipiscing elit dui potenti, vehicula non orci a integer ultrices mollis praesent lobortis nullam, ante vulputate congue pellentesque dis arcu id molestie. Litora suspendisse facilisi at gravida duis vitae sagittis ornare mi sociis, laoreet vivamus blandit egestas proin commodo est rhoncus accumsan ultricies, aliquet semper dapibus interdum nunc erat eget condimentum ullamcorper. Diam bibendum nisl dictum tempor mus pharetra, natoque ridiculus tempus class.</button></li>
-                  <li><button className="copy-me">Ipsum dolor sit amet consectetur adipiscing elit dui potenti, vehicula non orci a integer ultrices mollis praesent lobortis nullam, ante vulputate, aliquet semper dapibus interdum nunc erat eget condimentum ullamcorper. Diam bibendum nisl dictum tempor mus pharetra, natoque ridiculus tempus class.</button></li>
-                </ul>
+                {!selectedResponse.list.length ? <p>No canned responses here yet</p> : <ul>
+                  {selectedResponse.list.map(item => (
+                    <li key={item.id}><button className="copy-me">{item.text}</button></li>
+                  ))}
+                </ul>}
               </div>
             </div> : null }
           </CSSTransitionGroup>
-          <ul className='canned-responses-canned-content' data-remove={cannedData}>
-            <li>
-              <button onClick={this.toggListOptions}>
-                <span>Content box 1</span>
-              </button>
-            </li>
-            <li>
-              <button onClick={this.toggListOptions}>
-                <span>Content box 2</span>
-              </button>
-            </li>
-            <li>
-              <button onClick={this.toggListOptions}>
-                <span>Content box 3</span>
-              </button>
-            </li>
-            <li>
-              <button onClick={this.toggListOptions}>
-                <span>Content box 4</span>
-              </button>
-            </li>
-            <li>
-              <button onClick={this.toggListOptions}>
-                <span>Content box 5</span>
-              </button>
-            </li>
-            <li>
-              <button onClick={this.toggListOptions}>
-                <span>Content box 6</span>
-              </button>
-            </li>
+          <ul className='canned-responses-canned-content'>
+            {cannedData.map(response => (
+              <li key={response.slug}>
+                <span className='canned-responses-canned-content-count' onClick={() => this.toggListOptions(response)}>{response.response_count}</span>
+                <button onClick={() => this.toggListOptions(response)}>
+                  <span>{response.name}</span>
+                </button>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
     )
   }
 
-  toggListOptions = () => {
-    this.setState({ isListOpen: !this.state.isListOpen })
+  toggListOptions = (response) => {
+    this.setState({
+      isListOpen: !this.state.isListOpen,
+      selectedResponse: {
+        name: response.name,
+        list: response.responses
+      }
+    })
   }
 }
 
 cannedResponses.propTypes = {
   className: PropTypes.string,
-  cannedData: PropTypes.object
+  cannedData: PropTypes.array
 }

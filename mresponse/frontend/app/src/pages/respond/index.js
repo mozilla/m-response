@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { push } from 'connected-react-router'
 
-import { fetchNewReviews, fetchNextReview, updateCurrentResponse, submitResponse, skipReview, fetchCannedResponses } from '@redux/actions'
+import { fetchNewReviews, fetchNextReview, updateCurrentResponse, submitResponse, skipReview } from '@redux/actions'
 import { getCurrentReview, getNextReview, getProfile, getCannedResponses } from '@redux/selectors'
 
 import { DASHBOARD_URL, GUIDE_BOOK_URL } from '@utils/urls'
@@ -23,8 +23,7 @@ const mapDispatchToProps = (dispatch, props) => {
     fetchNextReview: () => dispatch(fetchNextReview()),
     onResponseUpdate: response => dispatch(updateCurrentResponse(response)),
     skipReview: () => dispatch(skipReview()),
-    submitResponse: cb => dispatch(submitResponse(cb)),
-    updateCannedResponses: () => dispatch(fetchCannedResponses())
+    submitResponse: cb => dispatch(submitResponse(cb))
   }
 }
 

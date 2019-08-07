@@ -50,11 +50,13 @@
     font-family: $heading-font;
     user-select: none;
     text-align: center;
-    // position: absolute;
-    // left: 0;
-    // right: 0;
     margin: 0 auto;
     width: auto;
     flex: 1 1 100%;
+
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }

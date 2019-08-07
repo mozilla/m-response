@@ -19,8 +19,7 @@ export default class RespondPage extends React.Component {
     hasSubmitted: false,
     isCannedMenuOpen: false,
     response: this.props.response || '',
-    messages: [],
-    cannedResponses: []
+    messages: []
   }
 
   componentWillMount () {
@@ -29,7 +28,6 @@ export default class RespondPage extends React.Component {
         this.pushMessage(err, true)
       }
     })
-    this.props.updateCannedResponses()
   }
 
   render () {
@@ -39,7 +37,8 @@ export default class RespondPage extends React.Component {
       nextReview,
       profile: {
         canSkipModeration
-      }
+      },
+      cannedResponses
     } = this.props
 
     const {
@@ -51,7 +50,7 @@ export default class RespondPage extends React.Component {
     } = this.state
 
     const sideBarContent = (
-      <CannedResponses/>
+      <CannedResponses cannedData={cannedResponses}/>
     )
 
     return (
