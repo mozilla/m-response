@@ -4,11 +4,10 @@ const initial = []
 
 export default (state = initial, action) => {
   switch (action.type) {
-    case SET_CANNED_RESONSES: {
+    case SET_CANNED_RESONSES:
       const { cannedResponses } = action
-      state = [...cannedResponses]
+      state = cannedResponses
       return state
-    }
 
     default:
       return state
