@@ -14,6 +14,7 @@ export const SETTINGS_URL = '/profile/edit/'
 export const RESPOND_URL = '/respond/'
 export const MODERATE_URL = '/moderate/'
 export const BACKEND_LOGOUT_URL = '/api/users/me/logout/'
+export const LEGACY_HELP_DOCS_URL = 'https://www.mozilla.org'
 
 // Helper Functions
 export const staticAsset = url => `/static/${url}`

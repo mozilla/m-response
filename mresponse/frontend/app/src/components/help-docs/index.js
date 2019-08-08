@@ -5,6 +5,7 @@ import { FirstChild } from '@components/first-child'
 
 import Toolbar from '@components/toolbar'
 import Icon from '@components/icon'
+import { LEGACY_HELP_DOCS_URL } from '@utils/urls'
 import './help-docs.scss'
 
 export default class HelpDocs extends React.Component {
@@ -67,7 +68,7 @@ export default class HelpDocs extends React.Component {
               </ul>
             </div>
             <div className='help-docs-content-bottomlink'>
-              <a href=''>Legacy help document<Icon iconName='openInNew' /></a>
+              <a href={LEGACY_HELP_DOCS_URL} target='_blank' rel='noopener noreferrer'>Legacy help document<Icon iconName='openInNew' /></a>
             </div>
           </div>
         </div>
