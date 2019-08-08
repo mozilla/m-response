@@ -1,4 +1,6 @@
 import React, { Fragment } from 'react'
+import { CSSTransitionGroup } from 'react-transition-group'
+import { FirstChild } from '@components/first-child'
 
 import Toolbar from '@components/toolbar'
 import ModerateCard from '@components/moderate-card'
@@ -6,6 +8,10 @@ import Button from '@components/buttons'
 import ToggleButton from '@components/buttons/toggle'
 import AlertPrompt from '@components/alert-prompt'
 import Textarea from '@components/textarea'
+import SideBar from '@components/side-bar'
+import CannedResponses from '@components/canned-responses'
+import HelpDocs from '@components/help-docs'
+import Icon from '@components/icon'
 import { staticAsset } from '@utils/urls'
 import './moderate.scss'
 
@@ -14,6 +20,8 @@ export default class ModeratePage extends React.Component {
     isModerating: false,
     isDoneEditing: false,
     hasSubmitted: false,
+    isCannedMenuOpen: false,
+    isHelpDocsMenuOpen: false,
     response: this.props.response || '',
     criteria: {
       positive: null,
@@ -54,14 +62,32 @@ export default class ModeratePage extends React.Component {
       response,
       profile: {
         canSkipModeration
-      }
+      },
+      cannedResponses,
+      helpDocs
     } = this.props
 
     const {
       isModerating,
       messages,
-      criteria
+      criteria,
+      isCannedMenuOpen,
+      isHelpDocsMenuOpen
     } = this.state
+
+    const sideBarCannedContent = (
+      <CannedResponses cannedData={cannedResponses}/>
+    )
+
+    const rightHelpMenu = (
+      <button className="toolbar-right-help-button" onClick={this.toggHelpDocsMenu}>
+        <Icon iconName='help'/>
+      </button>
+    )
+
+    const sideBarHelpContent = (
+      <HelpDocs helpData={helpDocs} openTo='moderating'/>
+    )
 
     return (
       <div className='moderate-page'>
@@ -69,7 +95,8 @@ export default class ModeratePage extends React.Component {
           className='moderate-page-toolbar'
           title='Moderate'
           invertBackIcon={true}
-          onBack={back} />
+          onBack={back}
+          rightComponent={rightHelpMenu} />
 
         {messages.map((message, index) => (
           <div
@@ -222,8 +249,52 @@ export default class ModeratePage extends React.Component {
             )}
           </Fragment>
         ) : null}
+
+        <CSSTransitionGroup
+          transitionName='sideBarAnim'
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={300}
+          component={FirstChild}>
+          {isCannedMenuOpen ? <SideBar
+            className=''
+            title='Canned Responses'
+            handleClose={this.toggCannedResponses.bind(this)}
+            handleCloseOffWindow={this.toggCannedResponsesOffWindow.bind(this)}
+            content={sideBarCannedContent} /> : null}
+        </CSSTransitionGroup>
+
+        <CSSTransitionGroup
+          transitionName='sideBarAnim'
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={300}
+          component={FirstChild}>
+          {isHelpDocsMenuOpen ? <SideBar
+            className=''
+            title='Canned Responses'
+            handleClose={this.toggHelpDocsMenu.bind(this)}
+            handleCloseOffWindow={this.toggHelpDocsMenuOffWindow.bind(this)}
+            content={sideBarHelpContent} /> : null}
+        </CSSTransitionGroup>
       </div>
     )
+  }
+
+  toggCannedResponses = (e) => {
+    e.preventDefault()
+    this.setState({ isCannedMenuOpen: !this.state.isCannedMenuOpen })
+  }
+  toggCannedResponsesOffWindow = (e) => {
+    e.preventDefault()
+    if (e.currentTarget === e.target) this.setState({ isCannedMenuOpen: !this.state.isCannedMenuOpen })
+  }
+
+  toggHelpDocsMenu = (e) => {
+    e.preventDefault()
+    this.setState({ isHelpDocsMenuOpen: !this.state.isHelpDocsMenuOpen })
+  }
+  toggHelpDocsMenuOffWindow = (e) => {
+    e.preventDefault()
+    if (e.currentTarget === e.target) this.setState({ isHelpDocsMenuOpen: !this.state.isHelpDocsMenuOpen })
   }
 
   toggleCriteria = (option, value) => {
