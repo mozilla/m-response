@@ -5,3 +5,27 @@
 // Style Modules
 @import 'vars';
 @import 'grid';
+
+// Utility styles
+.no_scroll {
+  overflow: hidden;
+}
+
+// --------------------
+// React CSSTransitionGroup animations
+// --------------------
+// slide-out-right : Animation
+.slide-out-right-enter {
+  transform: translate3d(120%, 0, 0);
+  transition: transform .3s ease-in-out .2s;
+}
+.slide-out-right-enter.slide-out-right-enter-active {
+  transform: translate3d(0, 0, 0);
+}
+.slide-out-right-leave {
+  transform: translate3d(0, 0, 0);
+  transition: transform .3s ease-in-out;
+}
+.slide-out-right-leave.slide-out-right-leave-active {
+  transform: translate3d(120%, 0, 0);
+}

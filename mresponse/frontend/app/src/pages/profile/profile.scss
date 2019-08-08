@@ -4,14 +4,29 @@
   min-height: 100vh;
   background-color: $off-white;
 
+  &-container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding-left: 20px;
+    padding-right: 20px;
+
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 246px);
+    justify-content: space-between;
+  }
+
   &-toolbar {
-    height: auto;
-    padding-top: 35px;
-    padding-bottom: 20px;
     background-color: $grey;
 
     &-title {
       color: white;
+    }
+
+    .toolbar-right {
+      &-help-button {
+        color: #fff;
+      }
     }
   }
 
@@ -39,8 +54,6 @@
     &-avatar {
       height: 80px;
       width: 80px;
-      border: 2px solid white;
-      border-radius: 6px;
     }
 
     &-meta {
@@ -92,11 +105,9 @@
         align-items: center;
 
         &-value {
-          color: white;
           font-weight: 600;
           font-size: 0.9rem;
           margin-bottom: 5px;
-          // background-color: $blue;
           padding: 6px 25px 6px 25px;
           border-radius: 100px;
         }
@@ -108,19 +119,19 @@
 
         &:nth-of-type(1) {
           .profile-header-karma-group-value {
-            background-color: #ff4c1d;
+            background-color: $orange-dark;
           }
         }
 
         &:nth-of-type(2) {
           .profile-header-karma-group-value {
-            background-color: #0a84ff !important;
+            background-color: $blue-light;
           }
         }
 
         &:nth-of-type(3) {
           .profile-header-karma-group-value {
-            background-color: #292929 !important;
+            background-color: $grey-lighter;
           }
         }
 
@@ -133,28 +144,29 @@
 
   }
 
-  &-awesome-progress {
-    max-width: 680px;
-    margin: 0 auto;
-    margin-top: 25px;
-    padding-left: 20px;
-    padding-right: 20px;
+  &-title {
+    display: block;
+    font-weight: 600;
+    font-size: 1.3rem;
+    font-family: "Zilla Slab", sans-serif;
+    text-align: center;
+    margin-top: 0;
+  }
 
+  &-feedback-stats {
     &-title {
-      font-size: 0.9rem;
+      display: block;
       font-weight: 600;
-    }
-
-    &-bar {
-      margin-top: 15px;
+      font-size: 1.3rem;
+      margin-top: 0;
     }
   }
 
+  &-button-wrap {
+    margin: 18px 0 24px;
+  }
+
   &-edit-button {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 75px;
     margin: 0 auto;
     width: 140px;
     height: 42px;
@@ -166,48 +178,60 @@
     font-size: 14px;
   }
 
-  &-response-history {
-    width: 100%;
-    max-width: 680px;
-    margin: 0 auto;
-    margin-top: 40px;
+  &-progress {
+    margin-top: 18px;
 
-    &-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-bottom: 20px;
-
-      &-title {
-        font-size: 0.9rem;
-        font-weight: 600;
-      }
-
-      &-link {
-        font-size: 12pt;
-        cursor: pointer;
-        &:hover {
-          text-decoration: underline;
-        }
-      }
+    &-placeholder {
+      color: $grey-light;
+      line-height: 2;
+      text-align: center;
+      margin: 0 auto;
+      max-width: 272px;
     }
-
-    &-list {
-      width: 100%;
-      display: grid;
-      grid-template-columns: auto;
-      grid-column-gap: 20px;
-      grid-row-gap: 20px;
-      padding-bottom: 20px;
-
-      @include for-tablet-landscape-up() {
-        grid-template-columns: auto auto;
-      }
-
-      &-card {
-        width: auto;
-      }
-    }
-
   }
+
+  // &-response-history {
+  //   width: 100%;
+  //   max-width: 680px;
+  //   margin: 0 auto;
+  //   margin-top: 40px;
+
+  //   &-header {
+  //     display: flex;
+  //     align-items: center;
+  //     justify-content: space-between;
+  //     padding-bottom: 20px;
+
+  //     &-title {
+  //       font-size: 0.9rem;
+  //       font-weight: 600;
+  //     }
+
+  //     &-link {
+  //       font-size: 12pt;
+  //       cursor: pointer;
+  //       &:hover {
+  //         text-decoration: underline;
+  //       }
+  //     }
+  //   }
+
+  //   &-list {
+  //     width: 100%;
+  //     display: grid;
+  //     grid-template-columns: auto;
+  //     grid-column-gap: 20px;
+  //     grid-row-gap: 20px;
+  //     padding-bottom: 20px;
+
+  //     @include for-tablet-landscape-up() {
+  //       grid-template-columns: auto auto;
+  //     }
+
+  //     &-card {
+  //       width: auto;
+  //     }
+  //   }
+
+  // }
 }

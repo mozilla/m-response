@@ -62,3 +62,6 @@ export const getProfile = state => {
 
   return result
 }
+
+export const getCannedResponses = state => (state.cannedResponses || [])
+export const getHelpDocs = state => (state.helpDocs || [])

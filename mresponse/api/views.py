@@ -19,6 +19,10 @@ def api_root(request, format=None):
             request=request,
             format=format,
         )
+        response_dict['canned_response'] = reverse.reverse(
+            'canned_response:categories', request=request, format=format)
+        response_dict['documentation'] = reverse.reverse(
+            'documentation:pages', request=request, format=format)
         response_dict['review'] = reverse.reverse(
             'get_review', request=request, format=format)
         response_dict['response'] = reverse.reverse(

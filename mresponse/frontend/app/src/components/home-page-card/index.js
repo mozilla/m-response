@@ -2,11 +2,10 @@ import React from 'react'
 
 import './card.scss'
 
-export default ({ title, subtitle, footer, icon, dotColor = '#0a84ff', onClick, disabled }) => (
-  <div className='home-page-card' onClick={onClick}>
+export default ({ title, subtitle, footer, icon, bgColor, onClick, disabled }) => (
+  <div className={`home-page-card${bgColor ? ' home-page-card-bg-' + bgColor : ''}`} onClick={onClick}>
     <div
-      className='home-page-card-dot'
-      style={{ backgroundColor: dotColor }}>
+      className='home-page-card-dot'>
       <img
         src={icon}
         className='home-page-card-dot-image'

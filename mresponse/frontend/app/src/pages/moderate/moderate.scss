@@ -4,11 +4,14 @@
     min-height: 100vh;
     background-color: $off-white;
     padding-bottom: 15px;
+    position: relative;
 
     &-toolbar {
         height: auto;
-        padding-top: 35px;
-        padding-bottom: 20px;
+        padding-top: 18px;
+        padding-bottom: 18px;
+        background-color: $blue-lighter;
+        margin-bottom: 8px;
     }
 
     &-container {

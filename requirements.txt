@@ -21,3 +21,4 @@ requests==2.20.0
 mozilla-django-oidc==1.1.2
 django-import-export==1.1.0
 django-webpack-loader==0.6.0
+faker==2.0.0

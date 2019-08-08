@@ -6,7 +6,7 @@
   justify-content: center;
 
   height: 50px;
-  background-color: $grey;
+  background-color: $color-black;
   color: white;
 
   font-size: 14px;
@@ -26,6 +26,11 @@
 
   &--disabled {
     opacity: 0.4;
+  }
+
+  &-wide {
+    padding-right: 16px;
+    padding-left: 16px;
   }
 }
 
@@ -59,5 +64,19 @@
 
   &--disabled {
     opacity: 0.4;
+  }
+}
+
+.link-button {
+  display: inline;
+  color: $blue;
+  text-decoration: underline;
+
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    cursor: pointer;
   }
 }

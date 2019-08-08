@@ -253,4 +253,18 @@ export default class Api {
       throw response
     })
   }
+
+  async getCannedResponses () {
+    const res = await this.fetch(`/api/canned_response/`)
+    return res.json().then(json => (json))
+  }
+
+  async getHelpDocs () {
+    const res = await this.fetch(`/api/documentation/`)
+    return res.json().then(json => (json))
+    // return res.json().then(json => {
+    //   console.log('API helpDocs: ', json)
+    //   return json
+    // })
+  }
 }

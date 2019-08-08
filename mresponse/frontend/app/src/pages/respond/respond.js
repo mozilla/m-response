@@ -1,10 +1,16 @@
 import React from 'react'
+import { CSSTransitionGroup } from 'react-transition-group'
+import { FirstChild } from '@components/first-child'
 
 import Toolbar from '@components/toolbar'
 import ReviewCard from '@components/respond-card'
 import Button from '@components/buttons'
 import AlertPrompt from '@components/alert-prompt'
 import Textarea from '@components/textarea'
+import SideBar from '@components/side-bar'
+import CannedResponses from '@components/canned-responses'
+import HelpDocs from '@components/help-docs'
+import Icon from '@components/icon'
 import { staticAsset } from '@utils/urls'
 import './respond.scss'
 
@@ -13,6 +19,8 @@ export default class RespondPage extends React.Component {
     isResponding: false,
     isDoneEditing: false,
     hasSubmitted: false,
+    isCannedMenuOpen: false,
+    isHelpDocsMenuOpen: false,
     response: this.props.response || '',
     messages: []
   }
@@ -32,25 +40,53 @@ export default class RespondPage extends React.Component {
       nextReview,
       profile: {
         canSkipModeration
-      }
+      },
+      cannedResponses,
+      helpDocs
     } = this.props
 
-    const { isResponding, isDoneEditing, response, messages } = this.state
+    const {
+      isResponding,
+      isDoneEditing,
+      isCannedMenuOpen,
+      isHelpDocsMenuOpen,
+      response,
+      messages
+    } = this.state
+
+    const sideBarCannedContent = (
+      <CannedResponses cannedData={cannedResponses}/>
+    )
+
+    const rightHelpMenu = (
+      <button className="toolbar-right-help-button" onClick={() => (this.toggHelpDocsMenu())}>
+        <Icon iconName='help'/>
+      </button>
+    )
+
+    const sideBarHelpContent = (
+      <HelpDocs helpData={helpDocs} openTo='responding'/>
+    )
 
     return (
       <div className='respond-page'>
-        <Toolbar
-          className='respond-page-toolbar'
-          title='Respond'
-          invertBackIcon={true}
-          onBack={back} />
+
+        <header>
+          <Toolbar
+            className='respond-page-toolbar'
+            title='Respond'
+            invertBackIcon={true}
+            onBack={back}
+            rightComponent={rightHelpMenu} />
+        </header>
 
         {messages.map(message => (
           <AlertPrompt
             className='respond-page-alert-prompt'
             title={message.title}
             message={message.text}
-            isError={message.isError} />
+            isError={message.isError}
+            key={message.title} />
         ))}
 
         {review ? (
@@ -74,10 +110,10 @@ export default class RespondPage extends React.Component {
             <div className='respond-page-edit-response-content'>
               <div className='response-page-response-actions'>
                 <Button
-                  label='Guide Book'
+                  label='Canned Responses'
                   className='respond-page-edit-response-guide-button'
-                  icon={staticAsset('media/icons/book.svg')}
-                  onClick={this.openGuideBook} />
+                  icon={staticAsset('media/icons/sidebar.svg')}
+                  onClick={this.toggCannedResponses} />
               </div>
               <form className='respond-page-edit-response-form'>
                 <Textarea
@@ -91,6 +127,11 @@ export default class RespondPage extends React.Component {
                   label='Done'
                   className='respond-page-edit-response-form-submit'
                   onClick={this.saveResponseInput} />
+                <Button
+                  type='link'
+                  label='Cancel'
+                  className='respond-page-edit-response-form-cancel'
+                  onClick={this.cancelResponseInput} />
               </form>
             </div>
           </div>
@@ -144,11 +185,50 @@ export default class RespondPage extends React.Component {
           </div>
         ) : null}
 
+        <CSSTransitionGroup
+          transitionName='sideBarAnim'
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={300}
+          component={FirstChild}>
+          {isCannedMenuOpen ? <SideBar
+            className=''
+            title='Canned Responses'
+            handleClose={() => (this.toggCannedResponses.bind(this))}
+            handleCloseOffWindow={this.toggCannedResponses.bind(this)}
+            content={sideBarCannedContent} /> : null}
+        </CSSTransitionGroup>
+
+        <CSSTransitionGroup
+          transitionName='sideBarAnim'
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={300}
+          component={FirstChild}>
+          {isHelpDocsMenuOpen ? <SideBar
+            className=''
+            title='Canned Responses'
+            handleClose={() => (this.toggHelpDocsMenu.bind(this))}
+            handleCloseOffWindow={this.toggHelpDocsMenu.bind(this)}
+            content={sideBarHelpContent} /> : null}
+        </CSSTransitionGroup>
+
       </div>
     )
   }
 
-  openGuideBook = () => window.open(this.props.guideBookUrl)
+  // openGuideBook = () => window.open(this.props.guideBookUrl)
+  toggCannedResponses = (e) => {
+    const toggMenu = () => (this.setState({ isCannedMenuOpen: !this.state.isCannedMenuOpen }))
+    if (e) {
+      if (e.currentTarget === e.target) toggMenu()
+    } else toggMenu()
+  }
+
+  toggHelpDocsMenu = (e) => {
+    const toggMenu = () => (this.setState({ isHelpDocsMenuOpen: !this.state.isHelpDocsMenuOpen }))
+    if (e) {
+      if (e.currentTarget === e.target) toggMenu()
+    } else toggMenu()
+  }
 
   setIsResponding = () => this.setState({
     successMessage: null,
@@ -158,6 +238,11 @@ export default class RespondPage extends React.Component {
   saveResponseInput = e => {
     e.preventDefault()
     this.setState({ isDoneEditing: true })
+  }
+
+  cancelResponseInput = e => {
+    e.preventDefault()
+    this.setState({ isResponding: false, response: '' })
   }
 
   updateResponse = e => {

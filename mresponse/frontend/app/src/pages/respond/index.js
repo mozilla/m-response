@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import { push } from 'connected-react-router'
 
 import { fetchNewReviews, fetchNextReview, updateCurrentResponse, submitResponse, skipReview } from '@redux/actions'
-import { getCurrentReview, getNextReview, getProfile } from '@redux/selectors'
+import { getCurrentReview, getNextReview, getProfile, getCannedResponses, getHelpDocs } from '@redux/selectors'
 
 import { DASHBOARD_URL, GUIDE_BOOK_URL } from '@utils/urls'
 
@@ -13,7 +13,9 @@ const mapStateToProps = (state, props) => ({
   nextReview: getNextReview(state),
   response: state.respond.currentReviewResponse,
   guideBookUrl: GUIDE_BOOK_URL,
-  profile: getProfile(state)
+  profile: getProfile(state),
+  cannedResponses: getCannedResponses(state),
+  helpDocs: getHelpDocs(state)
 })
 const mapDispatchToProps = (dispatch, props) => {
   return {

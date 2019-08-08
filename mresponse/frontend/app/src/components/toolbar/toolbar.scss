@@ -1,28 +1,45 @@
 @import '../../styles/main';
 
 .toolbar {
-  height: 75px;
   width: 100%;
+  height: auto;
+  padding-top: 12px;
+  padding-bottom: 12px;
 
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
 
   &-left {
+    min-width: 14px;
     height: 100%;
+    min-height: 14px;
     margin-left: 16px;
     display: flex;
     align-items: center;
-    z-index: 2;
+    flex: 0 0 auto;
   }
 
   &-right {
+    min-width: 14px;
     height: 100%;
+    min-height: 14px;
     margin-right: 18px;
     display: flex;
     align-items: center;
-    z-index: 2;
+    flex: 0 0 auto;
+
+    &-help-button {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+
+      svg {
+        display: block;
+        width: 20px;
+        height: 20px;
+      }
+    }
   }
 
   &-back-link {
@@ -45,10 +62,13 @@
     font-family: $heading-font;
     user-select: none;
     text-align: center;
-    position: absolute;
-    left: 0;
-    right: 0;
     margin: 0 auto;
     width: auto;
+    flex: 1 1 100%;
+
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
