@@ -23,16 +23,9 @@
       color: white;
     }
 
-    .toolbar-right-help-button {
-      background-color: transparent;
-      border: none;
-      cursor: pointer;
-      color: #fff;
-
-      svg {
-        display: block;
-        width: 20px;
-        height: 20px;
+    .toolbar-right {
+      &-help-button {
+        color: #fff;
       }
     }
   }

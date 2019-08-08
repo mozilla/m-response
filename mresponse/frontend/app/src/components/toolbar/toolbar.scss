@@ -28,6 +28,18 @@
     display: flex;
     align-items: center;
     flex: 0 0 auto;
+
+    &-help-button {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+
+      svg {
+        display: block;
+        width: 20px;
+        height: 20px;
+      }
+    }
   }
 
   &-back-link {
