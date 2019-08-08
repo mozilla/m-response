@@ -9,6 +9,8 @@ import AlertPrompt from '@components/alert-prompt'
 import Textarea from '@components/textarea'
 import SideBar from '@components/side-bar'
 import CannedResponses from '@components/canned-responses'
+import HelpDocs from '@components/help-docs'
+import Icon from '@components/icon'
 import { staticAsset } from '@utils/urls'
 import './respond.scss'
 
@@ -18,6 +20,7 @@ export default class RespondPage extends React.Component {
     isDoneEditing: false,
     hasSubmitted: false,
     isCannedMenuOpen: false,
+    isHelpDocsMenuOpen: false,
     response: this.props.response || '',
     messages: []
   }
@@ -38,42 +41,43 @@ export default class RespondPage extends React.Component {
       profile: {
         canSkipModeration
       },
-      cannedResponses
+      cannedResponses,
+      helpDocs
     } = this.props
 
     const {
       isResponding,
       isDoneEditing,
       isCannedMenuOpen,
+      isHelpDocsMenuOpen,
       response,
       messages
     } = this.state
 
-    const sideBarContent = (
+    const sideBarCannedContent = (
       <CannedResponses cannedData={cannedResponses}/>
+    )
+
+    const rightHelpMenu = (
+      <button className="toolbar-right-help-button" onClick={this.toggHelpDocsMenu}>
+        <Icon iconName='help'/>
+      </button>
+    )
+
+    const sideBarHelpContent = (
+      <HelpDocs helpData={helpDocs} openTo='responding'/>
     )
 
     return (
       <div className='respond-page'>
-        <CSSTransitionGroup
-          transitionName='sideBarAnim'
-          transitionEnterTimeout={500}
-          transitionLeaveTimeout={300}
-          component={FirstChild}>
-          {isCannedMenuOpen ? <SideBar
-            className=''
-            title='Canned Responses'
-            handleClose={this.toggCannedResponses.bind(this)}
-            handleCloseOffWindow={this.toggCannedResponsesOffWindow.bind(this)}
-            content={sideBarContent} /> : null}
-        </CSSTransitionGroup>
 
         <header>
           <Toolbar
             className='respond-page-toolbar'
             title='Respond'
             invertBackIcon={true}
-            onBack={back} />
+            onBack={back}
+            rightComponent={rightHelpMenu} />
         </header>
 
         {messages.map(message => (
@@ -181,6 +185,32 @@ export default class RespondPage extends React.Component {
           </div>
         ) : null}
 
+        <CSSTransitionGroup
+          transitionName='sideBarAnim'
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={300}
+          component={FirstChild}>
+          {isCannedMenuOpen ? <SideBar
+            className=''
+            title='Canned Responses'
+            handleClose={this.toggCannedResponses.bind(this)}
+            handleCloseOffWindow={this.toggCannedResponsesOffWindow.bind(this)}
+            content={sideBarCannedContent} /> : null}
+        </CSSTransitionGroup>
+
+        <CSSTransitionGroup
+          transitionName='sideBarAnim'
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={300}
+          component={FirstChild}>
+          {isHelpDocsMenuOpen ? <SideBar
+            className=''
+            title='Canned Responses'
+            handleClose={this.toggHelpDocsMenu.bind(this)}
+            handleCloseOffWindow={this.toggHelpDocsMenuOffWindow.bind(this)}
+            content={sideBarHelpContent} /> : null}
+        </CSSTransitionGroup>
+
       </div>
     )
   }
@@ -193,6 +223,15 @@ export default class RespondPage extends React.Component {
   toggCannedResponsesOffWindow = (e) => {
     e.preventDefault()
     if (e.currentTarget === e.target) this.setState({ isCannedMenuOpen: !this.state.isCannedMenuOpen })
+  }
+
+  toggHelpDocsMenu = (e) => {
+    e.preventDefault()
+    this.setState({ isHelpDocsMenuOpen: !this.state.isHelpDocsMenuOpen })
+  }
+  toggHelpDocsMenuOffWindow = (e) => {
+    e.preventDefault()
+    if (e.currentTarget === e.target) this.setState({ isHelpDocsMenuOpen: !this.state.isHelpDocsMenuOpen })
   }
 
   setIsResponding = () => this.setState({
