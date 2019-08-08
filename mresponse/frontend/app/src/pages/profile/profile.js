@@ -48,7 +48,7 @@ export default class ProfilePage extends React.Component {
     } = this.props
 
     const rightHelpMenu = (
-      <button className="toolbar-right-help-button" onClick={this.toggHelpDocsMenu}>
+      <button className="toolbar-right-help-button" onClick={() => (this.toggHelpDocsMenu())}>
         <Icon iconName='help'/>
       </button>
     )

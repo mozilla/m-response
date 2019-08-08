@@ -80,7 +80,7 @@ export default class ModeratePage extends React.Component {
     )
 
     const rightHelpMenu = (
-      <button className="toolbar-right-help-button" onClick={this.toggHelpDocsMenu}>
+      <button className="toolbar-right-help-button" onClick={() => (this.toggHelpDocsMenu())}>
         <Icon iconName='help'/>
       </button>
     )
