@@ -193,8 +193,8 @@ export default class RespondPage extends React.Component {
           {isCannedMenuOpen ? <SideBar
             className=''
             title='Canned Responses'
-            handleClose={this.toggCannedResponses.bind(this)}
-            handleCloseOffWindow={this.toggCannedResponsesOffWindow.bind(this)}
+            handleClose={() => (this.toggCannedResponses.bind(this))}
+            handleCloseOffWindow={this.toggCannedResponses.bind(this)}
             content={sideBarCannedContent} /> : null}
         </CSSTransitionGroup>
 
@@ -206,8 +206,8 @@ export default class RespondPage extends React.Component {
           {isHelpDocsMenuOpen ? <SideBar
             className=''
             title='Canned Responses'
-            handleClose={this.toggHelpDocsMenu.bind(this)}
-            handleCloseOffWindow={this.toggHelpDocsMenuOffWindow.bind(this)}
+            handleClose={() => (this.toggHelpDocsMenu.bind(this))}
+            handleCloseOffWindow={this.toggHelpDocsMenu.bind(this)}
             content={sideBarHelpContent} /> : null}
         </CSSTransitionGroup>
 
@@ -217,21 +217,17 @@ export default class RespondPage extends React.Component {
 
   // openGuideBook = () => window.open(this.props.guideBookUrl)
   toggCannedResponses = (e) => {
-    e.preventDefault()
-    this.setState({ isCannedMenuOpen: !this.state.isCannedMenuOpen })
-  }
-  toggCannedResponsesOffWindow = (e) => {
-    e.preventDefault()
-    if (e.currentTarget === e.target) this.setState({ isCannedMenuOpen: !this.state.isCannedMenuOpen })
+    const toggMenu = () => (this.setState({ isCannedMenuOpen: !this.state.isCannedMenuOpen }))
+    if (e) {
+      if (e.currentTarget === e.target) toggMenu()
+    } else toggMenu()
   }
 
   toggHelpDocsMenu = (e) => {
-    e.preventDefault()
-    this.setState({ isHelpDocsMenuOpen: !this.state.isHelpDocsMenuOpen })
-  }
-  toggHelpDocsMenuOffWindow = (e) => {
-    e.preventDefault()
-    if (e.currentTarget === e.target) this.setState({ isHelpDocsMenuOpen: !this.state.isHelpDocsMenuOpen })
+    const toggMenu = () => (this.setState({ isHelpDocsMenuOpen: !this.state.isHelpDocsMenuOpen }))
+    if (e) {
+      if (e.currentTarget === e.target) toggMenu()
+    } else toggMenu()
   }
 
   setIsResponding = () => this.setState({

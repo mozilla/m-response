@@ -189,8 +189,8 @@ export default class ProfilePage extends React.Component {
           {isHelpDocsMenuOpen ? <SideBar
             className=''
             title='Help and Documentation'
-            handleClose={this.toggHelpDocsMenu.bind(this)}
-            handleCloseOffWindow={this.toggHelpDocsMenuOffWindow.bind(this)}
+            handleClose={() => (this.toggHelpDocsMenu.bind(this))}
+            handleCloseOffWindow={this.toggHelpDocsMenu.bind(this)}
             content={sideBarContent} /> : null}
         </CSSTransitionGroup>
 
@@ -199,12 +199,10 @@ export default class ProfilePage extends React.Component {
   }
 
   toggHelpDocsMenu = (e) => {
-    e.preventDefault()
-    this.setState({ isHelpDocsMenuOpen: !this.state.isHelpDocsMenuOpen })
-  }
-  toggHelpDocsMenuOffWindow = (e) => {
-    e.preventDefault()
-    if (e.currentTarget === e.target) this.setState({ isHelpDocsMenuOpen: !this.state.isHelpDocsMenuOpen })
+    const toggMenu = () => (this.setState({ isHelpDocsMenuOpen: !this.state.isHelpDocsMenuOpen }))
+    if (e) {
+      if (e.currentTarget === e.target) toggMenu()
+    } else toggMenu()
   }
 
   handleFileUpload = event => {
