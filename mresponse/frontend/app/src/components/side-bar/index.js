@@ -19,7 +19,7 @@ export default class SideBar extends React.Component {
   render () {
     const { className = '', title, content, handleClose, handleCloseOffWindow } = this.props
     const closeIcon = (
-      <button className="side-bar-close-button" onClick={handleClose}>
+      <button className="side-bar-close-button" onClick={() => { handleClose() }}>
         <Icon iconName='close'/>
       </button>
     )
