@@ -189,7 +189,7 @@ export default class ProfilePage extends React.Component {
           {isHelpDocsMenuOpen ? <SideBar
             className=''
             title='Help and Documentation'
-            handleClose={() => (this.toggHelpDocsMenu.bind(this))}
+            handleClose={this.toggHelpDocsMenu.bind(this)}
             handleCloseOffWindow={this.toggHelpDocsMenu.bind(this)}
             content={sideBarContent} /> : null}
         </CSSTransitionGroup>
