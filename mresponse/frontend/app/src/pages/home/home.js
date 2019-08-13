@@ -68,45 +68,49 @@ export default class HomePage extends React.Component {
             onClick={goToProfile} />
         </header>
 
-        <section className='home-page-content'>
-          <HomePageCard
-            icon={staticAsset('media/icons/respond-black.svg')}
-            bgColor='orange'
-            title='Respond'
-            subtitle={`Queue: ${Number(respondQueue).toLocaleString()}`}
-            onClick={goToRespondMode} />
-          <HomePageCard
-            icon={staticAsset('media/icons/moderate-black.svg')}
-            bgColor='blue-lighter'
-            title='Moderate'
-            subtitle={`Queue: ${Number(moderateQueue).toLocaleString()}`}
-            onClick={goToModerateMode} />
+        <div className='home-page-wrap'>
+          <section className='home-page-content'>
+            <HomePageCard
+              icon={staticAsset('media/icons/respond-black.svg')}
+              bgColor='orange'
+              title='Respond'
+              subtitle={`Queue: ${Number(respondQueue).toLocaleString()}`}
+              onClick={goToRespondMode} />
+            <HomePageCard
+              icon={staticAsset('media/icons/moderate-black.svg')}
+              bgColor='blue-lighter'
+              title='Moderate'
+              subtitle={`Queue: ${Number(moderateQueue).toLocaleString()}`}
+              onClick={goToModerateMode} />
 
-          <Leaderboard
-            className="home-page-leaderboard"
-            leaderboard={leaderboard} />
-        </section>
+            <Leaderboard
+              className="home-page-leaderboard"
+              leaderboard={leaderboard} />
+          </section>
 
-        <footer className='home-page-footer'>
-          <a
-            className='home-page-footer-link'
-            href={feedbackLink}
-            target='_blank'>
-            Submit Feedback
-          </a>
-          <a
-            className='home-page-footer-link'
-            href={aboutLink}
-            target='_blank'>
-            About
-          </a>
-          <a
-            className='home-page-footer-link'
-            onClick={this.toggHelpDocsMenu}>
-            <Icon iconName='help' className='home-page-footer-link-icon-question'></Icon>
-            Help Docs
-          </a>
-        </footer>
+          <footer className='home-page-footer'>
+            <div className='home-page-footer-inner'>
+              <a
+                className='home-page-footer-link'
+                href={feedbackLink}
+                target='_blank'>
+                Submit Feedback
+              </a>
+              <a
+                className='home-page-footer-link'
+                href={aboutLink}
+                target='_blank'>
+                About
+              </a>
+              <a
+                className='home-page-footer-link'
+                onClick={this.toggHelpDocsMenu}>
+                <Icon iconName='help' className='home-page-footer-link-icon-question'></Icon>
+                Help Docs
+              </a>
+            </div>
+          </footer>
+        </div>
 
         <CSSTransitionGroup
           transitionName='sideBarAnim'
