@@ -91,12 +91,14 @@ export default class ModeratePage extends React.Component {
 
     return (
       <div className='moderate-page'>
-        <Toolbar
-          className='moderate-page-toolbar'
-          title='Moderate'
-          invertBackIcon={true}
-          onBack={back}
-          rightComponent={rightHelpMenu} />
+        <header className='moderate-page-header'>
+          <Toolbar
+            className='moderate-page-toolbar'
+            title='Moderate'
+            invertBackIcon={true}
+            onBack={back}
+            rightComponent={rightHelpMenu} />
+        </header>
 
         {messages.map((message, index) => (
           <div

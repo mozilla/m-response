@@ -71,7 +71,7 @@ export default class RespondPage extends React.Component {
     return (
       <div className='respond-page'>
 
-        <header>
+        <header className='respond-page-header'>
           <Toolbar
             className='respond-page-toolbar'
             title='Respond'
