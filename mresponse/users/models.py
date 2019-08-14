@@ -1,10 +1,12 @@
-import pytz
-from datetime import timedelta, datetime
+from datetime import datetime, timedelta
+
 from django.conf import settings
 from django.db import models
 from django.db.models import Count, Q
 from django.utils.functional import cached_property
 from django.utils.timezone import now
+
+import pytz
 
 from mresponse.utils.math import change_calculation
 
