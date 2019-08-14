@@ -6,7 +6,6 @@ from django.db.models import Count, Q
 from django.utils.functional import cached_property
 from django.utils.timezone import now
 
-from mresponse.responses.models import Response
 from mresponse.utils.math import change_calculation
 
 STATS_ROLLING_WINDOW_SIZE = 7  # Days
@@ -40,10 +39,9 @@ class UserProfile(models.Model):
         Returns whether responses submitted by the user need to be community
         moderated.
         """
-        return (
-                self.user.has_perm('responses.can_bypass_community_moderation')
+        return (self.user.has_perm('responses.can_bypass_community_moderation')
                 or self.user.has_perm('responses.can_bypass_staff_moderation')
-        )
+                )
 
     @cached_property
     def profile_stats(self):
