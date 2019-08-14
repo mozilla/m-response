@@ -27,7 +27,8 @@ class UserProfile(models.Model):
 
     @property
     def is_moderator(self):
-        return True
+        return self.user.has_perm('responses.can_bypass_staff_moderation') or self.user.has_perm(
+            'responses.can_bypass_community_moderation')
 
     @property
     def response_count(self):
