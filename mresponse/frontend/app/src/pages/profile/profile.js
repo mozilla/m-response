@@ -42,7 +42,8 @@ export default class ProfilePage extends React.Component {
         name,
         karma,
         languages,
-        stats
+        stats,
+        isMod
       },
       editProfile,
       helpDocs
@@ -92,19 +93,21 @@ export default class ProfilePage extends React.Component {
             </div>
 
             <div className="profile-header-meta">
-              <span className="profile-header-meta-name">{name || ''}</span>
-
-              <span className="profile-header-meta-languages">
-                <img
-                  src={staticAsset('media/icons/globe.svg')}
-                  className='profile-header-meta-languages-icon'
-                  alt='' />
-                {languages.map(({ text }, index) =>
-                  (index !== languages.length - 1)
-                    ? text + ', '
-                    : text
-                )}
-              </span>
+              <div className='profile-header-meta-top'>
+                <span className="profile-header-meta-top-name">{name || ''}</span>
+                <span className="profile-header-meta-top-languages">
+                  <img
+                    src={staticAsset('media/icons/globe.svg')}
+                    className='profile-header-meta-top-languages-icon'
+                    alt='' />
+                  {languages.map(({ text }, index) =>
+                    (index !== languages.length - 1)
+                      ? text + ', '
+                      : text
+                  )}
+                </span>
+              </div>
+              {isMod ? <button className='profile-header-meta-ismodBtn'>Moderator</button> : null}
             </div>
           </div>
 

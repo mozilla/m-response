@@ -59,6 +59,8 @@ export const getProfile = state => {
     personal_change: null
   }
 
+  const isMod = userProfile.is_moderator || false
+
   const result = {
     id: meta.username,
     name: meta.name,
@@ -67,6 +69,7 @@ export const getProfile = state => {
     languages,
     karma,
     stats,
+    isMod,
     canSkipModeration
   }
 
