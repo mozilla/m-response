@@ -28,7 +28,7 @@ export default class ProfilePage extends React.Component {
   }
 
   componentDidMount () {
-    this.props.updateKarma()
+    this.props.updateUserMeta()
     this.props.updateProfile()
   }
 
@@ -41,7 +41,8 @@ export default class ProfilePage extends React.Component {
       profile: {
         name,
         karma,
-        languages
+        languages,
+        stats
       },
       editProfile,
       helpDocs
@@ -134,18 +135,18 @@ export default class ProfilePage extends React.Component {
               <ProgressTable data={[
                 {
                   title: 'Tone',
-                  value: 0,
-                  maxValue: 0
+                  value: stats.positive_in_tone_count,
+                  maxValue: stats.positive_in_tone_change || 0
                 },
                 {
                   title: 'Issue',
-                  value: 0,
-                  maxValue: 0
+                  value: stats.addressing_the_issue_count,
+                  maxValue: stats.addressing_the_issue_change || 0
                 },
                 {
                   title: 'Personal',
-                  value: 0,
-                  maxValue: 0
+                  value: stats.personal_count,
+                  maxValue: stats.personal_change || 0
                 }
               ]}></ProgressTable>
             </section>

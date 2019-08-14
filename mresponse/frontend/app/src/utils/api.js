@@ -31,7 +31,8 @@ export default class Api {
           points: json.profile.karma_points,
           responsesCount: json.profile.response_count,
           moderationsCount: json.profile.moderation_count
-        }
+        },
+        stats: { ...json.profile.stats }
       }
     })
   }

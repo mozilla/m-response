@@ -12,7 +12,7 @@ const mapStateToProps = (state, props) => ({
 })
 const mapDispatchToProps = (dispatch, props) => ({
   back: () => dispatch(push(DASHBOARD_URL)),
-  updateKarma: () => dispatch(fetchExtraUserMeta()),
+  updateUserMeta: () => dispatch(fetchExtraUserMeta()),
   updateProfile: () => dispatch(fetchProfile()),
   editProfile: () => dispatch(push(SETTINGS_URL)),
   uploadAvatar: file => dispatch(uploadAvatar(file))
