@@ -26,6 +26,10 @@ class UserProfile(models.Model):
         return str(self.user)
 
     @property
+    def is_moderator(self):
+        return True
+
+    @property
     def response_count(self):
         return self.user.responses.count()
 

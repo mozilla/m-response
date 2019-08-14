@@ -1,5 +1,4 @@
 from django.contrib import auth
-
 from rest_framework import serializers
 
 from mresponse.users import models as users_models
@@ -16,6 +15,9 @@ class MyUserStatSerializer(serializers.Serializer):
     addressing_the_issue_change = serializers.FloatField()
     personal_count = serializers.IntegerField(default=0)
     personal_change = serializers.FloatField()
+
+    current_count = serializers.IntegerField(default=0)
+    previous_count = serializers.IntegerField(default=0)
 
 
 class MyUserProfileSerializer(serializers.ModelSerializer):
