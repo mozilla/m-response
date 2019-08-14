@@ -1,12 +1,10 @@
+import pytz
 from datetime import datetime, timedelta
-
 from django.conf import settings
 from django.db import models
 from django.db.models import Count, Q
 from django.utils.functional import cached_property
 from django.utils.timezone import now
-
-import pytz
 
 from mresponse.utils.math import change_calculation
 
@@ -70,12 +68,15 @@ class UserProfile(models.Model):
             personal_count=Count('id', filter=Q(personal=True)),
         )
 
-        return dict(positive_in_tone_count=current['positive_in_tone_count'],
-                    positive_in_tone_change=change_calculation(
-                        previous['positive_in_tone_count'], current['positive_in_tone_count']),
-                    addressing_the_issue_count=current['addressing_the_issue_count'],
-                    addressing_the_issue_change=change_calculation(
-                        previous['addressing_the_issue_count'], current['addressing_the_issue_count']),
-                    personal_count=current['personal_count'],
-                    personal_change=change_calculation(
-                        previous['personal_count'], current['personal_count']))
+        return dict(
+            current_count=current['total_moderations_count'],
+            previous_count=previous['total_moderations_count'],
+            positive_in_tone_count=current['positive_in_tone_count'],
+            positive_in_tone_change=change_calculation(
+                previous['positive_in_tone_count'], current['positive_in_tone_count']),
+            addressing_the_issue_count=current['addressing_the_issue_count'],
+            addressing_the_issue_change=change_calculation(
+                previous['addressing_the_issue_count'], current['addressing_the_issue_count']),
+            personal_count=current['personal_count'],
+            personal_change=change_calculation(
+                previous['personal_count'], current['personal_count']))

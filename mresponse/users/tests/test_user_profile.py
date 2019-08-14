@@ -1,5 +1,4 @@
 from datetime import timedelta
-
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.utils.timezone import now
@@ -18,7 +17,22 @@ class TestProfileUsers(TestCase):
     def test_profile_returns_default_stats(self):
         self.assertEquals(self.user.profile.profile_stats,
                           dict(positive_in_tone_count=0, positive_in_tone_change=None, addressing_the_issue_count=0,
-                               addressing_the_issue_change=None, personal_count=0, personal_change=None))
+                               addressing_the_issue_change=None, personal_count=0, personal_change=None,
+                               current_count=0, previous_count=0))
+
+    def test_current_count(self):
+        response = ResponseRecipe.make(author=self.user)
+        ModerationRecipe.make(response=response, positive_in_tone=True, _quantity=11)
+        ModerationRecipe.make(response=response, positive_in_tone=False, _quantity=5)
+        self.assertEquals(self.user.profile.profile_stats['current_count'], 16)
+
+    def test_previous_count(self):
+        response = ResponseRecipe.make(author=self.user)
+        ModerationRecipe.make(response=response, positive_in_tone=True, _quantity=11,
+                              submitted_at=now() - timedelta(days=10))
+        ModerationRecipe.make(response=response, positive_in_tone=False, _quantity=5,
+                              submitted_at=now() - timedelta(days=11))
+        self.assertEquals(self.user.profile.profile_stats['previous_count'], 16)
 
     def test_positive_in_tone_count(self):
         response = ResponseRecipe.make(author=self.user)
