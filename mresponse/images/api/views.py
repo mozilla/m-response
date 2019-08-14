@@ -3,10 +3,10 @@ import os
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
+from PIL import Image as PILImage
 from rest_framework import permissions, response, views
 
 from mresponse.images.models import Image
-from PIL import Image as PILImage
 
 ALLOWED_EXTENSIONS = ['gif', 'jpg', 'jpeg', 'png']
 
