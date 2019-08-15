@@ -2,10 +2,11 @@
 
 .side-bar {
   background-color: rgba(0,0,0,.9);
-  max-width: 100vw;
-  max-height: 100vh;
+  width: 100vw;
+  // min-height: 100vh;
+  min-height: 400px;
 
-  position: absolute;
+  position: fixed;
   top: 0;right: 0;bottom: 0;left: 0;
   z-index: 300;
 
@@ -15,8 +16,17 @@
     max-width: 300px;
     height: 100%;
     margin-left: auto;
-
+    flex-grow: 1;
+    flex-shrink: 1;
+    
+    display: flex;
+    flex-direction: column;
     box-sizing: border-box;
+
+    .side-bar-toolbar {
+      flex-grow: 0;
+      flex-shrink: 0;
+    }
   }
 
   &-close-button {

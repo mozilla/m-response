@@ -1,9 +1,12 @@
 @import '../../styles/main.scss';
 
 .canned-responses {
-  height: calc(100vh - 42px);
+  height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
+
+  flex-grow: 1;
+  flex-shrink: 1;
 
   * {
     box-sizing: border-box;

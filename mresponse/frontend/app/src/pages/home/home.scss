@@ -2,6 +2,9 @@
 
 .home-page {
     background-color: $off-white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 
     &-header {
         display: grid;
@@ -11,6 +14,7 @@
         padding: 16px;
         padding-top: 50px;
         background-color: $grey;
+        flex: 0 0 auto;
 
         &-logo {
             width: 100px;
@@ -22,20 +26,35 @@
             width: 54px;
             height: 54px;
         }
+    }
 
+    &-wrap {
+        margin-top: -80px;
+        padding: 0 16px;
+        box-sizing: border-box;
+        height: 100%;
+        flex: 1 1 auto;
+        width: 100%;
+        max-width: 400px;
+
+        display: flex;
+        flex-direction: column;
+        align-self: center;
+
+        * {
+            box-sizing: border-box;
+        }
     }
 
     &-content {
         display: grid;
         grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto;
         grid-column-gap: 8px;
         grid-row-gap: 8px;
         max-width: 400px;
-        margin: 0 auto;
-        position: absolute;
-        top: 180px;
-        right: 16px;
-        left: 16px;
+        width: 100%;
+        flex: 0 0 auto;
 
         @include for-desktop-up  {
             grid-template-columns: 1fr 1fr;
@@ -53,18 +72,18 @@
     }
 
     &-footer {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
         max-width: 400px;
-        margin: 0 auto;
-
+        flex: 1 1 auto;
         display: flex;
-        align-items: center;
-        justify-content: space-around;
+        align-items: flex-end;
 
-        padding-bottom: 25px;
+        &-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0 25px;
+            width: 100%;
+        }
 
         &-link {
             display: inline-flex;
@@ -72,14 +91,19 @@
             align-items: center;
             color: $grey;
             font-size: 13px;
-            width: 100%;
             text-align: center;
             cursor: pointer;
 
-            &-icon-question {
-                padding: 0px 4px;
-                text-decoration: none;
-                display: inline-block;
+            &-w-icon {
+                span {
+                    text-decoration: underline;
+                }
+
+                svg {
+                    margin: 0px 4px;
+                    text-decoration: none;
+                    display: inline-block;
+                }
             }
         }
     }

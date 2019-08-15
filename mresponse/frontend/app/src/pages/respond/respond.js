@@ -71,7 +71,7 @@ export default class RespondPage extends React.Component {
     return (
       <div className='respond-page'>
 
-        <header>
+        <header className='respond-page-header'>
           <Toolbar
             className='respond-page-toolbar'
             title='Respond'
@@ -117,7 +117,7 @@ export default class RespondPage extends React.Component {
               </div>
               <form className='respond-page-edit-response-form'>
                 <Textarea
-                  maxLength={340}
+                  maxLength={350}
                   value={response}
                   placeholder='Add Your Response'
                   onChange={this.updateResponse}

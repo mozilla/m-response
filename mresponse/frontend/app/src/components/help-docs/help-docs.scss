@@ -1,9 +1,12 @@
 @import '../../styles/main.scss';
 
 .help-docs {
-  height: calc(100vh - 42px);
+  height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
+
+  flex-grow: 1;
+  flex-shrink: 1;
 
   * {
     box-sizing: border-box;
@@ -19,7 +22,7 @@
 
   &-inner {
     position: relative;
-    height: calc(100vh - 42px);
+    height: 100%;
   }
 
   &-content {

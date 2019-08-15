@@ -7,9 +7,14 @@
     background-color: $off-white;
     position: relative;
 
-    &-toolbar {
-        background-color: $orange;
+    &-header {
+        height: 44px;
         margin-bottom: 8px;
+    }
+
+    &-toolbar {
+        position: fixed;
+        background-color: $orange;
     }
 
     &-alert-prompt {

@@ -28,7 +28,7 @@ export default class ProfilePage extends React.Component {
   }
 
   componentDidMount () {
-    this.props.updateKarma()
+    this.props.updateUserMeta()
     this.props.updateProfile()
   }
 
@@ -41,7 +41,9 @@ export default class ProfilePage extends React.Component {
       profile: {
         name,
         karma,
-        languages
+        languages,
+        stats,
+        isMod
       },
       editProfile,
       helpDocs
@@ -91,19 +93,21 @@ export default class ProfilePage extends React.Component {
             </div>
 
             <div className="profile-header-meta">
-              <span className="profile-header-meta-name">{name || ''}</span>
-
-              <span className="profile-header-meta-languages">
-                <img
-                  src={staticAsset('media/icons/globe.svg')}
-                  className='profile-header-meta-languages-icon'
-                  alt='' />
-                {languages.map(({ text }, index) =>
-                  (index !== languages.length - 1)
-                    ? text + ', '
-                    : text
-                )}
-              </span>
+              <div className='profile-header-meta-top'>
+                <span className="profile-header-meta-top-name">{name || ''}</span>
+                <span className="profile-header-meta-top-languages">
+                  <img
+                    src={staticAsset('media/icons/globe.svg')}
+                    className='profile-header-meta-top-languages-icon'
+                    alt='' />
+                  {languages.map(({ text }, index) =>
+                    (index !== languages.length - 1)
+                      ? text + ', '
+                      : text
+                  )}
+                </span>
+              </div>
+              {isMod ? <button className='profile-header-meta-ismodBtn'>Moderator</button> : null}
             </div>
           </div>
 
@@ -134,18 +138,18 @@ export default class ProfilePage extends React.Component {
               <ProgressTable data={[
                 {
                   title: 'Tone',
-                  value: 0,
-                  maxValue: 0
+                  value: stats.positive_in_tone_count,
+                  maxValue: stats.positive_in_tone_change || 0
                 },
                 {
                   title: 'Issue',
-                  value: 0,
-                  maxValue: 0
+                  value: stats.addressing_the_issue_count,
+                  maxValue: stats.addressing_the_issue_change || 0
                 },
                 {
                   title: 'Personal',
-                  value: 0,
-                  maxValue: 0
+                  value: stats.personal_count,
+                  maxValue: stats.personal_change || 0
                 }
               ]}></ProgressTable>
             </section>
@@ -153,6 +157,30 @@ export default class ProfilePage extends React.Component {
             <section className='profile-progress'>
               <p className='profile-title'>Progress</p>
               <p className='profile-progress-placeholder'>Your progress gauges require two weeks worth of data before they can be displayed</p>
+              {/* Below is the static version of progress stats */}
+              {/* <div className='profile-progress-compare'>
+                <div className='profile-progress-compare-item'>
+                  <div className='profile-progress-compare-item-indicator down'>
+                    <Icon iconName='arrowDown'></Icon>
+                  </div>
+                  <div className='profile-progress-compare-item-percent'>-3%</div>
+                  <div className='profile-progress-compare-item-label'>Friendly</div>
+                </div>
+                <div className='profile-progress-compare-item'>
+                  <div className='profile-progress-compare-item-indicator up'>
+                    <Icon iconName='arrowUp'></Icon>
+                  </div>
+                  <div className='profile-progress-compare-item-percent'><span>23%</span></div>
+                  <div className='profile-progress-compare-item-label'><span>Accurate</span></div>
+                </div>
+                <div className='profile-progress-compare-item'>
+                  <div className='profile-progress-compare-item-indicator level'>
+                    <Icon iconName='dash'></Icon>
+                  </div>
+                  <div className='profile-progress-compare-item-percent'>0%</div>
+                  <div className='profile-progress-compare-item-label'>Reusable</div>
+                </div>
+              </div> */}
             </section>
           </div>
 
