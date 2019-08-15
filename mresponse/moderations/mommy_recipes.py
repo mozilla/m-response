@@ -1,5 +1,4 @@
 from model_mommy.recipe import Recipe
-
 from mresponse.moderations.models import Moderation
 
 ModerationRecipe = Recipe(
