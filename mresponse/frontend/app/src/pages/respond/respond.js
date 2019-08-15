@@ -71,7 +71,7 @@ export default class RespondPage extends React.Component {
     return (
       <div className='respond-page'>
 
-        <header>
+        <header className='respond-page-header'>
           <Toolbar
             className='respond-page-toolbar'
             title='Respond'
@@ -117,7 +117,7 @@ export default class RespondPage extends React.Component {
               </div>
               <form className='respond-page-edit-response-form'>
                 <Textarea
-                  maxLength={340}
+                  maxLength={350}
                   value={response}
                   placeholder='Add Your Response'
                   onChange={this.updateResponse}
@@ -193,7 +193,7 @@ export default class RespondPage extends React.Component {
           {isCannedMenuOpen ? <SideBar
             className=''
             title='Canned Responses'
-            handleClose={() => (this.toggCannedResponses.bind(this))}
+            handleClose={this.toggCannedResponses.bind(this)}
             handleCloseOffWindow={this.toggCannedResponses.bind(this)}
             content={sideBarCannedContent} /> : null}
         </CSSTransitionGroup>
@@ -205,8 +205,8 @@ export default class RespondPage extends React.Component {
           component={FirstChild}>
           {isHelpDocsMenuOpen ? <SideBar
             className=''
-            title='Canned Responses'
-            handleClose={() => (this.toggHelpDocsMenu.bind(this))}
+            title='Help and Documentation'
+            handleClose={this.toggHelpDocsMenu.bind(this)}
             handleCloseOffWindow={this.toggHelpDocsMenu.bind(this)}
             content={sideBarHelpContent} /> : null}
         </CSSTransitionGroup>

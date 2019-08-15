@@ -6,12 +6,14 @@
     padding-bottom: 15px;
     position: relative;
 
+    &-header {
+      height: 44px;
+      margin-bottom: 8px;
+    }
+
     &-toolbar {
-        height: auto;
-        padding-top: 18px;
-        padding-bottom: 18px;
+        position: fixed;
         background-color: $blue-lighter;
-        margin-bottom: 8px;
     }
 
     &-container {

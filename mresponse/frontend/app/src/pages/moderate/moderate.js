@@ -91,12 +91,14 @@ export default class ModeratePage extends React.Component {
 
     return (
       <div className='moderate-page'>
-        <Toolbar
-          className='moderate-page-toolbar'
-          title='Moderate'
-          invertBackIcon={true}
-          onBack={back}
-          rightComponent={rightHelpMenu} />
+        <header className='moderate-page-header'>
+          <Toolbar
+            className='moderate-page-toolbar'
+            title='Moderate'
+            invertBackIcon={true}
+            onBack={back}
+            rightComponent={rightHelpMenu} />
+        </header>
 
         {messages.map((message, index) => (
           <div
@@ -258,7 +260,7 @@ export default class ModeratePage extends React.Component {
           {isCannedMenuOpen ? <SideBar
             className=''
             title='Canned Responses'
-            handleClose={() => (this.toggCannedResponses.bind(this))}
+            handleClose={this.toggCannedResponses.bind(this)}
             handleCloseOffWindow={this.toggCannedResponses.bind(this)}
             content={sideBarCannedContent} /> : null}
         </CSSTransitionGroup>
@@ -270,8 +272,8 @@ export default class ModeratePage extends React.Component {
           component={FirstChild}>
           {isHelpDocsMenuOpen ? <SideBar
             className=''
-            title='Canned Responses'
-            handleClose={() => (this.toggHelpDocsMenu.bind(this))}
+            title='Help and Documentation'
+            handleClose={this.toggHelpDocsMenu.bind(this)}
             handleCloseOffWindow={this.toggHelpDocsMenu.bind(this)}
             content={sideBarHelpContent} /> : null}
         </CSSTransitionGroup>

@@ -68,6 +68,27 @@ export default class Icon extends React.Component {
           </svg>
         )
         break
+      case 'arrowDown':
+        icon = (
+          <svg className={className} fill='currentColor' xmlns="http://www.w3.org/2000/svg" width="14" height="16" viewBox="0 0 14 16">
+            <path d="M5.988 1v11.586L1.695 8.293A1 1 0 0 0 .28 9.707l6 6a1 1 0 0 0 1.414 0l6-6a1 1 0 0 0-1.414-1.414l-4.293 4.293V1a1 1 0 0 0-2 0z"/>
+          </svg>
+        )
+        break
+      case 'arrowUp':
+        icon = (
+          <svg className={className} fill='currentColor' xmlns="http://www.w3.org/2000/svg" width="14" height="16" viewBox="0 0 14 16">
+            <path d="M8.012 15V3.414l4.293 4.293a1 1 0 0 0 1.414-1.414l-6-6a1 1 0 0 0-1.414 0l-6 6A1 1 0 0 0 1.72 7.707l4.293-4.293V15a1 1 0 0 0 2 0z"/>
+          </svg>
+        )
+        break
+      case 'dash':
+        icon = (
+          <svg className={className} fill='currentColor' xmlns="http://www.w3.org/2000/svg" width="20" height="2" viewBox="0 0 20 2">
+            <rect width="20" height="2" x="8" y="17" fill-rule="evenodd" rx="1" transform="translate(-8 -17)"/>
+          </svg>
+        )
+        break
       default:
         break
     }
