@@ -1,7 +1,6 @@
 from django.utils.text import slugify
 
 from faker import Faker
-
 from mresponse.canned_response import models
 
 fake = Faker()

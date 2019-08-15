@@ -1,5 +1,4 @@
 from faker import Faker
-
 from mresponse.documentation import models
 
 fake = Faker()
