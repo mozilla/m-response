@@ -60,6 +60,7 @@ export const getProfile = state => {
   }
 
   const isMod = userProfile.is_moderator || false
+  const isSuperMod = userProfile.can_skip_community_response_moderation || false
 
   const result = {
     id: meta.username,
@@ -70,6 +71,7 @@ export const getProfile = state => {
     karma,
     stats,
     isMod,
+    isSuperMod,
     canSkipModeration
   }
 

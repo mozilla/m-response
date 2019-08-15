@@ -9,6 +9,7 @@ import ProgressTable from '@components/progress-table'
 import SideBar from '@components/side-bar'
 import HelpDocs from '@components/help-docs'
 import Icon from '@components/icon'
+import BasicModal from '@components/basic-modal'
 // import ResponseCard from '@components/response-card'
 import Button from '@components/buttons'
 import { staticAsset } from '@utils/urls'
@@ -34,7 +35,8 @@ export default class ProfilePage extends React.Component {
 
   render () {
     const {
-      isHelpDocsMenuOpen
+      isHelpDocsMenuOpen,
+      isModModalOpen
     } = this.state
 
     const {
@@ -43,7 +45,8 @@ export default class ProfilePage extends React.Component {
         karma,
         languages,
         stats,
-        isMod
+        isMod,
+        isSuperMod
       },
       editProfile,
       helpDocs
@@ -57,6 +60,18 @@ export default class ProfilePage extends React.Component {
 
     const sideBarContent = (
       <HelpDocs helpData={helpDocs} openTo='profile'/>
+    )
+
+    const modModalContent = (
+      <div className='profile-modmodalcontent'>
+        <p>You are a</p>
+        <p><span className='profile-modmodalcontent-badge'>{isMod && !isSuperMod ? 'Moderator' : isSuperMod ? 'Super Moderator' : ''}</span></p>
+        <ul>
+          <li>Immediately approve responses which meet the moderation criteria.</li>
+          <li>Send anonymous feedback to fellow contributers when moderating responses.</li>
+          {isSuperMod ? <li>Responses you approve bypass staff review and immediately enter the publishing queue.</li> : null}
+        </ul>
+      </div>
     )
 
     return (
@@ -107,7 +122,8 @@ export default class ProfilePage extends React.Component {
                   )}
                 </span>
               </div>
-              {isMod ? <button className='profile-header-meta-ismodBtn'>Moderator</button> : null}
+              {isMod && !isSuperMod ? <button className='profile-header-meta-ismodBtn' onClick={this.toggModModal}>Moderator</button> : null}
+              {isSuperMod ? <button className='profile-header-meta-ismodBtn' onClick={this.toggModModal}>Super Moderator</button> : null}
             </div>
           </div>
 
@@ -221,12 +237,30 @@ export default class ProfilePage extends React.Component {
             content={sideBarContent} /> : null}
         </CSSTransitionGroup>
 
+        <CSSTransitionGroup
+          transitionName='fadein'
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={300}
+          component={FirstChild}>
+          {isModModalOpen ? <BasicModal
+            className=''
+            handleClose={this.toggModModal.bind(this)}
+            content={modModalContent} /> : null}
+        </CSSTransitionGroup>
+
       </div>
     )
   }
 
   toggHelpDocsMenu = e => {
     const toggMenu = () => (this.setState({ isHelpDocsMenuOpen: !this.state.isHelpDocsMenuOpen }))
+    if (e) {
+      if (e.currentTarget === e.target) toggMenu()
+    } else toggMenu()
+  }
+
+  toggModModal = e => {
+    const toggMenu = () => (this.setState({ isModModalOpen: !this.state.isModModalOpen }))
     if (e) {
       if (e.currentTarget === e.target) toggMenu()
     } else toggMenu()

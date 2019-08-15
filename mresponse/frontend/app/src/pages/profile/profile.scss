@@ -272,6 +272,47 @@
     }
   }
 
+  &-modmodalcontent {
+    font-size: 14px;
+    padding: 16px;
+
+    &-badge {
+      background-color: $border-color-alt;
+      border-radius: 999px;
+      padding: 4px 12px;
+    }
+
+    p {
+      margin: 0 0 16px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    ul {
+      list-style: none;
+      padding-top: 12px;
+      padding-left: 16px;
+      margin: 0 0 16px 0;
+      line-height: 1.5;
+
+      li {
+        position: relative;
+        margin-bottom: 12px;
+
+        &::before {
+          content: '';
+          position: absolute;
+          top: 6px;
+          left: -16px;
+          width: 8px;
+          height: 8px;
+          background-color: $color-black;
+          border-radius: 999px;
+        }
+      }
+    }
+  }
+
   // &-response-history {
   //   width: 100%;
   //   // max-width: 680px;
