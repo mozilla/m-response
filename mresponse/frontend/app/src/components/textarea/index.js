@@ -11,18 +11,23 @@ export default class Textarea extends React.Component {
       onChange,
       disabled,
       rows = 3,
+      maxLength,
       ...rest
     } = this.props
     return (
-      <textarea
-        placeholder={placeholder}
-        className={`form-field-textarea`}
-        disabled={disabled}
-        value={value}
-        rows={rows}
-        onChange={onChange}
-        { ...rest }
-      />
+      <div className='form-field'>
+        <textarea
+          placeholder={placeholder}
+          className='form-field-textarea'
+          disabled={disabled}
+          value={value}
+          rows={rows}
+          onChange={onChange}
+          maxLength={maxLength}
+          { ...rest }
+        />
+        {maxLength ? <p className='form-field-count'>{value.length} / {maxLength}</p> : null}
+      </div>
     )
   }
 }

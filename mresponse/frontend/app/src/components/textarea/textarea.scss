@@ -19,4 +19,10 @@
         border-color: $border-color-dark;
       }
     }
+
+    &-count {
+      margin-top: 6px;
+      margin-bottom: 16px;
+      color: $grey-light;
+    }
 }
