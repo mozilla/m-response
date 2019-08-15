@@ -218,7 +218,6 @@ export default class ProfilePage extends React.Component {
             className=''
             title='Help and Documentation'
             handleClose={this.toggHelpDocsMenu.bind(this)}
-            handleCloseOffWindow={this.toggHelpDocsMenu.bind(this)}
             content={sideBarContent} /> : null}
         </CSSTransitionGroup>
 
@@ -226,7 +225,7 @@ export default class ProfilePage extends React.Component {
     )
   }
 
-  toggHelpDocsMenu = (e) => {
+  toggHelpDocsMenu = e => {
     const toggMenu = () => (this.setState({ isHelpDocsMenuOpen: !this.state.isHelpDocsMenuOpen }))
     if (e) {
       if (e.currentTarget === e.target) toggMenu()
