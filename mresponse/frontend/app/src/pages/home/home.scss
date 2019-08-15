@@ -107,10 +107,16 @@
             text-align: center;
             cursor: pointer;
 
-            &-icon-question {
-                margin: 0px 4px;
-                text-decoration: none;
-                display: inline-block;
+            &-w-icon {
+                span {
+                    text-decoration: underline;
+                }
+
+                svg {
+                    margin: 0px 4px;
+                    text-decoration: none;
+                    display: inline-block;
+                }
             }
         }
     }

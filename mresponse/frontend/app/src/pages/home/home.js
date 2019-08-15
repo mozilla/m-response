@@ -103,10 +103,10 @@ export default class HomePage extends React.Component {
                 About
               </a>
               <a
-                className='home-page-footer-link'
+                className='home-page-footer-link home-page-footer-link-w-icon'
                 onClick={this.toggHelpDocsMenu}>
                 <Icon iconName='help' className='home-page-footer-link-icon-question'></Icon>
-                Help Docs
+                <span>Help Docs</span>
               </a>
             </div>
           </footer>
