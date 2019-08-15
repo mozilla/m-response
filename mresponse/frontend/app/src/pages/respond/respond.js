@@ -117,7 +117,7 @@ export default class RespondPage extends React.Component {
               </div>
               <form className='respond-page-edit-response-form'>
                 <Textarea
-                  maxLength={340}
+                  maxLength={350}
                   value={response}
                   placeholder='Add Your Response'
                   onChange={this.updateResponse}
