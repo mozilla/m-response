@@ -9,6 +9,7 @@ import ProgressTable from '@components/progress-table'
 import SideBar from '@components/side-bar'
 import HelpDocs from '@components/help-docs'
 import Icon from '@components/icon'
+import BasicModal from '@components/basic-modal'
 // import ResponseCard from '@components/response-card'
 import Button from '@components/buttons'
 import { staticAsset } from '@utils/urls'
@@ -19,7 +20,12 @@ export default class ProfilePage extends React.Component {
   state = {
     pictureUpload: null,
     isHelpDocsMenuOpen: false,
-    picture: this.props.profile.picture
+    picture: this.props.profile.picture,
+    progress: {
+      tone: 0,
+      issue: 0,
+      personal: 0
+    }
   }
 
   constructor (props) {
@@ -30,11 +36,31 @@ export default class ProfilePage extends React.Component {
   componentDidMount () {
     this.props.updateUserMeta()
     this.props.updateProfile()
+
+    // calculate progress
+    console.log('test: ', this.props.profile)
+    if (this.props.profile.stats.lastWeek.total) {
+      const lastWeek = this.props.profile.stats.lastWeek
+      const thisWeek = this.props.profile.stats.thisWeek
+      const tone = Math.round(((thisWeek.tone / thisWeek.total) - (lastWeek.tone / lastWeek.total)) * 100)
+      const issue = Math.round(((thisWeek.issue / thisWeek.total) - (lastWeek.issue / lastWeek.total)) * 100)
+      const personal = Math.round(((thisWeek.personal / thisWeek.total) - (lastWeek.personal / lastWeek.total)) * 100)
+
+      this.setState({
+        progress: {
+          tone,
+          issue,
+          personal
+        }
+      })
+    }
   }
 
   render () {
     const {
-      isHelpDocsMenuOpen
+      isHelpDocsMenuOpen,
+      isModModalOpen,
+      progress
     } = this.state
 
     const {
@@ -43,7 +69,8 @@ export default class ProfilePage extends React.Component {
         karma,
         languages,
         stats,
-        isMod
+        isMod,
+        isSuperMod
       },
       editProfile,
       helpDocs
@@ -57,6 +84,18 @@ export default class ProfilePage extends React.Component {
 
     const sideBarContent = (
       <HelpDocs helpData={helpDocs} openTo='profile'/>
+    )
+
+    const modModalContent = (
+      <div className='profile-modmodalcontent'>
+        <p>You are a</p>
+        <p><span className='profile-modmodalcontent-badge'>{isMod && !isSuperMod ? 'Moderator' : isSuperMod ? 'Super Moderator' : ''}</span></p>
+        <ul>
+          <li>Immediately approve responses which meet the moderation criteria.</li>
+          <li>Send anonymous feedback to fellow contributers when moderating responses.</li>
+          {isSuperMod ? <li>Responses you approve bypass staff review and immediately enter the publishing queue.</li> : null}
+        </ul>
+      </div>
     )
 
     return (
@@ -107,7 +146,8 @@ export default class ProfilePage extends React.Component {
                   )}
                 </span>
               </div>
-              {isMod ? <button className='profile-header-meta-ismodBtn'>Moderator</button> : null}
+              {isMod && !isSuperMod ? <button className='profile-header-meta-ismodBtn' onClick={this.toggModModal}>Moderator</button> : null}
+              {isSuperMod ? <button className='profile-header-meta-ismodBtn' onClick={this.toggModModal}>Super Moderator</button> : null}
             </div>
           </div>
 
@@ -138,49 +178,48 @@ export default class ProfilePage extends React.Component {
               <ProgressTable data={[
                 {
                   title: 'Tone',
-                  value: stats.positive_in_tone_count,
-                  maxValue: stats.positive_in_tone_change || 0
+                  value: stats.thisWeek.tone,
+                  maxValue: stats.thisWeek.total
                 },
                 {
                   title: 'Issue',
-                  value: stats.addressing_the_issue_count,
-                  maxValue: stats.addressing_the_issue_change || 0
+                  value: stats.thisWeek.issue,
+                  maxValue: stats.thisWeek.total
                 },
                 {
                   title: 'Personal',
-                  value: stats.personal_count,
-                  maxValue: stats.personal_change || 0
+                  value: stats.thisWeek.personal,
+                  maxValue: stats.thisWeek.total
                 }
               ]}></ProgressTable>
             </section>
 
             <section className='profile-progress'>
               <p className='profile-title'>Progress</p>
-              <p className='profile-progress-placeholder'>Your progress gauges require two weeks worth of data before they can be displayed</p>
-              {/* Below is the static version of progress stats */}
-              {/* <div className='profile-progress-compare'>
+              {stats.lastWeek.total ? <div className='profile-progress-compare'>
                 <div className='profile-progress-compare-item'>
-                  <div className='profile-progress-compare-item-indicator down'>
-                    <Icon iconName='arrowDown'></Icon>
+                  <div className={`profile-progress-compare-item-indicator ${this.determinProgressIcon(progress.tone)}`}>
+                    <Icon iconName={this.determinProgressIcon(progress.tone)}></Icon>
                   </div>
-                  <div className='profile-progress-compare-item-percent'>-3%</div>
-                  <div className='profile-progress-compare-item-label'>Friendly</div>
+                  <div className='profile-progress-compare-item-percent'>{progress.tone}%</div>
+                  <div className='profile-progress-compare-item-label'>Tone</div>
                 </div>
                 <div className='profile-progress-compare-item'>
-                  <div className='profile-progress-compare-item-indicator up'>
-                    <Icon iconName='arrowUp'></Icon>
+                  <div className={`profile-progress-compare-item-indicator ${this.determinProgressIcon(progress.issue)}`}>
+                    <Icon iconName={this.determinProgressIcon(progress.issue)}></Icon>
                   </div>
-                  <div className='profile-progress-compare-item-percent'><span>23%</span></div>
-                  <div className='profile-progress-compare-item-label'><span>Accurate</span></div>
+                  <div className='profile-progress-compare-item-percent'><span>{progress.issue}%</span></div>
+                  <div className='profile-progress-compare-item-label'><span>Issue</span></div>
                 </div>
                 <div className='profile-progress-compare-item'>
-                  <div className='profile-progress-compare-item-indicator level'>
-                    <Icon iconName='dash'></Icon>
+                  <div className={`profile-progress-compare-item-indicator ${this.determinProgressIcon(progress.personal)}`}>
+                    <Icon iconName={this.determinProgressIcon(progress.personal)}></Icon>
                   </div>
-                  <div className='profile-progress-compare-item-percent'>0%</div>
-                  <div className='profile-progress-compare-item-label'>Reusable</div>
+                  <div className='profile-progress-compare-item-percent'>{progress.personal}%</div>
+                  <div className='profile-progress-compare-item-label'>Personal</div>
                 </div>
-              </div> */}
+              </div> : <p className='profile-progress-placeholder'>Your progress gauges require two weeks worth of data before they can be displayed</p>}
+
             </section>
           </div>
 
@@ -218,19 +257,40 @@ export default class ProfilePage extends React.Component {
             className=''
             title='Help and Documentation'
             handleClose={this.toggHelpDocsMenu.bind(this)}
-            handleCloseOffWindow={this.toggHelpDocsMenu.bind(this)}
             content={sideBarContent} /> : null}
+        </CSSTransitionGroup>
+
+        <CSSTransitionGroup
+          transitionName='fadein'
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={300}
+          component={FirstChild}>
+          {isModModalOpen ? <BasicModal
+            className=''
+            handleClose={this.toggModModal.bind(this)}
+            content={modModalContent} /> : null}
         </CSSTransitionGroup>
 
       </div>
     )
   }
 
-  toggHelpDocsMenu = (e) => {
+  toggHelpDocsMenu = e => {
     const toggMenu = () => (this.setState({ isHelpDocsMenuOpen: !this.state.isHelpDocsMenuOpen }))
     if (e) {
       if (e.currentTarget === e.target) toggMenu()
     } else toggMenu()
+  }
+
+  toggModModal = e => {
+    const toggMenu = () => (this.setState({ isModModalOpen: !this.state.isModModalOpen }))
+    if (e) {
+      if (e.currentTarget === e.target) toggMenu()
+    } else toggMenu()
+  }
+
+  determinProgressIcon (key) {
+    return key > 0 ? 'arrowUp' : key === 0 ? 'dash' : 'arrowDown'
   }
 
   handleFileUpload = event => {
