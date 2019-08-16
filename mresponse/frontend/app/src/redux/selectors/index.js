@@ -50,13 +50,19 @@ export const getProfile = state => {
     moderationsCount: 0
   }
 
-  const stats = userProfile.stats || {
-    positive_in_tone_count: 0,
-    positive_in_tone_change: null,
-    addressing_the_issue_count: 0,
-    addressing_the_issue_change: null,
-    personal_count: 0,
-    personal_change: null
+  const stats = {
+    thisWeek: {
+      tone: userProfile.stats.positive_in_tone_count || 0,
+      issue: userProfile.stats.addressing_the_issue_count || 0,
+      personal: userProfile.stats.personal_count || 0,
+      total: userProfile.stats.current_count || 0
+    },
+    lastWeek: {
+      tone: userProfile.stats.positive_in_tone_change || 0,
+      issue: userProfile.stats.addressing_the_issue_change || 0,
+      personal: userProfile.stats.personal_change || 0,
+      total: userProfile.stats.previous_count || 0
+    }
   }
 
   const isMod = userProfile.is_moderator || false
