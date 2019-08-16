@@ -85,7 +85,7 @@ export default class Icon extends React.Component {
       case 'dash':
         icon = (
           <svg className={className} fill='currentColor' xmlns="http://www.w3.org/2000/svg" width="20" height="2" viewBox="0 0 20 2">
-            <rect width="20" height="2" x="8" y="17" fill-rule="evenodd" rx="1" transform="translate(-8 -17)"/>
+            <rect width="20" height="2" x="8" y="17" fillRule="evenodd" rx="1" transform="translate(-8 -17)"/>
           </svg>
         )
         break
