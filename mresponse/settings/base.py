@@ -77,6 +77,7 @@ INSTALLED_APPS = [
     'mresponse.responses',
     'mresponse.reviews',
     'mresponse.users.apps.UsersConfig',
+    'mresponse.utils',
 ]
 
 
