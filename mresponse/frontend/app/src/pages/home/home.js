@@ -104,7 +104,7 @@ export default class HomePage extends React.Component {
               </a>
               <a
                 className='home-page-footer-link home-page-footer-link-w-icon'
-                onClick={this.toggHelpDocsMenu}>
+                onClick={() => this.toggHelpDocsMenu()}>
                 <Icon iconName='help' className='home-page-footer-link-icon-question'></Icon>
                 <span>Help Docs</span>
               </a>
@@ -121,7 +121,6 @@ export default class HomePage extends React.Component {
             className=''
             title='Help and Documentation'
             handleClose={this.toggHelpDocsMenu.bind(this)}
-            handleCloseOffWindow={this.toggHelpDocsMenu.bind(this)}
             content={sideBarContent} /> : null}
         </CSSTransitionGroup>
       </div>
@@ -129,7 +128,6 @@ export default class HomePage extends React.Component {
   }
 
   toggHelpDocsMenu = (e) => {
-    console.log('hello from toggHelpDocsMenu', e)
     const toggMenu = () => (this.setState({ isHelpDocsMenuOpen: !this.state.isHelpDocsMenuOpen }))
 
     if (e) {

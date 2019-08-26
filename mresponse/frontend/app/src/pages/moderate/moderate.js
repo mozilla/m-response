@@ -261,7 +261,6 @@ export default class ModeratePage extends React.Component {
             className=''
             title='Canned Responses'
             handleClose={this.toggCannedResponses.bind(this)}
-            handleCloseOffWindow={this.toggCannedResponses.bind(this)}
             content={sideBarCannedContent} /> : null}
         </CSSTransitionGroup>
 
@@ -274,7 +273,6 @@ export default class ModeratePage extends React.Component {
             className=''
             title='Help and Documentation'
             handleClose={this.toggHelpDocsMenu.bind(this)}
-            handleCloseOffWindow={this.toggHelpDocsMenu.bind(this)}
             content={sideBarHelpContent} /> : null}
         </CSSTransitionGroup>
       </div>

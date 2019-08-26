@@ -29,3 +29,19 @@
 .slide-out-right-leave.slide-out-right-leave-active {
   transform: translate3d(120%, 0, 0);
 }
+
+// fadein : Animation
+.fadein-enter {
+  opacity: 0;
+  transition: opacity .2s ease-in-out;
+}
+.fadein-enter.fadein-enter-active {
+  opacity: 1;
+}
+.fadein-leave {
+  opacity: 1;
+  transition: opacity .2s ease-in-out;
+}
+.fadein-leave.fadein-leave-active {
+  opacity: 0;
+}
