@@ -6,9 +6,9 @@ from django.test import TestCase
 import factory
 from mresponse.applications.models import Application
 from mresponse.reviews.models import Review
-from mresponse.users.tests import (BypassCommunityModerationUserFactory,
-                                   BypassStaffModerationUserFactory,
-                                   UserFactory)
+from mresponse.users.tests.test_user import (
+    BypassCommunityModerationUserFactory, BypassStaffModerationUserFactory,
+    UserFactory)
 
 from .api.serializers import ResponseSerializer
 
