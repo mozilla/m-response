@@ -4,15 +4,15 @@ import { FirstChild } from '@components/first-child'
 
 import Toolbar from '@components/toolbar'
 import ModerateCard from '@components/moderate-card'
-import Button from '@components/buttons'
-import ToggleButton from '@components/buttons/toggle'
+// import Button from '@components/buttons'
+// import ToggleButton from '@components/buttons/toggle'
 import AlertPrompt from '@components/alert-prompt'
-import Textarea from '@components/textarea'
+// import Textarea from '@components/textarea'
 import SideBar from '@components/side-bar'
 import CannedResponses from '@components/canned-responses'
 import HelpDocs from '@components/help-docs'
 import Icon from '@components/icon'
-import { staticAsset } from '@utils/urls'
+// import { staticAsset } from '@utils/urls'
 import './moderate.scss'
 
 export default class ModeratePage extends React.Component {
@@ -22,7 +22,7 @@ export default class ModeratePage extends React.Component {
     hasSubmitted: false,
     isCannedMenuOpen: false,
     isHelpDocsMenuOpen: false,
-    response: this.props.response || '',
+    // response: this.props.response || '',
     criteria: {
       positive: null,
       relevant: null,
@@ -59,18 +59,18 @@ export default class ModeratePage extends React.Component {
   render () {
     const {
       back,
-      response,
-      profile: {
-        canSkipModeration
-      },
+      responses,
+      // profile: {
+      //   canSkipModeration
+      // },
       cannedResponses,
       helpDocs
     } = this.props
 
     const {
-      isModerating,
+      // isModerating,
       messages,
-      criteria,
+      // criteria,
       isCannedMenuOpen,
       isHelpDocsMenuOpen
     } = this.state
@@ -113,25 +113,27 @@ export default class ModeratePage extends React.Component {
           </div>
         ))}
 
-        {response ? (
+        {responses.count ? (
           <Fragment>
             <div className='moderate-page-container'>
-              <ModerateCard
-                className='moderate-page-response'
-                reviewAuthor={response.review.author}
-                reviewDate={response.review.dateSubmitted}
-                reviewText={response.review.text}
-                reviewRating={response.review.rating}
-                responseText={response.text}
-                responseDate={response.submittedAt}
-                productName={response.review.product.name}
-                productImage={response.review.product.image}
-                productVersion={response.review.product.version || {}}
-                androidVersion={response.review.androidVersion}
-              />
+              {responses.results.map(response => (
+                <ModerateCard
+                  className='moderate-page-response'
+                  reviewAuthor={response.review.author}
+                  reviewDate={response.review.dateSubmitted}
+                  reviewText={response.review.text}
+                  reviewRating={response.review.rating}
+                  responseText={response.text}
+                  responseDate={response.submittedAt}
+                  productName={response.review.product.name}
+                  productImage={response.review.product.image}
+                  productVersion={response.review.product.version || {}}
+                  androidVersion={response.review.androidVersion}
+                />
+              ))}
             </div>
 
-            {isModerating &&
+            {/* {isModerating &&
               <div className='moderate-page-container'>
                 <div className='moderate-page-form'>
                   <div className='moderate-page-form-row'>
@@ -216,9 +218,9 @@ export default class ModeratePage extends React.Component {
                   </div>
                 </div>
               </div>
-            }
+            } */}
 
-            {canSkipModeration && !isModerating &&
+            {/* {canSkipModeration && !isModerating &&
               <div className='moderate-page-actions moderate-page-actions--trusted'>
                 <Button
                   label='Approve'
@@ -230,9 +232,9 @@ export default class ModeratePage extends React.Component {
                   className='moderate-page-actions-moderate'
                   onClick={this.setIsModerating} />
               </div>
-            }
+            } */}
 
-            {canSkipModeration && isModerating ? (
+            {/* {canSkipModeration && isModerating ? (
               <div className='moderate-page-actions'>
                 <span
                   className='moderate-page-actions-skip'
@@ -248,7 +250,7 @@ export default class ModeratePage extends React.Component {
                     this.handleSkip()
                   }}>Skip</span>
               </div>
-            )}
+            )} */}
           </Fragment>
         ) : null}
 

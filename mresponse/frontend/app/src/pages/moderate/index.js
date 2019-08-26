@@ -1,17 +1,18 @@
 import { connect } from 'react-redux'
 import { push } from 'connected-react-router'
 
-import { getCurrentResponse, getProfile, getCannedResponses, getHelpDocs } from '@redux/selectors'
+import { getResponses, getProfile, getCannedResponses, getHelpDocs } from '@redux/selectors'
 import { fetchNextResponse, updateCurrentModeration, submitModeration, skipResponse, submitApproval } from '@redux/actions'
 import { DASHBOARD_URL } from '@utils/urls'
 import ModeratePage from './moderate'
 
 const mapStateToProps = state => ({
-  response: getCurrentResponse(state),
+  responses: getResponses(state),
   profile: getProfile(state),
   cannedResponses: getCannedResponses(state),
   helpDocs: getHelpDocs(state)
 })
+
 const mapDispatchToProps = (dispatch, props) => ({
   back: () => dispatch(push(DASHBOARD_URL)),
   fetchNextResponse: cb => dispatch(fetchNextResponse(cb)),
