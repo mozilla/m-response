@@ -1,5 +1,6 @@
 from django.db import models, transaction
 from django.utils.translation import ugettext_lazy as _
+
 from rest_framework import exceptions, generics, permissions, response, views
 from rest_framework.pagination import PageNumberPagination
 
@@ -40,7 +41,7 @@ class CreateResponse(generics.CreateAPIView):
         # Give karma points to response author
         author_profile = author_user.profile
         author_profile.karma_points = (
-                models.F('karma_points') + RESPONSE_KARMA_POINTS_AMOUNT
+            models.F('karma_points') + RESPONSE_KARMA_POINTS_AMOUNT
         )
         author_profile.save(update_fields=('karma_points',))
 

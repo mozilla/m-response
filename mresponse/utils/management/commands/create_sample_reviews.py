@@ -4,8 +4,8 @@ import uuid
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 from django.utils.timezone import now
-from faker import Faker
 
+from faker import Faker
 from mresponse.applications.models import Application, ApplicationVersion
 from mresponse.responses.models import Response
 from mresponse.reviews.models import Review
