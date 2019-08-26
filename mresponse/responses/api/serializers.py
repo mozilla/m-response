@@ -9,6 +9,7 @@ class ResponseSerializer(serializers.ModelSerializer):
     moderation_url = serializers.SerializerMethodField()
     approve_url = serializers.SerializerMethodField()
     skip_url = serializers.SerializerMethodField()
+    moderation_count = serializers.IntegerField()
 
     class Meta:
         model = responses_models.Response
@@ -20,6 +21,7 @@ class ResponseSerializer(serializers.ModelSerializer):
             'approve_url',
             'moderation_url',
             'skip_url',
+            'moderation_count'
         )
         read_only_fields = ('submitted_at',)
 
