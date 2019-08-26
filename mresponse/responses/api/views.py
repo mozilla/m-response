@@ -1,7 +1,7 @@
 from django.db import models, transaction
 from django.utils.translation import ugettext_lazy as _
-
 from rest_framework import exceptions, generics, permissions, response, views
+from rest_framework.pagination import PageNumberPagination
 
 from mresponse.responses import models as responses_models
 from mresponse.responses.api import serializers as responses_serializers
@@ -40,16 +40,21 @@ class CreateResponse(generics.CreateAPIView):
         # Give karma points to response author
         author_profile = author_user.profile
         author_profile.karma_points = (
-            models.F('karma_points') + RESPONSE_KARMA_POINTS_AMOUNT
+                models.F('karma_points') + RESPONSE_KARMA_POINTS_AMOUNT
         )
         author_profile.save(update_fields=('karma_points',))
 
         review.save()
 
 
-class GetResponse(generics.RetrieveAPIView):
+class ResponsePagination(PageNumberPagination):
+    page_size = 4
+
+
+class GetResponse(generics.ListAPIView):
     serializer_class = responses_serializers.ResponseSerializer
     permission_classes = (permissions.IsAuthenticated,)
+    pagination_class = ResponsePagination
     queryset = responses_models.Response.objects.select_related(
         'review',
         'review__application',
