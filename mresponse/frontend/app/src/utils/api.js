@@ -112,18 +112,11 @@ export default class Api {
               text: result.text,
               review: this.serializeReview(result.review),
               moderationUrl: result.moderation_url,
-              submittedAt: new Date(result.submitted_at)
+              submittedAt: new Date(result.submitted_at),
+              moderationCount: result.moderation_count
             }
           ))
         }
-
-        // return {
-        //   id: json.id,
-        //   text: json.text,
-        //   review: this.serializeReview(json.review),
-        //   moderationUrl: json.moderation_url,
-        //   submittedAt: new Date(json.submitted_at)
-        // }
       })
     } else if (response.status === 404) {
       return response.json().then(json => {

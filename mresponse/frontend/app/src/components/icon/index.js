@@ -89,6 +89,21 @@ export default class Icon extends React.Component {
           </svg>
         )
         break
+      case 'checkMark':
+        icon = (
+          <svg className={className} xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+            <circle cx="10" cy="10" r="10" fill="currentColor" />
+            <path fill="#FFF" fillRule="nonzero" d="M8 16a1 1 0 0 1-.707-.293l-3-3a1 1 0 0 1 1.414-1.414l2.157 2.157 6.316-9.023a1 1 0 0 1 1.639 1.146l-7 10a1 1 0 0 1-.732.427A.863.863 0 0 1 8 16z" />
+          </svg>
+        )
+        break
+      case 'karma':
+        icon = (
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" className={className} fill="currentColor">
+            <path d="M8 16A8 8 0 1 1 8 0a8 8 0 0 1 0 16zm3.54-3.434l-3.306-4.81C8.883 7.01 9.955 5.758 11.451 4H9.857L7.543 6.736c-.379.434-.76.885-1.143 1.354V4H5v8.566h1.4V9.361l.827-.674 2.689 3.88h1.623z" />
+          </svg>
+        )
+        break
       default:
         break
     }

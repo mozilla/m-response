@@ -19,6 +19,9 @@
     &-container {
         padding-left: 16px;
         padding-right: 16px;
+        margin: 0 auto;
+        width: initial;
+        max-width: 380px;
     }
 
     &-alert-prompt {
@@ -29,9 +32,7 @@
     }
 
     &-response {
-        margin: 0 auto;
-        width: initial;
-        max-width: 380px;
+      margin-bottom: 18px;
     }
 
     &-form {
@@ -40,7 +41,7 @@
         max-width: 380px;
         border-radius: 4px;
         box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-        border-top: 2px solid $blue;
+        border-top: 2px solid $blue-light;
         background-color: white;
         padding: 16px;
         padding-top: 8px;
@@ -76,6 +77,16 @@
               }
             }
         }
+    }
+
+    &-controls {
+      text-align: center;
+      margin: 24px 0;
+
+      button {
+        color: $color-black;
+        font-weight: bold;
+      }
     }
 
     &-actions {

@@ -1,0 +1,82 @@
+@import '../../styles/main';
+
+.review-card {
+  appearance: none;
+  text-align: left;
+  padding: 0;
+  margin: 0;
+  border: none;
+  cursor: pointer;
+  display: block;
+
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  // box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  border-top: 2px solid $blue-light;
+  border-bottom: 2px solid $grey-lighter;
+  background-color: white;
+
+  &, * {
+    box-sizing: border-box;
+  }
+
+  &-response {
+    font-size: 14px;
+    border-left: 2px solid $background-color;
+    border-right: 2px solid $background-color;
+    padding: 8px 14px;
+
+    &-title {
+      font-weight: 700;
+      color: $grey;
+    }
+
+    &-comment {
+      padding: 0;
+      margin: 0;
+      margin-top: 3px;
+      margin-bottom: 5px;
+      line-height: 24px;
+    }
+  }
+
+  &-footer {
+    font-size: 12px;
+    padding: 6px 15px;
+    background-color: $background-color;
+
+    &-modCount {
+      display: flex;
+      align-items: center;
+      color: $placeholder-color;
+
+      &-item {
+        width: 18px;
+        height: 18px;
+        border: 1px solid $placeholder-color;
+        border-radius: 999px;
+        margin-right: 3px;
+        margin-left: 3px;
+        position: relative;
+
+        &:first-child {
+          margin-left: 0;
+        }
+
+        svg {
+          position: absolute;
+          top: -1px;left: -1px;
+          display: block;
+          width: 18px;
+          height: 18px;
+        }
+      }
+
+      &-label {
+        font-weight: bold;
+        margin-left: 8px;
+      }
+    }
+  }
+}
