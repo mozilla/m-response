@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import { push } from 'connected-react-router'
 
 import { getResponses, getProfile, getCannedResponses, getHelpDocs } from '@redux/selectors'
-import { fetchNextResponse, updateCurrentModeration, submitModeration, skipResponse, submitApproval } from '@redux/actions'
+import { fetchResponses, updateCurrentModeration, submitModeration, skipResponse, submitApproval } from '@redux/actions'
 import { DASHBOARD_URL } from '@utils/urls'
 import ModeratePage from './moderate'
 
@@ -15,7 +15,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = (dispatch, props) => ({
   back: () => dispatch(push(DASHBOARD_URL)),
-  fetchNextResponse: cb => dispatch(fetchNextResponse(cb)),
+  fetchResponses: (cb, pageNum) => dispatch(fetchResponses(cb, pageNum)),
   onModerationUpdate: ({ criteria, feedbackMessage }) => dispatch(updateCurrentModeration({
     'positive_in_tone': criteria.positive,
     'addressing_the_issue': criteria.relevant,

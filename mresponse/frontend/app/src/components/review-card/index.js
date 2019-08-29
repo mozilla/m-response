@@ -9,17 +9,9 @@ export default class ReviewCard extends React.Component {
   render () {
     const {
       className = '',
-      // reviewAuthor,
-      // reviewDate,
-      // reviewText,
-      // reviewRating,
       responseText,
       modCount,
       onClick
-      // productImage,
-      // productName,
-      // productVersion,
-      // androidVersion
     } = this.props
 
     const resText = responseText.length < 130

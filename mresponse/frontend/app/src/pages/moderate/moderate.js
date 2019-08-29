@@ -30,18 +30,19 @@ export default class ModeratePage extends React.Component {
       personal: null
     },
     messages: [],
-    feedbackMessage: ''
+    feedbackMessage: '',
+    pages: []
   }
 
   componentWillMount () {
     const {
-      fetchNextResponse,
-      profile: {
-        canSkipModeration
-      }
+      fetchResponses
+      // profile: {
+      //   canSkipModeration
+      // }
     } = this.props
 
-    fetchNextResponse((successMessage, err) => {
+    fetchResponses((successMessage, err) => {
       if (err) {
         this.pushMessage(err, true)
       }
@@ -49,12 +50,12 @@ export default class ModeratePage extends React.Component {
 
     // If the user is not trusted,
     // set isModerating to show the form immediately
-    this.setState(state => {
-      return {
-        ...state,
-        isModerating: !canSkipModeration
-      }
-    })
+    // this.setState(state => {
+    //   return {
+    //     ...state,
+    //     isModerating: !canSkipModeration
+    //   }
+    // })
   }
 
   render () {
@@ -117,6 +118,7 @@ export default class ModeratePage extends React.Component {
         <div className='moderate-page-container'>
           {responses.count && !isModerating ? (
             <Fragment>
+              {/* List of responses to moderate */}
               {responses.results.map(response => (
                 <ReviewCard
                   key={response.id}
@@ -126,11 +128,38 @@ export default class ModeratePage extends React.Component {
                   onClick={() => this.startModerating(response)}
                 />
               ))}
+
+              <div className='moderate-page-pagination'>
+                <button className='moderate-page-pagination-btn' disabled={responses.currPage <= 1} onClick={e => this.handlePageUpdate(responses.currPage - 1)}>
+                  <Icon iconName='arrowLeft' />
+                  <span>Previous</span>
+                </button>
+                <div className='moderate-page-pagination-select'>
+                  <select value={responses.currPage} onChange={e => this.handlePageUpdate(e.target.value)}>
+                    {responses.pages[0] > 1 ? <option value={1}>First</option> : null}
+                    {responses.pages.map(page => (
+                      <option
+                        disabled={page === responses.currPage}
+                        key={page}
+                        value={page}>
+                        {page}
+                      </option>
+                    ))}
+                    {responses.pages[responses.pages.length - 1] < responses.pagesCount ? <option value={responses.pagesCount}>Last</option> : null}
+                  </select>
+                  <Icon iconName='chevDown' className='moderate-page-pagination-select-icon' />
+                </div>
+                <button className='moderate-page-pagination-btn' disabled={responses.currPage === responses.pagesCount} onClick={e => this.handlePageUpdate(responses.currPage + 1)}>
+                  <span>Next</span>
+                  <Icon iconName='arrowRight' />
+                </button>
+              </div>
             </Fragment>
           ) : null }
 
           {responses.count ? (
             <Fragment>
+              {/* Moderation feedback */}
               {isModerating ? (
                 <Fragment>
                   <ModerateCard
@@ -313,6 +342,14 @@ export default class ModeratePage extends React.Component {
     if (e) {
       if (e.currentTarget === e.target) toggMenu()
     } else toggMenu()
+  }
+
+  handlePageUpdate = (pageNum) => {
+    this.props.fetchResponses((successMessage, err) => {
+      if (err) {
+        this.pushMessage(err, true)
+      }
+    }, pageNum)
   }
 
   toggleCriteria = (option, value) => {

@@ -17,6 +17,7 @@ const mapStateToProps = (state, props) => ({
   cannedResponses: getCannedResponses(state),
   helpDocs: getHelpDocs(state)
 })
+
 const mapDispatchToProps = (dispatch, props) => ({
   goToRespondMode: () => dispatch(push(RESPOND_URL)),
   goToModerateMode: () => dispatch(push(MODERATE_URL)),
