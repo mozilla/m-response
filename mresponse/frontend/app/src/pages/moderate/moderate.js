@@ -395,7 +395,7 @@ export default class ModeratePage extends React.Component {
         this.pushMessage(successMessage)
       }
       this.resetAll()
-    })
+    }, this.state.currResponse.id)
   }
 
   submitApproval = () => {

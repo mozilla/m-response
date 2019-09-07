@@ -30,16 +30,18 @@ export const updateCurrentModeration = moderation => ({
   moderation
 })
 
-export const submitModeration = (cb = () => null) =>
+export const submitModeration = (cb = () => null, currResponsId) =>
   connectApi(api =>
     async (dispatch, getState) => {
-      const { moderate: { currentResponse, currentResponseModeration } } = getState()
-      if (currentResponse) {
+      const { moderate: { currentResponseModeration } } = getState()
+      console.log('submitModeration test', currentResponseModeration)
+      if (currResponsId) {
         try {
-          const res = await api.submitModeration(currentResponse.id, currentResponseModeration)
+          const res = await api.submitModeration(currResponsId, currentResponseModeration)
           cb(res.detail, null)
           return dispatch(fetchResponses())
         } catch (e) {
+          console.log('testing!!!', e)
           cb(e.detail, true)
         }
       }

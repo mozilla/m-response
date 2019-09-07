@@ -23,7 +23,7 @@ const mapDispatchToProps = (dispatch, props) => ({
     'submitted_at': Date.now(),
     'feedback_message': feedbackMessage
   })),
-  submitModeration: cb => dispatch(submitModeration(cb)),
+  submitModeration: (cb, id) => dispatch(submitModeration(cb, id)),
   skipResponse: cb => dispatch(skipResponse(cb)),
   submitApproval: cb => dispatch(submitApproval(cb))
 })
