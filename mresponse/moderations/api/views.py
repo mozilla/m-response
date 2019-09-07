@@ -4,9 +4,9 @@ from rest_framework import generics, permissions, response, status, views
 
 from mresponse.moderations.api import serializers as moderations_serializers
 from mresponse.moderations.models import Approval
-from mresponse.responses import models as responses_models
 from mresponse.responses.api.permissions import \
     BypassStaffOrCommunityModerationPermission
+from mresponse.responses.models import Response
 
 MODERATION_KARMA_POINTS_AMOUNT = 1
 
@@ -17,12 +17,14 @@ class ModerationMixin:
         Get a response that matches the ID in the URL and has been
         assigned to the current user.
         """
-        assignment = generics.get_object_or_404(
-            responses_models.ResponseAssignedToUser.objects.not_expired(),
-            user=self.request.user,
-            response_id=self.kwargs['response_pk']
-        )
-        return assignment.response
+        # assignment = generics.get_object_or_404(
+        #     responses_models.ResponseAssignedToUser.objects.not_expired(),
+        #     user=self.request.user,
+        #     response_id=self.kwargs['response_pk']
+        # )
+        # return assignment.response
+
+        return Response.objects.annotate_moderations_count().get(pk=self.kwargs['response_pk'], moderations_count__lt=3)
 
 
 class CreateModeration(ModerationMixin, generics.CreateAPIView):
@@ -39,7 +41,7 @@ class CreateModeration(ModerationMixin, generics.CreateAPIView):
         )
 
         # Clear the assignment to the user.
-        self.request.user.response_assignment.delete()
+        # self.request.user.response_assignment.delete()
 
         # Give moderator karma points.
         moderator_profile = self.request.user.profile
