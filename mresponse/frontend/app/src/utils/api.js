@@ -179,7 +179,7 @@ export default class Api {
         'X-CSRFToken': Cookie.get('csrftoken')
       }
     })
-    return { detail: 'Thank you for your effort and so making Mozilla better for all of us!' }
+    return { detail: 'Thank you for your effort and making Mozilla better for all of us!' }
   }
 
   async submitModeration (responseId, moderation) {
@@ -197,7 +197,7 @@ export default class Api {
       throw errorMessage
     }
 
-    return { detail: 'Thank you for your effort and so making Mozilla better for all of us!' }
+    return { detail: 'Thank you for your effort and making Mozilla better for all of us!' }
   }
 
   async submitApproval (responseId) {
@@ -213,7 +213,7 @@ export default class Api {
       throw errorMessage
     }
 
-    return { detail: 'Thank you for your effort and so making Mozilla better for all of us!' }
+    return { detail: 'Thank you for your effort and making Mozilla better for all of us!' }
   }
 
   async skipReview (reviewId) {

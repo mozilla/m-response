@@ -12,8 +12,9 @@
     }
 
     &-toolbar {
-        position: fixed;
         background-color: $blue-lighter;
+        position: fixed;
+        z-index: 100;
     }
 
     &-container {
@@ -146,6 +147,7 @@
             &-em {
               font-weight: 200;
               color: $grey-light;
+              font-style: italic;
             }
 
             &-buttons {

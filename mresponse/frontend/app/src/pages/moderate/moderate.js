@@ -238,7 +238,7 @@ export default class ModeratePage extends React.Component {
                       <div className='moderate-page-form-row'>
                         <span className='moderate-page-form-row-title'>
                           Feedback message {' '}
-                          <span className="moderate-page-form-row-em">(optional)</span>
+                          <span className="moderate-page-form-row-em">optional</span>
                         </span>
                         <div>
                           <Textarea
@@ -388,11 +388,11 @@ export default class ModeratePage extends React.Component {
       criteria: this.state.criteria,
       feedbackMessage: this.state.feedbackMessage
     })
-    this.props.submitModeration((successMessage, err) => {
+    this.props.submitModeration((message, err) => {
       if (err) {
-        this.pushMessage(err, true)
+        this.pushMessage(message, true)
       } else {
-        this.pushMessage(successMessage)
+        this.pushMessage(message)
       }
       this.resetAll()
     }, this.state.currResponse.id)

@@ -15,13 +15,13 @@
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
-    max-width: 250px;
+    max-width: 328px;
     margin: 0 auto;
     padding: 0 44px 8px;
 
     .leader {
-      width: 33%;
-      max-width: 80px;
+      width: 80px;
+      flex: 0 0 auto;
 
       // Put the top user in the middle
       &:nth-child(1) { order: 2; }

@@ -34,14 +34,13 @@ export const submitModeration = (cb = () => null, currResponsId) =>
   connectApi(api =>
     async (dispatch, getState) => {
       const { moderate: { currentResponseModeration } } = getState()
-      console.log('submitModeration test', currentResponseModeration)
       if (currResponsId) {
         try {
           const res = await api.submitModeration(currResponsId, currentResponseModeration)
           cb(res.detail, null)
           return dispatch(fetchResponses())
         } catch (e) {
-          console.log('testing!!!', e)
+          console.log('actions-submitApproval: ', e, cb)
           cb(e.detail, true)
         }
       }
