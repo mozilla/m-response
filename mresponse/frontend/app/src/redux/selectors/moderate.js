@@ -1,1 +1,1 @@
-export const getCurrentResponse = state => state.moderate.currentResponse || null
+export const getResponses = state => state.moderate.responsePages || null

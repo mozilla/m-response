@@ -33,7 +33,7 @@ class TestUserApi(TestCase):
             'avatar',
             'can_skip_community_response_moderation',
             'stats',
-            'is_moderator'
+            'is_super_moderator'
         ])
 
     def test_user_api(self):

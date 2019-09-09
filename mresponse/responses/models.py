@@ -58,6 +58,9 @@ class Response(models.Model):
             ("can_bypass_staff_moderation", "Can bypass staff moderation"),
         )
 
+    def moderation_count(self):
+        return self.moderations.count()
+
     def __str__(self):
         return _('Response to review #%(review_id)s') % {
             'review_id': self.review.play_store_review_id,

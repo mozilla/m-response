@@ -1,13 +1,17 @@
 @import '../../styles/main';
 
 .moderate-card {
-    width: 350px;
+    width: 100%;
     height: auto;
     border-radius: 4px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    border-top: 2px solid $blue;
+    border-top: 2px solid $blue-light;
     background-color: white;
     padding: 15px;
+    
+    &, * {
+        box-sizing: border-box;
+    }
 
     &-header {
         display: flex;
@@ -19,6 +23,7 @@
             width: 40px;
             margin-right: 11px;
             margin-bottom: 6px;
+            flex: 0 0 40px;
         }
 
         &-row-container {

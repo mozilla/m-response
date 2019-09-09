@@ -12,13 +12,17 @@
     }
 
     &-toolbar {
-        position: fixed;
         background-color: $blue-lighter;
+        position: fixed;
+        z-index: 100;
     }
 
     &-container {
         padding-left: 16px;
         padding-right: 16px;
+        margin: 0 auto;
+        width: initial;
+        max-width: 380px;
     }
 
     &-alert-prompt {
@@ -29,9 +33,87 @@
     }
 
     &-response {
-        margin: 0 auto;
-        width: initial;
-        max-width: 380px;
+      margin-bottom: 18px;
+    }
+
+    &-pagination {
+      display: flex;
+      justify-content: space-between;
+
+      &-select {
+        flex: 0 0 auto;
+        position: relative;
+        z-index: 1;
+
+        select {
+          padding: 8px 24px 8px 12px;
+          font-size: 16px;
+          background-color: #fff;
+          border: 1px solid $border-color-alt;
+          border-radius: 4px;
+          color: $blue;
+          appearance: none;
+          text-align: center;
+          cursor: pointer;
+
+          &:focus {
+            outline: none;
+          }
+        }
+
+        &-icon {
+          color: $blue;
+          display: block;
+          position: absolute;
+          top: 50%;
+          right: 7px;
+          transform: translateY(-50%);
+          z-index: 1;
+        }
+      }
+
+      &-btn {
+        flex: 1 1 auto;
+        color: $blue;
+        border: 1px solid $border-color-alt;
+        border-radius: 4px;
+        background-color: #fff;
+        padding: 8px 12px;
+        font-size: 16px;
+        max-width: 130px;
+        cursor: pointer;
+
+        display: flex;
+        align-items: center;
+
+        &:first-child {
+          span {
+            margin-left: 20px;
+          }
+        }
+
+        &:last-child {
+          span {
+            margin-right: 20px;
+          }
+        }
+
+        &:disabled {
+          background-color: transparent;
+          opacity: .5;
+          cursor: default;
+        }
+
+        svg {
+          display: block;
+          flex: 0 0 auto;
+        }
+
+        span {
+          text-align: center;
+          flex: 1 1 auto;
+        }
+      }
     }
 
     &-form {
@@ -40,7 +122,7 @@
         max-width: 380px;
         border-radius: 4px;
         box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-        border-top: 2px solid $blue;
+        border-top: 2px solid $blue-light;
         background-color: white;
         padding: 16px;
         padding-top: 8px;
@@ -65,6 +147,7 @@
             &-em {
               font-weight: 200;
               color: $grey-light;
+              font-style: italic;
             }
 
             &-buttons {
@@ -76,6 +159,16 @@
               }
             }
         }
+    }
+
+    &-controls {
+      text-align: center;
+      margin: 24px 0;
+
+      button {
+        color: $color-black;
+        font-weight: bold;
+      }
     }
 
     &-actions {

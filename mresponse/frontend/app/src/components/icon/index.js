@@ -82,10 +82,46 @@ export default class Icon extends React.Component {
           </svg>
         )
         break
+      case 'arrowRight':
+        icon = (
+          <svg className={className} fill='currentColor' xmlns="http://www.w3.org/2000/svg" width="16" height="14" viewBox="0 0 16 14">
+            <path d="M15.707 6.293l-6-6a1 1 0 0 0-1.414 1.414L12.586 6H1a1 1 0 1 0 0 2h11.586l-4.293 4.293a1 1 0 1 0 1.414 1.414l6-6a1 1 0 0 0 0-1.414z" />
+          </svg>
+        )
+        break
+      case 'arrowLeft':
+        icon = (
+          <svg className={className} fill='currentColor' xmlns="http://www.w3.org/2000/svg" width="16" height="14" viewBox="0 0 16 14">
+            <path d="M.293 7.707l6 6a1 1 0 0 0 1.414-1.414L3.414 8H15a1 1 0 1 0 0-2H3.414l4.293-4.293A1 1 0 1 0 6.293.293l-6 6a1 1 0 0 0 0 1.414z" />
+          </svg>
+        )
+        break
+      case 'chevDown':
+        icon = (
+          <svg className={className} fill='currentColor' xmlns="http://www.w3.org/2000/svg" width="12" height="7" viewBox="0 0 12 7">
+            <path d="M6 7a1 1 0 0 1-.707-.293l-5-5A1 1 0 0 1 1.707.293L6 4.586 10.293.293a1 1 0 0 1 1.414 1.414l-5 5A1 1 0 0 1 6 7z" />
+          </svg>
+        )
+        break
       case 'dash':
         icon = (
           <svg className={className} fill='currentColor' xmlns="http://www.w3.org/2000/svg" width="20" height="2" viewBox="0 0 20 2">
             <rect width="20" height="2" x="8" y="17" fillRule="evenodd" rx="1" transform="translate(-8 -17)"/>
+          </svg>
+        )
+        break
+      case 'checkMark':
+        icon = (
+          <svg className={className} xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+            <circle cx="10" cy="10" r="10" fill="currentColor" />
+            <path fill="#FFF" fillRule="nonzero" d="M8 16a1 1 0 0 1-.707-.293l-3-3a1 1 0 0 1 1.414-1.414l2.157 2.157 6.316-9.023a1 1 0 0 1 1.639 1.146l-7 10a1 1 0 0 1-.732.427A.863.863 0 0 1 8 16z" />
+          </svg>
+        )
+        break
+      case 'karma':
+        icon = (
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" className={className} fill="currentColor">
+            <path d="M8 16A8 8 0 1 1 8 0a8 8 0 0 1 0 16zm3.54-3.434l-3.306-4.81C8.883 7.01 9.955 5.758 11.451 4H9.857L7.543 6.736c-.379.434-.76.885-1.143 1.354V4H5v8.566h1.4V9.361l.827-.674 2.689 3.88h1.623z" />
           </svg>
         )
         break

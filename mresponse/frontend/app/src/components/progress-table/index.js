@@ -11,7 +11,7 @@ function ProgressBar ({ width = 0, title, value, maxValue }) {
           <div className='progress-bar-row-wrap-level-indicator' style={{ width: `${width}%` }} />
         </div>
       </td>
-      <td className='progress-bar-row-label'>{value} / {maxValue}</td>
+      <td className='progress-bar-row-label'>{value} <span className='progress-bar-row-label-sub'>/ {maxValue}</span></td>
     </tr>
   )
 }

@@ -6,6 +6,18 @@ import './alert-prompt.scss'
 export default class AlertPrompt extends React.Component {
     state = { dismissed: false }
 
+    componentDidMount () {
+      if (!this.props.isError) {
+        this.setHideTimeout()
+      }
+    }
+
+    setHideTimeout () {
+      setTimeout(function () {
+        this.setState({ dismissed: true })
+      }.bind(this), 5000)
+    }
+
     render () {
       const { dismissed } = this.state
       const { className = '', title, message, isError } = this.props

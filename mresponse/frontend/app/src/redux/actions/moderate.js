@@ -4,12 +4,12 @@ import { getSpokenLanguages } from '@redux/selectors'
 export const UPDATE_MOD_RESPONSE = 'UPDATE_MOD_RESPONSE'
 export const UPDATE_MODERATION = 'UPDATE_MODERATION'
 
-export const fetchNextResponse = (cb = () => null) =>
+export const fetchResponses = (cb = () => null, pageNum = null) =>
   connectApi(api =>
     async (dispatch, getState) => {
       const languages = getSpokenLanguages(getState())
       try {
-        const response = await api.getResponse(languages)
+        const response = await api.getResponse(languages, pageNum)
         cb(null, null)
         return dispatch({
           type: UPDATE_MOD_RESPONSE,
@@ -30,16 +30,17 @@ export const updateCurrentModeration = moderation => ({
   moderation
 })
 
-export const submitModeration = (cb = () => null) =>
+export const submitModeration = (cb = () => null, currResponsId) =>
   connectApi(api =>
     async (dispatch, getState) => {
-      const { moderate: { currentResponse, currentResponseModeration } } = getState()
-      if (currentResponse) {
+      const { moderate: { currentResponseModeration } } = getState()
+      if (currResponsId) {
         try {
-          const res = await api.submitModeration(currentResponse.id, currentResponseModeration)
+          const res = await api.submitModeration(currResponsId, currentResponseModeration)
           cb(res.detail, null)
-          return dispatch(fetchNextResponse())
+          return dispatch(fetchResponses())
         } catch (e) {
+          console.log('actions-submitApproval: ', e, cb)
           cb(e.detail, true)
         }
       }
@@ -54,7 +55,7 @@ export const submitApproval = (cb = () => null) =>
         try {
           const res = await api.submitApproval(currentResponse.id)
           cb(res.detail, null)
-          return dispatch(fetchNextResponse())
+          return dispatch(fetchResponses())
         } catch (e) {
           cb(e.detail, true)
         }
@@ -69,7 +70,7 @@ export const skipResponse = (cb = () => null) =>
       if (currentResponse) {
         try {
           await api.skipResponse(currentResponse.id)
-          return dispatch(fetchNextResponse())
+          return dispatch(fetchResponses())
         } catch (e) {
           cb(e.detail, true)
         }

@@ -2,6 +2,7 @@ from django.db import models, transaction
 from django.utils.translation import ugettext_lazy as _
 
 from rest_framework import exceptions, generics, permissions, response, views
+from rest_framework.pagination import PageNumberPagination
 
 from mresponse.responses import models as responses_models
 from mresponse.responses.api import serializers as responses_serializers
@@ -47,9 +48,14 @@ class CreateResponse(generics.CreateAPIView):
         review.save()
 
 
-class GetResponse(generics.RetrieveAPIView):
+class ResponsePagination(PageNumberPagination):
+    page_size = 4
+
+
+class GetResponse(generics.ListAPIView):
     serializer_class = responses_serializers.ResponseSerializer
     permission_classes = (permissions.IsAuthenticated,)
+    pagination_class = ResponsePagination
     queryset = responses_models.Response.objects.select_related(
         'review',
         'review__application',

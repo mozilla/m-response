@@ -13,8 +13,9 @@
     }
 
     &-toolbar {
-        position: fixed;
         background-color: $orange;
+        position: fixed;
+        z-index: 100;
     }
 
     &-alert-prompt {

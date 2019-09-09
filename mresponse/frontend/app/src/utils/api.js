@@ -93,21 +93,70 @@ export default class Api {
     }
   }
 
-  async getResponse (languages) {
+  async getResponse (languages, pageNum) {
     let params = '?'
     if (languages && languages.length) {
       params = params + this.generateLanguageParam(languages)
     }
 
-    let response = await this.fetch(`/api/response/${params}`)
+    if (pageNum) params = params ? params + `;page=${pageNum}` : params + `page=${pageNum}`
+
+    const response = await this.fetch(`/api/response/${params}`)
     if (response.status === 200) {
       return response.json().then(json => {
+        // Prev + next page numbers
+        const next = new URLSearchParams(json.next).get('page')
+        const previous = new URLSearchParams(json.previous).get('page')
+        const currPage = next ? Number(next) - 1 : Number(previous) + 1
+
+        // Get pages array
+        const displayPerPage = 4 // Set by API
+        const pagesCount = Math.ceil(json.count / displayPerPage)
+
+        let start = 0
+        let end = 0
+        const pagesCutOff = 15
+        const ceiling = Math.ceil(pagesCutOff / 2)
+        const floor = Math.floor(pagesCutOff / 2)
+
+        // Calc range of page nums
+        if (pagesCount < pagesCutOff) {
+          start = 0
+          end = pagesCount
+        } else if (currPage >= 1 && currPage <= ceiling) {
+          start = 0
+          end = pagesCutOff
+        } else if ((currPage + floor) >= pagesCount) {
+          start = (pagesCount - pagesCutOff)
+          end = pagesCount
+        } else {
+          start = (currPage - ceiling)
+          end = (currPage + floor)
+        }
+
+        // Assemble page numbers based on range
+        const pages = []
+        for (let i = start; i < end; i++) {
+          pages.push(i + 1)
+        }
+
         return {
-          id: json.id,
-          text: json.text,
-          review: this.serializeReview(json.review),
-          moderationUrl: json.moderation_url,
-          submittedAt: new Date(json.submitted_at)
+          count: json.count,
+          pagesCount,
+          next,
+          previous,
+          pages,
+          currPage,
+          results: json.results.map(result => (
+            {
+              id: result.id,
+              text: result.text,
+              review: this.serializeReview(result.review),
+              moderationUrl: result.moderation_url,
+              submittedAt: new Date(result.submitted_at),
+              moderationCount: result.moderation_count
+            }
+          ))
         }
       })
     } else if (response.status === 404) {
@@ -130,7 +179,7 @@ export default class Api {
         'X-CSRFToken': Cookie.get('csrftoken')
       }
     })
-    return { detail: 'Thank you for your effort and so making Mozilla better for all of us!' }
+    return { detail: 'Thank you for your effort and making Mozilla better for all of us!' }
   }
 
   async submitModeration (responseId, moderation) {
@@ -148,7 +197,7 @@ export default class Api {
       throw errorMessage
     }
 
-    return { detail: 'Thank you for your effort and so making Mozilla better for all of us!' }
+    return { detail: 'Thank you for your effort and making Mozilla better for all of us!' }
   }
 
   async submitApproval (responseId) {
@@ -164,7 +213,7 @@ export default class Api {
       throw errorMessage
     }
 
-    return { detail: 'Thank you for your effort and so making Mozilla better for all of us!' }
+    return { detail: 'Thank you for your effort and making Mozilla better for all of us!' }
   }
 
   async skipReview (reviewId) {

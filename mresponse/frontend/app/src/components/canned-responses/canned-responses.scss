@@ -22,7 +22,7 @@
 
   &-inner {
     position: relative;
-    height: calc(100vh - 42px);
+    // height: calc(100vh - 42px);
   }
 
   &-canned-content {
@@ -100,6 +100,7 @@
             line-height: inherit;
             font-size: inherit;
             transition: border-color .3s;
+            width: 100%;
 
             &:focus {
               border-color: $blue;
