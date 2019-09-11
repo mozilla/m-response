@@ -12,12 +12,14 @@
         width: 100%;
     
         &-label {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 600;
             white-space: nowrap;
 
             &-sub {
                 color: $grey-dark;
+                font-size: 12px;
+                font-weight: 400;
             }
         }
     
