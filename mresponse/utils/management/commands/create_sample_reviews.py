@@ -17,6 +17,7 @@ faker = Faker()
 REVIEWS_TO_CREATE = 100
 USER_TO_CREATE = 10
 
+
 class Command(BaseCommand):
     help = "Creates example reviews"
 
@@ -29,7 +30,7 @@ class Command(BaseCommand):
         for _ in range(USER_TO_CREATE):
             email = faker.email()
             user = User.objects.create(first_name=faker.first_name(), last_name=faker.last_name(), email=email,
-                                         username=email)
+                                       username=email)
             users.append(
                 user)
             self.stdout.write(self.style.WARNING('created %s' % user))
@@ -41,7 +42,7 @@ class Command(BaseCommand):
                                            last_modified=now())
 
             response = Response.objects.create(review=review, approved=False, author=random.choice(users),
-                                             text=faker.text())
+                                               text=faker.text())
             self.stdout.write(self.style.WARNING('created %s' % response))
 
         self.stdout.write(self.style.SUCCESS('Successfully created %s users' % USER_TO_CREATE))
