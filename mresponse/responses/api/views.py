@@ -56,11 +56,13 @@ class GetResponse(generics.ListAPIView):
     serializer_class = responses_serializers.ResponseSerializer
     permission_classes = (permissions.IsAuthenticated,)
     pagination_class = ResponsePagination
-    queryset = responses_models.Response.objects.select_related(
-        'review',
-        'review__application',
-        'review__application_version',
-    ).moderator_queue()
+
+    def get_queryset(self):
+        return responses_models.Response.objects.select_related(
+            'review',
+            'review__application',
+            'review__application_version',
+        ).moderator_queue().not_moderated_by(self.request.user)
 
     def get_serializer(self, *args, **kwargs):
         kwargs['show_moderation_url'] = True

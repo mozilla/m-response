@@ -31,6 +31,9 @@ class CreateModeration(ModerationMixin, generics.CreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = moderations_serializers.ModerationSerializer
 
+    def get_queryset(self):
+        return Response.objects.exclude(moderations__moderator=self.request.user)
+
     @transaction.atomic
     def perform_create(self, serializer):
         response = self.get_response_for_user()
