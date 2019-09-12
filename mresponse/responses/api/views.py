@@ -62,7 +62,7 @@ class GetResponse(generics.ListAPIView):
             'review',
             'review__application',
             'review__application_version',
-        ).moderator_queue().not_moderated_by(self.request.user)
+        ).moderator_queue().two_or_less_moderations().not_moderated_by(self.request.user)
 
     def get_serializer(self, *args, **kwargs):
         kwargs['show_moderation_url'] = True
