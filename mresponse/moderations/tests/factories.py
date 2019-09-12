@@ -1,5 +1,4 @@
 import factory
-
 from mresponse.moderations.models import Moderation
 from mresponse.users.tests.factories import UserFactory
 

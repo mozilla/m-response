@@ -1,6 +1,6 @@
 import datetime
-import factory
 
+import factory
 from mresponse.applications.models import Application
 from mresponse.responses.api.serializers import ResponseSerializer
 from mresponse.responses.models import Response

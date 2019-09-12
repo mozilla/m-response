@@ -1,8 +1,8 @@
 from django.test import TestCase
 
 from mresponse.responses.tests.factories import ResponseSerializerFactory
-from mresponse.users.tests.factories import BypassStaffModerationUserFactory, \
-    BypassCommunityModerationUserFactory
+from mresponse.users.tests.factories import (
+    BypassCommunityModerationUserFactory, BypassStaffModerationUserFactory)
 
 
 class TestResponseSerializer(TestCase):

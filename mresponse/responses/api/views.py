@@ -1,4 +1,4 @@
-from django.contrib.admin.models import LogEntry, CHANGE
+from django.contrib.admin.models import CHANGE, LogEntry
 from django.contrib.contenttypes.models import ContentType
 from django.db import models, transaction
 from django.utils.translation import ugettext_lazy as _
@@ -41,7 +41,7 @@ class CreateResponse(generics.CreateAPIView):
         # Give karma points to response author
         author_profile = author_user.profile
         author_profile.karma_points = (
-                models.F('karma_points') + RESPONSE_KARMA_POINTS_AMOUNT
+            models.F('karma_points') + RESPONSE_KARMA_POINTS_AMOUNT
         )
         author_profile.save(update_fields=('karma_points',))
 
@@ -76,9 +76,11 @@ class GetResponse(ResponseMixin, generics.RetrieveUpdateAPIView):
     def perform_update(self, serializer):
         serializer.save()
 
-        response = self.get_object()
-        LogEntry.objects.log_action(self.request.user.pk, ContentType.objects.get_for_model(response).pk, response.pk,
-                                    repr(response), CHANGE)
+        obj = self.get_object()
+        LogEntry.objects.log_action(self.request.user.pk,
+                                    ContentType.objects.get_for_model(obj).pk,
+                                    obj.pk,
+                                    repr(obj), CHANGE)
 
 
 class ListResponse(ResponseMixin, generics.ListAPIView):

@@ -1,6 +1,4 @@
 from datetime import timedelta
-
-from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.utils.timezone import now
 
@@ -29,9 +27,9 @@ class TestProfileUsers(TestCase):
     def test_previous_count(self):
         response = ResponseFactory(author=self.user)
         ModerationFactory.create_batch(response=response, positive_in_tone=True, size=11,
-                              submitted_at=now() - timedelta(days=10))
+                                       submitted_at=now() - timedelta(days=10))
         ModerationFactory.create_batch(response=response, positive_in_tone=False, size=5,
-                              submitted_at=now() - timedelta(days=11))
+                                       submitted_at=now() - timedelta(days=11))
         self.assertEquals(self.user.profile.profile_stats['previous_count'], 16)
 
     def test_positive_in_tone_count(self):
@@ -45,7 +43,7 @@ class TestProfileUsers(TestCase):
         ModerationFactory.create_batch(response=response, positive_in_tone=False, size=5)
 
         ModerationFactory.create_batch(response=response, positive_in_tone=True, size=10,
-                              submitted_at=now() - timedelta(days=10))
+                                       submitted_at=now() - timedelta(days=10))
         self.assertEquals(self.user.profile.profile_stats['positive_in_tone_change'], .1)
 
     def test_addressing_the_issue_count(self):
@@ -59,7 +57,7 @@ class TestProfileUsers(TestCase):
         ModerationFactory.create_batch(response=response, addressing_the_issue=False, size=5)
 
         ModerationFactory.create_batch(response=response, addressing_the_issue=True, size=10,
-                              submitted_at=now() - timedelta(days=10))
+                                       submitted_at=now() - timedelta(days=10))
         self.assertEquals(self.user.profile.profile_stats['addressing_the_issue_change'], .1)
 
     def test_personal_count(self):
@@ -70,7 +68,7 @@ class TestProfileUsers(TestCase):
     def test_personal_change(self):
         response = ResponseFactory(author=self.user)
         ModerationFactory.create_batch(response=response, personal=True, size=10,
-                              submitted_at=now() - timedelta(days=10))
+                                       submitted_at=now() - timedelta(days=10))
         ModerationFactory.create_batch(response=response, personal=True, size=5)
         ModerationFactory.create_batch(response=response, personal=False, size=5)
         self.assertEquals(self.user.profile.profile_stats['personal_change'], -0.5)
