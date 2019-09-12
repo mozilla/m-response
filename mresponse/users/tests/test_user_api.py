@@ -1,23 +1,19 @@
-from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
-from mresponse.moderations.mommy_recipes import ModerationRecipe
-from mresponse.responses.mommy_recipes import ResponseRecipe
+from mresponse.moderations.tests.factories import ModerationFactory
+from mresponse.responses.tests.test_get_response_api import ResponseFactory
+from mresponse.users.tests.factories import UserFactory
 
 
 class TestUserApi(TestCase):
     def setUp(self):
-        User = get_user_model()
-
-        self.user = User(
-            username='testuser',
-        )
+        self.user = UserFactory()
         self.user.set_password('password')
         self.user.save()
 
-        response = ResponseRecipe.make(author=self.user)
-        ModerationRecipe.make(response=response, positive_in_tone=True, _quantity=11)
+        response = ResponseFactory(author=self.user)
+        ModerationFactory.create_batch(response=response, positive_in_tone=True, size=11)
 
         # Login
         self.client.login(username=self.user.username, password='password')
