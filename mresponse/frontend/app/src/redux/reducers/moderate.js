@@ -14,7 +14,9 @@ export default (state = initial, action) => {
   switch (action.type) {
     case UPDATE_MOD_RESPONSE: {
       const { response } = action
-      return Object.assign({}, state, { responsePages: response })
+      return Object.assign({}, state, {
+        responsePages: response
+      })
       // return Object.assign({}, state, {
       //   currentResponse: response,
       //   currentResponseModeration: null

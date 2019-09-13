@@ -25,7 +25,7 @@ const mapDispatchToProps = (dispatch, props) => ({
   })),
   submitModeration: (cb, id) => dispatch(submitModeration(cb, id)),
   skipResponse: cb => dispatch(skipResponse(cb)),
-  submitApproval: cb => dispatch(submitApproval(cb))
+  submitApproval: (cb, id) => dispatch(submitApproval(cb, id))
 })
 
 export default connect(

@@ -65,8 +65,8 @@ export const getProfile = state => {
     }
   }
 
-  const isMod = userProfile.is_moderator || false
-  const isSuperMod = userProfile.can_skip_community_response_moderation || false
+  const isMod = userProfile.can_skip_community_response_moderation || false
+  const isSuperMod = userProfile.is_super_moderator || false
 
   const result = {
     id: meta.username,
