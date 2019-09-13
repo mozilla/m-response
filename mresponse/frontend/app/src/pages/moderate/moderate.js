@@ -31,8 +31,7 @@ export default class ModeratePage extends React.Component {
       personal: null
     },
     messages: [],
-    feedbackMessage: '',
-    pages: []
+    feedbackMessage: ''
   }
 
   componentWillMount () {
@@ -375,6 +374,9 @@ export default class ModeratePage extends React.Component {
   }
 
   closeResDetails = () => {
+    // Put user at top of screen
+    window.scrollTo(0, 0)
+
     this.resetAll()
 
     this.setState({
@@ -384,6 +386,10 @@ export default class ModeratePage extends React.Component {
   }
 
   submitModeration = () => {
+    const {
+      responses
+    } = this.props
+
     // TODO @ REDUX STAGE: SUBMIT LOGIC...
     this.props.onModerationUpdate({
       criteria: this.state.criteria,
@@ -395,19 +401,23 @@ export default class ModeratePage extends React.Component {
       } else {
         this.pushMessage(message)
       }
-      this.resetAll()
-    }, this.state.currResponse.id)
+      this.closeResDetails()
+    }, this.state.currResponse.id, responses.currPage)
   }
 
   submitApproval = () => {
+    const {
+      responses
+    } = this.props
+
     this.props.submitApproval((message, err) => {
       if (err) {
         this.pushMessage(message, true)
       } else {
         this.pushMessage(message)
       }
-      this.resetAll()
-    }, this.state.currResponse.id)
+      this.closeResDetails()
+    }, this.state.currResponse.id, responses.currPage)
   }
 
   pushMessage = (text, isError = false) => {

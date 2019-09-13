@@ -6,8 +6,6 @@ import RatingStars from '@components/rating-stars'
 import './moderate-card.scss'
 
 export default class ModerateCard extends React.Component {
-  state = { expanded: false }
-
   render () {
     const {
       className = '',
@@ -23,10 +21,6 @@ export default class ModerateCard extends React.Component {
       androidVersion,
       modCount
     } = this.props
-
-    const reviewComment = this.state.expanded
-      ? reviewText
-      : reviewText.substring(0, 130) + '...'
 
     return (
       <div className={`moderate-card ${className}`}>
@@ -48,12 +42,9 @@ export default class ModerateCard extends React.Component {
           </div>
 
           <div className='moderate-card-review'>
-            <div className={`moderate-card-review-comment ${this.state.expanded ? 'moderate-card-review-comment--expanded' : ''}`}>
+            <div className='moderate-card-review-comment'>
               <p className='moderate-card-review-comment-text'>
-                {reviewComment}
-                <span className='moderate-card-expand-trigger' onClick={this.toggleExpansion}>
-                  {this.state.expanded ? 'Less' : 'More'}
-                </span>
+                {reviewText}
               </p>
             </div>
 
@@ -82,6 +73,4 @@ export default class ModerateCard extends React.Component {
       </div>
     )
   }
-
-  toggleExpansion = () => this.setState({ expanded: !this.state.expanded })
 }
