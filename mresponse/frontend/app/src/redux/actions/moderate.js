@@ -40,7 +40,6 @@ export const submitModeration = (cb = () => null, currResponsId, currPage = 1) =
           cb(res.detail, null)
           return dispatch(fetchResponses(() => {}, currPage))
         } catch (e) {
-          console.log('actions-submitApproval: ', e, cb)
           cb(e.detail, true)
         }
       }

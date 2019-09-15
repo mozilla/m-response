@@ -186,6 +186,17 @@
         &--form {
           padding: 16px;
           background-color: $background-color;
+
+          &-between {
+            justify-content: space-between;
+            margin-left: -6px;
+            margin-right: -6px;
+          }
+
+          .moderate-page-actions-approve {
+            flex: 1 1 auto;
+            max-width: 150px;
+          }
         }
 
         &--trusted {
@@ -212,6 +223,7 @@
           margin-right: 6px;
           margin-left: 6px;
           border: 2px solid $color-black;
+          white-space: nowrap;
 
           & > .standard-button-icon {
             width: 20px;
