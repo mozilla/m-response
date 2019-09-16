@@ -1,5 +1,4 @@
 import datetime
-import json
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
@@ -100,7 +99,7 @@ class TestGetResponseView(TestCase):
         response = self.client.get('/api/response/')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertEqual(
-            json.loads(response.content.decode())['detail'],
+            response.json()['detail'],
             'No responses available in the moderator queue.'
         )
 
@@ -109,7 +108,7 @@ class TestGetResponseView(TestCase):
         ResponseSerializerFactory()
         response = self.client.get('/api/response/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(json.loads(response.content.decode())['text'], 'test')
+        self.assertEqual(response.json()['text'], 'test')
 
     def test_returning_no_responses_to_moderate_for_approved_response(self):
         self.client.force_authenticate(user=UserFactory())
@@ -117,6 +116,6 @@ class TestGetResponseView(TestCase):
         response = self.client.get('/api/response/')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertEqual(
-            json.loads(response.content.decode())['detail'],
+            response.json()['detail'],
             'No responses available in the moderator queue.'
         )
