@@ -303,4 +303,51 @@
         }
     }
 
+    &-notice-editresp {
+      font-size: 12px;
+      background-color: $yellow-lightest;
+      border: 2px solid $yellow-dark;
+
+      padding: 8px 16px 16px;
+
+      &-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0 -8px;
+
+        &-icon {
+          margin: 0 8px;
+        }
+
+        &-text {
+          margin: 0 8px;
+          p {
+            margin: 0;
+            line-height: 1.6;
+          }
+        }
+      }
+
+      &-control {
+        text-align: center;
+
+        button {
+          background-color: transparent;
+          border: none;
+          margin-top: 12px;
+          padding: 4px;
+          cursor: pointer;
+
+          svg {
+            margin-right: 8px;
+          }
+
+          span {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+
 }

@@ -70,14 +70,14 @@ export default class ModeratePage extends React.Component {
 
     const {
       isEditingResp,
+      editedResponse,
       isResDetailsOpen,
       isModerating,
       messages,
       criteria,
       isCannedMenuOpen,
       isHelpDocsMenuOpen,
-      currResponse,
-      editedResponse
+      currResponse
     } = this.state
 
     const sideBarCannedContent = (
@@ -172,6 +172,25 @@ export default class ModeratePage extends React.Component {
                 androidVersion={currResponse.review.androidVersion}
                 modCount={currResponse.moderationCount}
               />
+
+              {editedResponse ? (
+                <div className='moderate-page-notice-editresp'>
+                  <div className='moderate-page-notice-editresp-content'>
+                    <div className='moderate-page-notice-editresp-content-icon'>
+                      <Icon iconName='info' />
+                    </div>
+                    <div className='moderate-page-notice-editresp-content-text'>
+                      <p>You are viewing an <strong>edited version</strong> of this response. Changes will not be applied until you have completed moderating this response.</p>
+                    </div>
+                  </div>
+                  <div className='moderate-page-notice-editresp-control'>
+                    <button onClick={this.cancelEditingResp}>
+                      <Icon iconName='undo' />
+                      <span>Revert edits</span>
+                    </button>
+                  </div>
+                </div>
+              ) : null}
 
               {isModerating ? (
                 <div className='moderate-page-form'>
@@ -326,7 +345,7 @@ export default class ModeratePage extends React.Component {
                   <Button
                     label='Done'
                     className='moderate-page-edit-response-form-submit'
-                    onClick={() => { console.log('Save edited response goes here') }} />
+                    onClick={this.submitEditingResp} />
                   <Button
                     type='link'
                     label='Cancel'
@@ -420,6 +439,13 @@ export default class ModeratePage extends React.Component {
     this.setState({
       isEditingResp: false,
       editedResponse: ''
+    })
+  }
+
+  submitEditingResp = () => {
+    // Only close the response pane and keep what was entered into "editedResponse"
+    this.setState({
+      isEditingResp: false
     })
   }
 
