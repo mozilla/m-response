@@ -70,7 +70,7 @@ class ResponseMixin:
         return super().get_serializer(*args, **kwargs)
 
 
-class GetResponse(ResponseMixin, generics.RetrieveUpdateAPIView):
+class RetrieveUpdateResponse(ResponseMixin, generics.RetrieveUpdateAPIView):
     lookup_url_kwarg = 'review_pk'
 
     def perform_update(self, serializer):
