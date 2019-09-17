@@ -15,6 +15,11 @@
         background-color: $blue-lighter;
         position: fixed;
         z-index: 100;
+        box-shadow: 0 0 3px 1px rgba(41,41,41,.3);
+    }
+
+    &-review {
+      border-color: $blue-lighter;
     }
 
     &-container {
@@ -165,6 +170,60 @@
               }
             }
         }
+    }
+
+    &-edit-response {
+        flex-grow: 1;
+        min-height: 80px;
+        margin-top: 16px;
+        width: 100%;
+        padding-top: 16px;
+        background-color: white;
+
+        &-content {
+            margin: 0 auto;
+            max-width: 380px;
+            padding-left: 16px;
+            padding-right: 16px;
+        }
+
+        &-guide-button {
+            height: 36px;
+            background-color: transparent !important;
+            border: 1px solid $border-color;
+            color: $blue;
+            font-size: 12px;
+            font-weight: normal;
+            box-shadow: none;
+
+            img {
+                max-height: 14px;
+            }
+        }
+
+        &-form {
+            width: 100%;
+            padding-top: 16px;
+        }
+
+        &-form-submit {
+            width: 116px;
+            height: 42px;
+            margin-right: 24px;
+            margin-left: 24px;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+            margin: 0 auto !important;
+            margin-top: 24px !important;
+        }
+
+        &-form-cancel {
+            display: block;
+            color: $color-black;
+            font-weight: bold;
+            margin: 16px auto;
+        }
+
     }
 
     &-controls {

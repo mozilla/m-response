@@ -16,6 +16,7 @@
         background-color: $orange;
         position: fixed;
         z-index: 100;
+        box-shadow: 0 0 3px 1px rgba(41,41,41,.3);
     }
 
     &-alert-prompt {

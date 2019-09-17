@@ -5,6 +5,7 @@ import { FirstChild } from '@components/first-child'
 import Toolbar from '@components/toolbar'
 import ModerateCard from '@components/moderate-card'
 import ReviewCard from '@components/review-card'
+import RespondCard from '@components/respond-card'
 import Button from '@components/buttons'
 import ToggleButton from '@components/buttons/toggle'
 import AlertPrompt from '@components/alert-prompt'
@@ -25,6 +26,7 @@ export default class ModeratePage extends React.Component {
     isCannedMenuOpen: false,
     isHelpDocsMenuOpen: false,
     currResponse: {},
+    editedResponse: '',
     criteria: {
       positive: null,
       relevant: null,
@@ -74,7 +76,8 @@ export default class ModeratePage extends React.Component {
       criteria,
       isCannedMenuOpen,
       isHelpDocsMenuOpen,
-      currResponse
+      currResponse,
+      editedResponse
     } = this.state
 
     const sideBarCannedContent = (
@@ -112,9 +115,7 @@ export default class ModeratePage extends React.Component {
                 isError={message.isError} />
             </div>
           ))}
-        </div>
 
-        <div className='moderate-page-container'>
           {responses.count && !isResDetailsOpen ? (
             <Fragment>
               {responses.results.map(response => (
@@ -153,7 +154,7 @@ export default class ModeratePage extends React.Component {
                 </button>
               </div>
             </Fragment>
-          ) : null }
+          ) : null}
 
           {isResDetailsOpen && !isEditingResp ? (
             <Fragment>
@@ -163,7 +164,7 @@ export default class ModeratePage extends React.Component {
                 reviewDate={currResponse.review.dateSubmitted}
                 reviewText={currResponse.review.text}
                 reviewRating={currResponse.review.rating}
-                responseText={currResponse.text}
+                responseText={editedResponse || currResponse.text}
                 responseDate={currResponse.submittedAt}
                 productName={currResponse.review.product.name}
                 productImage={currResponse.review.product.image}
@@ -287,13 +288,55 @@ export default class ModeratePage extends React.Component {
               </div>
             </ Fragment>
           ) : null}
-
-          {/* {isEditingResp ? (
-            <Fragment>
-              <h1>Lets edit that response!</h1>
-            </Fragment>
-          ) : null} */}
         </div>
+
+        {isEditingResp ? (
+          <Fragment>
+            <div className='moderate-page-container'>
+              <RespondCard
+                className='moderate-page-review'
+                author={currResponse.review.author}
+                date={currResponse.review.lastModified}
+                review={currResponse.review.text}
+                rating={currResponse.review.rating}
+                productName={currResponse.review.product.name}
+                productVersion={currResponse.review.product.version || {}}
+                productImage={currResponse.review.product.image}
+                androidVersion={currResponse.review.androidVersion}
+              />
+            </div>
+
+            <div className='moderate-page-edit-response'>
+              <div className='moderate-page-edit-response-content'>
+                <div className='response-page-response-actions'>
+                  <Button
+                    label='Canned Responses'
+                    className='moderate-page-edit-response-guide-button'
+                    icon={staticAsset('media/icons/sidebar.svg')}
+                    onClick={this.toggCannedResponses} />
+                </div>
+                <form className='moderate-page-edit-response-form'>
+                  <Textarea
+                    maxLength={350}
+                    value={editedResponse}
+                    placeholder='Add Your Response'
+                    onChange={this.updateEditedResponse}
+                    rows={6}
+                  />
+                  <Button
+                    label='Done'
+                    className='moderate-page-edit-response-form-submit'
+                    onClick={() => { console.log('Save edited response goes here') }} />
+                  <Button
+                    type='link'
+                    label='Cancel'
+                    className='moderate-page-edit-response-form-cancel'
+                    onClick={this.cancelEditingResp} />
+                </form>
+              </div>
+            </div>
+          </Fragment>
+        ) : null}
 
         <CSSTransitionGroup
           transitionName='sideBarAnim'
@@ -320,6 +363,10 @@ export default class ModeratePage extends React.Component {
         </CSSTransitionGroup>
       </div>
     )
+  }
+
+  updateEditedResponse = e => {
+    this.setState({ editedResponse: e.target.value })
   }
 
   toggCannedResponses = (e) => {
@@ -364,13 +411,15 @@ export default class ModeratePage extends React.Component {
 
   startEditingResp = () => {
     this.setState({
-      isEditingResp: true
+      isEditingResp: true,
+      editedResponse: ''
     })
   }
 
   cancelEditingResp = () => {
     this.setState({
-      isEditingResp: false
+      isEditingResp: false,
+      editedResponse: ''
     })
   }
 
