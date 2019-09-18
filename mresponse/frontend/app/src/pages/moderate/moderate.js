@@ -482,6 +482,8 @@ export default class ModeratePage extends React.Component {
 
     this.resetAll()
 
+    this.cancelEditingResp()
+
     this.setState({
       currResponse: {},
       isResDetailsOpen: false
@@ -489,6 +491,10 @@ export default class ModeratePage extends React.Component {
   }
 
   submitModeration = () => {
+    const {
+      editedResponse
+    } = this.state
+
     const {
       responses
     } = this.props
@@ -505,7 +511,7 @@ export default class ModeratePage extends React.Component {
         this.pushMessage(message)
       }
       this.closeResDetails()
-    }, this.state.currResponse.id, responses.currPage)
+    }, this.state.currResponse.id, responses.currPage, editedResponse)
   }
 
   submitApproval = () => {

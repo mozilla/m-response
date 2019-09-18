@@ -200,6 +200,26 @@ export default class Api {
     return { detail: 'Thank you for your effort and making Mozilla better for all of us!' }
   }
 
+  async editResponse (responseId, editedRespText) {
+    let response = await this.fetch(`/api/response/${responseId}/`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        text: editedRespText
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': Cookie.get('csrftoken')
+      }
+    })
+
+    if (!response.ok) {
+      const errorMessage = { detail: 'Unable to edit response text' }
+      throw errorMessage
+    }
+
+    return { detail: 'Response was edited' }
+  }
+
   async submitApproval (responseId) {
     let response = await this.fetch(`/api/moderation/approve/${responseId}/`, {
       method: 'POST',

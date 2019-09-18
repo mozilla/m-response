@@ -30,7 +30,7 @@ export const updateCurrentModeration = moderation => ({
   moderation
 })
 
-export const submitModeration = (cb = () => null, currResponsId, currPage = 1) =>
+export const submitModeration = (cb = () => null, currResponsId, currPage = 1, editedResponse = '') =>
   connectApi(api =>
     async (dispatch, getState) => {
       const { moderate: { currentResponseModeration } } = getState()
@@ -39,6 +39,15 @@ export const submitModeration = (cb = () => null, currResponsId, currPage = 1) =
           const res = await api.submitModeration(currResponsId, currentResponseModeration)
           cb(res.detail, null)
           return dispatch(fetchResponses(() => {}, currPage))
+        } catch (e) {
+          cb(e.detail, true)
+        }
+      }
+
+      if (editedResponse) {
+        try {
+          const res = await api.editResponse(currResponsId, editedResponse)
+          cb(res.detail, null)
         } catch (e) {
           cb(e.detail, true)
         }
