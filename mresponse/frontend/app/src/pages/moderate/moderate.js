@@ -9,6 +9,7 @@ import RespondCard from '@components/respond-card'
 import Button from '@components/buttons'
 import ToggleButton from '@components/buttons/toggle'
 import AlertPrompt from '@components/alert-prompt'
+import NoticePrompt from '@components/notice-prompt'
 import Textarea from '@components/textarea'
 import SideBar from '@components/side-bar'
 import CannedResponses from '@components/canned-responses'
@@ -33,7 +34,14 @@ export default class ModeratePage extends React.Component {
       personal: null
     },
     messages: [],
-    feedbackMessage: ''
+    feedbackMessage: '',
+    noticeData: {
+      message: '',
+      karma: 0,
+      type: '',
+      isOpen: false,
+      timeout: 3000
+    }
   }
 
   componentWillMount () {
@@ -46,7 +54,7 @@ export default class ModeratePage extends React.Component {
 
     fetchResponses((successMessage, err) => {
       if (err) {
-        this.pushMessage(err, true)
+        this.pushNotice(err, 'error')
       }
     })
 
@@ -77,7 +85,8 @@ export default class ModeratePage extends React.Component {
       criteria,
       isCannedMenuOpen,
       isHelpDocsMenuOpen,
-      currResponse
+      currResponse,
+      noticeData
     } = this.state
 
     const sideBarCannedContent = (
@@ -96,6 +105,15 @@ export default class ModeratePage extends React.Component {
 
     return (
       <div className='moderate-page'>
+        <CSSTransitionGroup
+          transitionName='slide-out-top'
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={300}
+          component={FirstChild}>
+          {noticeData.isOpen ? (
+            <NoticePrompt data={noticeData} closeNotice={this.resetNotice.bind(this)} />
+          ) : null}
+        </CSSTransitionGroup>
         <header className='moderate-page-header'>
           <Toolbar
             className='moderate-page-toolbar'
@@ -350,7 +368,7 @@ export default class ModeratePage extends React.Component {
                     type='link'
                     label='Cancel'
                     className='moderate-page-edit-response-form-cancel'
-                    onClick={this.cancelEditingResp} />
+                    onClick={() => { this.cancelEditingResp(true) }} />
                 </form>
               </div>
             </div>
@@ -405,7 +423,7 @@ export default class ModeratePage extends React.Component {
   handlePageUpdate = (pageNum) => {
     this.props.fetchResponses((successMessage, err) => {
       if (err) {
-        this.pushMessage(err, true)
+        this.pushNotice(err, 'error')
       }
     }, pageNum)
   }
@@ -418,6 +436,18 @@ export default class ModeratePage extends React.Component {
         [option]: value
       }
     }))
+  }
+
+  resetNotice = () => {
+    console.log('resetNotice ran!')
+    this.setState({
+      noticeData: {
+        message: '',
+        karma: 0,
+        type: '',
+        isOpen: false
+      }
+    })
   }
 
   pageTitle = () => {
@@ -435,11 +465,13 @@ export default class ModeratePage extends React.Component {
     })
   }
 
-  cancelEditingResp = () => {
+  cancelEditingResp = (doPushNotice) => {
     this.setState({
       isEditingResp: false,
       editedResponse: ''
     })
+
+    if (doPushNotice) this.pushNotice('Edits reverted')
   }
 
   submitEditingResp = () => {
@@ -492,7 +524,8 @@ export default class ModeratePage extends React.Component {
 
   submitModeration = () => {
     const {
-      editedResponse
+      editedResponse,
+      feedbackMessage
     } = this.state
 
     const {
@@ -502,13 +535,13 @@ export default class ModeratePage extends React.Component {
     // TODO @ REDUX STAGE: SUBMIT LOGIC...
     this.props.onModerationUpdate({
       criteria: this.state.criteria,
-      feedbackMessage: this.state.feedbackMessage
+      feedbackMessage: feedbackMessage
     })
     this.props.submitModeration((message, err) => {
       if (err) {
-        this.pushMessage(message, true)
+        this.pushNotice(message, 'error')
       } else {
-        this.pushMessage(message)
+        this.pushNotice(feedbackMessage ? 'Feedback Sent!' : 'Response moderated', 'success', 10)
       }
       this.closeResDetails()
     }, this.state.currResponse.id, responses.currPage, editedResponse)
@@ -521,12 +554,23 @@ export default class ModeratePage extends React.Component {
 
     this.props.submitApproval((message, err) => {
       if (err) {
-        this.pushMessage(message, true)
+        this.pushNotice('Unable to approve', 'error')
       } else {
-        this.pushMessage(message)
+        this.pushNotice('Response approved', 'success', 10)
       }
       this.closeResDetails()
     }, this.state.currResponse.id, responses.currPage)
+  }
+
+  pushNotice = (message, type = 'success', karma = 0) => {
+    this.setState({
+      noticeData: {
+        message,
+        karma,
+        type,
+        isOpen: true
+      }
+    })
   }
 
   pushMessage = (text, isError = false) => {

@@ -141,6 +141,13 @@ export default class Icon extends React.Component {
           </svg>
         )
         break
+      case 'checkMarkPlain':
+        icon = (
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" className={className} fill="currentColor">
+            <path d="M5.908 15.76c-.326 0-.64-.13-.87-.36l-3.693-3.693a1.23 1.23 0 0 1 1.74-1.74l2.656 2.654 7.773-11.105a1.23 1.23 0 0 1 2.017 1.41L6.916 15.234a1.23 1.23 0 0 1-.901.526 1.062 1.062 0 0 1-.107 0z" />
+          </svg>
+        )
+        break
       default:
         break
     }
