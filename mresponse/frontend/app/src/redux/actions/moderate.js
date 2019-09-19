@@ -30,7 +30,7 @@ export const updateCurrentModeration = moderation => ({
   moderation
 })
 
-export const submitModeration = (cb = () => null, currResponsId) =>
+export const submitModeration = (cb = () => null, currResponsId, currPage = 1, editedResponse = '') =>
   connectApi(api =>
     async (dispatch, getState) => {
       const { moderate: { currentResponseModeration } } = getState()
@@ -38,24 +38,32 @@ export const submitModeration = (cb = () => null, currResponsId) =>
         try {
           const res = await api.submitModeration(currResponsId, currentResponseModeration)
           cb(res.detail, null)
-          return dispatch(fetchResponses())
+          return dispatch(fetchResponses(() => {}, currPage))
         } catch (e) {
-          console.log('actions-submitApproval: ', e, cb)
+          cb(e.detail, true)
+        }
+      }
+
+      if (editedResponse) {
+        try {
+          const res = await api.editResponse(currResponsId, editedResponse)
+          cb(res.detail, null)
+        } catch (e) {
           cb(e.detail, true)
         }
       }
     }
   )
 
-export const submitApproval = (cb = () => null) =>
+export const submitApproval = (cb = () => null, currResponsId, currPage = 1) =>
   connectApi(api =>
     async (dispatch, getState) => {
-      const { moderate: { currentResponse } } = getState()
-      if (currentResponse) {
+      // const { moderate: { currentResponse } } = getState()
+      if (currResponsId) {
         try {
-          const res = await api.submitApproval(currentResponse.id)
+          const res = await api.submitApproval(currResponsId)
           cb(res.detail, null)
-          return dispatch(fetchResponses())
+          return dispatch(fetchResponses(() => {}, currPage))
         } catch (e) {
           cb(e.detail, true)
         }

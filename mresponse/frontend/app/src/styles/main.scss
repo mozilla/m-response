@@ -35,6 +35,22 @@ a {
   transform: translate3d(120%, 0, 0);
 }
 
+// slide-out-top : Animation
+.slide-out-top-enter {
+  transform: translate3d(0, -120%, 0);
+  transition: transform .22s ease-in-out;
+}
+.slide-out-top-enter.slide-out-top-enter-active {
+  transform: translate3d(0, 0, 0);
+}
+.slide-out-top-leave {
+  transform: translate3d(0, 0, 0);
+  transition: transform .22s ease-in-out;
+}
+.slide-out-top-leave.slide-out-top-leave-active {
+  transform: translate3d(0, -120%, 0);
+}
+
 // fadein : Animation
 .fadein-enter {
   opacity: 0;

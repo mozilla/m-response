@@ -5,9 +5,11 @@ import { FirstChild } from '@components/first-child'
 import Toolbar from '@components/toolbar'
 import ModerateCard from '@components/moderate-card'
 import ReviewCard from '@components/review-card'
+import RespondCard from '@components/respond-card'
 import Button from '@components/buttons'
 import ToggleButton from '@components/buttons/toggle'
 import AlertPrompt from '@components/alert-prompt'
+import NoticePrompt from '@components/notice-prompt'
 import Textarea from '@components/textarea'
 import SideBar from '@components/side-bar'
 import CannedResponses from '@components/canned-responses'
@@ -18,12 +20,14 @@ import './moderate.scss'
 
 export default class ModeratePage extends React.Component {
   state = {
+    isResDetailsOpen: false,
     isModerating: false,
-    isDoneEditing: false,
+    isEditingResp: false,
     hasSubmitted: false,
     isCannedMenuOpen: false,
     isHelpDocsMenuOpen: false,
     currResponse: {},
+    editedResponse: '',
     criteria: {
       positive: null,
       relevant: null,
@@ -31,51 +35,58 @@ export default class ModeratePage extends React.Component {
     },
     messages: [],
     feedbackMessage: '',
-    pages: []
+    noticeData: {
+      message: '',
+      karma: 0,
+      type: '',
+      isOpen: false,
+      timeout: 3000
+    }
   }
 
   componentWillMount () {
     const {
-      fetchResponses
-      // profile: {
-      //   canSkipModeration
-      // }
+      fetchResponses,
+      profile: {
+        isMod
+      }
     } = this.props
 
     fetchResponses((successMessage, err) => {
       if (err) {
-        this.pushMessage(err, true)
+        this.pushNotice(err, 'error')
       }
     })
 
     // If the user is not trusted,
     // set isModerating to show the form immediately
-    // this.setState(state => {
-    //   return {
-    //     ...state,
-    //     isModerating: !canSkipModeration
-    //   }
-    // })
+    this.setState({
+      isModerating: !isMod
+    })
   }
 
   render () {
     const {
-      back,
       responses,
       profile: {
-        canSkipModeration
+        isMod,
+        isSuperMod
       },
       cannedResponses,
       helpDocs
     } = this.props
 
     const {
+      isEditingResp,
+      editedResponse,
+      isResDetailsOpen,
       isModerating,
       messages,
       criteria,
       isCannedMenuOpen,
       isHelpDocsMenuOpen,
-      currResponse
+      currResponse,
+      noticeData
     } = this.state
 
     const sideBarCannedContent = (
@@ -94,13 +105,22 @@ export default class ModeratePage extends React.Component {
 
     return (
       <div className='moderate-page'>
+        <CSSTransitionGroup
+          transitionName='slide-out-top'
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={300}
+          component={FirstChild}>
+          {noticeData.isOpen ? (
+            <NoticePrompt data={noticeData} closeNotice={this.resetNotice.bind(this)} />
+          ) : null}
+        </CSSTransitionGroup>
         <header className='moderate-page-header'>
           <Toolbar
             className='moderate-page-toolbar'
-            title='Moderate'
+            title={this.pageTitle()}
             invertBackIcon={true}
-            onBack={back}
-            rightComponent={rightHelpMenu} />
+            onBack={this.toolbarBackBtn()}
+            rightComponent={isEditingResp ? null : rightHelpMenu} />
         </header>
 
         <div className='moderate-page-container'>
@@ -113,19 +133,16 @@ export default class ModeratePage extends React.Component {
                 isError={message.isError} />
             </div>
           ))}
-        </div>
 
-        <div className='moderate-page-container'>
-          {responses.count && !isModerating ? (
+          {responses.count && !isResDetailsOpen ? (
             <Fragment>
-              {/* List of responses to moderate */}
               {responses.results.map(response => (
                 <ReviewCard
                   key={response.id}
                   className='moderate-page-response'
                   responseText={response.text}
                   modCount={response.moderationCount}
-                  onClick={() => this.startModerating(response)}
+                  onClick={() => this.openResDetails(response)}
                 />
               ))}
 
@@ -155,28 +172,47 @@ export default class ModeratePage extends React.Component {
                 </button>
               </div>
             </Fragment>
-          ) : null }
+          ) : null}
 
-          {responses.count ? (
+          {isResDetailsOpen && !isEditingResp ? (
             <Fragment>
-              {/* Moderation feedback */}
-              {isModerating ? (
-                <Fragment>
-                  <ModerateCard
-                    className='moderate-page-response'
-                    reviewAuthor={currResponse.review.author}
-                    reviewDate={currResponse.review.dateSubmitted}
-                    reviewText={currResponse.review.text}
-                    reviewRating={currResponse.review.rating}
-                    responseText={currResponse.text}
-                    responseDate={currResponse.submittedAt}
-                    productName={currResponse.review.product.name}
-                    productImage={currResponse.review.product.image}
-                    productVersion={currResponse.review.product.version || {}}
-                    androidVersion={currResponse.review.androidVersion}
-                  />
+              <ModerateCard
+                className='moderate-page-response'
+                reviewAuthor={currResponse.review.author}
+                reviewDate={currResponse.review.dateSubmitted}
+                reviewText={currResponse.review.text}
+                reviewRating={currResponse.review.rating}
+                responseText={editedResponse || currResponse.text}
+                responseDate={currResponse.submittedAt}
+                productName={currResponse.review.product.name}
+                productImage={currResponse.review.product.image}
+                productVersion={currResponse.review.product.version || {}}
+                androidVersion={currResponse.review.androidVersion}
+                modCount={currResponse.moderationCount}
+              />
 
-                  <div className='moderate-page-form'>
+              {editedResponse ? (
+                <div className='moderate-page-notice-editresp'>
+                  <div className='moderate-page-notice-editresp-content'>
+                    <div className='moderate-page-notice-editresp-content-icon'>
+                      <Icon iconName='info' />
+                    </div>
+                    <div className='moderate-page-notice-editresp-content-text'>
+                      <p>You are viewing an <strong>edited version</strong> of this response. Changes will not be applied until you have completed moderating this response.</p>
+                    </div>
+                  </div>
+                  <div className='moderate-page-notice-editresp-control'>
+                    <button onClick={this.cancelEditingResp}>
+                      <Icon iconName='undo' />
+                      <span>Revert edits</span>
+                    </button>
+                  </div>
+                </div>
+              ) : null}
+
+              {isModerating ? (
+                <div className='moderate-page-form'>
+                  <div className='moderate-page-form-main'>
                     <div className='moderate-page-form-row'>
                       <span className='moderate-page-form-row-title'>
                         Does this response {' '}
@@ -234,11 +270,10 @@ export default class ModeratePage extends React.Component {
                       </div>
                     </div>
 
-                    {canSkipModeration &&
+                    {isMod &&
                       <div className='moderate-page-form-row'>
                         <span className='moderate-page-form-row-title'>
-                          Feedback message {' '}
-                          <span className="moderate-page-form-row-em">optional</span>
+                          Feedback message {' '} <span className="moderate-page-form-row-em">optional</span>
                         </span>
                         <div>
                           <Textarea
@@ -248,28 +283,28 @@ export default class ModeratePage extends React.Component {
                         </div>
                       </div>
                     }
+                  </div>
 
-                    <div className='moderate-page-actions moderate-page-actions--form'>
+                  <div className={'moderate-page-actions moderate-page-actions--form' + (isSuperMod ? ' moderate-page-actions--form-between' : '')}>
+                    {isSuperMod ? (
                       <Button
-                        label='Submit'
-                        className='moderate-page-actions-moderate'
-                        onClick={this.submitModeration}
-                        disabled={!this.allCriteriaAnswered(criteria)}
+                        label='Edit response'
+                        className='moderate-page-actions-approve'
+                        onClick={this.startEditingResp}
                       />
-                    </div>
-                  </div>
-
-                  <div className='moderate-page-controls'>
+                    ) : null}
                     <Button
-                      type='link'
-                      label='Back'
-                      onClick={() => this.cancelModerating()} />
+                      label='Submit'
+                      className='moderate-page-actions-moderate'
+                      onClick={this.submitModeration}
+                      disabled={!this.allCriteriaAnswered(criteria)}
+                    />
                   </div>
-                </ Fragment>
-              ) : null}
+                </div>) : null
+              }
 
-              {/* {canSkipModeration && !isModerating &&
-                <div className='moderate-page-actions moderate-page-actions--trusted'>
+              {isMod && !isModerating
+                ? <div className='moderate-page-actions moderate-page-actions--trusted'>
                   <Button
                     label='Approve'
                     className='moderate-page-actions-approve'
@@ -279,29 +314,66 @@ export default class ModeratePage extends React.Component {
                     label='Moderate'
                     className='moderate-page-actions-moderate'
                     onClick={this.setIsModerating} />
-                </div>
-              } */}
+                </div> : null
+              }
 
-              {/* {canSkipModeration && isModerating ? (
-                <div className='moderate-page-actions'>
-                  <span
-                    className='moderate-page-actions-skip'
-                    onClick={() => {
-                      this.resetAll()
-                    }}>Back</span>
-                </div>
-              ) : (
-                <div className='moderate-page-actions'>
-                  <span
-                    className='moderate-page-actions-skip'
-                    onClick={() => {
-                      this.handleSkip()
-                    }}>Skip</span>
-                </div>
-              )} */}
-            </Fragment>
+              <div className='moderate-page-controls'>
+                <Button
+                  type='link'
+                  label='Back'
+                  onClick={() => this.closeResDetails()} />
+              </div>
+            </ Fragment>
           ) : null}
         </div>
+
+        {isEditingResp ? (
+          <Fragment>
+            <div className='moderate-page-container'>
+              <RespondCard
+                className='moderate-page-review'
+                author={currResponse.review.author}
+                date={currResponse.review.lastModified}
+                review={currResponse.review.text}
+                rating={currResponse.review.rating}
+                productName={currResponse.review.product.name}
+                productVersion={currResponse.review.product.version || {}}
+                productImage={currResponse.review.product.image}
+                androidVersion={currResponse.review.androidVersion}
+              />
+            </div>
+
+            <div className='moderate-page-edit-response'>
+              <div className='moderate-page-edit-response-content'>
+                <div className='response-page-response-actions'>
+                  <Button
+                    label='Canned Responses'
+                    className='moderate-page-edit-response-guide-button'
+                    icon={staticAsset('media/icons/sidebar.svg')}
+                    onClick={this.toggCannedResponses} />
+                </div>
+                <form className='moderate-page-edit-response-form'>
+                  <Textarea
+                    maxLength={350}
+                    value={editedResponse}
+                    placeholder='Add Your Response'
+                    onChange={this.updateEditedResponse}
+                    rows={6}
+                  />
+                  <Button
+                    label='Done'
+                    className='moderate-page-edit-response-form-submit'
+                    onClick={this.submitEditingResp} />
+                  <Button
+                    type='link'
+                    label='Cancel'
+                    className='moderate-page-edit-response-form-cancel'
+                    onClick={() => { this.cancelEditingResp(true) }} />
+                </form>
+              </div>
+            </div>
+          </Fragment>
+        ) : null}
 
         <CSSTransitionGroup
           transitionName='sideBarAnim'
@@ -330,6 +402,10 @@ export default class ModeratePage extends React.Component {
     )
   }
 
+  updateEditedResponse = e => {
+    this.setState({ editedResponse: e.target.value })
+  }
+
   toggCannedResponses = (e) => {
     const toggMenu = () => (this.setState({ isCannedMenuOpen: !this.state.isCannedMenuOpen }))
     if (e) {
@@ -347,7 +423,7 @@ export default class ModeratePage extends React.Component {
   handlePageUpdate = (pageNum) => {
     this.props.fetchResponses((successMessage, err) => {
       if (err) {
-        this.pushMessage(err, true)
+        this.pushNotice(err, 'error')
       }
     }, pageNum)
   }
@@ -360,6 +436,49 @@ export default class ModeratePage extends React.Component {
         [option]: value
       }
     }))
+  }
+
+  resetNotice = () => {
+    console.log('resetNotice ran!')
+    this.setState({
+      noticeData: {
+        message: '',
+        karma: 0,
+        type: '',
+        isOpen: false
+      }
+    })
+  }
+
+  pageTitle = () => {
+    return this.state.isEditingResp ? 'Edit contributor\'s response' : 'Moderate'
+  }
+
+  toolbarBackBtn = () => {
+    return this.state.isEditingResp ? this.cancelEditingResp : this.props.back
+  }
+
+  startEditingResp = () => {
+    this.setState({
+      isEditingResp: true,
+      editedResponse: ''
+    })
+  }
+
+  cancelEditingResp = (doPushNotice) => {
+    this.setState({
+      isEditingResp: false,
+      editedResponse: ''
+    })
+
+    if (doPushNotice) this.pushNotice('Edits reverted')
+  }
+
+  submitEditingResp = () => {
+    // Only close the response pane and keep what was entered into "editedResponse"
+    this.setState({
+      isEditingResp: false
+    })
   }
 
   allCriteriaAnswered = (criteria) => {
@@ -382,30 +501,75 @@ export default class ModeratePage extends React.Component {
     })
   }
 
+  openResDetails = (response) => {
+    this.setState({
+      currResponse: response,
+      isResDetailsOpen: true
+    })
+  }
+
+  closeResDetails = () => {
+    // Put user at top of screen
+    window.scrollTo(0, 0)
+
+    this.resetAll()
+
+    this.cancelEditingResp()
+
+    this.setState({
+      currResponse: {},
+      isResDetailsOpen: false
+    })
+  }
+
   submitModeration = () => {
+    const {
+      editedResponse,
+      feedbackMessage
+    } = this.state
+
+    const {
+      responses
+    } = this.props
+
     // TODO @ REDUX STAGE: SUBMIT LOGIC...
     this.props.onModerationUpdate({
       criteria: this.state.criteria,
-      feedbackMessage: this.state.feedbackMessage
+      feedbackMessage: feedbackMessage
     })
     this.props.submitModeration((message, err) => {
       if (err) {
-        this.pushMessage(message, true)
+        this.pushNotice(message, 'error')
       } else {
-        this.pushMessage(message)
+        this.pushNotice(feedbackMessage ? 'Feedback Sent!' : 'Response moderated', 'success', 10)
       }
-      this.resetAll()
-    }, this.state.currResponse.id)
+      this.closeResDetails()
+    }, this.state.currResponse.id, responses.currPage, editedResponse)
   }
 
   submitApproval = () => {
+    const {
+      responses
+    } = this.props
+
     this.props.submitApproval((message, err) => {
       if (err) {
-        this.pushMessage(message, true)
+        this.pushNotice('Unable to approve', 'error')
       } else {
-        this.pushMessage(message)
+        this.pushNotice('Response approved', 'success', 10)
       }
-      this.resetAll()
+      this.closeResDetails()
+    }, this.state.currResponse.id, responses.currPage)
+  }
+
+  pushNotice = (message, type = 'success', karma = 0) => {
+    this.setState({
+      noticeData: {
+        message,
+        karma,
+        type,
+        isOpen: true
+      }
     })
   }
 
@@ -432,7 +596,7 @@ export default class ModeratePage extends React.Component {
   resetAll = () => {
     const {
       profile: {
-        canSkipModeration
+        isMod
       }
     } = this.props
 
@@ -440,41 +604,21 @@ export default class ModeratePage extends React.Component {
     this.resetData()
 
     // Reset the form to it's hidden for trusted users
-    if (canSkipModeration) {
+    if (isMod) {
       this.resetForm()
     }
   }
 
-  resetData = () => this.setState(state => {
-    return {
-      ...state,
-      criteria: {
-        positive: null,
-        relevant: null,
-        personal: null
-      },
-      feedbackMessage: ''
-    }
+  resetData = () => this.setState({
+    criteria: {
+      positive: null,
+      relevant: null,
+      personal: null
+    },
+    feedbackMessage: ''
   })
 
-  resetForm = () => this.setState(state => {
-    return {
-      ...state,
-      isModerating: false
-    }
+  resetForm = () => this.setState({
+    isModerating: false
   })
-
-  handleSkip = () => {
-    const {
-      skipResponse
-    } = this.props
-
-    skipResponse((message, err) => {
-      if (err) {
-        this.pushMessage(message, true)
-      } else {
-        this.resetAll()
-      }
-    })
-  }
 }

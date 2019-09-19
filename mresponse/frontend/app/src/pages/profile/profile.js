@@ -38,13 +38,12 @@ export default class ProfilePage extends React.Component {
     this.props.updateProfile()
 
     // calculate progress
-    console.log('test: ', this.props.profile)
     if (this.props.profile.stats.lastWeek.total) {
       const lastWeek = this.props.profile.stats.lastWeek
       const thisWeek = this.props.profile.stats.thisWeek
-      const tone = Math.round(((thisWeek.tone / thisWeek.total) - (lastWeek.tone / lastWeek.total)) * 100)
-      const issue = Math.round(((thisWeek.issue / thisWeek.total) - (lastWeek.issue / lastWeek.total)) * 100)
-      const personal = Math.round(((thisWeek.personal / thisWeek.total) - (lastWeek.personal / lastWeek.total)) * 100)
+      const tone = Math.round(((thisWeek.tone / thisWeek.total) - (lastWeek.tone / lastWeek.total)) * 100) || 0
+      const issue = Math.round(((thisWeek.issue / thisWeek.total) - (lastWeek.issue / lastWeek.total)) * 100) || 0
+      const personal = Math.round(((thisWeek.personal / thisWeek.total) - (lastWeek.personal / lastWeek.total)) * 100) || 0
 
       this.setState({
         progress: {

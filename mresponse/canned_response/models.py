@@ -14,4 +14,4 @@ class Category(models.Model):
 
 class Response(models.Model):
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
-    text = models.TextField(max_length=360)
+    text = models.TextField(max_length=350)

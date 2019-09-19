@@ -31,6 +31,9 @@ class CreateModeration(ModerationMixin, generics.CreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = moderations_serializers.ModerationSerializer
 
+    def get_queryset(self):
+        return Response.objects.exclude(moderations__moderator=self.request.user)
+
     @transaction.atomic
     def perform_create(self, serializer):
         response = self.get_response_for_user()
@@ -78,7 +81,7 @@ class ApproveResponse(ModerationMixin, views.APIView):
         )
 
         # Delete user's assignment to this response.
-        self.request.user.response_assignment.delete()
+        # self.request.user.response_assignment.delete()
 
         # Give approver a karma point
         moderator_profile = self.request.user.profile

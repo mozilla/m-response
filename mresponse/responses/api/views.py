@@ -1,3 +1,5 @@
+from django.contrib.admin.models import CHANGE, LogEntry
+from django.contrib.contenttypes.models import ContentType
 from django.db import models, transaction
 from django.utils.translation import ugettext_lazy as _
 
@@ -7,7 +9,6 @@ from rest_framework.pagination import PageNumberPagination
 from mresponse.responses import models as responses_models
 from mresponse.responses.api import serializers as responses_serializers
 from mresponse.reviews import models as reviews_models
-from mresponse.utils import queryset
 
 RESPONSE_KARMA_POINTS_AMOUNT = 1
 
@@ -52,60 +53,39 @@ class ResponsePagination(PageNumberPagination):
     page_size = 4
 
 
-class GetResponse(generics.ListAPIView):
+class ResponseMixin:
     serializer_class = responses_serializers.ResponseSerializer
     permission_classes = (permissions.IsAuthenticated,)
     pagination_class = ResponsePagination
-    queryset = responses_models.Response.objects.select_related(
-        'review',
-        'review__application',
-        'review__application_version',
-    ).moderator_queue()
+
+    def get_queryset(self):
+        return responses_models.Response.objects.select_related(
+            'review',
+            'review__application',
+            'review__application_version',
+        ).moderator_queue().two_or_less_moderations().not_moderated_by(self.request.user)
 
     def get_serializer(self, *args, **kwargs):
         kwargs['show_moderation_url'] = True
         kwargs['show_skip_url'] = True
         return super().get_serializer(*args, **kwargs)
 
-    def choose_response_for_user(self):
-        try:
-            # Get assignment assigned to user first if there's any.
 
-            # Workaround: `not_expired` queryset cannot be chained with filters
-            not_expired = responses_models.ResponseAssignedToUser.objects.not_expired()
-            not_expired_pks = not_expired.values_list('pk', flat=True)
-            not_expired_qs = responses_models.ResponseAssignedToUser.objects.filter(
-                pk__in=not_expired_pks
-            )
-            users_response_assignment = not_expired_qs.distinct().get(user=self.request.user)
+class RetrieveUpdateResponse(ResponseMixin, generics.RetrieveUpdateAPIView):
+    lookup_url_kwarg = 'review_pk'
 
-            # If user's assignment is not expired, update the assignment date.
-            # Expired assignments are deleted in the assign_to_user.
-            response = users_response_assignment.response
-            response.assign_to_user(
-                self.request.user
-            )
-            return response
-        except responses_models.ResponseAssignedToUser.DoesNotExist:
-            pass
+    def perform_update(self, serializer):
+        serializer.save()
 
-        base_queryset = self.get_queryset().not_moderated_by(
-            self.request.user
-        ).not_authored_by(self.request.user)
+        obj = self.get_object()
+        LogEntry.objects.log_action(self.request.user.pk,
+                                    ContentType.objects.get_for_model(obj).pk,
+                                    obj.pk,
+                                    repr(obj), CHANGE)
 
-        chosen_response = queryset.get_random_entry(base_queryset.two_or_less_moderations())
 
-        if chosen_response is None:
-            raise exceptions.NotFound(
-                'No responses available in the moderator queue.'
-            )
-
-        chosen_response.assign_to_user(self.request.user)
-
-        return chosen_response
-
-    def get_object(self):
-        return self.choose_response_for_user()
+class ListResponse(ResponseMixin, generics.ListAPIView):
+    pass
 
 
 class SkipResponse(views.APIView):
