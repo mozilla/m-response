@@ -20,6 +20,8 @@
 
     &-review {
       border-color: $blue-lighter;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     &-container {
