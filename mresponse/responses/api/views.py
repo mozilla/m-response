@@ -6,11 +6,10 @@ from django.utils.translation import ugettext_lazy as _
 from rest_framework import exceptions, generics, permissions, response, views
 from rest_framework.pagination import PageNumberPagination
 
+from mresponse.moderations.karam import RESPONSE_KARMA_POINTS_AMOUNT
 from mresponse.responses import models as responses_models
 from mresponse.responses.api import serializers as responses_serializers
 from mresponse.reviews import models as reviews_models
-
-RESPONSE_KARMA_POINTS_AMOUNT = 1
 
 
 class CreateResponse(generics.CreateAPIView):

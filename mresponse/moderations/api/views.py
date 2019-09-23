@@ -3,12 +3,12 @@ from django.db import models, transaction
 from rest_framework import generics, permissions, response, status, views
 
 from mresponse.moderations.api import serializers as moderations_serializers
+from mresponse.moderations.karam import (APPROVED_RESPONSE_KARMA_POINTS_AMOUNT,
+                                         karma_points_for_moderation)
 from mresponse.moderations.models import Approval
 from mresponse.responses.api.permissions import \
     BypassStaffOrCommunityModerationPermission
 from mresponse.responses.models import Response
-
-MODERATION_KARMA_POINTS_AMOUNT = 1
 
 
 class ModerationMixin:
@@ -49,7 +49,7 @@ class CreateModeration(ModerationMixin, generics.CreateAPIView):
         # Give moderator karma points.
         moderator_profile = self.request.user.profile
         moderator_profile.karma_points = (
-            models.F('karma_points') + MODERATION_KARMA_POINTS_AMOUNT
+            models.F('karma_points') + karma_points_for_moderation(response)
         )
         moderator_profile.save(update_fields=('karma_points',))
 
@@ -86,7 +86,7 @@ class ApproveResponse(ModerationMixin, views.APIView):
         # Give approver a karma point
         moderator_profile = self.request.user.profile
         moderator_profile.karma_points = (
-            models.F('karma_points') + MODERATION_KARMA_POINTS_AMOUNT
+            models.F('karma_points') + APPROVED_RESPONSE_KARMA_POINTS_AMOUNT
         )
         moderator_profile.save(update_fields=('karma_points',))
 
