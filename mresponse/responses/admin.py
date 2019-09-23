@@ -32,8 +32,11 @@ class ApprovalInline(admin_utils.ViewOnlyModelAdmin, admin.StackedInline):
 def staff_approve_responses(modeladmin, request, qs):
     qs.update(staff_approved=True)
 
+    # Chain together approval and uploading
+    upload_to_playstore(modeladmin, request, qs)
 
-staff_approve_responses.short_description = 'Approve responses (staff)'
+
+staff_approve_responses.short_description = 'Approve(staff) and Upload responses'
 
 
 def get_activity_csv(modeladmin, request, qs):
@@ -233,7 +236,7 @@ class ResponseResource(resources.ModelResource):
 @admin.register(responses_models.Response)
 class ResponseAdmin(ExportMixin, admin.ModelAdmin):
     resource_class = ResponseResource
-    inlines = (ModerationInline, ApprovalInline, )
+    inlines = (ModerationInline, ApprovalInline,)
     readonly_fields = ['submitted_at']
     list_display = (
         'pk',
