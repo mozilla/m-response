@@ -285,8 +285,8 @@ export default class ModeratePage extends React.Component {
                     }
                   </div>
 
-                  <div className={'moderate-page-actions moderate-page-actions--form' + (isSuperMod ? ' moderate-page-actions--form-between' : '')}>
-                    {isSuperMod ? (
+                  <div className={'moderate-page-actions moderate-page-actions--form' + (isMod ? ' moderate-page-actions--form-between' : '')}>
+                    {isMod ? (
                       <Button
                         label='Edit response'
                         className='moderate-page-actions-approve'
