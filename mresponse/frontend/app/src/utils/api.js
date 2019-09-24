@@ -192,8 +192,13 @@ export default class Api {
       }
     })
 
+    const resPayload = await response.json()
+
     if (!response.ok) {
       const errorMessage = { detail: 'Unable to submit moderation' }
+      if (response.status === 404) errorMessage.detail = 'Response already has 3 moderations'
+      if (resPayload.feedback_message) errorMessage.detail = resPayload.feedback_message
+
       throw errorMessage
     }
 
