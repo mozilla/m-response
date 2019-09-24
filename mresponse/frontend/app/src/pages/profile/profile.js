@@ -128,7 +128,7 @@ export default class ProfilePage extends React.Component {
                 onClick={event => {
                   event.target.value = null
                 }}
-                onInput={event => this.handleFileUpload(event)}
+                onChange={event => this.handleFileUpload(event)}
               />
 
             </div>
