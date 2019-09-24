@@ -439,7 +439,6 @@ export default class ModeratePage extends React.Component {
   }
 
   resetNotice = () => {
-    console.log('resetNotice ran!')
     this.setState({
       noticeData: {
         message: '',
@@ -455,7 +454,12 @@ export default class ModeratePage extends React.Component {
   }
 
   toolbarBackBtn = () => {
-    return this.state.isEditingResp ? this.cancelEditingResp : this.props.back
+    const {
+      isEditingResp,
+      isResDetailsOpen
+    } = this.state
+
+    return isEditingResp ? this.cancelEditingResp : isResDetailsOpen ? this.closeResDetails : this.props.back
   }
 
   startEditingResp = () => {

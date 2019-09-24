@@ -12,10 +12,12 @@ export default class ReviewCard extends React.Component {
       onClick
     } = this.props
 
+    const shortRespText = responseText.length > 140 ? responseText.slice(0, 136) + '...' : responseText
+
     return (
       <button className={`review-card ${className}`} onClick={onClick}>
         <div className='review-card-response'>
-          <p className='review-card-response-comment'>{responseText}</p>
+          <p className='review-card-response-comment'>{shortRespText}</p>
         </div>
         <div className='review-card-footer'>
           <div className='review-card-footer-modCount'>
