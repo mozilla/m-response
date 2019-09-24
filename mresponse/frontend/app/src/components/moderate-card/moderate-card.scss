@@ -5,8 +5,9 @@
     height: auto;
     border-radius: 3px;
     border-top: 2px solid $blue-light;
+    border-bottom: 2px solid $border-color-alt;
     background-color: white;
-    
+
     &, * {
         box-sizing: border-box;
     }
@@ -123,7 +124,6 @@
         font-size: 12px;
         padding: 6px 15px;
         background-color: $background-color;
-        border-bottom: 2px solid $border-color-alt;
         border-bottom-right-radius: 3px;
         border-bottom-left-radius: 3px;
 
