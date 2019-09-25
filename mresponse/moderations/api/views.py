@@ -1,6 +1,7 @@
 from django.db import models, transaction
 
 from rest_framework import generics, permissions, response, status, views
+from rest_framework.exceptions import ValidationError
 
 from mresponse.moderations.api import serializers as moderations_serializers
 from mresponse.moderations.karam import (APPROVED_RESPONSE_KARMA_POINTS_AMOUNT,
@@ -17,12 +18,6 @@ class ModerationMixin:
         Get a response that matches the ID in the URL and has been
         assigned to the current user.
         """
-        # assignment = generics.get_object_or_404(
-        #     responses_models.ResponseAssignedToUser.objects.not_expired(),
-        #     user=self.request.user,
-        #     response_id=self.kwargs['response_pk']
-        # )
-        # return assignment.response
 
         return Response.objects.annotate_moderations_count().get(pk=self.kwargs['response_pk'], moderations_count__lt=3)
 
@@ -36,7 +31,10 @@ class CreateModeration(ModerationMixin, generics.CreateAPIView):
 
     @transaction.atomic
     def perform_create(self, serializer):
-        response = self.get_response_for_user()
+        try:
+            response = self.get_response_for_user()
+        except Response.DoesNotExist:
+            raise ValidationError("Response already has enough moderation")
 
         serializer.save(
             response=response,
