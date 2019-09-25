@@ -38,12 +38,15 @@ export default class ProfilePage extends React.Component {
     this.props.updateProfile()
 
     // calculate progress
-    if (this.props.profile.stats.lastWeek.total) {
-      const lastWeek = this.props.profile.stats.lastWeek
-      const thisWeek = this.props.profile.stats.thisWeek
-      const tone = Math.round(((thisWeek.tone / thisWeek.total) - (lastWeek.tone / lastWeek.total)) * 100) || 0
-      const issue = Math.round(((thisWeek.issue / thisWeek.total) - (lastWeek.issue / lastWeek.total)) * 100) || 0
-      const personal = Math.round(((thisWeek.personal / thisWeek.total) - (lastWeek.personal / lastWeek.total)) * 100) || 0
+    if (this.props.profile.stats.progress.total) {
+      const progress = this.props.profile.stats.progress
+      // const thisWeek = this.props.profile.stats.thisWeek
+      // const tone = Math.round(((thisWeek.tone / thisWeek.total) - (lastWeek.tone / lastWeek.total)) * 100) || 0
+      // const issue = Math.round(((thisWeek.issue / thisWeek.total) - (lastWeek.issue / lastWeek.total)) * 100) || 0
+      // const personal = Math.round(((thisWeek.personal / thisWeek.total) - (lastWeek.personal / lastWeek.total)) * 100) || 0
+      const tone = progress.tone * 100 || 0
+      const issue = progress.issue * 100 || 0
+      const personal = progress.personal * 100 || 0
 
       this.setState({
         progress: {
@@ -125,7 +128,7 @@ export default class ProfilePage extends React.Component {
                 onClick={event => {
                   event.target.value = null
                 }}
-                onInput={event => this.handleFileUpload(event)}
+                onChange={event => this.handleFileUpload(event)}
               />
 
             </div>
@@ -195,7 +198,7 @@ export default class ProfilePage extends React.Component {
 
             <section className='profile-progress'>
               <p className='profile-title'>Progress</p>
-              {stats.lastWeek.total ? <div className='profile-progress-compare'>
+              {stats.progress.total ? <div className='profile-progress-compare'>
                 <div className='profile-progress-compare-item'>
                   <div className={`profile-progress-compare-item-indicator ${this.determinProgressIcon(progress.tone)}`}>
                     <Icon iconName={this.determinProgressIcon(progress.tone)}></Icon>
@@ -293,6 +296,7 @@ export default class ProfilePage extends React.Component {
   }
 
   handleFileUpload = event => {
+    console.log('handleFileUpload: ', event)
     const file = event.target.files[0]
     this.props.uploadAvatar(file)
     this.setState({ pictureUpload: file })

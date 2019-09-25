@@ -51,13 +51,25 @@ export const getProfile = state => {
   }
 
   const stats = {
+    // thisWeek: {
+    //   tone: 3 || 0,
+    //   issue: 3 || 0,
+    //   personal: 3 || 0,
+    //   total: 4 || 0
+    // },
     thisWeek: {
       tone: userProfile.stats.positive_in_tone_count || 0,
       issue: userProfile.stats.addressing_the_issue_count || 0,
       personal: userProfile.stats.personal_count || 0,
       total: userProfile.stats.current_count || 0
     },
-    lastWeek: {
+    // progress: {
+    //   tone: 2.0 || 0,
+    //   issue: null || 0,
+    //   personal: 2.0 || 0,
+    //   total: 1 || 0
+    // }
+    progress: {
       tone: userProfile.stats.positive_in_tone_change || 0,
       issue: userProfile.stats.addressing_the_issue_change || 0,
       personal: userProfile.stats.personal_change || 0,

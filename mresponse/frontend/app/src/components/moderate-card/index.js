@@ -19,7 +19,8 @@ export default class ModerateCard extends React.Component {
       productName,
       productVersion,
       androidVersion,
-      modCount
+      modCount,
+      showModCount
     } = this.props
 
     return (
@@ -62,14 +63,16 @@ export default class ModerateCard extends React.Component {
           </div>
         </div>
 
-        <div className='moderate-card-footer'>
-          <div className='moderate-card-footer-modCount'>
-            <div className='moderate-card-footer-modCount-item'>{modCount > 0 ? <Icon iconName='checkMark' /> : null}</div>
-            <div className='moderate-card-footer-modCount-item'>{modCount >= 2 ? <Icon iconName='checkMark' /> : null}</div>
-            <div className='moderate-card-footer-modCount-item'>{modCount >= 3 ? <Icon iconName='checkMark' /> : null}</div>
-            <div className='moderate-card-footer-modCount-label'>Moderation count</div>
+        {showModCount !== false ? (
+          <div className='moderate-card-footer'>
+            <div className='moderate-card-footer-modCount'>
+              <div className='moderate-card-footer-modCount-item'>{modCount > 0 ? <Icon iconName='checkMark' /> : null}</div>
+              <div className='moderate-card-footer-modCount-item'>{modCount >= 2 ? <Icon iconName='checkMark' /> : null}</div>
+              <div className='moderate-card-footer-modCount-item'>{modCount >= 3 ? <Icon iconName='checkMark' /> : null}</div>
+              <div className='moderate-card-footer-modCount-label'>Moderation count</div>
+            </div>
           </div>
-        </div>
+        ) : null}
       </div>
     )
   }

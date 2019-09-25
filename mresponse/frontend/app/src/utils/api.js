@@ -105,9 +105,9 @@ export default class Api {
     if (response.status === 200) {
       return response.json().then(json => {
         // Prev + next page numbers
-        const next = new URLSearchParams(json.next).get('page')
-        const previous = new URLSearchParams(json.previous).get('page')
-        const currPage = next ? Number(next) - 1 : Number(previous) + 1
+        const next = new URLSearchParams(json.next).get('page') || 0
+        const previous = json.previous === null ? 0 : new URLSearchParams(json.previous).get('page') || 1
+        const currPage = previous >= 1 ? Number(previous) + 1 : 1
 
         // Get pages array
         const displayPerPage = 4 // Set by API
@@ -192,8 +192,13 @@ export default class Api {
       }
     })
 
+    const resPayload = await response.json()
+
     if (!response.ok) {
       const errorMessage = { detail: 'Unable to submit moderation' }
+      if (Array.isArray(resPayload) && resPayload.length > 0) errorMessage.detail = resPayload[0]
+      if (resPayload.feedback_message) errorMessage.detail = resPayload.feedback_message
+
       throw errorMessage
     }
 

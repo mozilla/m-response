@@ -1,14 +1,15 @@
 from django.db import models, transaction
 
 from rest_framework import generics, permissions, response, status, views
+from rest_framework.exceptions import ValidationError
 
 from mresponse.moderations.api import serializers as moderations_serializers
+from mresponse.moderations.karam import (APPROVED_RESPONSE_KARMA_POINTS_AMOUNT,
+                                         karma_points_for_moderation)
 from mresponse.moderations.models import Approval
 from mresponse.responses.api.permissions import \
     BypassStaffOrCommunityModerationPermission
 from mresponse.responses.models import Response
-
-MODERATION_KARMA_POINTS_AMOUNT = 1
 
 
 class ModerationMixin:
@@ -17,12 +18,6 @@ class ModerationMixin:
         Get a response that matches the ID in the URL and has been
         assigned to the current user.
         """
-        # assignment = generics.get_object_or_404(
-        #     responses_models.ResponseAssignedToUser.objects.not_expired(),
-        #     user=self.request.user,
-        #     response_id=self.kwargs['response_pk']
-        # )
-        # return assignment.response
 
         return Response.objects.annotate_moderations_count().get(pk=self.kwargs['response_pk'], moderations_count__lt=3)
 
@@ -36,7 +31,10 @@ class CreateModeration(ModerationMixin, generics.CreateAPIView):
 
     @transaction.atomic
     def perform_create(self, serializer):
-        response = self.get_response_for_user()
+        try:
+            response = self.get_response_for_user()
+        except Response.DoesNotExist:
+            raise ValidationError("Response already has enough moderation")
 
         serializer.save(
             response=response,
@@ -49,7 +47,7 @@ class CreateModeration(ModerationMixin, generics.CreateAPIView):
         # Give moderator karma points.
         moderator_profile = self.request.user.profile
         moderator_profile.karma_points = (
-            models.F('karma_points') + MODERATION_KARMA_POINTS_AMOUNT
+            models.F('karma_points') + karma_points_for_moderation(response)
         )
         moderator_profile.save(update_fields=('karma_points',))
 
@@ -86,7 +84,7 @@ class ApproveResponse(ModerationMixin, views.APIView):
         # Give approver a karma point
         moderator_profile = self.request.user.profile
         moderator_profile.karma_points = (
-            models.F('karma_points') + MODERATION_KARMA_POINTS_AMOUNT
+            models.F('karma_points') + APPROVED_RESPONSE_KARMA_POINTS_AMOUNT
         )
         moderator_profile.save(update_fields=('karma_points',))
 

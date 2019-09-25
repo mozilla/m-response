@@ -5,7 +5,6 @@ import { FirstChild } from '@components/first-child'
 import Toolbar from '@components/toolbar'
 import ModerateCard from '@components/moderate-card'
 import ReviewCard from '@components/review-card'
-import RespondCard from '@components/respond-card'
 import Button from '@components/buttons'
 import ToggleButton from '@components/buttons/toggle'
 import AlertPrompt from '@components/alert-prompt'
@@ -69,8 +68,8 @@ export default class ModeratePage extends React.Component {
     const {
       responses,
       profile: {
-        isMod,
-        isSuperMod
+        isMod
+        // isSuperMod
       },
       cannedResponses,
       helpDocs
@@ -285,8 +284,8 @@ export default class ModeratePage extends React.Component {
                     }
                   </div>
 
-                  <div className={'moderate-page-actions moderate-page-actions--form' + (isSuperMod ? ' moderate-page-actions--form-between' : '')}>
-                    {isSuperMod ? (
+                  <div className={'moderate-page-actions moderate-page-actions--form' + (isMod ? ' moderate-page-actions--form-between' : '')}>
+                    {isMod ? (
                       <Button
                         label='Edit response'
                         className='moderate-page-actions-approve'
@@ -330,7 +329,7 @@ export default class ModeratePage extends React.Component {
         {isEditingResp ? (
           <Fragment>
             <div className='moderate-page-container'>
-              <RespondCard
+              {/* <RespondCard
                 className='moderate-page-review'
                 author={currResponse.review.author}
                 date={currResponse.review.lastModified}
@@ -340,6 +339,22 @@ export default class ModeratePage extends React.Component {
                 productVersion={currResponse.review.product.version || {}}
                 productImage={currResponse.review.product.image}
                 androidVersion={currResponse.review.androidVersion}
+              /> */}
+
+              <ModerateCard
+                className='moderate-page-response'
+                reviewAuthor={currResponse.review.author}
+                reviewDate={currResponse.review.dateSubmitted}
+                reviewText={currResponse.review.text}
+                reviewRating={currResponse.review.rating}
+                responseText={currResponse.text}
+                responseDate={currResponse.submittedAt}
+                productName={currResponse.review.product.name}
+                productImage={currResponse.review.product.image}
+                productVersion={currResponse.review.product.version || {}}
+                androidVersion={currResponse.review.androidVersion}
+                modCount={currResponse.moderationCount}
+                showModCount={false}
               />
             </div>
 
@@ -439,7 +454,6 @@ export default class ModeratePage extends React.Component {
   }
 
   resetNotice = () => {
-    console.log('resetNotice ran!')
     this.setState({
       noticeData: {
         message: '',
@@ -455,13 +469,18 @@ export default class ModeratePage extends React.Component {
   }
 
   toolbarBackBtn = () => {
-    return this.state.isEditingResp ? this.cancelEditingResp : this.props.back
+    const {
+      isEditingResp,
+      isResDetailsOpen
+    } = this.state
+
+    return isEditingResp ? this.cancelEditingResp : isResDetailsOpen ? this.closeResDetails : this.props.back
   }
 
   startEditingResp = () => {
     this.setState({
       isEditingResp: true,
-      editedResponse: ''
+      editedResponse: this.state.currResponse.text
     })
   }
 
