@@ -196,7 +196,7 @@ export default class Api {
 
     if (!response.ok) {
       const errorMessage = { detail: 'Unable to submit moderation' }
-      if (response.status === 404) errorMessage.detail = 'Response already has 3 moderations'
+      if (Array.isArray(resPayload) && resPayload.length > 0) errorMessage.detail = resPayload[0]
       if (resPayload.feedback_message) errorMessage.detail = resPayload.feedback_message
 
       throw errorMessage
