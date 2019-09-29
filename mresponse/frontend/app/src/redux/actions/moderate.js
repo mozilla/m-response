@@ -36,18 +36,10 @@ export const submitModeration = (cb = () => null, currResponsId, currPage = 1, e
       const { moderate: { currentResponseModeration } } = getState()
       if (currResponsId) {
         try {
+          if (editedResponse) await api.editResponse(currResponsId, editedResponse)
           const res = await api.submitModeration(currResponsId, currentResponseModeration)
           cb(res.detail, null)
           return dispatch(fetchResponses(() => {}, currPage))
-        } catch (e) {
-          cb(e.detail, true)
-        }
-      }
-
-      if (editedResponse) {
-        try {
-          const res = await api.editResponse(currResponsId, editedResponse)
-          cb(res.detail, null)
         } catch (e) {
           cb(e.detail, true)
         }
