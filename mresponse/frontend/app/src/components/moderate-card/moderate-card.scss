@@ -158,6 +158,24 @@
                 font-weight: bold;
                 margin-left: 8px;
             }
+
+            &-karma {
+                flex: 1 1 auto;
+                display: flex;
+                justify-content: end;
+                align-items: center;
+
+                &-inner {
+                    flex: 0 0 auto;
+                    display: flex;
+                    align-items: center;
+
+                    span {
+                        margin-left: 4px;
+                        font-weight: bold;
+                    }
+                }
+            }
         }
     }
 }

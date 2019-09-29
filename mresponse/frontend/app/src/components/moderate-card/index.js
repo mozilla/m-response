@@ -70,6 +70,11 @@ export default class ModerateCard extends React.Component {
               <div className='moderate-card-footer-modCount-item'>{modCount >= 2 ? <Icon iconName='checkMark' /> : null}</div>
               <div className='moderate-card-footer-modCount-item'>{modCount >= 3 ? <Icon iconName='checkMark' /> : null}</div>
               <div className='moderate-card-footer-modCount-label'>Moderation count</div>
+              <div className='moderate-card-footer-modCount-karma'>
+                <div className='moderate-card-footer-modCount-karma-inner'>
+                  <Icon iconName='karma' /><span>{modCount + 1}</span>
+                </div>
+              </div>
             </div>
           </div>
         ) : null}
