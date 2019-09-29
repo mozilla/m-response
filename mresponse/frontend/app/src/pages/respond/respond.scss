@@ -44,6 +44,12 @@
         border-top: none !important;
     }
 
+    &-empty-queue {
+        font-size: 14px;
+        color: $grey-light;
+        text-align: center;
+    }
+
     &-edit-response {
         flex-grow: 1;
         min-height: 80px;
