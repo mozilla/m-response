@@ -48,36 +48,54 @@
     border-bottom-left-radius: 2px;
 
     &-modCount {
-        display: flex;
-        align-items: center;
-        color: $placeholder-color;
+      display: flex;
+      align-items: center;
+      color: $placeholder-color;
 
-        &-item {
+      &-item {
+        width: 18px;
+        height: 18px;
+        border: 1px solid $placeholder-color;
+        border-radius: 999px;
+        margin-right: 3px;
+        margin-left: 3px;
+        position: relative;
+
+        &:first-child {
+          margin-left: 0;
+        }
+
+        svg {
+          position: absolute;
+          top: -1px;left: -1px;
+          display: block;
           width: 18px;
           height: 18px;
-          border: 1px solid $placeholder-color;
-          border-radius: 999px;
-          margin-right: 3px;
-          margin-left: 3px;
-          position: relative;
+        }
+      }
 
-          &:first-child {
-            margin-left: 0;
-          }
+      &-label {
+        font-weight: bold;
+        margin-left: 8px;
+      }
 
-          svg {
-            position: absolute;
-            top: -1px;left: -1px;
-            display: block;
-            width: 18px;
-            height: 18px;
+      &-karma {
+        flex: 1 1 auto;
+        display: flex;
+        justify-content: end;
+        align-items: center;
+
+        &-inner {
+          flex: 0 0 auto;
+          display: flex;
+          align-items: center;
+
+          span {
+            margin-left: 4px;
+            font-weight: bold;
           }
         }
-
-        &-label {
-          font-weight: bold;
-          margin-left: 8px;
-        }
+      }
     }
   }
 }

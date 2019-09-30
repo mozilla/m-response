@@ -8,6 +8,7 @@ from django.utils.timezone import now
 from faker import Faker
 from mresponse.applications.models import Application, ApplicationVersion
 from mresponse.responses.models import Response
+from mresponse.reviews.api.views import MAX_REVIEW_RATING
 from mresponse.reviews.models import Review
 
 User = get_user_model()
@@ -38,12 +39,12 @@ class Command(BaseCommand):
         for _ in range(REVIEWS_TO_CREATE):
             review = Review.objects.create(play_store_review_id=str(uuid.uuid4()), author_name=faker.name(),
                                            application=application, application_version=application_version,
-                                           review_text=faker.text(), review_rating=random.randint(0, 5),
-                                           last_modified=now())
-
-            response = Response.objects.create(review=review, approved=False, author=random.choice(users),
-                                               text=faker.text())
-            self.stdout.write(self.style.WARNING('created %s' % response))
+                                           review_text=faker.text(), review_rating=random.randint(0, MAX_REVIEW_RATING),
+                                           last_modified=now(), review_language='en')
+            if random.choice([True, False]):
+                response = Response.objects.create(review=review, approved=False, author=random.choice(users),
+                                                   text=faker.text())
+                self.stdout.write(self.style.WARNING('created %s' % response))
 
         self.stdout.write(self.style.SUCCESS('Successfully created %s users' % USER_TO_CREATE))
         self.stdout.write(self.style.SUCCESS('Successfully created %s reviews' % REVIEWS_TO_CREATE))

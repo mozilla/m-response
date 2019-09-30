@@ -25,6 +25,11 @@ export default class ReviewCard extends React.Component {
             <div className='review-card-footer-modCount-item'>{modCount >= 2 ? <Icon iconName='checkMark' /> : null}</div>
             <div className='review-card-footer-modCount-item'>{modCount >= 3 ? <Icon iconName='checkMark' /> : null}</div>
             <div className='review-card-footer-modCount-label'>Moderation count</div>
+            <div className='review-card-footer-modCount-karma'>
+              <div className='review-card-footer-modCount-karma-inner'>
+                <Icon iconName='karma' /><span>{modCount + 1}</span>
+              </div>
+            </div>
           </div>
         </div>
       </button>

@@ -7,16 +7,17 @@ from mresponse.users.tests.factories import UserFactory
 class TestRetrieveUpdateResponseApi(APITestCase):
     def setUp(self):
         self.user = UserFactory()
+        self.author_user = UserFactory(username="smith")
         self.client.force_login(self.user)
 
     def test_get_response(self):
-        response = ResponseFactory(approved=False)
+        response = ResponseFactory(approved=False, author=self.author_user)
         result = self.client.get('/api/response/{}/'.format(response.pk))
         self.assertEqual(result.status_code, 200)
         self.assertEqual(result.json()['id'], response.pk)
 
     def test_put_changes_to_response(self):
-        response = ResponseFactory(approved=False, text="Bad response")
+        response = ResponseFactory(approved=False, text="Bad response", author=self.author_user)
         good_text = "GooD Response."
         result = self.client.put('/api/response/{}/'.format(response.pk), dict(
             text=good_text

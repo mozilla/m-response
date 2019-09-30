@@ -6,6 +6,7 @@ import Toolbar from '@components/toolbar'
 import ReviewCard from '@components/respond-card'
 import Button from '@components/buttons'
 import AlertPrompt from '@components/alert-prompt'
+import NoticePrompt from '@components/notice-prompt'
 import Textarea from '@components/textarea'
 import SideBar from '@components/side-bar'
 import CannedResponses from '@components/canned-responses'
@@ -22,15 +23,18 @@ export default class RespondPage extends React.Component {
     isCannedMenuOpen: false,
     isHelpDocsMenuOpen: false,
     response: this.props.response || '',
-    messages: []
+    messages: [],
+    noticeData: {
+      message: '',
+      karma: 0,
+      type: '',
+      isOpen: false,
+      timeout: 3000
+    }
   }
 
   componentWillMount () {
-    this.props.fetchNewReviews((successMessage, err) => {
-      if (err) {
-        this.pushMessage(err, true)
-      }
-    })
+    this.props.fetchNewReviews()
   }
 
   render () {
@@ -51,7 +55,8 @@ export default class RespondPage extends React.Component {
       isCannedMenuOpen,
       isHelpDocsMenuOpen,
       response,
-      messages
+      messages,
+      noticeData
     } = this.state
 
     const sideBarCannedContent = (
@@ -70,6 +75,15 @@ export default class RespondPage extends React.Component {
 
     return (
       <div className='respond-page'>
+        <CSSTransitionGroup
+          transitionName='slide-out-top'
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={300}
+          component={FirstChild}>
+          {noticeData.isOpen ? (
+            <NoticePrompt data={noticeData} closeNotice={this.resetNotice.bind(this)} />
+          ) : null}
+        </CSSTransitionGroup>
 
         <header className='respond-page-header'>
           <Toolbar
@@ -103,7 +117,11 @@ export default class RespondPage extends React.Component {
               androidVersion={review.androidVersion}
             />
           </div>
-        ) : null}
+        ) : (
+          <div className='respond-page-container'>
+            <p className='respond-page-empty-queue'>There are currently no reviews to respond to</p>
+          </div>
+        )}
 
         {review && isResponding && !isDoneEditing ? (
           <div className='respond-page-edit-response'>
@@ -169,7 +187,7 @@ export default class RespondPage extends React.Component {
             </div>
           ) : null}
 
-        {nextReview && !isResponding ? (
+        {review && nextReview && !isResponding ? (
           <div className='respond-page-container'>
             <ReviewCard
               className='respond-page-next-review'
@@ -260,13 +278,37 @@ export default class RespondPage extends React.Component {
     if (isValid) {
       this.props.submitResponse((successMessage, err) => {
         if (err) {
-          this.pushMessage(err, true)
+          // this.pushMessage(err, true)
+          this.pushNotice(err, 'error')
         } else {
-          this.pushMessage(successMessage)
+          // this.pushMessage(successMessage)
+          this.pushNotice('Response submitted', 'success')
         }
         this.refreshData()
       })
     }
+  }
+
+  pushNotice = (message, type = 'success', karma = 0) => {
+    this.setState({
+      noticeData: {
+        message,
+        karma,
+        type,
+        isOpen: true
+      }
+    })
+  }
+
+  resetNotice = () => {
+    this.setState({
+      noticeData: {
+        message: '',
+        karma: 0,
+        type: '',
+        isOpen: false
+      }
+    })
   }
 
   validateResponse = () => true

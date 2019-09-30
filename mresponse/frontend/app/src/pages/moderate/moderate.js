@@ -329,18 +329,6 @@ export default class ModeratePage extends React.Component {
         {isEditingResp ? (
           <Fragment>
             <div className='moderate-page-container'>
-              {/* <RespondCard
-                className='moderate-page-review'
-                author={currResponse.review.author}
-                date={currResponse.review.lastModified}
-                review={currResponse.review.text}
-                rating={currResponse.review.rating}
-                productName={currResponse.review.product.name}
-                productVersion={currResponse.review.product.version || {}}
-                productImage={currResponse.review.product.image}
-                androidVersion={currResponse.review.androidVersion}
-              /> */}
-
               <ModerateCard
                 className='moderate-page-response'
                 reviewAuthor={currResponse.review.author}
@@ -453,17 +441,6 @@ export default class ModeratePage extends React.Component {
     }))
   }
 
-  resetNotice = () => {
-    this.setState({
-      noticeData: {
-        message: '',
-        karma: 0,
-        type: '',
-        isOpen: false
-      }
-    })
-  }
-
   pageTitle = () => {
     return this.state.isEditingResp ? 'Edit contributor\'s response' : 'Moderate'
   }
@@ -544,7 +521,8 @@ export default class ModeratePage extends React.Component {
   submitModeration = () => {
     const {
       editedResponse,
-      feedbackMessage
+      feedbackMessage,
+      currResponse
     } = this.state
 
     const {
@@ -560,7 +538,7 @@ export default class ModeratePage extends React.Component {
       if (err) {
         this.pushNotice(message, 'error')
       } else {
-        this.pushNotice(feedbackMessage ? 'Feedback Sent!' : 'Response moderated', 'success', 10)
+        this.pushNotice('Response moderated', 'success', currResponse.moderationCount + 1)
       }
       this.closeResDetails()
     }, this.state.currResponse.id, responses.currPage, editedResponse)
@@ -588,6 +566,17 @@ export default class ModeratePage extends React.Component {
         karma,
         type,
         isOpen: true
+      }
+    })
+  }
+
+  resetNotice = () => {
+    this.setState({
+      noticeData: {
+        message: '',
+        karma: 0,
+        type: '',
+        isOpen: false
       }
     })
   }

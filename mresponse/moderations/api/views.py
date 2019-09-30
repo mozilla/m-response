@@ -41,6 +41,10 @@ class CreateModeration(ModerationMixin, generics.CreateAPIView):
             moderator=self.request.user,
         )
 
+        if not response.approved:
+            if response.is_community_approved():
+                response.save()
+
         # Clear the assignment to the user.
         # self.request.user.response_assignment.delete()
 
