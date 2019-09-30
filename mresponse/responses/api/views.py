@@ -9,6 +9,8 @@ from rest_framework.pagination import PageNumberPagination
 from mresponse.moderations.karam import RESPONSE_KARMA_POINTS_AMOUNT
 from mresponse.responses import models as responses_models
 from mresponse.responses.api import serializers as responses_serializers
+from mresponse.responses.api.permissions import \
+    BypassStaffOrCommunityModerationPermissionOnUpdate
 from mresponse.reviews import models as reviews_models
 
 
@@ -77,6 +79,7 @@ class ResponseMixin:
 
 class RetrieveUpdateResponse(ResponseMixin, generics.RetrieveUpdateAPIView):
     lookup_url_kwarg = 'review_pk'
+    permission_classes = [BypassStaffOrCommunityModerationPermissionOnUpdate]
 
     def perform_update(self, serializer):
         serializer.save()
