@@ -179,17 +179,17 @@ export default class ProfilePage extends React.Component {
               <p className="profile-feedback-stats-title">This Week</p>
               <ProgressTable data={[
                 {
-                  title: 'Tone',
+                  title: 'Friendly',
                   value: stats.thisWeek.tone,
                   maxValue: stats.thisWeek.total
                 },
                 {
-                  title: 'Issue',
+                  title: 'Accurate',
                   value: stats.thisWeek.issue,
                   maxValue: stats.thisWeek.total
                 },
                 {
-                  title: 'Personal',
+                  title: 'Reusable',
                   value: stats.thisWeek.personal,
                   maxValue: stats.thisWeek.total
                 }
