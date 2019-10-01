@@ -60,16 +60,22 @@ class ResponseMixin:
     pagination_class = ResponsePagination
 
     def get_queryset(self):
-        return (
+        qs = (
             responses_models.Response.objects.select_related(
                 'review',
                 'review__application',
                 'review__application_version',
-            ).moderator_queue()
-            .two_or_less_moderations()
+            )
             .not_moderated_by(self.request.user)
             .not_authored_by(self.request.user)
         )
+
+        if self.request.user.profile.is_super_moderator:
+            qs = qs.not_staff_approved()
+        else:
+            qs = qs.moderator_queue().two_or_less_moderations()
+
+        return qs
 
     def get_serializer(self, *args, **kwargs):
         kwargs['show_moderation_url'] = True

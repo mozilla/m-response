@@ -82,9 +82,6 @@ class ApproveResponse(ModerationMixin, views.APIView):
             approver=self.request.user
         )
 
-        # Delete user's assignment to this response.
-        # self.request.user.response_assignment.delete()
-
         # Give approver a karma point
         moderator_profile = self.request.user.profile
         moderator_profile.karma_points = (
