@@ -546,6 +546,10 @@ export default class ModeratePage extends React.Component {
 
   submitApproval = () => {
     const {
+      currResponse
+    } = this.state
+
+    const {
       responses
     } = this.props
 
@@ -553,7 +557,7 @@ export default class ModeratePage extends React.Component {
       if (err) {
         this.pushNotice('Unable to approve', 'error')
       } else {
-        this.pushNotice('Response approved', 'success', 10)
+        this.pushNotice('Response approved', 'success', currResponse.moderationCount + 1)
       }
       this.closeResDetails()
     }, this.state.currResponse.id, responses.currPage)
