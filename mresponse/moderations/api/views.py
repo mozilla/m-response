@@ -36,6 +36,9 @@ class CreateModeration(ModerationMixin, generics.CreateAPIView):
         except Response.DoesNotExist:
             raise ValidationError("Response already has enough moderation")
 
+        # Needs to be calculated before saving of the moderation.
+        karma_points = karma_points_for_moderation(response)
+
         serializer.save(
             response=response,
             moderator=self.request.user,
@@ -45,13 +48,10 @@ class CreateModeration(ModerationMixin, generics.CreateAPIView):
             if response.is_community_approved():
                 response.save()
 
-        # Clear the assignment to the user.
-        # self.request.user.response_assignment.delete()
-
         # Give moderator karma points.
         moderator_profile = self.request.user.profile
         moderator_profile.karma_points = (
-            models.F('karma_points') + karma_points_for_moderation(response)
+            models.F('karma_points') + karma_points
         )
         moderator_profile.save(update_fields=('karma_points',))
 
@@ -82,12 +82,19 @@ class ApproveResponse(ModerationMixin, views.APIView):
             approver=self.request.user
         )
 
-        # Give approver a karma point
+        # Give approval a karma point
         moderator_profile = self.request.user.profile
         moderator_profile.karma_points = (
-            models.F('karma_points') + APPROVED_RESPONSE_KARMA_POINTS_AMOUNT
+            models.F('karma_points') + karma_points_for_moderation(assigned_response)
         )
         moderator_profile.save(update_fields=('karma_points',))
+
+        # Give author karma points.
+        author_profile = assigned_response.author.profile
+        author_profile.karma_points = (
+            models.F('karma_points') + APPROVED_RESPONSE_KARMA_POINTS_AMOUNT
+        )
+        author_profile.save(update_fields=('karma_points',))
 
         # Return empty response.
         return response.Response({
