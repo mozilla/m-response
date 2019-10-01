@@ -83,14 +83,14 @@ class RetrieveUpdateResponse(ResponseMixin, generics.RetrieveUpdateAPIView):
 
     def perform_update(self, serializer):
         obj = self.get_object()
-        old_respose = obj.text
+        old_response = obj.text
         serializer.save()
         obj.refresh_from_db()
         LogEntry.objects.log_action(self.request.user.pk,
                                     ContentType.objects.get_for_model(obj).pk,
                                     obj.pk,
                                     f"Response {obj.pk} updated.",
-                                    CHANGE, change_message=f"{old_respose} -> {obj.text}")
+                                    CHANGE, change_message=f"{old_response} -> {obj.text}")
 
 
 class ListResponse(ResponseMixin, generics.ListAPIView):
