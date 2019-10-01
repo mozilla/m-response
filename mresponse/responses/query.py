@@ -33,8 +33,11 @@ class ResponseQuerySet(models.QuerySet):
     def not_approved(self):
         return self.filter(approved=False)
 
+    def not_staff_approved(self):
+        return self.filter(staff_approved=False)
+
     def moderator_queue(self):
-        return self.not_approved()
+        return self.not_approved().not_staff_approved()
 
     def no_moderations(self):
         return self.annotate_moderations_count().filter(moderations_count=0)

@@ -44,9 +44,9 @@ export default class ProfilePage extends React.Component {
       // const tone = Math.round(((thisWeek.tone / thisWeek.total) - (lastWeek.tone / lastWeek.total)) * 100) || 0
       // const issue = Math.round(((thisWeek.issue / thisWeek.total) - (lastWeek.issue / lastWeek.total)) * 100) || 0
       // const personal = Math.round(((thisWeek.personal / thisWeek.total) - (lastWeek.personal / lastWeek.total)) * 100) || 0
-      const tone = progress.tone * 100 || 0
-      const issue = progress.issue * 100 || 0
-      const personal = progress.personal * 100 || 0
+      const tone = Math.round(progress.tone * 100) || 0
+      const issue = Math.round(progress.issue * 100) || 0
+      const personal = Math.round(progress.personal * 100) || 0
 
       this.setState({
         progress: {
