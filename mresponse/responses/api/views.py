@@ -82,13 +82,15 @@ class RetrieveUpdateResponse(ResponseMixin, generics.RetrieveUpdateAPIView):
     permission_classes = [BypassStaffOrCommunityModerationPermissionOnUpdate]
 
     def perform_update(self, serializer):
-        serializer.save()
-
         obj = self.get_object()
+        old_respose = obj.text
+        serializer.save()
+        obj.refresh_from_db()
         LogEntry.objects.log_action(self.request.user.pk,
                                     ContentType.objects.get_for_model(obj).pk,
                                     obj.pk,
-                                    repr(obj), CHANGE)
+                                    f"Response {obj.pk} updated.",
+                                    CHANGE, change_message=f"{old_respose} -> {obj.text}")
 
 
 class ListResponse(ResponseMixin, generics.ListAPIView):
