@@ -9,6 +9,7 @@ export default class ReviewCard extends React.Component {
       className = '',
       responseText,
       modCount,
+      karmaCount,
       onClick
     } = this.props
 
@@ -27,7 +28,7 @@ export default class ReviewCard extends React.Component {
             <div className='review-card-footer-modCount-label'>Moderation count</div>
             <div className='review-card-footer-modCount-karma'>
               <div className='review-card-footer-modCount-karma-inner'>
-                <Icon iconName='karma' /><span>{modCount + 1}</span>
+                <Icon iconName='karma' /><span>{karmaCount(modCount)}</span>
               </div>
             </div>
           </div>

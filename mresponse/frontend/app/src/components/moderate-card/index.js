@@ -20,6 +20,7 @@ export default class ModerateCard extends React.Component {
       productVersion,
       androidVersion,
       modCount,
+      karmaCount,
       showModCount
     } = this.props
 
@@ -72,7 +73,7 @@ export default class ModerateCard extends React.Component {
               <div className='moderate-card-footer-modCount-label'>Moderation count</div>
               <div className='moderate-card-footer-modCount-karma'>
                 <div className='moderate-card-footer-modCount-karma-inner'>
-                  <Icon iconName='karma' /><span>{modCount + 1}</span>
+                  <Icon iconName='karma' /><span>{karmaCount(modCount)}</span>
                 </div>
               </div>
             </div>
