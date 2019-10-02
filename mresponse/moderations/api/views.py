@@ -19,12 +19,16 @@ class ModerationMixin:
         assigned to the current user.
         """
 
-        return (
+        qs = (
             Response.objects
             .annotate_moderations_count()
             .exclude(author=self.request.user)
-            .get(pk=self.kwargs['response_pk'], moderations_count__lt=3)
         )
+
+        if not self.request.user.profile.is_super_moderator:
+            qs = qs.filter(moderations_count__lt=3)
+
+        return qs.get(pk=self.kwargs['response_pk'])
 
 
 class CreateModeration(ModerationMixin, generics.CreateAPIView):
