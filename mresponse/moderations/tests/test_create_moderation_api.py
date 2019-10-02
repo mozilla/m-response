@@ -23,6 +23,15 @@ class TestCreateModerationApi(APITestCase):
         response.refresh_from_db()
         self.assertFalse(response.approved)
 
+    def test_create_moderation_if_user_is_author(self):
+        response = ResponseFactory(approved=False, author=self.user)
+        result = self.client.post(reverse('create_moderation', kwargs={"response_pk": response.pk}), data=dict(
+            positive_in_tone=True,
+            addressing_the_issue=True,
+            personal=True
+        ))
+        self.assertEqual(result.status_code, 400)
+
     def test_is_approved_after_moderations(self):
         response = ResponseFactory(approved=False, author=UserFactory(username="smith"))
         result = self.client.post(reverse('create_moderation', kwargs={"response_pk": response.pk}), data=dict(
