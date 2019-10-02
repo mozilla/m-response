@@ -19,7 +19,12 @@ class ModerationMixin:
         assigned to the current user.
         """
 
-        return Response.objects.annotate_moderations_count().get(pk=self.kwargs['response_pk'], moderations_count__lt=3)
+        return (
+            Response.objects
+            .annotate_moderations_count()
+            .exclude(author=self.request.user)
+            .get(pk=self.kwargs['response_pk'], moderations_count__lt=3)
+        )
 
 
 class CreateModeration(ModerationMixin, generics.CreateAPIView):
@@ -34,7 +39,7 @@ class CreateModeration(ModerationMixin, generics.CreateAPIView):
         try:
             response = self.get_response_for_user()
         except Response.DoesNotExist:
-            raise ValidationError("Response already has enough moderation")
+            raise ValidationError("Response can't be moderated.")
 
         # Needs to be calculated before saving of the moderation.
         karma_points = karma_points_for_moderation(response)
