@@ -141,6 +141,7 @@ export default class ModeratePage extends React.Component {
                   className='moderate-page-response'
                   responseText={response.text}
                   modCount={response.moderationCount}
+                  karmaCount={this.karmaCount}
                   onClick={() => this.openResDetails(response)}
                 />
               ))}
@@ -188,6 +189,7 @@ export default class ModeratePage extends React.Component {
                 productVersion={currResponse.review.product.version || {}}
                 androidVersion={currResponse.review.androidVersion}
                 modCount={currResponse.moderationCount}
+                karmaCount={this.karmaCount}
               />
 
               {editedResponse ? (
@@ -342,6 +344,7 @@ export default class ModeratePage extends React.Component {
                 productVersion={currResponse.review.product.version || {}}
                 androidVersion={currResponse.review.androidVersion}
                 modCount={currResponse.moderationCount}
+                karmaCount={this.karmaCount}
                 showModCount={false}
               />
             </div>
@@ -538,7 +541,7 @@ export default class ModeratePage extends React.Component {
       if (err) {
         this.pushNotice(message, 'error')
       } else {
-        this.pushNotice('Response moderated', 'success', currResponse.moderationCount + 1)
+        this.pushNotice('Response moderated', 'success', this.karmaCount(currResponse.moderationCount))
       }
       this.closeResDetails()
     }, this.state.currResponse.id, responses.currPage, editedResponse)
@@ -557,10 +560,14 @@ export default class ModeratePage extends React.Component {
       if (err) {
         this.pushNotice('Unable to approve', 'error')
       } else {
-        this.pushNotice('Response approved', 'success', currResponse.moderationCount + 1)
+        this.pushNotice('Response approved', 'success', this.karmaCount(currResponse.moderationCount))
       }
       this.closeResDetails()
-    }, this.state.currResponse.id, responses.currPage)
+    }, currResponse.id, responses.currPage)
+  }
+
+  karmaCount = (modCount) => {
+    return modCount < 3 ? modCount + 1 : 3
   }
 
   pushNotice = (message, type = 'success', karma = 0) => {
