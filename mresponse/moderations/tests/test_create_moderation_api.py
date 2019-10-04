@@ -32,7 +32,7 @@ class TestCreateModerationApi(APITestCase):
         ))
         self.assertEqual(result.status_code, 400)
 
-    def test_is_approved_after_moderations(self):
+    def test_is_approved_after_moderation(self):
         response = ResponseFactory(approved=False, author=UserFactory(username="smith"))
         result = self.client.post(reverse('create_moderation', kwargs={"response_pk": response.pk}), data=dict(
             positive_in_tone=True,
@@ -41,7 +41,7 @@ class TestCreateModerationApi(APITestCase):
         ))
         self.assertEqual(result.status_code, 201)
 
-        user = UserFactory()
+        user = UserFactory(username='test1')
         self.client.force_login(user)
         result = self.client.post(reverse('create_moderation', kwargs={"response_pk": response.pk}), data=dict(
             positive_in_tone=True,
@@ -50,7 +50,7 @@ class TestCreateModerationApi(APITestCase):
         ))
         self.assertEqual(result.status_code, 201)
 
-        user = UserFactory()
+        user = UserFactory(username='test2')
         self.client.force_login(user)
         result = self.client.post(reverse('create_moderation', kwargs={"response_pk": response.pk}), data=dict(
             positive_in_tone=True,
@@ -62,7 +62,6 @@ class TestCreateModerationApi(APITestCase):
 
         response.refresh_from_db()
         self.assertTrue(response.approved)
-
 
 class TestModerationkarmaPointsApi(APITestCase):
     def setUp(self):
