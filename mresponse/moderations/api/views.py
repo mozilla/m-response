@@ -61,7 +61,13 @@ class CreateModeration(ModerationMixin, generics.CreateAPIView):
                     models.F('karma_points') + APPROVED_RESPONSE_KARMA_POINTS_AMOUNT
                 )
                 author_profile.save(update_fields=('karma_points',))
-                response.save()
+
+                if self.request.user.profile.is_super_moderator:
+                    response.staff_approved = True
+                    response.save()
+                    response.submit_to_play_store()
+                else:
+                    response.save()
 
         # Give moderator karma points.
         moderator_profile = self.request.user.profile
@@ -83,11 +89,13 @@ class ApproveResponse(ModerationMixin, views.APIView):
 
         approval_type = Approval.COMMUNITY
 
+        assigned_response.approved = True
+
         if request.user.has_perm('responses.can_bypass_staff_moderation'):
             approval_type = Approval.STAFF
             assigned_response.staff_approved = True
+            assigned_response.submit_to_play_store()
 
-        assigned_response.approved = True
         assigned_response.save(update_fields=['staff_approved', 'approved'])
 
         # Create approval record

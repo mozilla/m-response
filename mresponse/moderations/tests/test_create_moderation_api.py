@@ -4,7 +4,8 @@ from rest_framework.test import APITestCase
 
 from mresponse.moderations.tests.factories import ModerationFactory
 from mresponse.responses.tests.factories import ResponseFactory
-from mresponse.users.tests.factories import UserFactory
+from mresponse.users.tests.factories import (BypassStaffModerationUserFactory,
+                                             UserFactory)
 
 
 class TestCreateModerationApi(APITestCase):
@@ -62,6 +63,24 @@ class TestCreateModerationApi(APITestCase):
 
         response.refresh_from_db()
         self.assertTrue(response.approved)
+
+    def test_is_staff_approved_after_moderation_by_mod_two(self):
+        response = ResponseFactory(approved=False, author=UserFactory(username="smith"))
+        ModerationFactory(response=response, positive_in_tone=True)
+        ModerationFactory(response=response, positive_in_tone=True)
+
+        self.client.force_login(BypassStaffModerationUserFactory())
+        result = self.client.post(reverse('create_moderation', kwargs={"response_pk": response.pk}), data=dict(
+            positive_in_tone=True,
+            addressing_the_issue=True,
+            personal=True
+        ))
+
+        self.assertEqual(result.status_code, 201)
+
+        response.refresh_from_db()
+        self.assertTrue(response.approved)
+        self.assertTrue(response.staff_approved)
 
 
 class TestModerationKarmaPointsApi(APITestCase):
