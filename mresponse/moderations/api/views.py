@@ -55,6 +55,12 @@ class CreateModeration(ModerationMixin, generics.CreateAPIView):
 
         if not response.approved:
             if response.is_community_approved():
+                # Give moderator karma points.
+                author_profile = response.author.profile
+                author_profile.karma_points = (
+                    models.F('karma_points') + APPROVED_RESPONSE_KARMA_POINTS_AMOUNT
+                )
+                author_profile.save(update_fields=('karma_points',))
                 response.save()
 
         # Give moderator karma points.

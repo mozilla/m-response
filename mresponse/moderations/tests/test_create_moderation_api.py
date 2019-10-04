@@ -110,3 +110,4 @@ class TestModerationKarmaPointsApi(APITestCase):
         self.assertEqual(result.status_code, 201)
         self.user.profile.refresh_from_db()
         self.assertEqual(self.user.profile.karma_points, 3)
+        self.assertEqual(response.author.profile.karma_points, 1)
