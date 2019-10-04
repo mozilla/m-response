@@ -51,11 +51,7 @@ export default class ModeratePage extends React.Component {
       }
     } = this.props
 
-    fetchResponses((successMessage, err) => {
-      if (err) {
-        this.pushNotice(err, 'error')
-      }
-    })
+    fetchResponses()
 
     // If the user is not trusted,
     // set isModerating to show the form immediately
@@ -132,6 +128,12 @@ export default class ModeratePage extends React.Component {
                 isError={message.isError} />
             </div>
           ))}
+
+          {!responses.count ? (
+            <div className='moderate-page-container'>
+              <p className='moderate-page-empty-queue'>There are currently no responses to moderate</p>
+            </div>
+          ) : null}
 
           {responses.count && !isResDetailsOpen ? (
             <Fragment>
