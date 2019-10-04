@@ -71,7 +71,7 @@ class ResponseMixin:
         )
 
         if self.request.user.profile.is_super_moderator:
-            qs = qs.not_staff_approved()
+            qs = qs.not_staff_approved().skip_rejected()
         else:
             qs = qs.moderator_queue().two_or_less_moderations()
 

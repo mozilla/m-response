@@ -24,6 +24,47 @@ class TestListResponseApi(APITestCase):
         self.assertEqual(result.status_code, 200)
         self.assertEqual(len(result.json()['results']), 0)
 
+    def test_cant_see_reject_responses(self):
+        response = ResponseFactory(approved=False, author=UserFactory(username="smith"))
+        ModerationFactory(response=response, addressing_the_issue=False, personal=False, positive_in_tone=False,
+                          moderator=UserFactory(username="joe1"))
+        ModerationFactory(response=response, addressing_the_issue=False, personal=False, positive_in_tone=False,
+                          moderator=UserFactory(username="joe2"))
+        ModerationFactory(response=response, addressing_the_issue=False, personal=False, positive_in_tone=False,
+                          moderator=UserFactory(username="joe3"))
+
+        result = self.client.get('/api/response/')
+        self.assertEqual(result.status_code, 200)
+        self.assertEqual(len(result.json()['results']), 0)
+
+    def test_mod_one_cant_see_reject_responses(self):
+        self.client.force_login(BypassCommunityModerationUserFactory())
+        response = ResponseFactory(approved=False, author=UserFactory(username="smith"))
+        ModerationFactory(response=response, addressing_the_issue=False, personal=False, positive_in_tone=False,
+                          moderator=UserFactory(username="joe1"))
+        ModerationFactory(response=response, addressing_the_issue=False, personal=False, positive_in_tone=False,
+                          moderator=UserFactory(username="joe2"))
+        ModerationFactory(response=response, addressing_the_issue=False, personal=False, positive_in_tone=False,
+                          moderator=UserFactory(username="joe3"))
+
+        result = self.client.get('/api/response/')
+        self.assertEqual(result.status_code, 200)
+        self.assertEqual(len(result.json()['results']), 0)
+
+    def test_mod_two_cant_see_rejected_responses(self):
+        self.client.force_login(BypassStaffModerationUserFactory())
+        response = ResponseFactory(approved=False, author=UserFactory(username="smith"))
+        ModerationFactory(response=response, addressing_the_issue=False, personal=False, positive_in_tone=False,
+                          moderator=UserFactory(username="joe1"))
+        ModerationFactory(response=response, addressing_the_issue=False, personal=False, positive_in_tone=False,
+                          moderator=UserFactory(username="joe2"))
+        ModerationFactory(response=response, addressing_the_issue=False, personal=False, positive_in_tone=False,
+                          moderator=UserFactory(username="joe3"))
+
+        result = self.client.get('/api/response/')
+        self.assertEqual(result.status_code, 200)
+        self.assertEqual(len(result.json()['results']), 0)
+
     def test_mod_one_cant_see_approved_responses(self):
         self.client.force_login(BypassCommunityModerationUserFactory())
         ResponseFactory(approved=False, author=UserFactory(username="smith"))
@@ -44,9 +85,9 @@ class TestListResponseApi(APITestCase):
     def test_mod_two_can_see_approved_responses(self):
         self.client.force_login(BypassStaffModerationUserFactory())
         response = ResponseFactory(approved=False, author=UserFactory(username="smith"))
-        ModerationFactory(response=response)
-        ModerationFactory(response=response)
-        ModerationFactory(response=response)
+        ModerationFactory(response=response, moderator=UserFactory(username="smith1"))
+        ModerationFactory(response=response, moderator=UserFactory(username="smith2"))
+        ModerationFactory(response=response, moderator=UserFactory(username="smith3"))
         response.refresh_from_db()
         self.assertTrue(response.is_community_approved())
 

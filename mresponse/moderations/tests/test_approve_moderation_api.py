@@ -95,7 +95,7 @@ class TestApproveKarmaPointsApi(APITestCase):
         self.assertEqual(user.profile.karma_points, 3)
         self.assertEqual(author.profile.karma_points, 1)
 
-    def test_approval_by_staff(self):
+    def test_approval_after_moderation_by_staff(self):
         user = BypassStaffModerationUserFactory()
         self.client.force_login(user)
         self.assertEqual(user.profile.karma_points, 0)
@@ -113,4 +113,23 @@ class TestApproveKarmaPointsApi(APITestCase):
         author.profile.refresh_from_db()
 
         self.assertEqual(user.profile.karma_points, 3)
+        self.assertEqual(author.profile.karma_points, 1)
+
+    def test_approval_by_staff(self):
+        user = BypassStaffModerationUserFactory()
+        self.client.force_login(user)
+        self.assertEqual(user.profile.karma_points, 0)
+
+        author = UserFactory(username="smith")
+        self.assertEqual(author.profile.karma_points, 0)
+
+        response = ResponseFactory(approved=False, staff_approved=True, author=author)
+
+        result = self.client.post(reverse('approve', kwargs={"response_pk": response.pk}))
+        self.assertEqual(result.status_code, 200)
+
+        user.profile.refresh_from_db()
+        author.profile.refresh_from_db()
+
+        self.assertEqual(user.profile.karma_points, 1)
         self.assertEqual(author.profile.karma_points, 1)
