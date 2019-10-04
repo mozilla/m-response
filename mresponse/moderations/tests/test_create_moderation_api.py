@@ -63,7 +63,8 @@ class TestCreateModerationApi(APITestCase):
         response.refresh_from_db()
         self.assertTrue(response.approved)
 
-class TestModerationkarmaPointsApi(APITestCase):
+
+class TestModerationKarmaPointsApi(APITestCase):
     def setUp(self):
         self.user = UserFactory()
         self.client.force_login(self.user)
