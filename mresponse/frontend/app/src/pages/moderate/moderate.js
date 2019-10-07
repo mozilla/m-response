@@ -530,10 +530,6 @@ export default class ModeratePage extends React.Component {
       currResponse
     } = this.state
 
-    const {
-      responses
-    } = this.props
-
     // TODO @ REDUX STAGE: SUBMIT LOGIC...
     this.props.onModerationUpdate({
       criteria: this.state.criteria,
@@ -546,17 +542,13 @@ export default class ModeratePage extends React.Component {
         this.pushNotice('Response moderated', 'success', this.karmaCount(currResponse.moderationCount))
       }
       this.closeResDetails()
-    }, this.state.currResponse.id, responses.currPage, editedResponse)
+    }, this.state.currResponse.id, this.determinePage(), editedResponse)
   }
 
   submitApproval = () => {
     const {
       currResponse
     } = this.state
-
-    const {
-      responses
-    } = this.props
 
     this.props.submitApproval((message, err) => {
       if (err) {
@@ -565,7 +557,27 @@ export default class ModeratePage extends React.Component {
         this.pushNotice('Response approved', 'success', this.karmaCount(currResponse.moderationCount))
       }
       this.closeResDetails()
-    }, currResponse.id, responses.currPage)
+    }, currResponse.id, this.determinePage())
+  }
+
+  determinePage = () => {
+    const {
+      responses: {
+        count,
+        currPage,
+        pagesCount
+      }
+    } = this.props
+
+    let result = currPage
+
+    // If on the last page then check if that page still exists
+    if (currPage === pagesCount) {
+      const reCheckPagesCount = Math.ceil((count - 1) / 4)
+      if (reCheckPagesCount !== pagesCount) result = reCheckPagesCount
+    }
+
+    return result
   }
 
   karmaCount = (modCount) => {
