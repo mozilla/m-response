@@ -1,12 +1,11 @@
 from django.contrib.admin.models import CHANGE, LogEntry
 from django.contrib.contenttypes.models import ContentType
-from django.db import models, transaction
+from django.db import transaction
 from django.utils.translation import ugettext_lazy as _
 
 from rest_framework import exceptions, generics, permissions, response, views
 from rest_framework.pagination import PageNumberPagination
 
-from mresponse.moderations.karam import RESPONSE_KARMA_POINTS_AMOUNT
 from mresponse.responses import models as responses_models
 from mresponse.responses.api import serializers as responses_serializers
 from mresponse.responses.api.permissions import \
@@ -39,13 +38,6 @@ class CreateResponse(generics.CreateAPIView):
         )
         review.assigned_to = None
         review.assigned_to_user_at = None
-
-        # Give karma points to response author
-        author_profile = author_user.profile
-        author_profile.karma_points = (
-            models.F('karma_points') + RESPONSE_KARMA_POINTS_AMOUNT
-        )
-        author_profile.save(update_fields=('karma_points',))
 
         review.save()
 
