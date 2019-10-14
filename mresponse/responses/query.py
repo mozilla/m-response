@@ -33,8 +33,11 @@ class ResponseQuerySet(models.QuerySet):
     def not_approved(self):
         return self.filter(approved=False)
 
+    def not_staff_approved(self):
+        return self.filter(staff_approved=False)
+
     def moderator_queue(self):
-        return self.not_approved()
+        return self.not_approved().not_staff_approved()
 
     def no_moderations(self):
         return self.annotate_moderations_count().filter(moderations_count=0)
@@ -47,6 +50,9 @@ class ResponseQuerySet(models.QuerySet):
 
     def two_or_less_moderations(self):
         return self.annotate_moderations_count().filter(moderations_count__lte=2)
+
+    def skip_rejected(self):
+        return self.annotate_moderations_count().exclude(moderations_count__gte=3, approved=False, staff_approved=False)
 
     def not_moderated_by(self, user):
         return self.exclude(moderations__moderator_id=user.pk)

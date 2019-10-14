@@ -1,183 +1,301 @@
 import React, { Fragment } from 'react'
+import { CSSTransitionGroup } from 'react-transition-group'
+import { FirstChild } from '@components/first-child'
 
 import Toolbar from '@components/toolbar'
 import ModerateCard from '@components/moderate-card'
+import ReviewCard from '@components/review-card'
 import Button from '@components/buttons'
 import ToggleButton from '@components/buttons/toggle'
 import AlertPrompt from '@components/alert-prompt'
+import NoticePrompt from '@components/notice-prompt'
 import Textarea from '@components/textarea'
+import SideBar from '@components/side-bar'
+import CannedResponses from '@components/canned-responses'
+import HelpDocs from '@components/help-docs'
+import Icon from '@components/icon'
 import { staticAsset } from '@utils/urls'
 import './moderate.scss'
 
 export default class ModeratePage extends React.Component {
   state = {
+    isResDetailsOpen: false,
     isModerating: false,
-    isDoneEditing: false,
+    isEditingResp: false,
     hasSubmitted: false,
-    response: this.props.response || '',
+    isCannedMenuOpen: false,
+    isHelpDocsMenuOpen: false,
+    currResponse: {},
+    editedResponse: '',
     criteria: {
       positive: null,
       relevant: null,
       personal: null
     },
     messages: [],
-    feedbackMessage: ''
+    feedbackMessage: '',
+    noticeData: {
+      message: '',
+      karma: 0,
+      type: '',
+      isOpen: false,
+      timeout: 3000
+    }
   }
 
   componentWillMount () {
     const {
-      fetchNextResponse,
+      fetchResponses,
       profile: {
-        canSkipModeration
+        isMod
       }
     } = this.props
 
-    fetchNextResponse((successMessage, err) => {
-      if (err) {
-        this.pushMessage(err, true)
-      }
-    })
+    fetchResponses()
 
     // If the user is not trusted,
     // set isModerating to show the form immediately
-    this.setState(state => {
-      return {
-        ...state,
-        isModerating: !canSkipModeration
-      }
+    this.setState({
+      isModerating: !isMod
     })
   }
 
   render () {
     const {
-      back,
-      response,
+      responses,
       profile: {
-        canSkipModeration
-      }
+        isMod
+        // isSuperMod
+      },
+      cannedResponses,
+      helpDocs
     } = this.props
 
     const {
+      isEditingResp,
+      editedResponse,
+      isResDetailsOpen,
       isModerating,
       messages,
-      criteria
+      criteria,
+      isCannedMenuOpen,
+      isHelpDocsMenuOpen,
+      currResponse,
+      noticeData
     } = this.state
+
+    const sideBarCannedContent = (
+      <CannedResponses cannedData={cannedResponses}/>
+    )
+
+    const rightHelpMenu = (
+      <button className="toolbar-right-help-button" onClick={() => (this.toggHelpDocsMenu())}>
+        <Icon iconName='help'/>
+      </button>
+    )
+
+    const sideBarHelpContent = (
+      <HelpDocs helpData={helpDocs} openTo='moderating'/>
+    )
 
     return (
       <div className='moderate-page'>
-        <Toolbar
-          className='moderate-page-toolbar'
-          title='Moderate'
-          invertBackIcon={true}
-          onBack={back} />
+        <CSSTransitionGroup
+          transitionName='slide-out-top'
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={300}
+          component={FirstChild}>
+          {noticeData.isOpen ? (
+            <NoticePrompt data={noticeData} closeNotice={this.resetNotice.bind(this)} />
+          ) : null}
+        </CSSTransitionGroup>
+        <header className='moderate-page-header'>
+          <Toolbar
+            className='moderate-page-toolbar'
+            title={this.pageTitle()}
+            invertBackIcon={true}
+            onBack={this.toolbarBackBtn()}
+            rightComponent={isEditingResp ? null : rightHelpMenu} />
+        </header>
 
-        {messages.map((message, index) => (
-          <div
-            key={`moderate-alert-${index}`}
-            className='moderate-page-container'
-          >
-            <AlertPrompt
-              className='respond-page-alert-prompt'
-              title={message.title}
-              message={message.text}
-              isError={message.isError} />
-          </div>
-        ))}
+        <div className='moderate-page-container'>
+          {messages.map((message, index) => (
+            <div key={`moderate-alert-${index}`}>
+              <AlertPrompt
+                className='respond-page-alert-prompt'
+                title={message.title}
+                message={message.text}
+                isError={message.isError} />
+            </div>
+          ))}
 
-        {response ? (
-          <Fragment>
+          {!responses.count ? (
             <div className='moderate-page-container'>
+              <p className='moderate-page-empty-queue'>There are currently no responses to moderate</p>
+            </div>
+          ) : null}
+
+          {responses.count && !isResDetailsOpen ? (
+            <Fragment>
+              {responses.results.map(response => (
+                <ReviewCard
+                  key={response.id}
+                  className='moderate-page-response'
+                  responseText={response.text}
+                  modCount={response.moderationCount}
+                  karmaCount={this.karmaCount}
+                  onClick={() => this.openResDetails(response)}
+                />
+              ))}
+
+              <div className='moderate-page-pagination'>
+                <button className='moderate-page-pagination-btn' disabled={responses.currPage <= 1} onClick={e => this.handlePageUpdate(responses.currPage - 1)}>
+                  <Icon iconName='arrowLeft' />
+                  <span>Previous</span>
+                </button>
+                <div className='moderate-page-pagination-select'>
+                  <select value={responses.currPage} onChange={e => this.handlePageUpdate(e.target.value)}>
+                    {responses.pages[0] > 1 ? <option value={1}>First</option> : null}
+                    {responses.pages.map(page => (
+                      <option
+                        disabled={page === responses.currPage}
+                        key={page}
+                        value={page}>
+                        {page}
+                      </option>
+                    ))}
+                    {responses.pages[responses.pages.length - 1] < responses.pagesCount ? <option value={responses.pagesCount}>Last</option> : null}
+                  </select>
+                  <Icon iconName='chevDown' className='moderate-page-pagination-select-icon' />
+                </div>
+                <button className='moderate-page-pagination-btn' disabled={responses.currPage === responses.pagesCount} onClick={e => this.handlePageUpdate(responses.currPage + 1)}>
+                  <span>Next</span>
+                  <Icon iconName='arrowRight' />
+                </button>
+              </div>
+            </Fragment>
+          ) : null}
+
+          {isResDetailsOpen && !isEditingResp ? (
+            <Fragment>
               <ModerateCard
                 className='moderate-page-response'
-                reviewAuthor={response.review.author}
-                reviewDate={response.review.dateSubmitted}
-                reviewText={response.review.text}
-                reviewRating={response.review.rating}
-                responseText={response.text}
-                responseDate={response.submittedAt}
-                productName={response.review.product.name}
-                productImage={response.review.product.image}
-                productVersion={response.review.product.version || {}}
-                androidVersion={response.review.androidVersion}
+                reviewAuthor={currResponse.review.author}
+                reviewDate={currResponse.review.dateSubmitted}
+                reviewText={currResponse.review.text}
+                reviewRating={currResponse.review.rating}
+                responseText={editedResponse || currResponse.text}
+                responseDate={currResponse.submittedAt}
+                productName={currResponse.review.product.name}
+                productImage={currResponse.review.product.image}
+                productVersion={currResponse.review.product.version || {}}
+                androidVersion={currResponse.review.androidVersion}
+                modCount={currResponse.moderationCount}
+                karmaCount={this.karmaCount}
               />
-            </div>
 
-            {isModerating &&
-              <div className='moderate-page-container'>
+              {editedResponse ? (
+                <div className='moderate-page-notice-editresp'>
+                  <div className='moderate-page-notice-editresp-content'>
+                    <div className='moderate-page-notice-editresp-content-icon'>
+                      <Icon iconName='info' />
+                    </div>
+                    <div className='moderate-page-notice-editresp-content-text'>
+                      <p>You are viewing an <strong>edited version</strong> of this response. Changes will not be applied until you have completed moderating this response.</p>
+                    </div>
+                  </div>
+                  <div className='moderate-page-notice-editresp-control'>
+                    <button onClick={this.cancelEditingResp}>
+                      <Icon iconName='undo' />
+                      <span>Revert edits</span>
+                    </button>
+                  </div>
+                </div>
+              ) : null}
+
+              {isModerating ? (
                 <div className='moderate-page-form'>
-                  <div className='moderate-page-form-row'>
-                    <span className='moderate-page-form-row-title'>
-                      Does this response {' '}
-                      <span className="moderate-page-form-row-strong">feel friendly?</span>
-                    </span>
-                    <div className='moderate-page-form-row-buttons'>
-                      <ToggleButton
-                        label="Yes!"
-                        toggled={criteria.positive === true}
-                        handleClick={() => this.toggleCriteria('positive', true)}
-                        icon={staticAsset('media/icons/smile.svg')} />
-                      <ToggleButton
-                        label="Not Really"
-                        toggled={criteria.positive === false}
-                        handleClick={() => this.toggleCriteria('positive', false)}
-                        icon={staticAsset('media/icons/sad.svg')} />
-                    </div>
-                  </div>
-
-                  <div className='moderate-page-form-row'>
-                    <span className='moderate-page-form-row-title'>
-                      Is this response {' '}
-                      <span className="moderate-page-form-row-strong">technically accurate?</span>
-                    </span>
-                    <div className='moderate-page-form-row-buttons'>
-                      <ToggleButton
-                        label="Yes!"
-                        toggled={criteria.relevant === true}
-                        handleClick={() => this.toggleCriteria('relevant', true)}
-                        icon={staticAsset('media/icons/smile.svg')} />
-                      <ToggleButton
-                        label="Not Really"
-                        toggled={criteria.relevant === false}
-                        handleClick={() => this.toggleCriteria('relevant', false)}
-                        icon={staticAsset('media/icons/sad.svg')} />
-                    </div>
-                  </div>
-
-                  <div className='moderate-page-form-row'>
-                    <span className='moderate-page-form-row-title'>
-                      <span className="moderate-page-form-row-strong">Would you reuse this response</span>{' '}
-                      for a similar question?
-                    </span>
-                    <div className='moderate-page-form-row-buttons'>
-                      <ToggleButton
-                        label="Yes!"
-                        toggled={criteria.personal === true}
-                        handleClick={() => this.toggleCriteria('personal', true)}
-                        icon={staticAsset('media/icons/smile.svg')} />
-                      <ToggleButton
-                        label="Not Really"
-                        toggled={criteria.personal === false}
-                        handleClick={() => this.toggleCriteria('personal', false)}
-                        icon={staticAsset('media/icons/sad.svg')} />
-                    </div>
-                  </div>
-
-                  {canSkipModeration &&
+                  <div className='moderate-page-form-main'>
                     <div className='moderate-page-form-row'>
                       <span className='moderate-page-form-row-title'>
-                        Feedback message {' '}
-                        <span className="moderate-page-form-row-em">(optional)</span>
+                        Does this response {' '}
+                        <span className="moderate-page-form-row-strong">feel friendly?</span>
                       </span>
-                      <div>
-                        <Textarea
-                          value={this.state.feedbackMessage}
-                          onChange={event => this.setState({ feedbackMessage: event.target.value })}
-                        />
+                      <div className='moderate-page-form-row-buttons'>
+                        <ToggleButton
+                          label="Yes!"
+                          toggled={criteria.positive === true}
+                          handleClick={() => this.toggleCriteria('positive', true)}
+                          icon={staticAsset('media/icons/smile.svg')} />
+                        <ToggleButton
+                          label="Not Really"
+                          toggled={criteria.positive === false}
+                          handleClick={() => this.toggleCriteria('positive', false)}
+                          icon={staticAsset('media/icons/sad.svg')} />
                       </div>
                     </div>
-                  }
 
-                  <div className='moderate-page-actions moderate-page-actions--form'>
+                    <div className='moderate-page-form-row'>
+                      <span className='moderate-page-form-row-title'>
+                        Is this response {' '}
+                        <span className="moderate-page-form-row-strong">technically accurate?</span>
+                      </span>
+                      <div className='moderate-page-form-row-buttons'>
+                        <ToggleButton
+                          label="Yes!"
+                          toggled={criteria.relevant === true}
+                          handleClick={() => this.toggleCriteria('relevant', true)}
+                          icon={staticAsset('media/icons/smile.svg')} />
+                        <ToggleButton
+                          label="Not Really"
+                          toggled={criteria.relevant === false}
+                          handleClick={() => this.toggleCriteria('relevant', false)}
+                          icon={staticAsset('media/icons/sad.svg')} />
+                      </div>
+                    </div>
+
+                    <div className='moderate-page-form-row'>
+                      <span className='moderate-page-form-row-title'>
+                        <span className="moderate-page-form-row-strong">Would you reuse this response</span>{' '}
+                        for a similar question?
+                      </span>
+                      <div className='moderate-page-form-row-buttons'>
+                        <ToggleButton
+                          label="Yes!"
+                          toggled={criteria.personal === true}
+                          handleClick={() => this.toggleCriteria('personal', true)}
+                          icon={staticAsset('media/icons/smile.svg')} />
+                        <ToggleButton
+                          label="Not Really"
+                          toggled={criteria.personal === false}
+                          handleClick={() => this.toggleCriteria('personal', false)}
+                          icon={staticAsset('media/icons/sad.svg')} />
+                      </div>
+                    </div>
+
+                    {isMod &&
+                      <div className='moderate-page-form-row'>
+                        <span className='moderate-page-form-row-title'>
+                          Feedback message {' '} <span className="moderate-page-form-row-em">optional</span>
+                        </span>
+                        <div>
+                          <Textarea
+                            value={this.state.feedbackMessage}
+                            onChange={event => this.setState({ feedbackMessage: event.target.value })}
+                          />
+                        </div>
+                      </div>
+                    }
+                  </div>
+
+                  <div className={'moderate-page-actions moderate-page-actions--form' + (isMod ? ' moderate-page-actions--form-between' : '')}>
+                    {isMod ? (
+                      <Button
+                        label='Edit response'
+                        className='moderate-page-actions-approve'
+                        onClick={this.startEditingResp}
+                      />
+                    ) : null}
                     <Button
                       label='Submit'
                       className='moderate-page-actions-moderate'
@@ -185,45 +303,137 @@ export default class ModeratePage extends React.Component {
                       disabled={!this.allCriteriaAnswered(criteria)}
                     />
                   </div>
+                </div>) : null
+              }
+
+              {isMod && !isModerating
+                ? <div className='moderate-page-actions moderate-page-actions--trusted'>
+                  <Button
+                    label='Approve'
+                    className='moderate-page-actions-approve'
+                    onClick={this.submitApproval}
+                    icon={staticAsset('media/icons/check-white.svg')} />
+                  <Button
+                    label='Moderate'
+                    className='moderate-page-actions-moderate'
+                    onClick={this.setIsModerating} />
+                </div> : null
+              }
+
+              <div className='moderate-page-controls'>
+                <Button
+                  type='link'
+                  label='Back'
+                  onClick={() => this.closeResDetails()} />
+              </div>
+            </ Fragment>
+          ) : null}
+        </div>
+
+        {isEditingResp ? (
+          <Fragment>
+            <div className='moderate-page-container'>
+              <ModerateCard
+                className='moderate-page-response'
+                reviewAuthor={currResponse.review.author}
+                reviewDate={currResponse.review.dateSubmitted}
+                reviewText={currResponse.review.text}
+                reviewRating={currResponse.review.rating}
+                responseText={currResponse.text}
+                responseDate={currResponse.submittedAt}
+                productName={currResponse.review.product.name}
+                productImage={currResponse.review.product.image}
+                productVersion={currResponse.review.product.version || {}}
+                androidVersion={currResponse.review.androidVersion}
+                modCount={currResponse.moderationCount}
+                karmaCount={this.karmaCount}
+                showModCount={false}
+              />
+            </div>
+
+            <div className='moderate-page-edit-response'>
+              <div className='moderate-page-edit-response-content'>
+                <div className='response-page-response-actions'>
+                  <Button
+                    label='Canned Responses'
+                    className='moderate-page-edit-response-guide-button'
+                    icon={staticAsset('media/icons/sidebar.svg')}
+                    onClick={this.toggCannedResponses} />
                 </div>
+                <form className='moderate-page-edit-response-form'>
+                  <Textarea
+                    maxLength={350}
+                    value={editedResponse}
+                    placeholder='Add Your Response'
+                    onChange={this.updateEditedResponse}
+                    rows={6}
+                  />
+                  <Button
+                    label='Done'
+                    className='moderate-page-edit-response-form-submit'
+                    onClick={this.submitEditingResp} />
+                  <Button
+                    type='link'
+                    label='Cancel'
+                    className='moderate-page-edit-response-form-cancel'
+                    onClick={() => { this.cancelEditingResp(true) }} />
+                </form>
               </div>
-            }
-
-            {canSkipModeration && !isModerating &&
-              <div className='moderate-page-actions moderate-page-actions--trusted'>
-                <Button
-                  label='Approve'
-                  className='moderate-page-actions-approve'
-                  onClick={this.submitApproval}
-                  icon={staticAsset('media/icons/check-white.svg')} />
-                <Button
-                  label='Moderate'
-                  className='moderate-page-actions-moderate'
-                  onClick={this.setIsModerating} />
-              </div>
-            }
-
-            {canSkipModeration && isModerating ? (
-              <div className='moderate-page-actions'>
-                <span
-                  className='moderate-page-actions-skip'
-                  onClick={() => {
-                    this.resetAll()
-                  }}>Back</span>
-              </div>
-            ) : (
-              <div className='moderate-page-actions'>
-                <span
-                  className='moderate-page-actions-skip'
-                  onClick={() => {
-                    this.handleSkip()
-                  }}>Skip</span>
-              </div>
-            )}
+            </div>
           </Fragment>
         ) : null}
+
+        <CSSTransitionGroup
+          transitionName='sideBarAnim'
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={300}
+          component={FirstChild}>
+          {isCannedMenuOpen ? <SideBar
+            className=''
+            title='Canned Responses'
+            handleClose={this.toggCannedResponses.bind(this)}
+            content={sideBarCannedContent} /> : null}
+        </CSSTransitionGroup>
+
+        <CSSTransitionGroup
+          transitionName='sideBarAnim'
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={300}
+          component={FirstChild}>
+          {isHelpDocsMenuOpen ? <SideBar
+            className=''
+            title='Help and Documentation'
+            handleClose={this.toggHelpDocsMenu.bind(this)}
+            content={sideBarHelpContent} /> : null}
+        </CSSTransitionGroup>
       </div>
     )
+  }
+
+  updateEditedResponse = e => {
+    this.setState({ editedResponse: e.target.value })
+  }
+
+  toggCannedResponses = (e) => {
+    const toggMenu = () => (this.setState({ isCannedMenuOpen: !this.state.isCannedMenuOpen }))
+    if (e) {
+      if (e.currentTarget === e.target) toggMenu()
+    } else toggMenu()
+  }
+
+  toggHelpDocsMenu = (e) => {
+    const toggMenu = () => (this.setState({ isHelpDocsMenuOpen: !this.state.isHelpDocsMenuOpen }))
+    if (e) {
+      if (e.currentTarget === e.target) toggMenu()
+    } else toggMenu()
+  }
+
+  handlePageUpdate = (pageNum) => {
+    this.props.fetchResponses((successMessage, err) => {
+      if (err) {
+        this.pushNotice(err, 'error')
+      }
+    }, pageNum)
   }
 
   toggleCriteria = (option, value) => {
@@ -236,41 +446,163 @@ export default class ModeratePage extends React.Component {
     }))
   }
 
+  pageTitle = () => {
+    return this.state.isEditingResp ? 'Edit contributor\'s response' : 'Moderate'
+  }
+
+  toolbarBackBtn = () => {
+    const {
+      isEditingResp,
+      isResDetailsOpen
+    } = this.state
+
+    return isEditingResp ? this.cancelEditingResp : isResDetailsOpen ? this.closeResDetails : this.props.back
+  }
+
+  startEditingResp = () => {
+    this.setState({
+      isEditingResp: true,
+      editedResponse: this.state.currResponse.text
+    })
+  }
+
+  cancelEditingResp = (doPushNotice) => {
+    this.setState({
+      isEditingResp: false,
+      editedResponse: ''
+    })
+
+    if (doPushNotice) this.pushNotice('Edits reverted')
+  }
+
+  submitEditingResp = () => {
+    // Only close the response pane and keep what was entered into "editedResponse"
+    this.setState({
+      isEditingResp: false
+    })
+  }
+
   allCriteriaAnswered = (criteria) => {
     return Object.entries(criteria).every(([, value]) => value !== null)
   }
 
-  setIsModerating = () => this.setState(state => {
-    return {
-      ...state,
-      isModerating: true
-    }
-  })
+  setIsModerating = () => this.setState({ isModerating: true })
 
-  submitModeration = () => {
-    // TODO @ REDUX STAGE: SUBMIT LOGIC...
-    this.props.onModerationUpdate({
-      criteria: this.state.criteria,
-      feedbackMessage: this.state.feedbackMessage
-    })
-    this.props.submitModeration((successMessage, err) => {
-      if (err) {
-        this.pushMessage(err, true)
-      } else {
-        this.pushMessage(successMessage)
-      }
-      this.resetAll()
+  startModerating = (response) => {
+    this.setState({
+      currResponse: response,
+      isModerating: true
     })
   }
 
+  cancelModerating = () => {
+    this.setState({
+      currResponse: {},
+      isModerating: false
+    })
+  }
+
+  openResDetails = (response) => {
+    this.setState({
+      currResponse: response,
+      isResDetailsOpen: true
+    })
+  }
+
+  closeResDetails = () => {
+    // Put user at top of screen
+    window.scrollTo(0, 0)
+
+    this.resetAll()
+
+    this.cancelEditingResp()
+
+    this.setState({
+      currResponse: {},
+      isResDetailsOpen: false
+    })
+  }
+
+  submitModeration = () => {
+    const {
+      editedResponse,
+      feedbackMessage,
+      currResponse
+    } = this.state
+
+    // TODO @ REDUX STAGE: SUBMIT LOGIC...
+    this.props.onModerationUpdate({
+      criteria: this.state.criteria,
+      feedbackMessage: feedbackMessage
+    })
+    this.props.submitModeration((message, err) => {
+      if (err) {
+        this.pushNotice(message, 'error')
+      } else {
+        this.pushNotice('Response moderated', 'success', this.karmaCount(currResponse.moderationCount))
+      }
+      this.closeResDetails()
+    }, this.state.currResponse.id, this.determinePage(), editedResponse)
+  }
+
   submitApproval = () => {
+    const {
+      currResponse
+    } = this.state
+
     this.props.submitApproval((message, err) => {
       if (err) {
-        this.pushMessage(message, true)
+        this.pushNotice('Unable to approve', 'error')
       } else {
-        this.pushMessage(message)
+        this.pushNotice('Response approved', 'success', this.karmaCount(currResponse.moderationCount))
       }
-      this.resetAll()
+      this.closeResDetails()
+    }, currResponse.id, this.determinePage())
+  }
+
+  determinePage = () => {
+    const {
+      responses: {
+        count,
+        currPage,
+        pagesCount
+      }
+    } = this.props
+
+    let result = currPage
+
+    // If on the last page then check if that page still exists
+    if (currPage === pagesCount) {
+      const reCheckPagesCount = Math.ceil((count - 1) / 4)
+      if (reCheckPagesCount !== pagesCount) result = reCheckPagesCount
+    }
+
+    return result
+  }
+
+  karmaCount = (modCount) => {
+    return modCount < 3 ? modCount + 1 : 3
+  }
+
+  pushNotice = (message, type = 'success', karma = 0) => {
+    this.setState({
+      noticeData: {
+        message,
+        karma,
+        type,
+        isOpen: true
+      }
+    })
+  }
+
+  resetNotice = () => {
+    this.setState({
+      noticeData: {
+        message: '',
+        karma: 0,
+        type: '',
+        isOpen: false
+      }
     })
   }
 
@@ -297,7 +629,7 @@ export default class ModeratePage extends React.Component {
   resetAll = () => {
     const {
       profile: {
-        canSkipModeration
+        isMod
       }
     } = this.props
 
@@ -305,41 +637,21 @@ export default class ModeratePage extends React.Component {
     this.resetData()
 
     // Reset the form to it's hidden for trusted users
-    if (canSkipModeration) {
+    if (isMod) {
       this.resetForm()
     }
   }
 
-  resetData = () => this.setState(state => {
-    return {
-      ...state,
-      criteria: {
-        positive: null,
-        relevant: null,
-        personal: null
-      },
-      feedbackMessage: ''
-    }
+  resetData = () => this.setState({
+    criteria: {
+      positive: null,
+      relevant: null,
+      personal: null
+    },
+    feedbackMessage: ''
   })
 
-  resetForm = () => this.setState(state => {
-    return {
-      ...state,
-      isModerating: false
-    }
+  resetForm = () => this.setState({
+    isModerating: false
   })
-
-  handleSkip = () => {
-    const {
-      skipResponse
-    } = this.props
-
-    skipResponse((message, err) => {
-      if (err) {
-        this.pushMessage(message, true)
-      } else {
-        this.resetAll()
-      }
-    })
-  }
 }

@@ -1,14 +1,15 @@
 from django.db import models, transaction
 
 from rest_framework import generics, permissions, response, status, views
+from rest_framework.exceptions import ValidationError
 
 from mresponse.moderations.api import serializers as moderations_serializers
+from mresponse.moderations.karam import (APPROVED_RESPONSE_KARMA_POINTS_AMOUNT,
+                                         karma_points_for_moderation)
 from mresponse.moderations.models import Approval
-from mresponse.responses import models as responses_models
 from mresponse.responses.api.permissions import \
     BypassStaffOrCommunityModerationPermission
-
-MODERATION_KARMA_POINTS_AMOUNT = 1
+from mresponse.responses.models import Response
 
 
 class ModerationMixin:
@@ -17,34 +18,61 @@ class ModerationMixin:
         Get a response that matches the ID in the URL and has been
         assigned to the current user.
         """
-        assignment = generics.get_object_or_404(
-            responses_models.ResponseAssignedToUser.objects.not_expired(),
-            user=self.request.user,
-            response_id=self.kwargs['response_pk']
+
+        qs = (
+            Response.objects
+            .annotate_moderations_count()
+            .exclude(author=self.request.user)
         )
-        return assignment.response
+
+        if not self.request.user.profile.is_super_moderator:
+            qs = qs.filter(moderations_count__lt=3)
+
+        return qs.get(pk=self.kwargs['response_pk'])
 
 
 class CreateModeration(ModerationMixin, generics.CreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = moderations_serializers.ModerationSerializer
 
+    def get_queryset(self):
+        return Response.objects.exclude(moderations__moderator=self.request.user)
+
     @transaction.atomic
     def perform_create(self, serializer):
-        response = self.get_response_for_user()
+        try:
+            response = self.get_response_for_user()
+        except Response.DoesNotExist:
+            raise ValidationError("Response can't be moderated.")
+
+        # Needs to be calculated before saving of the moderation.
+        karma_points = karma_points_for_moderation(response)
 
         serializer.save(
             response=response,
             moderator=self.request.user,
         )
 
-        # Clear the assignment to the user.
-        self.request.user.response_assignment.delete()
+        if not response.approved:
+            if response.is_community_approved():
+                # Give moderator karma points.
+                author_profile = response.author.profile
+                author_profile.karma_points = (
+                    models.F('karma_points') + APPROVED_RESPONSE_KARMA_POINTS_AMOUNT
+                )
+                author_profile.save(update_fields=('karma_points',))
+
+                if self.request.user.profile.is_super_moderator:
+                    response.staff_approved = True
+                    response.save()
+                    response.submit_to_play_store()
+                else:
+                    response.save()
 
         # Give moderator karma points.
         moderator_profile = self.request.user.profile
         moderator_profile.karma_points = (
-            models.F('karma_points') + MODERATION_KARMA_POINTS_AMOUNT
+            models.F('karma_points') + karma_points
         )
         moderator_profile.save(update_fields=('karma_points',))
 
@@ -61,11 +89,13 @@ class ApproveResponse(ModerationMixin, views.APIView):
 
         approval_type = Approval.COMMUNITY
 
+        assigned_response.approved = True
+
         if request.user.has_perm('responses.can_bypass_staff_moderation'):
             approval_type = Approval.STAFF
             assigned_response.staff_approved = True
+            assigned_response.submit_to_play_store()
 
-        assigned_response.approved = True
         assigned_response.save(update_fields=['staff_approved', 'approved'])
 
         # Create approval record
@@ -75,15 +105,19 @@ class ApproveResponse(ModerationMixin, views.APIView):
             approver=self.request.user
         )
 
-        # Delete user's assignment to this response.
-        self.request.user.response_assignment.delete()
-
-        # Give approver a karma point
+        # Give approval a karma point
         moderator_profile = self.request.user.profile
         moderator_profile.karma_points = (
-            models.F('karma_points') + MODERATION_KARMA_POINTS_AMOUNT
+            models.F('karma_points') + karma_points_for_moderation(assigned_response)
         )
         moderator_profile.save(update_fields=('karma_points',))
+
+        # Give author karma points.
+        author_profile = assigned_response.author.profile
+        author_profile.karma_points = (
+            models.F('karma_points') + APPROVED_RESPONSE_KARMA_POINTS_AMOUNT
+        )
+        author_profile.save(update_fields=('karma_points',))
 
         # Return empty response.
         return response.Response({

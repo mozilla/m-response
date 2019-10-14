@@ -71,12 +71,15 @@ INSTALLED_APPS = [
     'webpack_loader',
 
     'mresponse.applications',
+    'mresponse.canned_response',
+    'mresponse.documentation',
     'mresponse.images',
     'mresponse.leaderboard',
     'mresponse.moderations',
     'mresponse.responses',
     'mresponse.reviews',
     'mresponse.users.apps.UsersConfig',
+    'mresponse.utils',
 ]
 
 

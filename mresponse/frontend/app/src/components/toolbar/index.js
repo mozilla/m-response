@@ -8,7 +8,7 @@ export default class Toolbar extends React.Component {
   render () {
     const { className = '', titleClassName = '', leftComponent, rightComponent, title, onBack, backArrowClassName = '', invertBackIcon } = this.props
     return (
-      <header className={`toolbar ${className}`}>
+      <div className={`toolbar ${className}`}>
         <div className="toolbar-left">
           {leftComponent || (
             <img
@@ -26,13 +26,16 @@ export default class Toolbar extends React.Component {
           </span>
         ) : null}
         <div className="toolbar-right">{rightComponent}</div>
-      </header>
+      </div>
     )
   }
 }
 
 Toolbar.propTypes = {
-  leftComponent: PropTypes.element,
+  leftComponent: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.bool
+  ]),
   rightComponent: PropTypes.element,
   title: PropTypes.string
 }

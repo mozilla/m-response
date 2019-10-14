@@ -31,7 +31,8 @@ export default class Api {
           points: json.profile.karma_points,
           responsesCount: json.profile.response_count,
           moderationsCount: json.profile.moderation_count
-        }
+        },
+        stats: { ...json.profile.stats }
       }
     })
   }
@@ -92,21 +93,70 @@ export default class Api {
     }
   }
 
-  async getResponse (languages) {
+  async getResponse (languages, pageNum) {
     let params = '?'
     if (languages && languages.length) {
       params = params + this.generateLanguageParam(languages)
     }
 
-    let response = await this.fetch(`/api/response/${params}`)
+    if (pageNum) params = params ? params + `;page=${pageNum}` : params + `page=${pageNum}`
+
+    const response = await this.fetch(`/api/response/${params}`)
     if (response.status === 200) {
       return response.json().then(json => {
+        // Prev + next page numbers
+        const next = new URLSearchParams(json.next).get('page') || 0
+        const previous = json.previous === null ? 0 : new URLSearchParams(json.previous).get('page') || 1
+        const currPage = previous >= 1 ? Number(previous) + 1 : 1
+
+        // Get pages array
+        const displayPerPage = 4 // Set by API
+        const pagesCount = Math.ceil(json.count / displayPerPage)
+
+        let start = 0
+        let end = 0
+        const pagesCutOff = 15
+        const ceiling = Math.ceil(pagesCutOff / 2)
+        const floor = Math.floor(pagesCutOff / 2)
+
+        // Calc range of page nums
+        if (pagesCount < pagesCutOff) {
+          start = 0
+          end = pagesCount
+        } else if (currPage >= 1 && currPage <= ceiling) {
+          start = 0
+          end = pagesCutOff
+        } else if ((currPage + floor) >= pagesCount) {
+          start = (pagesCount - pagesCutOff)
+          end = pagesCount
+        } else {
+          start = (currPage - ceiling)
+          end = (currPage + floor)
+        }
+
+        // Assemble page numbers based on range
+        const pages = []
+        for (let i = start; i < end; i++) {
+          pages.push(i + 1)
+        }
+
         return {
-          id: json.id,
-          text: json.text,
-          review: this.serializeReview(json.review),
-          moderationUrl: json.moderation_url,
-          submittedAt: new Date(json.submitted_at)
+          count: json.count,
+          pagesCount,
+          next,
+          previous,
+          pages,
+          currPage,
+          results: json.results.map(result => (
+            {
+              id: result.id,
+              text: result.text,
+              review: this.serializeReview(result.review),
+              moderationUrl: result.moderation_url,
+              submittedAt: new Date(result.submitted_at),
+              moderationCount: result.moderation_count
+            }
+          ))
         }
       })
     } else if (response.status === 404) {
@@ -129,7 +179,7 @@ export default class Api {
         'X-CSRFToken': Cookie.get('csrftoken')
       }
     })
-    return { detail: 'Thank you for your effort and so making Mozilla better for all of us!' }
+    return { detail: 'Thank you for your effort and making Mozilla better for all of us!' }
   }
 
   async submitModeration (responseId, moderation) {
@@ -142,12 +192,37 @@ export default class Api {
       }
     })
 
+    const resPayload = await response.json()
+
     if (!response.ok) {
       const errorMessage = { detail: 'Unable to submit moderation' }
+      if (Array.isArray(resPayload) && resPayload.length > 0) errorMessage.detail = resPayload[0]
+      if (resPayload.feedback_message) errorMessage.detail = resPayload.feedback_message
+
       throw errorMessage
     }
 
-    return { detail: 'Thank you for your effort and so making Mozilla better for all of us!' }
+    return { detail: 'Thank you for your effort and making Mozilla better for all of us!' }
+  }
+
+  async editResponse (responseId, editedRespText) {
+    let response = await this.fetch(`/api/response/${responseId}/`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        text: editedRespText
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': Cookie.get('csrftoken')
+      }
+    })
+
+    if (!response.ok) {
+      const errorMessage = { detail: 'Unable to edit response text' }
+      throw errorMessage
+    }
+
+    return { detail: 'Response was edited' }
   }
 
   async submitApproval (responseId) {
@@ -163,7 +238,7 @@ export default class Api {
       throw errorMessage
     }
 
-    return { detail: 'Thank you for your effort and so making Mozilla better for all of us!' }
+    return { detail: 'Thank you for your effort and making Mozilla better for all of us!' }
   }
 
   async skipReview (reviewId) {
@@ -252,5 +327,19 @@ export default class Api {
       }
       throw response
     })
+  }
+
+  async getCannedResponses () {
+    const res = await this.fetch(`/api/canned_response/`)
+    return res.json().then(json => (json))
+  }
+
+  async getHelpDocs () {
+    const res = await this.fetch(`/api/documentation/`)
+    return res.json().then(json => (json))
+    // return res.json().then(json => {
+    //   console.log('API helpDocs: ', json)
+    //   return json
+    // })
   }
 }

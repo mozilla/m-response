@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
-from django.test import TestCase
 
 import factory
 
@@ -33,13 +32,3 @@ class BypassStaffModerationUserFactory(UserFactory):
         self.user_permissions.add(
             Permission.objects.get(codename="can_bypass_staff_moderation")
         )
-
-
-class TestUsers(TestCase):
-    def test_can_skip_community_response_moderation(self):
-        user = BypassCommunityModerationUserFactory()
-        self.assertTrue(user.profile.can_skip_community_response_moderation)
-
-    def test_cannot_skip_community_response_moderation(self):
-        user = UserFactory()
-        self.assertFalse(user.profile.can_skip_community_response_moderation)

@@ -9,6 +9,8 @@ export * from './leaderboard'
 export const SET_PROFILE = 'SET_PROFILE'
 export const LOGOUT = 'LOGOUT'
 export const UPDATE_EXTRA_USER_META = 'UPDATE_EXTRA_USER_META'
+export const SET_CANNED_RESONSES = 'SET_CANNED_RESONSES'
+export const SET_HELP_DOCS = 'SET_HELP_DOCS'
 
 export const updateExtraUserMeta = meta => ({
   type: UPDATE_EXTRA_USER_META,
@@ -30,7 +32,7 @@ export const fetchProfile = () => connectApi(api =>
   async (dispatch) => {
     try {
       const profile = await api.getProfile()
-      console.log(`Dispatch fetchProfile: ${JSON.stringify(profile)}`)
+      // console.log(`Dispatch fetchProfile: ${JSON.stringify(profile)}`)
       return dispatch({
         type: SET_PROFILE,
         profile: profile,
@@ -85,3 +87,32 @@ export const logout = () => dispatch => {
     type: LOGOUT
   })
 }
+
+export const fetchCannedResponses = () => connectApi(api =>
+  async (dispatch) => {
+    try {
+      const cannedResponses = await api.getCannedResponses()
+      return dispatch({
+        type: SET_CANNED_RESONSES,
+        cannedResponses
+      })
+    } catch (err) {
+      console.error(err)
+    }
+  }
+)
+
+export const fetchHelpDocs = () => connectApi(api =>
+  async (dispatch) => {
+    try {
+      const helpDocs = await api.getHelpDocs()
+      // console.log('Actions: ', helpDocs)
+      return dispatch({
+        type: SET_HELP_DOCS,
+        helpDocs
+      })
+    } catch (err) {
+      console.error(err)
+    }
+  }
+)

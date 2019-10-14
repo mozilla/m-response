@@ -2,9 +2,10 @@ import { connect } from 'react-redux'
 import { push } from 'connected-react-router'
 
 import { PROFILE_URL, RESPOND_URL, MODERATE_URL } from '@utils/urls'
-import { updateAppConfig, updateHomeConfig, fetchExtraUserMeta, fetchProfile, fetchLeaderboard } from '@redux/actions'
-import { getModerateQueue, getRespondQueue, getFeedbackUrl, getAboutUrl, getProfile, getLeaderboard } from '@redux/selectors'
+import { updateAppConfig, updateHomeConfig, fetchExtraUserMeta, fetchProfile, fetchLeaderboard, fetchCannedResponses, fetchHelpDocs } from '@redux/actions'
+import { getModerateQueue, getRespondQueue, getFeedbackUrl, getAboutUrl, getProfile, getLeaderboard, getCannedResponses, getHelpDocs } from '@redux/selectors'
 import HomePage from './home'
+// import { getHelpDocs } from '../../redux/selectors';
 
 const mapStateToProps = (state, props) => ({
   respondQueue: getRespondQueue(state),
@@ -12,8 +13,11 @@ const mapStateToProps = (state, props) => ({
   feedbackLink: getFeedbackUrl(state),
   aboutLink: getAboutUrl(state),
   profile: getProfile(state),
-  leaderboard: getLeaderboard(state)
+  leaderboard: getLeaderboard(state),
+  cannedResponses: getCannedResponses(state),
+  helpDocs: getHelpDocs(state)
 })
+
 const mapDispatchToProps = (dispatch, props) => ({
   goToRespondMode: () => dispatch(push(RESPOND_URL)),
   goToModerateMode: () => dispatch(push(MODERATE_URL)),
@@ -22,7 +26,9 @@ const mapDispatchToProps = (dispatch, props) => ({
   updateProfile: () => dispatch(fetchProfile()),
   updateAppConfig: () => dispatch(updateAppConfig()),
   updateHomeConfig: () => dispatch(updateHomeConfig()),
-  updateLeaderboard: () => dispatch(fetchLeaderboard())
+  updateLeaderboard: () => dispatch(fetchLeaderboard()),
+  updateCannedResponses: () => dispatch(fetchCannedResponses()),
+  updateHelpDocs: () => dispatch(fetchHelpDocs())
 })
 
 export default connect(

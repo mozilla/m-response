@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 
 import './buttons.scss'
 
-const Button = ({ label, onClick, className, disabled = false, icon }) => (
+const Button = ({ label, onClick, className, disabled = false, icon, type }) => (
   <button
-    className={`standard-button ${
+    className={type === 'link' ? `link-button ${className}` : `standard-button ${
       disabled ? 'standard-button--disabled' : null
     } ${className}`}
     onClick={onClick}

@@ -5,3 +5,64 @@
 // Style Modules
 @import 'vars';
 @import 'grid';
+
+// Utility styles
+.no_scroll {
+  overflow: hidden;
+}
+
+// Type
+a {
+  color: $blue;
+}
+
+// --------------------
+// React CSSTransitionGroup animations
+// --------------------
+// slide-out-right : Animation
+.slide-out-right-enter {
+  transform: translate3d(120%, 0, 0);
+  transition: transform .3s ease-in-out .2s;
+}
+.slide-out-right-enter.slide-out-right-enter-active {
+  transform: translate3d(0, 0, 0);
+}
+.slide-out-right-leave {
+  transform: translate3d(0, 0, 0);
+  transition: transform .3s ease-in-out;
+}
+.slide-out-right-leave.slide-out-right-leave-active {
+  transform: translate3d(120%, 0, 0);
+}
+
+// slide-out-top : Animation
+.slide-out-top-enter {
+  transform: translate3d(0, -120%, 0);
+  transition: transform .22s ease-in-out;
+}
+.slide-out-top-enter.slide-out-top-enter-active {
+  transform: translate3d(0, 0, 0);
+}
+.slide-out-top-leave {
+  transform: translate3d(0, 0, 0);
+  transition: transform .22s ease-in-out;
+}
+.slide-out-top-leave.slide-out-top-leave-active {
+  transform: translate3d(0, -120%, 0);
+}
+
+// fadein : Animation
+.fadein-enter {
+  opacity: 0;
+  transition: opacity .2s ease-in-out;
+}
+.fadein-enter.fadein-enter-active {
+  opacity: 1;
+}
+.fadein-leave {
+  opacity: 1;
+  transition: opacity .2s ease-in-out;
+}
+.fadein-leave.fadein-leave-active {
+  opacity: 0;
+}

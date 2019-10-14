@@ -1,6 +1,8 @@
 from django.conf import settings
+from django.core.mail import mail_admins
 from django.db import models
 from django.db.models import Count, Q
+from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
@@ -57,6 +59,9 @@ class Response(models.Model):
             ("can_bypass_community_moderation", "Can bypass community moderation"),
             ("can_bypass_staff_moderation", "Can bypass staff moderation"),
         )
+
+    def moderation_count(self):
+        return self.moderations.count()
 
     def __str__(self):
         return _('Response to review #%(review_id)s') % {
@@ -145,3 +150,17 @@ class Response(models.Model):
 
         self.submitted_to_play_store = True
         self.save(update_fields=['submitted_to_play_store'])
+
+        self.send_upload_notification()
+
+    def send_upload_notification(self):
+        """
+        send a notifications to all admins, that this response has been uploaded to the playstore.
+        """
+        body = render_to_string('emails/admin_play_store_upload/body.txt', {'response': self})
+        subject = render_to_string('emails/admin_play_store_upload/subject.txt', {'response': self})
+
+        mail_admins(
+            subject,
+            body
+        )

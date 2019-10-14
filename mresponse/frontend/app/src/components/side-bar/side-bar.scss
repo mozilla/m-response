@@ -1,0 +1,81 @@
+@import '../../styles/main';
+
+.side-bar {
+  background-color: rgba(0,0,0,.9);
+  width: 100vw;
+  min-height: 400px;
+
+  position: fixed;
+  top: 0;right: 0;bottom: 0;left: 0;
+  z-index: 300;
+
+  &-inner {
+    background-color: #fff;
+    width: 80%;
+    max-width: 300px;
+    height: 100%;
+    margin-left: auto;
+    flex-grow: 1;
+    flex-shrink: 1;
+    
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+
+    .side-bar-toolbar {
+      flex-grow: 0;
+      flex-shrink: 0;
+    }
+  }
+
+  &-close-button {
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    max-width: 100%;
+    max-height: 100%;
+    padding: 0 !important;
+    margin: 0 !important;
+    cursor: pointer;
+
+    img, svg {
+      display: block;
+    }
+  }
+}
+
+.sideBarAnim-enter {
+  opacity: 0;
+  transition: opacity .2s ease-in-out;
+
+  .side-bar-inner {
+    transform: translate3d(120%, 0, 0);
+    transition: transform .3s ease-in-out .2s;
+  }
+}
+
+.sideBarAnim-enter.sideBarAnim-enter-active {
+  opacity: 1;
+
+  .side-bar-inner {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.sideBarAnim-leave {
+  opacity: 1;
+  transition: opacity .3s ease-in-out .3s;
+
+  .side-bar-inner {
+    transform: translate3d(0, 0, 0);
+    transition: transform .3s ease-in-out;
+  }
+}
+
+.sideBarAnim-leave.sideBarAnim-leave-active {
+  opacity: 0;
+
+  .side-bar-inner {
+    transform: translate3d(120%, 0, 0);
+  }
+}
