@@ -564,3 +564,7 @@ WEBPACK_LOADER = {
 # Whitenoise
 
 WHITENOISE_ROOT = os.path.join(BASE_DIR, 'public')
+
+
+# Sessions
+SESSION_COOKIE_NAME = 'v3_sessionid'
