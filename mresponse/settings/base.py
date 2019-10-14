@@ -213,8 +213,7 @@ USE_TZ = True
 # "django-admin collectstatic".
 # http://whitenoise.evans.io/en/stable/#quickstart-for-django-apps
 # https://docs.djangoproject.com/en/stable/ref/settings/#staticfiles-storage
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 # This is where Django will look for static files outside the directories of
 # applications which are used by default.
