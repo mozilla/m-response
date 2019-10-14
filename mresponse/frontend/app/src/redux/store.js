@@ -12,7 +12,7 @@ import rootReducer from './reducers/index'
 const history = createBrowserHistory()
 
 const persistConfig = {
-  key: 'root',
+  key: 'v3',
   storage,
   blacklist: ['errors'],
   stateReconciler: autoMergeLevel2
