@@ -1,4 +1,5 @@
 import collections
+import json
 
 from rest_framework import decorators, permissions, response
 
@@ -10,14 +11,37 @@ from mresponse.reviews import models as reviews_models
 @decorators.permission_classes([permissions.IsAuthenticated])
 def homepage(request, format=None):
     return_dict = collections.OrderedDict()
-    return_dict['respond_queue'] = (
-        reviews_models.Review.objects.responder_queue(user=request.user).count()
+
+    languages = request.user.profile.languages
+    try:
+        languages = json.loads(languages)
+    except ValueError:
+        languages = []
+
+    respond_queue = reviews_models.Review.objects.responder_queue(
+        user=request.user
     )
-    return_dict['moderate_queue'] = (
+
+    if languages:
+        respond_queue = respond_queue.languages(languages)
+
+    return_dict['respond_queue'] = respond_queue.count()
+
+    moderation_queue = (
         responses_models.Response.objects
                                  .not_authored_by(request.user)
                                  .not_moderated_by(request.user)
-                                 .moderator_queue()
-                                 .count()
     )
+
+    if languages:
+        moderation_queue = moderation_queue.languages(languages)
+
+    if request.user.profile.is_super_moderator:
+        moderation_queue = moderation_queue.not_staff_approved()
+        moderation_queue = moderation_queue.skip_rejected()
+    else:
+        moderation_queue = moderation_queue.moderator_queue()
+        moderation_queue = moderation_queue.two_or_less_moderations()
+
+    return_dict['moderate_queue'] = moderation_queue.count()
     return response.Response(return_dict)

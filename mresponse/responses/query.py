@@ -60,6 +60,23 @@ class ResponseQuerySet(models.QuerySet):
     def not_authored_by(self, user):
         return self.exclude(author=user.pk)
 
+    def language_q(self, language_string):
+        return models.Q(
+            review__review_language__istartswith=f'{language_string}_'
+        ) | models.Q(
+            review__review_language__istartswith=f'{language_string}-'
+        ) | models.Q(
+            review__review_language__iexact=language_string
+        )
+
+    def languages(self, languages_list):
+        if not languages_list:
+            raise ValueError('must provide at least one language')
+        q = models.Q()
+        for lang in languages_list:
+            q |= self.language_q(lang)
+        return self.filter(q)
+
 
 class ResponseAssignedToUserQuerySet(models.QuerySet):
     def expired(self):
