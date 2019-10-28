@@ -1,3 +1,4 @@
+from django.core.cache import cache
 from django.utils.translation import ugettext_lazy as _
 
 from rest_framework import exceptions, generics, permissions, response, views
@@ -34,6 +35,26 @@ class Review(generics.RetrieveAPIView):
             return []
         return [l.strip() for l in lang_list if l.strip()]
 
+    def get_cached_next(self):
+        next_key = 'next_review_user_{}'.format(self.request.user.pk)
+        next_pk = cache.get(next_key)
+        cache.delete(next_key)
+
+        next_qs = reviews_models.Review.objects.filter(
+            pk=next_pk, assigned_to__isnull=True
+        )
+
+        if next_qs.exists():
+            return next_qs.get()
+        return None
+
+    def set_cached_next(self, next_review):
+        next_key = 'next_review_user_{}'.format(self.request.user.pk)
+        if next_review:
+            cache.set(next_key, next_review)
+        else:
+            cache.delete(next_key)
+
     def choose_review_for_user(self):
         """
         Assign or get assigned review for a user to respond on.
@@ -45,12 +66,13 @@ class Review(generics.RetrieveAPIView):
             ).get()
             # Renew assignment
             review.assign_to_user(self.request.user)
-            return review
+            assigned = True
         except reviews_models.Review.DoesNotExist:
-            pass
+            assigned = False
 
-        # Otherwise try to elect  a review that is avaialble in the
+        # Otherwise try to elect a review that is available in the
         # queue and assign it to user.
+
         base_queryset = self.get_queryset()
 
         # Prioritise English
@@ -63,11 +85,25 @@ class Review(generics.RetrieveAPIView):
         if languages_list:
             querysets.append(base_queryset.languages(languages_list))
 
+        if not assigned:
+            cached_review = self.get_cached_next()
+            if not cached_review:
+                for queryset in querysets:
+                    review = queryset_utils.get_random_entry(
+                        queryset
+                    )
+                    if review is not None:
+                        break
+            else:
+                review = cached_review
+
+        next_review = None
         for queryset in querysets:
-            review = queryset_utils.get_random_entry(
+            next_review = queryset_utils.get_random_entry(
                 queryset
             )
-            if review is not None:
+
+            if next_review is not None and next_review.pk != review.pk:
                 break
 
         if review is None:
@@ -75,6 +111,7 @@ class Review(generics.RetrieveAPIView):
                 detail=_('No reviews available in the queue.')
             )
         review.assign_to_user(self.request.user)
+        self.set_cached_next(next_review)
         return review
 
     def get_object(self):
@@ -94,6 +131,15 @@ class NextReview(generics.RetrieveAPIView):
     serializer_class = reviews_serializers.ReviewSerializer
 
     def get_object(self):
+        # Check cache first
+        next_key = 'next_review_user_{}'.format(self.request.user.pk)
+        review_pk = cache.get(next_key)
+        cache.delete(next_key)
+
+        if review_pk:
+            return reviews_models.Review.objects.get(pk=review_pk)
+
+        # If no cached next review return something valid
         review = self.get_queryset().responder_queue().first()
         if review is None:
             raise exceptions.NotFound(
