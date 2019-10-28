@@ -51,6 +51,13 @@ class ResponseMixin:
     permission_classes = (permissions.IsAuthenticated,)
     pagination_class = ResponsePagination
 
+    def get_languages_list(self):
+        try:
+            lang_list = self.request.GET['lang'].split(',')
+        except KeyError:
+            return []
+        return [l.strip() for l in lang_list if l.strip()]
+
     def get_queryset(self):
         qs = (
             responses_models.Response.objects.select_related(
@@ -66,6 +73,10 @@ class ResponseMixin:
             qs = qs.not_staff_approved().skip_rejected()
         else:
             qs = qs.moderator_queue().two_or_less_moderations()
+
+        languages = self.get_languages_list()
+        if languages:
+            qs = qs.languages(languages)
 
         return qs
 
