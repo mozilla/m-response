@@ -48,12 +48,22 @@ class CreateModeration(ModerationMixin, generics.CreateAPIView):
         # Needs to be calculated before saving of the moderation.
         karma_points = karma_points_for_moderation(response)
 
-        serializer.save(
+        moderation = serializer.save(
             response=response,
             moderator=self.request.user,
         )
 
         if not response.approved:
+            if self.request.user.profile.can_skip_community_response_moderation:
+                criteria = [
+                    moderation.positive_in_tone,
+                    moderation.addressing_the_issue,
+                    moderation.personal
+                ]
+                if all(criteria):
+                    response.approved = True
+                    response.save()
+
             if response.is_community_approved():
                 # Give moderator karma points.
                 author_profile = response.author.profile
