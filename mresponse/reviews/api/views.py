@@ -38,7 +38,6 @@ class Review(generics.RetrieveAPIView):
     def get_cached_next(self):
         next_key = 'next_review_user_{}'.format(self.request.user.pk)
         next_pk = cache.get(next_key)
-        cache.delete(next_key)
 
         next_qs = reviews_models.Review.objects.filter(
             pk=next_pk, assigned_to__isnull=True
@@ -51,9 +50,7 @@ class Review(generics.RetrieveAPIView):
     def set_cached_next(self, next_review):
         next_key = 'next_review_user_{}'.format(self.request.user.pk)
         if next_review:
-            cache.set(next_key, next_review)
-        else:
-            cache.delete(next_key)
+            cache.set(next_key, next_review.pk)
 
     def choose_review_for_user(self):
         """
@@ -134,7 +131,6 @@ class NextReview(generics.RetrieveAPIView):
         # Check cache first
         next_key = 'next_review_user_{}'.format(self.request.user.pk)
         review_pk = cache.get(next_key)
-        cache.delete(next_key)
 
         if review_pk:
             return reviews_models.Review.objects.get(pk=review_pk)
