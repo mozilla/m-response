@@ -137,13 +137,9 @@ class NextReview(generics.RetrieveAPIView):
         if review_pk:
             return reviews_models.Review.objects.get(pk=review_pk)
 
-        # If no cached next review return something valid
-        review = self.get_queryset().responder_queue().first()
-        if review is None:
-            raise exceptions.NotFound(
-                detail=_('No reviews available in the queue.')
-            )
-        return review
+        raise exceptions.NotFound(
+            detail=_('No reviews available in the queue.')
+        )
 
 
 class SkipReview(views.APIView):
