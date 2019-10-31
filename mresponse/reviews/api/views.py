@@ -71,14 +71,16 @@ class Review(generics.RetrieveAPIView):
         # queue and assign it to user.
 
         base_queryset = self.get_queryset()
+        languages_list = self.get_languages_list()
+        querysets = []
 
         # Prioritise English
-        querysets = [
-            base_queryset.languages(['en']),
-        ]
+        if 'en' in languages_list:
+            querysets = [
+                base_queryset.languages(['en']),
+            ]
 
         # Then prioritise users' languages
-        languages_list = self.get_languages_list()
         if languages_list:
             querysets.append(base_queryset.languages(languages_list))
 
