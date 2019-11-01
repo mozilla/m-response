@@ -1,5 +1,6 @@
 from rest_framework import reverse, serializers
 
+from mresponse.moderations import models as moderations_models
 from mresponse.responses import models as responses_models
 from mresponse.reviews.api import serializers as reviews_serializers
 
@@ -39,13 +40,31 @@ class ResponseSerializer(serializers.ModelSerializer):
 
     def save(self, **kwargs):
         author = kwargs.get("author", None)
+        add_missing_moderations = False
+
         if author:
             if author.has_perm("responses.can_bypass_community_moderation"):
                 kwargs["approved"] = True
+                add_missing_moderations = True
             if author.has_perm("responses.can_bypass_staff_moderation"):
                 kwargs["approved"] = True
                 kwargs["staff_approved"] = True
-        super().save(**kwargs)
+                add_missing_moderations = True
+
+        response = super().save(**kwargs)
+
+        # If response is automatically approved
+        # create missing moderations
+        if add_missing_moderations:
+            if response.approved and not response.moderations.all().exists():
+                for i in range(3):
+                    moderations_models.Moderation.objects.create(
+                        response=response,
+                        moderator=author,
+                        positive_in_tone=True,
+                        addressing_the_issue=True,
+                        personal=True,
+                    )
 
     def get_moderation_url(self, instance):
         return reverse.reverse(
