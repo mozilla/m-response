@@ -39,8 +39,6 @@ def get_human_readable_android_version(android_sdk_number):
     version = get_android_version(android_sdk_number)
     if version is None:
         if android_sdk_number:
-            return _('SDK %(sdk_version)d') % {
-                'sdk_version': android_sdk_number,
-            }
-        return _('Unknown')
-    return '.'.join(str(v) for v in version)
+            return _("SDK %(sdk_version)d") % {"sdk_version": android_sdk_number}
+        return _("Unknown")
+    return ".".join(str(v) for v in version)

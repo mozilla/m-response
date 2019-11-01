@@ -7,14 +7,16 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('responses', '0003_response_approved'),
-    ]
+    dependencies = [("responses", "0003_response_approved")]
 
     operations = [
         migrations.AlterField(
-            model_name='response',
-            name='author',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='responses', to=settings.AUTH_USER_MODEL),
-        ),
+            model_name="response",
+            name="author",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="responses",
+                to=settings.AUTH_USER_MODEL,
+            ),
+        )
     ]

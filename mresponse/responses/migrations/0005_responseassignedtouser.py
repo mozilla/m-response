@@ -10,17 +10,42 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('responses', '0004_auto_20181015_1308'),
+        ("responses", "0004_auto_20181015_1308"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='ResponseAssignedToUser',
+            name="ResponseAssignedToUser",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('assigned_at', models.DateTimeField(default=django.utils.timezone.now)),
-                ('response', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='moderation_assignments', to='responses.Response')),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='response_assignment', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "assigned_at",
+                    models.DateTimeField(default=django.utils.timezone.now),
+                ),
+                (
+                    "response",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="moderation_assignments",
+                        to="responses.Response",
+                    ),
+                ),
+                (
+                    "user",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="response_assignment",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
-        ),
+        )
     ]

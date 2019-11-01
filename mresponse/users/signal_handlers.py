@@ -12,5 +12,5 @@ def register_signal_handlers():
     signals.post_save.connect(
         create_user_profile,
         sender=auth.get_user_model(),
-        dispatch_uid='create_user_profile'
+        dispatch_uid="create_user_profile",
     )

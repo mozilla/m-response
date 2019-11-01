@@ -8,10 +8,7 @@ fake = Faker()
 
 def make_category(**kwargs):
     name = " ".join(fake.words())
-    defaults = {
-        "name": name,
-        "slug": slugify(name)
-    }
+    defaults = {"name": name, "slug": slugify(name)}
 
     defaults.update(kwargs)
 
@@ -19,9 +16,7 @@ def make_category(**kwargs):
 
 
 def make_response(category, **kwargs):
-    defaults = {
-        "text": fake.text(max_nb_chars=1000)
-    }
+    defaults = {"text": fake.text(max_nb_chars=1000)}
 
     defaults.update(kwargs)
 

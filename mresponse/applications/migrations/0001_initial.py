@@ -8,29 +8,57 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Application',
+            name="Application",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
-                ('package', models.CharField(help_text='E.g. "org.mozilla.firefox".', max_length=255, unique=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                (
+                    "package",
+                    models.CharField(
+                        help_text='E.g. "org.mozilla.firefox".',
+                        max_length=255,
+                        unique=True,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='ApplicationVersion',
+            name="ApplicationVersion",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
-                ('code', models.IntegerField()),
-                ('application', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='+', to='applications.Application')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                ("code", models.IntegerField()),
+                (
+                    "application",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="+",
+                        to="applications.Application",
+                    ),
+                ),
             ],
         ),
         migrations.AlterUniqueTogether(
-            name='applicationversion',
-            unique_together={('application', 'code')},
+            name="applicationversion", unique_together={("application", "code")}
         ),
     ]

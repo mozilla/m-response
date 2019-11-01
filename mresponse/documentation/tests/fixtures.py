@@ -6,10 +6,7 @@ fake = Faker()
 
 def make_page(**kwargs):
     title = " ".join(fake.words())
-    defaults = {
-        "title": title,
-        "body": fake.text(max_nb_chars=1000)
-    }
+    defaults = {"title": title, "body": fake.text(max_nb_chars=1000)}
 
     defaults.update(kwargs)
 

@@ -6,9 +6,8 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('moderations', '0004_moderation_feedback_message'),
-        ('moderations', '0005_approval'),
+        ("moderations", "0004_moderation_feedback_message"),
+        ("moderations", "0005_approval"),
     ]
 
-    operations = [
-    ]
+    operations = []

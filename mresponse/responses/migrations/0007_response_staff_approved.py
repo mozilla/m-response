@@ -5,14 +5,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('responses', '0006_response_submitted_to_play_store'),
-    ]
+    dependencies = [("responses", "0006_response_submitted_to_play_store")]
 
     operations = [
         migrations.AddField(
-            model_name='response',
-            name='staff_approved',
+            model_name="response",
+            name="staff_approved",
             field=models.BooleanField(default=False),
-        ),
+        )
     ]

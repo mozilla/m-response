@@ -5,22 +5,21 @@ from django.urls import include, path
 from django.views.generic import TemplateView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/', include('mresponse.api.urls')),
+    path("admin/", admin.site.urls),
+    path("api/", include("mresponse.api.urls")),
     path(
-        'contribute.json',
+        "contribute.json",
         TemplateView.as_view(
-            template_name='contribute.json',
-            content_type='application/json'
+            template_name="contribute.json", content_type="application/json"
         ),
-        name='contribute.json'
+        name="contribute.json",
     ),
 ]
 
 if settings.DJANGO_LOGIN_ENABLED:
-    urlpatterns += [path('oidc/authenticate/', LoginView.as_view())]
+    urlpatterns += [path("oidc/authenticate/", LoginView.as_view())]
 else:
-    urlpatterns += [path('oidc/', include('mozilla_django_oidc.urls'))]
+    urlpatterns += [path("oidc/", include("mozilla_django_oidc.urls"))]
 
 if settings.DEBUG:
     from django.conf.urls.static import static
@@ -30,4 +29,4 @@ if settings.DEBUG:
     urlpatterns += staticfiles_urlpatterns()
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-urlpatterns += [path('', include('mresponse.frontend.urls'))]
+urlpatterns += [path("", include("mresponse.frontend.urls"))]

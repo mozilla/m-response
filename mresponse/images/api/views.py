@@ -8,7 +8,7 @@ from rest_framework import permissions, response, views
 from mresponse.images.models import Image
 from PIL import Image as PILImage
 
-ALLOWED_EXTENSIONS = ['gif', 'jpg', 'jpeg', 'png']
+ALLOWED_EXTENSIONS = ["gif", "jpg", "jpeg", "png"]
 
 
 class ImageFormatError(Exception):
@@ -23,9 +23,9 @@ def check_image_file_format(f):
     extension = os.path.splitext(f.name)[1].lower()[1:]
 
     if extension not in ALLOWED_EXTENSIONS:
-        raise ImageFormatError(_('Not a supported image format.'))
+        raise ImageFormatError(_("Not a supported image format."))
 
-    if hasattr(f, 'image'):
+    if hasattr(f, "image"):
         # Django 1.8 annotates the file object with the PIL image
         image = f.image
     elif not f.closed:
@@ -37,7 +37,7 @@ def check_image_file_format(f):
             image = PILImage.open(f)
         except IOError:
             # Uploaded file is not even an image file (or corrupted)
-            raise ImageFormatError(_('Not a valid image.'))
+            raise ImageFormatError(_("Not a valid image."))
 
         f.seek(file_position)
     else:
@@ -45,38 +45,34 @@ def check_image_file_format(f):
         return
 
     image_format = extension.upper()
-    if image_format == 'JPG':
-        image_format = 'JPEG'
+    if image_format == "JPG":
+        image_format = "JPEG"
 
     internal_image_format = image.format.upper()
-    if internal_image_format == 'MPO':
-        internal_image_format = 'JPEG'
+    if internal_image_format == "MPO":
+        internal_image_format = "JPEG"
 
     # Check that the internal format matches the extension
     # It is possible to upload PSD files if their extension is set to jpg, png or gif. This should catch them out
     if internal_image_format != image_format:
-        raise ImageFormatError(_('Not a valid {} image.').format(image_format))
+        raise ImageFormatError(_("Not a valid {} image.").format(image_format))
 
 
 class Upload(views.APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, serializer):
-        if 'image' not in self.request.FILES:
-            return response.Response({
-                'error': _('No file uploaded')
-            }, status=400)
+        if "image" not in self.request.FILES:
+            return response.Response({"error": _("No file uploaded")}, status=400)
 
         # Check image format
         try:
-            check_image_file_format(self.request.FILES['image'])
+            check_image_file_format(self.request.FILES["image"])
         except ImageFormatError as e:
-            return response.Response({
-                'error': str(e)
-            }, status=400)
+            return response.Response({"error": str(e)}, status=400)
 
         image = Image.objects.create(
-            file=self.request.FILES['image'],
+            file=self.request.FILES["image"],
             uploaded_by=self.request.user,
             uploaded_at=timezone.now(),
         )
@@ -85,7 +81,4 @@ class Upload(views.APIView):
         profile.avatar = image.file.url
         profile.save()
 
-        return response.Response({
-            'id': image.id,
-            'src': image.file.url,
-        }, status=201)
+        return response.Response({"id": image.id, "src": image.file.url}, status=201)
