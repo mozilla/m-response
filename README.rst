@@ -4,25 +4,19 @@ m-response
 Set up local environment
 ------------------------
 
-To set up the project VM you’ll need VirtualBox and Vagrant. You can
+To set up the project VM you’ll need `docker` and `docker-compose` . You can
 start it up using the following commands.
 
 .. code:: sh
 
-   vagrant up
-   vagrant ssh
-
-The VM comes with aliases:
-
--  ``dj`` - shortcut to ``django-admin``
--  ``djrun`` - shortcut to ``django-admin runserver 0:8000``
+   docker-compose build
 
 Compile static assets
 ~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: sh
 
-   vagrant ssh
+   docker-compose run web bash
    cd mresponse/frontend/app/
    yarn install
    yarn start  # "yarn build" for the production build
@@ -35,17 +29,16 @@ Create database and administrator user
 
 .. code:: sh
 
-   vagrant ssh
-   dj migrate
-   dj createsuperuser
+   docker-compose run web bash
+   ./manage.py migrate
+   ./manage.py createsuperuser
 
 Start the server
 ~~~~~~~~~~~~~~~~
 
 .. code:: sh
 
-   vagrant ssh
-   djrun
+  docker-compose up
 
 Then you can visit administration panel at http://localhost:8000/admin/.
 
