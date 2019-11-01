@@ -9,11 +9,11 @@ from mresponse.leaderboard.models import Leaderboard
 
 
 # Cache leaderboard for an hour
-@method_decorator([vary_on_cookie, cache_page(60 * 60 * 1)], name='retrieve')
+@method_decorator([vary_on_cookie, cache_page(60 * 60 * 1)], name="retrieve")
 class LeaderboardView(generics.RetrieveAPIView):
     serializer_class = LeaderboardSerializer
     queryset = Leaderboard.objects.all()
-    permission_classes = (permissions.IsAuthenticated, )
+    permission_classes = (permissions.IsAuthenticated,)
 
     def get_object(self):
         try:
@@ -24,12 +24,12 @@ class LeaderboardView(generics.RetrieveAPIView):
 
     def get_serializer(self, *args, **kwargs):
         serializer_class = self.get_serializer_class()
-        kwargs['context'] = self.get_serializer_context()
+        kwargs["context"] = self.get_serializer_context()
 
         # Set records_limit to 10 if not set
         try:
-            kwargs['records_limit'] = abs(int(self.request.GET['records_limit']))
+            kwargs["records_limit"] = abs(int(self.request.GET["records_limit"]))
         except (KeyError, ValueError):
-            kwargs['records_limit'] = 10
+            kwargs["records_limit"] = 10
 
         return serializer_class(*args, **kwargs)

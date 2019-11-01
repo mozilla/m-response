@@ -7,7 +7,7 @@ from mresponse.responses import models as responses_models
 from mresponse.reviews import models as reviews_models
 
 
-@decorators.api_view(['GET'])
+@decorators.api_view(["GET"])
 @decorators.permission_classes([permissions.IsAuthenticated])
 def homepage(request, format=None):
     return_dict = collections.OrderedDict()
@@ -18,20 +18,16 @@ def homepage(request, format=None):
     except ValueError:
         languages = []
 
-    respond_queue = reviews_models.Review.objects.responder_queue(
-        user=request.user
-    )
+    respond_queue = reviews_models.Review.objects.responder_queue(user=request.user)
 
     if languages:
         respond_queue = respond_queue.languages(languages)
 
-    return_dict['respond_queue'] = respond_queue.count()
+    return_dict["respond_queue"] = respond_queue.count()
 
-    moderation_queue = (
-        responses_models.Response.objects
-                                 .not_authored_by(request.user)
-                                 .not_moderated_by(request.user)
-    )
+    moderation_queue = responses_models.Response.objects.not_authored_by(
+        request.user
+    ).not_moderated_by(request.user)
 
     if languages:
         moderation_queue = moderation_queue.languages(languages)
@@ -43,5 +39,5 @@ def homepage(request, format=None):
         moderation_queue = moderation_queue.moderator_queue()
         moderation_queue = moderation_queue.two_or_less_moderations()
 
-    return_dict['moderate_queue'] = moderation_queue.count()
+    return_dict["moderate_queue"] = moderation_queue.count()
     return response.Response(return_dict)

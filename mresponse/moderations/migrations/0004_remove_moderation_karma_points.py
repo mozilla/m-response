@@ -5,13 +5,6 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('moderations', '0003_auto_20181016_1533'),
-    ]
+    dependencies = [("moderations", "0003_auto_20181016_1533")]
 
-    operations = [
-        migrations.RemoveField(
-            model_name='moderation',
-            name='karma_points',
-        ),
-    ]
+    operations = [migrations.RemoveField(model_name="moderation", name="karma_points")]

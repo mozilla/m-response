@@ -15,15 +15,10 @@ class ReviewQuerySet(models.QuerySet):
         """
         Get reviews that are assigned to a particular user.
         """
-        return (
-            self.assignment_not_expired()
-            & self.filter(assigned_to=user)
-        )
+        return self.assignment_not_expired() & self.filter(assigned_to=user)
 
     def assignment_not_expired(self):
-        return self.filter(
-            assigned_to_user_at__gte=timezone.now() - ASSIGNMENT_TIMEOUT
-        )
+        return self.filter(assigned_to_user_at__gte=timezone.now() - ASSIGNMENT_TIMEOUT)
 
     def assignment_expired(self):
         return self.difference(self.assignment_not_expired())
@@ -32,10 +27,7 @@ class ReviewQuerySet(models.QuerySet):
         return self.filter(assigned_to__isnull=True) | self.assignment_expired()
 
     def rating_range(self, min_value, max_value):
-        return self.filter(
-            review_rating__gte=min_value,
-            review_rating__lte=max_value
-        )
+        return self.filter(review_rating__gte=min_value, review_rating__lte=max_value)
 
     def newer_than_1_week(self):
         one_week_ago = timezone.now() - timezone.timedelta(weeks=1)
@@ -52,17 +44,15 @@ class ReviewQuerySet(models.QuerySet):
         return qs
 
     def language_q(self, language_string):
-        return models.Q(
-            review_language__istartswith=f'{language_string}_'
-        ) | models.Q(
-            review_language__istartswith=f'{language_string}-'
-        ) | models.Q(
-            review_language__iexact=language_string
+        return (
+            models.Q(review_language__istartswith=f"{language_string}_")
+            | models.Q(review_language__istartswith=f"{language_string}-")
+            | models.Q(review_language__iexact=language_string)
         )
 
     def languages(self, languages_list):
         if not languages_list:
-            raise ValueError('must provide at least one language')
+            raise ValueError("must provide at least one language")
         q = models.Q()
         for lang in languages_list:
             q |= self.language_q(lang)

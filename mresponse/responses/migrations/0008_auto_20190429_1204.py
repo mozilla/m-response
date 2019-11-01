@@ -5,13 +5,19 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('responses', '0007_response_staff_approved'),
-    ]
+    dependencies = [("responses", "0007_response_staff_approved")]
 
     operations = [
         migrations.AlterModelOptions(
-            name='response',
-            options={'permissions': (('can_bypass_community_moderation', 'Can bypass community moderation'), ('can_bypass_staff_moderation', 'Can bypass staff moderation'))},
-        ),
+            name="response",
+            options={
+                "permissions": (
+                    (
+                        "can_bypass_community_moderation",
+                        "Can bypass community moderation",
+                    ),
+                    ("can_bypass_staff_moderation", "Can bypass staff moderation"),
+                )
+            },
+        )
     ]

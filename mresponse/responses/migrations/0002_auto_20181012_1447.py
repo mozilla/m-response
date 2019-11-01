@@ -6,14 +6,14 @@ import django.utils.timezone
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('responses', '0001_initial'),
-    ]
+    dependencies = [("responses", "0001_initial")]
 
     operations = [
         migrations.AlterField(
-            model_name='response',
-            name='submitted_at',
-            field=models.DateTimeField(default=django.utils.timezone.now, editable=False),
-        ),
+            model_name="response",
+            name="submitted_at",
+            field=models.DateTimeField(
+                default=django.utils.timezone.now, editable=False
+            ),
+        )
     ]

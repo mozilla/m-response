@@ -22,19 +22,27 @@ class MyUserStatSerializer(serializers.Serializer):
 
 
 class MyUserProfileSerializer(serializers.ModelSerializer):
-    stats = MyUserStatSerializer(read_only=True, source='profile_stats')
+    stats = MyUserStatSerializer(read_only=True, source="profile_stats")
 
     class Meta:
         model = users_models.UserProfile
-        fields = ('karma_points', 'moderation_count', 'response_count',
-                  'languages', 'name', 'avatar',
-                  'can_skip_community_response_moderation', 'stats', 'is_super_moderator')
+        fields = (
+            "karma_points",
+            "moderation_count",
+            "response_count",
+            "languages",
+            "name",
+            "avatar",
+            "can_skip_community_response_moderation",
+            "stats",
+            "is_super_moderator",
+        )
 
 
 class MyUserMetaSerializer(serializers.ModelSerializer):
     class Meta:
         model = users_models.UserProfile
-        fields = ('languages', 'name')
+        fields = ("languages", "name")
 
 
 class MyUserSerializer(serializers.ModelSerializer):
@@ -42,4 +50,4 @@ class MyUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = auth.get_user_model()
-        fields = ('username', 'email', 'profile',)
+        fields = ("username", "email", "profile")

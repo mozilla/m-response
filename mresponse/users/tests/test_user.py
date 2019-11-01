@@ -1,7 +1,9 @@
 from django.test import TestCase
 
 from mresponse.users.tests.factories import (
-    BypassCommunityModerationUserFactory, UserFactory)
+    BypassCommunityModerationUserFactory,
+    UserFactory,
+)
 
 
 class TestUsers(TestCase):

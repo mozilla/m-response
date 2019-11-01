@@ -8,7 +8,8 @@ class LeaderboardQuerySet(models.QuerySet):
         start = today - timezone.timedelta(days=today.weekday())
         end = start + timezone.timedelta(days=6)
 
-        return self.filter(
-            date__gte=start,
-            date__lte=end
-        ).order_by('-date', '-pk')[:1].get()
+        return (
+            self.filter(date__gte=start, date__lte=end)
+            .order_by("-date", "-pk")[:1]
+            .get()
+        )

@@ -6,14 +6,16 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('moderations', '0002_auto_20181015_1308'),
-    ]
+    dependencies = [("moderations", "0002_auto_20181015_1308")]
 
     operations = [
         migrations.AlterField(
-            model_name='moderation',
-            name='response',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='moderations', to='responses.Response'),
-        ),
+            model_name="moderation",
+            name="response",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="moderations",
+                to="responses.Response",
+            ),
+        )
     ]

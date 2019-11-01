@@ -18,7 +18,7 @@ class ResponseAdmin(admin.ModelAdmin):
 
 @admin.register(models.Category)
 class CategoryAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug': ('name',), }
+    prepopulated_fields = {"slug": ("name",)}
     list_display = ("name", "slug", "response_count")
 
     def response_count(self, obj):

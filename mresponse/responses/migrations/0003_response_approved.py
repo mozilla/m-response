@@ -5,14 +5,15 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('responses', '0002_auto_20181012_1447'),
-    ]
+    dependencies = [("responses", "0002_auto_20181012_1447")]
 
     operations = [
         migrations.AddField(
-            model_name='response',
-            name='approved',
-            field=models.BooleanField(default=False, help_text='If response meets criteria to be submitted to the Play Store.'),
-        ),
+            model_name="response",
+            name="approved",
+            field=models.BooleanField(
+                default=False,
+                help_text="If response meets criteria to be submitted to the Play Store.",
+            ),
+        )
     ]

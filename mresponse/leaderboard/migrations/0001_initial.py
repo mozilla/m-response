@@ -10,32 +10,57 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-    ]
+    dependencies = [migrations.swappable_dependency(settings.AUTH_USER_MODEL)]
 
     operations = [
         migrations.CreateModel(
-            name='Leaderboard',
+            name="Leaderboard",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('date', models.DateField(default=django.utils.timezone.localdate)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("date", models.DateField(default=django.utils.timezone.localdate)),
             ],
-            options={
-                'ordering': ('-date', '-pk'),
-            },
+            options={"ordering": ("-date", "-pk")},
         ),
         migrations.CreateModel(
-            name='LeaderboardRecord',
+            name="LeaderboardRecord",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('score', models.PositiveIntegerField(default=0)),
-                ('leaderboard', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='records', to='leaderboard.Leaderboard')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='+', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("score", models.PositiveIntegerField(default=0)),
+                (
+                    "leaderboard",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="records",
+                        to="leaderboard.Leaderboard",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.AlterUniqueTogether(
-            name='leaderboardrecord',
-            unique_together={('user', 'leaderboard')},
+            name="leaderboardrecord", unique_together={("user", "leaderboard")}
         ),
     ]

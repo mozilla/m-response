@@ -5,15 +5,13 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('reviews', '0002_auto_20181012_1556'),
-    ]
+    dependencies = [("reviews", "0002_auto_20181012_1556")]
 
     operations = [
         migrations.AddField(
-            model_name='review',
-            name='review_language',
-            field=models.CharField(default='', max_length=5, blank=True),
+            model_name="review",
+            name="review_language",
+            field=models.CharField(default="", max_length=5, blank=True),
             preserve_default=False,
-        ),
+        )
     ]

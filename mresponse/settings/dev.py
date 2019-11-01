@@ -5,19 +5,19 @@ DEBUG = True
 
 
 # This key to be used locally only.
-SECRET_KEY = 'CHANGEME!!!'
+SECRET_KEY = "CHANGEME!!!"
 
 
 # Allow all the hosts locally only.
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["*"]
 
 
 # Allow requests from the local IPs to see more debug information.
-INTERNAL_IPS = ('127.0.0.1', '10.0.2.2')
+INTERNAL_IPS = ("127.0.0.1", "10.0.2.2")
 
 
 # Display sent emails in the console while developing locally.
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 
 # Disable password validators when developing locally.

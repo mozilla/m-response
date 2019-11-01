@@ -5,15 +5,13 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('users', '0002_userprofile_languages'),
-    ]
+    dependencies = [("users", "0002_userprofile_languages")]
 
     operations = [
         migrations.AddField(
-            model_name='userprofile',
-            name='name',
-            field=models.CharField(default='', max_length=500),
+            model_name="userprofile",
+            name="name",
+            field=models.CharField(default="", max_length=500),
             preserve_default=False,
-        ),
+        )
     ]
