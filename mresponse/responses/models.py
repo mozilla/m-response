@@ -42,8 +42,9 @@ class Response(models.Model):
     submitted_at = models.DateTimeField(default=timezone.now, editable=False)
     submitted_to_play_store = models.BooleanField(default=False)
     staff_approved = models.BooleanField(default=False)
+    rejected = models.BooleanField(default=False)
 
-    objects = query.ResponseQuerySet.as_manager()
+    objects = query.ResponseManager.from_queryset(query.ResponseQuerySet)()
 
     class Meta:
         permissions = (
@@ -72,6 +73,18 @@ class Response(models.Model):
         if not created:
             response_assignment.assigned_at = timezone.now()
             response_assignment.save(update_fields=("assigned_at",))
+
+    def check_rejected(self):
+        """Check if response is rejected"""
+        criteria = [
+            self.moderation_count() >= 3,
+            not self.approved,
+            not self.staff_approved,
+        ]
+
+        if all(criteria):
+            self.rejected = True
+            self.save(update_fields=["rejected"])
 
     def is_community_approved(self):
         """
