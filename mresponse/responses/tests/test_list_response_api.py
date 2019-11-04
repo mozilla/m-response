@@ -123,15 +123,14 @@ class TestListResponseApi(APITestCase):
     def test_mod_two_cant_see_staff_approved_responses(self):
         self.client.force_login(BypassStaffModerationUserFactory())
         ResponseFactory(approved=False, author=UserFactory(username="smith"))
-        ResponseFactory(approved=True, author=UserFactory(username="joe"))
         ResponseFactory(
             approved=True, staff_approved=True, author=UserFactory(username="doe")
         )
         result = self.client.get("/api/response/")
         self.assertEqual(result.status_code, 200)
-        self.assertEqual(len(result.json()["results"]), 2)
+        self.assertEqual(len(result.json()["results"]), 1)
 
-    def test_mod_two_can_see_approved_responses(self):
+    def test_mod_two_cant_see_approved_responses(self):
         self.client.force_login(BypassStaffModerationUserFactory())
         response = ResponseFactory(approved=False, author=UserFactory(username="smith"))
         ModerationFactory(response=response, moderator=UserFactory(username="smith1"))
@@ -146,4 +145,4 @@ class TestListResponseApi(APITestCase):
         )
         result = self.client.get("/api/response/")
         self.assertEqual(result.status_code, 200)
-        self.assertEqual(len(result.json()["results"]), 2)
+        self.assertEqual(len(result.json()["results"]), 0)
