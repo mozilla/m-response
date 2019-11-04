@@ -53,6 +53,10 @@ class Review(generics.RetrieveAPIView):
         if next_review:
             cache.set(next_key, next_review.pk)
 
+    def delete_cached_next(self):
+        next_key = "next_review_user_{}".format(self.request.user.pk)
+        cache.delete(next_key)
+
     def choose_review_for_user(self):
         """
         Assign or get assigned review for a user to respond on.
@@ -76,6 +80,7 @@ class Review(generics.RetrieveAPIView):
         # Prioritise English
         if "en" in languages_list:
             querysets = [base_queryset.languages(["en"])]
+            languages_list.remove("en")
 
         # Then prioritise users' languages
         if languages_list:
@@ -101,7 +106,15 @@ class Review(generics.RetrieveAPIView):
         if review is None:
             raise exceptions.NotFound(detail=_("No reviews available in the queue."))
         review.assign_to_user(self.request.user)
-        self.set_cached_next(next_review)
+
+        # Count available next reviews
+        available_next = 0
+        for q in querysets:
+            available_next += q.count()
+        if available_next > 1:
+            self.set_cached_next(next_review)
+        else:
+            self.delete_cached_next()
         return review
 
     def get_object(self):
