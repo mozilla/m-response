@@ -4,6 +4,12 @@ from django.utils import timezone
 ASSIGNMENT_TIMEOUT = timezone.timedelta(minutes=20)
 
 
+class ResponseManager(models.Manager):
+    def get_queryset(self):
+        qs = super(ResponseManager, self).get_queryset()
+        return qs.filter(rejected=False)
+
+
 class ResponseQuerySet(models.QuerySet):
     def annotate_moderations_count(self):
         return self.annotate(moderations_count=models.Count("moderations"))

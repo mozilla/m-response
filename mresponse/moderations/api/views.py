@@ -82,6 +82,9 @@ class CreateModeration(ModerationMixin, generics.CreateAPIView):
         moderator_profile.karma_points = models.F("karma_points") + karma_points
         moderator_profile.save(update_fields=("karma_points",))
 
+        # Reject response after threshold is reached
+        moderation.response.check_rejected()
+
 
 class ApproveResponse(ModerationMixin, views.APIView):
     permission_classes = (
