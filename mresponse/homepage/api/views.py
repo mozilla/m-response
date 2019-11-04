@@ -34,6 +34,7 @@ def homepage(request, format=None):
 
     if request.user.profile.is_super_moderator:
         moderation_queue = moderation_queue.not_staff_approved()
+        moderation_queue = moderation_queue.not_approved()
         moderation_queue = moderation_queue.skip_rejected()
     else:
         moderation_queue = moderation_queue.moderator_queue()
