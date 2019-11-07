@@ -1,0 +1,27 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=mresponse
+      - POSTGRES_PASSWORD=mresponse
+      - POSTGRES_DB=mresponse
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  web:
+    stdin_open: true
+    tty: true
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    links:
+      - db
+    environment:
+      - DATABASE_URL=postgres://mresponse:mresponse@db:5432/mresponse
+      - DJANGO_SETTINGS_MODULE=mresponse.settings.dev
+    command: python manage.py runserver 0.0.0.0:8000
+volumes:
+  pgdata:
+    driver: local

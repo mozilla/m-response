@@ -4,7 +4,6 @@ from mresponse.utils.math import change_calculation
 
 
 class TestChangeCalculation(TestCase):
-
     def test_value_1_is_zero(self):
         self.assertEqual(change_calculation(0, 10), None)
 

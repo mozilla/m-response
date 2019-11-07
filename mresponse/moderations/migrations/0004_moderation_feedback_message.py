@@ -5,14 +5,14 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('moderations', '0003_auto_20181016_1533'),
-    ]
+    dependencies = [("moderations", "0003_auto_20181016_1533")]
 
     operations = [
         migrations.AddField(
-            model_name='moderation',
-            name='feedback_message',
-            field=models.TextField(blank=True, help_text='Feedback message left by a reviewer'),
-        ),
+            model_name="moderation",
+            name="feedback_message",
+            field=models.TextField(
+                blank=True, help_text="Feedback message left by a reviewer"
+            ),
+        )
     ]

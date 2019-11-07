@@ -6,6 +6,7 @@ class OneLetterOneNumberPasswordValidator:
     """
     Validate whether the password has at least one letter and one number.
     """
+
     def validate(self, password, user=None):
         has_letter = False
         has_number = False
@@ -19,15 +20,15 @@ class OneLetterOneNumberPasswordValidator:
 
         if not has_letter:
             raise ValidationError(
-                _("This password does not contain a letter."),
-                code='password_no_letter',
+                _("This password does not contain a letter."), code="password_no_letter"
             )
 
         if not has_number:
             raise ValidationError(
-                _("This password does not contain a number."),
-                code='password_no_number',
+                _("This password does not contain a number."), code="password_no_number"
             )
 
     def get_help_text(self):
-        return _("Your password must contain at least one letter and at least one number.")
+        return _(
+            "Your password must contain at least one letter and at least one number."
+        )

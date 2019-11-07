@@ -5,14 +5,10 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('canned_response', '0002_auto_20190826_1810'),
-    ]
+    dependencies = [("canned_response", "0002_auto_20190826_1810")]
 
     operations = [
         migrations.AlterField(
-            model_name='response',
-            name='text',
-            field=models.TextField(max_length=350),
-        ),
+            model_name="response", name="text", field=models.TextField(max_length=350)
+        )
     ]

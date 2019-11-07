@@ -10,7 +10,12 @@ export const fetchNewReviews = (cb = () => null) =>
       const languages = getSpokenLanguages(getState())
       try {
         const currentReview = await api.getReview(languages, false)
-        const nextReview = await api.getReview(languages, true)
+        let nextReview = null
+        try {
+          nextReview = await api.getReview(languages, true)
+        } catch (err) {
+          console.log("Couldn't fetch next review:", err)
+        }
         cb(null, null)
         return dispatch({
           type: UPDATE_REVIEWS,

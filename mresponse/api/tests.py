@@ -9,13 +9,13 @@ class TestRootAPI(django.test.TestCase):
         self.client = rest_framework.test.APIClient()
 
     def test_returns_ok(self):
-        response = self.client.get('/api/')
+        response = self.client.get("/api/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_returns_dict(self):
-        response = self.client.get('/api/')
+        response = self.client.get("/api/")
         content = response.json()
-        self.assertEqual(content.keys(), {'config'})
+        self.assertEqual(content.keys(), {"config"})
 
 
 class TestConfigurationAPI(django.test.TestCase):
@@ -23,29 +23,32 @@ class TestConfigurationAPI(django.test.TestCase):
         self.client = rest_framework.test.APIClient()
 
     def test_returns_200_okay(self):
-        response = self.client.get('/api/config/')
+        response = self.client.get("/api/config/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_returns_dictionary(self):
-        response = self.client.get('/api/config/')
+        response = self.client.get("/api/config/")
         content = response.json()
-        self.assertEqual(content.keys(), {
-            'languages',
-            'response_guide_book_url',
-            'feedback_url',
-            'about_url',
-            'legal_url',
-            'privacy_url',
-            'cookies_url'
-        })
+        self.assertEqual(
+            content.keys(),
+            {
+                "languages",
+                "response_guide_book_url",
+                "feedback_url",
+                "about_url",
+                "legal_url",
+                "privacy_url",
+                "cookies_url",
+            },
+        )
 
     def test_languages_are_list(self):
-        response = self.client.get('/api/config/')
+        response = self.client.get("/api/config/")
         content = response.json()
-        self.assertIsInstance(content['languages'], list)
+        self.assertIsInstance(content["languages"], list)
 
     def test_language_items(self):
-        response = self.client.get('/api/config/')
+        response = self.client.get("/api/config/")
         content = response.json()
-        for lang_dict in content['languages']:
-            self.assertEqual(lang_dict.keys(), {'id', 'display_name'})
+        for lang_dict in content["languages"]:
+            self.assertEqual(lang_dict.keys(), {"id", "display_name"})

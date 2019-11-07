@@ -5,14 +5,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('reviews', '0003_review_review_language'),
-    ]
+    dependencies = [("reviews", "0003_review_review_language")]
 
     operations = [
         migrations.AlterField(
-            model_name='review',
-            name='review_language',
+            model_name="review",
+            name="review_language",
             field=models.CharField(blank=True, max_length=30),
-        ),
+        )
     ]

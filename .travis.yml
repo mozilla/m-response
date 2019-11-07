@@ -22,10 +22,10 @@ jobs:
   include:
     - stage: lint
       name: lint back-end
-      install: pip install flake8 isort
+      install: pip install flake8 black
       script:
         - flake8 mresponse
-        - isort --check-only --diff --recursive mresponse
+        - black --check mresponse
     - stage: test
       name: test back-end
       addons:

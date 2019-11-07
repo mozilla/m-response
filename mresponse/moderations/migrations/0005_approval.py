@@ -10,19 +10,49 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('responses', '0008_auto_20190429_1204'),
-        ('moderations', '0004_remove_moderation_karma_points'),
+        ("responses", "0008_auto_20190429_1204"),
+        ("moderations", "0004_remove_moderation_karma_points"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Approval',
+            name="Approval",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('approval_type', models.PositiveSmallIntegerField(choices=[(1, 'community'), (2, 'staff')])),
-                ('approved_at', models.DateTimeField(default=django.utils.timezone.now)),
-                ('approver', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('response', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='approvals', to='responses.Response')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "approval_type",
+                    models.PositiveSmallIntegerField(
+                        choices=[(1, "community"), (2, "staff")]
+                    ),
+                ),
+                (
+                    "approved_at",
+                    models.DateTimeField(default=django.utils.timezone.now),
+                ),
+                (
+                    "approver",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "response",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="approvals",
+                        to="responses.Response",
+                    ),
+                ),
             ],
-        ),
+        )
     ]

@@ -6,12 +6,9 @@ from django.utils.translation import ugettext_lazy as _
 from mresponse.reviews import query as reviews_query
 from mresponse.utils import android as android_utils
 
-STAR_RATING_STRING = translation.ngettext_lazy('%d star', '%d stars')
+STAR_RATING_STRING = translation.ngettext_lazy("%d star", "%d stars")
 
-REVIEW_RATING_CHOICES = tuple([
-    (i, STAR_RATING_STRING % i)
-    for i in range(1, 6)
-])
+REVIEW_RATING_CHOICES = tuple([(i, STAR_RATING_STRING % i) for i in range(1, 6)])
 
 
 class Review(models.Model):
@@ -19,16 +16,14 @@ class Review(models.Model):
     android_sdk_version = models.PositiveSmallIntegerField(blank=True, null=True)
     author_name = models.CharField(max_length=255)
     application = models.ForeignKey(
-        'applications.Application',
-        models.PROTECT,
-        related_name='+'
+        "applications.Application", models.PROTECT, related_name="+"
     )
     application_version = models.ForeignKey(
-        'applications.ApplicationVersion',
+        "applications.ApplicationVersion",
         models.PROTECT,
         null=True,
         blank=True,
-        related_name='+'
+        related_name="+",
     )
     review_text = models.TextField()
     review_language = models.CharField(max_length=30, blank=True)
@@ -37,7 +32,7 @@ class Review(models.Model):
     assigned_to = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         models.PROTECT,
-        related_name='+',
+        related_name="+",
         null=True,
         blank=True,
     )
@@ -46,9 +41,9 @@ class Review(models.Model):
     objects = reviews_query.ReviewQuerySet.as_manager()
 
     def __str__(self):
-        return _('Review %(review_id)s by %(review_author)s') % {
-            'review_id': self.play_store_review_id,
-            'review_author': self.author_name,
+        return _("Review %(review_id)s by %(review_author)s") % {
+            "review_id": self.play_store_review_id,
+            "review_author": self.author_name,
         }
 
     @property
@@ -74,9 +69,9 @@ class Review(models.Model):
         # Assign this review to the user.
         self.assigned_to = user
         self.assigned_to_user_at = timezone.now()
-        self.save(update_fields=('assigned_to', 'assigned_to_user_at',))
+        self.save(update_fields=("assigned_to", "assigned_to_user_at"))
 
     def return_to_the_queue(self):
         self.assigned_to = None
         self.assigned_to_user_at = None
-        self.save(update_fields=('assigned_to', 'assigned_to_user_at',))
+        self.save(update_fields=("assigned_to", "assigned_to_user_at"))
