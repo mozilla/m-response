@@ -11,19 +11,6 @@ start it up using the following commands.
 
    docker-compose build
 
-Compile static assets
-~~~~~~~~~~~~~~~~~~~~~
-
-.. code:: sh
-
-   docker-compose run web bash
-   cd mresponse/frontend/app/
-   yarn install
-   yarn start  # "yarn build" for the production build
-
-The watcher (`yarn start`) has to be run locally (outside VM). We use Node
-8 LTS and Yarn stable.
-
 Create database and administrator user
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -31,6 +18,7 @@ Create database and administrator user
 
    docker-compose run web bash
    ./manage.py migrate
+   ./manage.py createcachetable
    ./manage.py createsuperuser
 
 Start the server
@@ -41,6 +29,8 @@ Start the server
   docker-compose up
 
 Then you can visit administration panel at http://localhost:8000/admin/.
+
+And the main UI through http://localhost:8000/
 
 The application uses external authentication. To log-in locally please do it
 through the administration interface instead.
