@@ -1,4 +1,4 @@
-version: '3'
+version: '3.4'
 services:
   db:
     image: postgres
@@ -11,17 +11,30 @@ services:
   web:
     stdin_open: true
     tty: true
-    build: .
+    build:
+      context: .
+      target: base
+    image: mresponse-base
     ports:
       - "8000:8000"
     volumes:
       - .:/app
-    links:
-      - db
     environment:
       - DATABASE_URL=postgres://mresponse:mresponse@db:5432/mresponse
       - DJANGO_SETTINGS_MODULE=mresponse.settings.dev
     command: python manage.py runserver 0.0.0.0:8000
+  frontend:
+    build:
+      context: .
+      target: base-dev
+    image: mresponse-base-dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./mresponse/frontend/app:/app/frontend
+    environment:
+      - PORT=3000
+    command: yarn start
 volumes:
   pgdata:
     driver: local
