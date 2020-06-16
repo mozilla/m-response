@@ -1,10 +1,9 @@
 import collections
 import json
 
-from rest_framework import decorators, permissions, response
-
 from mresponse.responses import models as responses_models
 from mresponse.reviews import models as reviews_models
+from rest_framework import decorators, permissions, response
 
 
 @decorators.api_view(["GET"])
@@ -18,16 +17,20 @@ def homepage(request, format=None):
     except ValueError:
         languages = []
 
-    respond_queue = reviews_models.Review.objects.responder_queue(user=request.user)
+    respond_queue = reviews_models.Review.objects.responder_queue(
+        user=request.user
+    ).application_is_active()
 
     if languages:
         respond_queue = respond_queue.languages(languages)
 
     return_dict["respond_queue"] = respond_queue.count()
 
-    moderation_queue = responses_models.Response.objects.not_authored_by(
-        request.user
-    ).not_moderated_by(request.user)
+    moderation_queue = (
+        responses_models.Response.objects.not_authored_by(request.user)
+        .not_moderated_by(request.user)
+        .application_is_active()
+    )
 
     if languages:
         moderation_queue = moderation_queue.languages(languages)

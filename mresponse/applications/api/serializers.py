@@ -6,7 +6,11 @@ from mresponse.applications import models as applications_models
 class ApplicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = applications_models.Application
-        fields = ("name", "package")
+        fields = (
+            "name",
+            "package",
+            "is_archived",
+        )
 
 
 class ApplicationVersionSerializer(serializers.ModelSerializer):

@@ -1,11 +1,9 @@
 from django.core.cache import cache
 from django.utils.translation import ugettext_lazy as _
-
-from rest_framework import exceptions, generics, permissions, response, views
-
 from mresponse.reviews import models as reviews_models
 from mresponse.reviews.api import serializers as reviews_serializers
 from mresponse.utils import queryset as queryset_utils
+from rest_framework import exceptions, generics, permissions, response, views
 
 MAX_REVIEW_RATING = 2
 
@@ -17,6 +15,7 @@ class Review(generics.RetrieveAPIView):
 
     queryset = (
         reviews_models.Review.objects.responder_queue()
+        .application_is_active()
         .select_related("application", "application_version", "response")
         .filter(review_rating__lte=MAX_REVIEW_RATING)
     )

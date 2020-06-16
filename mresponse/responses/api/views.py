@@ -2,16 +2,14 @@ from django.contrib.admin.models import CHANGE, LogEntry
 from django.contrib.contenttypes.models import ContentType
 from django.db import transaction
 from django.utils.translation import ugettext_lazy as _
-
-from rest_framework import exceptions, generics, permissions, response, views
-from rest_framework.pagination import PageNumberPagination
-
 from mresponse.responses import models as responses_models
 from mresponse.responses.api import serializers as responses_serializers
 from mresponse.responses.api.permissions import (
     BypassStaffOrCommunityModerationPermissionOnUpdate,
 )
 from mresponse.reviews import models as reviews_models
+from rest_framework import exceptions, generics, permissions, response, views
+from rest_framework.pagination import PageNumberPagination
 
 
 class CreateResponse(generics.CreateAPIView):
@@ -61,6 +59,7 @@ class ResponseMixin:
             )
             .not_moderated_by(self.request.user)
             .not_authored_by(self.request.user)
+            .application_is_active()
         )
 
         if self.request.user.profile.is_super_moderator:
