@@ -34,7 +34,7 @@ class Review(generics.RetrieveAPIView):
             lang_list = self.request.GET["lang"].split(",")
         except KeyError:
             return []
-        return [l.strip() for l in lang_list if l.strip()]
+        return [lang.strip() for lang in lang_list if lang.strip()]
 
     def get_cached_next(self):
         next_key = "next_review_user_{}".format(self.request.user.pk)

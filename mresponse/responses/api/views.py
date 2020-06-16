@@ -52,7 +52,7 @@ class ResponseMixin:
             lang_list = self.request.GET["lang"].split(",")
         except KeyError:
             return []
-        return [l.strip() for l in lang_list if l.strip()]
+        return [lang.strip() for lang in lang_list if lang.strip()]
 
     def get_queryset(self):
         qs = (
