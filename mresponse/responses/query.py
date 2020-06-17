@@ -76,6 +76,9 @@ class ResponseQuerySet(models.QuerySet):
     def not_authored_by(self, user):
         return self.exclude(author=user.pk)
 
+    def application_is_active(self):
+        return self.filter(review__application__is_archived=False)
+
     def language_q(self, language_string):
         return (
             models.Q(review__review_language__istartswith=f"{language_string}_")

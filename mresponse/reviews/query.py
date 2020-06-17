@@ -33,6 +33,9 @@ class ReviewQuerySet(models.QuerySet):
         one_week_ago = timezone.now() - timezone.timedelta(weeks=1)
         return self.filter(last_modified__gte=one_week_ago)
 
+    def application_is_active(self):
+        return self.filter(application__is_archived=False)
+
     def responder_queue(self, user=None):
         qs = (
             self.unresponded()
