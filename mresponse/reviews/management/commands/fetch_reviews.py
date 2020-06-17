@@ -2,14 +2,13 @@ import logging
 import time
 from datetime import datetime, timedelta
 
+import pytz
+import requests
+
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.db import transaction
 from django.utils import timezone
-
-import requests
-
-import pytz
 from mresponse.applications.models import Application, ApplicationVersion
 from mresponse.reviews.models import Review
 
@@ -123,5 +122,5 @@ class Command(BaseCommand):
             results = response.json()
 
     def handle(self, *args, **kwargs):
-        for application in Application.objects.all():
+        for application in Application.objects.filter(is_archived=False):
             self.get_reviews(application)

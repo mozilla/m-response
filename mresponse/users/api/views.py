@@ -1,11 +1,9 @@
 from django.contrib.auth import logout as user_logout
 from django.core.cache import cache
 from django.shortcuts import redirect
-
-from rest_framework import generics, permissions, response, status, views
-
 from mresponse.reviews.models import Review
 from mresponse.users.api import serializers as users_serializers
+from rest_framework import generics, permissions, response, status, views
 
 
 class MyUser(generics.RetrieveAPIView):
