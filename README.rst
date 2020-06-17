@@ -31,6 +31,7 @@ Create database and administrator user
 
    docker-compose run web bash
    ./manage.py migrate
+   ./manage.py createcachetable
    ./manage.py createsuperuser
 
 Start the server
