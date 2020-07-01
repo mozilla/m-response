@@ -31,6 +31,10 @@ SECURE_SSL_REDIRECT = False
 DJANGO_LOGIN_ENABLED = True
 
 
+# Don't require yarn build to get new images in dev
+STATICFILES_DIRS = [os.path.join(WEBPACK_DIR, "public", "static")]
+
+
 # Import settings from local.py file if it exists. Please use it to keep
 # settings that are not meant to be checked into Git and never check it in.
 try:

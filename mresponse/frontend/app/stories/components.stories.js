@@ -83,7 +83,7 @@ storiesOf('Components', module)
       response='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam elementum sodales mattis. Vestibulum fermentum volutpat efficitur. In hac habitasse platea dictumst. Aliquam tincidunt in sem non gravida. Maecenas magna diam, lobortis sed bibendum id, faucibus non tortor. Aliquam euismod euismod odio, quis consequat enim malesuada vitae. Sed eget lacus at turpis hendrerit dapibus. Maecenas finibus enim a auctor viverra. Quisque maximus scelerisque consectetur.'
       date='January 08, 2016'
       productName='Firefox'
-      productImage={staticAsset('media/firefox.png')}
+      productImage={staticAsset('media/firefox.svg')}
     />
   ))
   .add('Home Page Card', () => (
@@ -99,7 +99,7 @@ storiesOf('Components', module)
       review='The script that help you predetermine or offer suggestions is full of bugs and annoying in fact delays your typing speed. This cause you to get frustrated and use simple search engine that offer no search script.. F.fox on mobile also is slow at times always snooping on your search history, delaying on response.. Well...?'
       rating={3}
       productName='Firefox 59.0.2'
-      productImage={staticAsset('media/firefox.png')}
+      productImage={staticAsset('media/firefox.svg')}
       androidVersion='Android 7.07'
     />
   ))
@@ -112,7 +112,7 @@ storiesOf('Components', module)
       responseText='I would like to help with organizing your bookmarks. Firefox for Android has easy bookmarking. This article will show you how to create and access your bookmarks. http://mzl.la/1PZ8VwS Please let us know if this is helpful by leaving an updated review. '
       responseDate={Date.now()}
       productName='Firefox 59.0.2'
-      productImage={staticAsset('media/firefox.png')}
+      productImage={staticAsset('media/firefox.svg')}
       androidVersion='Android 7.07'
     />
   ))

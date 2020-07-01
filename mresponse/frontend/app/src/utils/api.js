@@ -58,7 +58,7 @@ export default class Api {
         name: json.application.name,
         package: json.application.package,
         version: json.application_version,
-        image: staticAsset('media/firefox.png') // TODO
+        image: staticAsset('media/firefox.svg') // TODO
       },
       androidVersion: json.android_version,
       lastModified: new Date(json.last_modified)
