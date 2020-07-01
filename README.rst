@@ -69,4 +69,12 @@ Data Retrieval from the Google Playstore
 To retrieve (download) reviews and publish (upload) responses on the Google Playstore, there is a small service.
 This service lives in its own repo: https://github.com/mozilla/m-response-api
 
+Committing changes
+------------------
 
+Set up `pre-commit <https://pre-commit.com/>`_ to automatically run flake8, black and other linters against your commmit:
+
+.. code:: sh
+
+   pip install pre-commit
+   pre-commit install
