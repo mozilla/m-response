@@ -66,7 +66,7 @@ export default class SignUpForm extends React.Component {
     [
       {
         prepare: () => this.setStatus(this.status.name),
-        subtitle: '1 of 3',
+        subtitle: '1 of 2',
         fields: (
           <React.Fragment>
             <InputField
@@ -84,7 +84,7 @@ export default class SignUpForm extends React.Component {
       },
       {
         prepare: () => this.setStatus(this.status.languages),
-        subtitle: '2 of 3',
+        subtitle: '2 of 2',
         fields: (
           <React.Fragment>
             <TagField
@@ -109,9 +109,9 @@ export default class SignUpForm extends React.Component {
           this.props.updateProfile({
             name: this.state.name,
             languages: this.state.languages.map(({ id }) => id)
+          }).then(() => {
+            this.props.history.push(this.props.successUrl)
           })
-
-          this.props.history.push(this.props.successUrl)
         }
       }
     ][this.state.step]
