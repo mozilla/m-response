@@ -17,6 +17,10 @@ class ApplicationFactory(factory.django.DjangoModelFactory):
     package = "org.test.firefox"
 
 
+class ArchivedApplicationFactory(ApplicationFactory):
+    is_archived = True
+
+
 class ReviewFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Review
@@ -25,6 +29,11 @@ class ReviewFactory(factory.django.DjangoModelFactory):
     last_modified = factory.LazyFunction(datetime.datetime.now)
     play_store_review_id = factory.Sequence(lambda n: n)
     review_rating = 1
+    review_language = "en"
+
+
+class ArchivedReviewFactory(ReviewFactory):
+    application = factory.SubFactory(ArchivedApplicationFactory)
 
 
 class ResponseFactory(factory.django.DjangoModelFactory):
@@ -33,6 +42,10 @@ class ResponseFactory(factory.django.DjangoModelFactory):
 
     author = factory.SubFactory(UserFactory)
     review = factory.SubFactory(ReviewFactory)
+
+
+class ArchivedResponseFactory(ResponseFactory):
+    review = factory.SubFactory(ArchivedReviewFactory)
 
 
 class ResponseSerializerFactory(factory.Factory):
