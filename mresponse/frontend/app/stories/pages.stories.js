@@ -39,7 +39,7 @@ const profile = {
       date: 'September 13, 2018',
       product: {
         name: 'Firefox',
-        image: staticAsset('media/firefox.png')
+        image: staticAsset('media/firefox.svg')
       }
     },
     {
@@ -47,7 +47,7 @@ const profile = {
       date: 'January 08, 2016',
       product: {
         name: 'Firefox',
-        image: staticAsset('media/firefox.png')
+        image: staticAsset('media/firefox.svg')
       }
     },
     {
@@ -55,7 +55,7 @@ const profile = {
       date: 'January 08, 2016',
       product: {
         name: 'Firefox',
-        image: staticAsset('media/firefox.png')
+        image: staticAsset('media/firefox.svg')
       }
     }
   ]
@@ -119,7 +119,7 @@ storiesOf('Pages', module)
         text: 'The script that help you predetermine or offer suggestions is full of bugs and annoying in fact delays your typing speed. This cause you to get frustrated and use simple search engine that offer no search script.. F.fox on mobile also is slow at times always snooping on your search history, delaying on response.. Well...?',
         product: {
           name: 'Firefox 59.0.2',
-          image: staticAsset('media/firefox.png'),
+          image: staticAsset('media/firefox.svg'),
           version: {
             name: '1.0.1'
           }
@@ -133,7 +133,7 @@ storiesOf('Pages', module)
         text: 'The script that help you predetermine or offer suggestions is full of bugs and annoying in fact delays your typing speed. This cause you to get frustrated and use simple search engine that offer no search script.. F.fox on mobile also is slow at times always snooping on your search history, delaying on response.. Well...?',
         product: {
           name: 'Firefox 59.0.1',
-          image: staticAsset('media/firefox.png'),
+          image: staticAsset('media/firefox.svg'),
           version: {
             name: '1.0.1'
           }
@@ -158,7 +158,7 @@ storiesOf('Pages', module)
           text: 'The script that help you predetermine or offer suggestions is full of bugs and annoying in fact delays your typing speed. This cause you to get frustrated and use simple search engine that offer no search script.. F.fox on mobile also is slow at times always snooping on your search history, delaying on response.. Well...?',
           product: {
             name: 'Firefox 59.0.2',
-            image: staticAsset('media/firefox.png')
+            image: staticAsset('media/firefox.svg')
           },
           androidVersion: 'Android 7.07',
           dateSubmitted: Date.now()
