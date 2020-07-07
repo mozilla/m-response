@@ -1,4 +1,6 @@
+import os
 from .base import *  # noqa isort:skip
+from .base import WEBPACK_DIR
 
 # Debugging to be enabled locally only
 DEBUG = True
