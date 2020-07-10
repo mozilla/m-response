@@ -1,7 +1,7 @@
 from rest_framework.test import APITestCase
 
 from mresponse.moderations.tests.factories import ModerationFactory
-from mresponse.responses.tests.factories import ResponseFactory
+from mresponse.responses.tests.factories import ResponseFactory, ArchivedResponseFactory
 from mresponse.users.tests.factories import (
     BypassCommunityModerationUserFactory,
     BypassStaffModerationUserFactory,
@@ -50,6 +50,12 @@ class TestListResponseApi(APITestCase):
             moderator=UserFactory(username="joe3"),
         )
 
+        result = self.client.get("/api/response/")
+        self.assertEqual(result.status_code, 200)
+        self.assertEqual(len(result.json()["results"]), 0)
+
+    def test_cant_see_archived_responses(self):
+        ArchivedResponseFactory(approved=False, author=UserFactory(username="smith"))
         result = self.client.get("/api/response/")
         self.assertEqual(result.status_code, 200)
         self.assertEqual(len(result.json()["results"]), 0)
