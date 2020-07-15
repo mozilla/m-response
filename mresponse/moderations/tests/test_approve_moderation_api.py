@@ -1,4 +1,5 @@
 from django.urls import reverse
+from unittest.mock import patch
 
 from rest_framework.test import APITestCase
 
@@ -46,6 +47,23 @@ class TestApprovalApi(APITestCase):
         response.refresh_from_db()
         self.assertTrue(response.approved)
         self.assertTrue(response.staff_approved)
+
+    @patch("mresponse.moderations.api.views.user_can_bypass_staff_approval_for_review")
+    def test_approval_as_mod_two_without_locale(
+        self, mock_user_can_bypass_staff_approval_for_review
+    ):
+        mock_user_can_bypass_staff_approval_for_review.return_value = False
+        user = BypassStaffModerationUserFactory()
+        self.client.force_login(user)
+        response = ResponseFactory(approved=False, author=UserFactory(username="smith"))
+        result = self.client.post(
+            reverse("approve", kwargs={"response_pk": response.pk})
+        )
+        self.assertEqual(result.status_code, 200)
+
+        response.refresh_from_db()
+        self.assertTrue(response.approved)
+        self.assertFalse(response.staff_approved)
 
 
 class TestApproveKarmaPointsApi(APITestCase):
