@@ -13,6 +13,7 @@ from mresponse.responses.api.permissions import (
     BypassStaffOrCommunityModerationPermission,
 )
 from mresponse.responses.models import Response
+from mresponse.utils.permissions import user_can_bypass_staff_approval_for_review
 
 
 class ModerationMixin:
@@ -70,7 +71,9 @@ class CreateModeration(ModerationMixin, generics.CreateAPIView):
                 )
                 author_profile.save(update_fields=("karma_points",))
 
-                if self.request.user.profile.is_super_moderator:
+                if user_can_bypass_staff_approval_for_review(
+                    self.request.user, response.review
+                ):
                     response.staff_approved = True
                     response.save()
                     response.submit_to_play_store()
@@ -100,7 +103,9 @@ class ApproveResponse(ModerationMixin, views.APIView):
 
         assigned_response.approved = True
 
-        if request.user.has_perm("responses.can_bypass_staff_moderation"):
+        if user_can_bypass_staff_approval_for_review(
+            request.user, assigned_response.review
+        ):
             approval_type = Approval.STAFF
             assigned_response.staff_approved = True
             assigned_response.submit_to_play_store()

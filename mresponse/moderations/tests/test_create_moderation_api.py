@@ -1,4 +1,5 @@
 from django.urls import reverse
+from unittest.mock import patch
 
 from rest_framework.test import APITestCase
 
@@ -78,6 +79,27 @@ class TestCreateModerationApi(APITestCase):
         self.assertTrue(response.approved)
         self.assertTrue(response.staff_approved)
 
+    @patch("mresponse.moderations.api.views.user_can_bypass_staff_approval_for_review")
+    def test_isnt_staff_approved_after_moderation_by_mod_two_without_locale(
+        self, mock_moderator_in_review_langauge
+    ):
+        mock_moderator_in_review_langauge.return_value = False
+        response = ResponseFactory(approved=False, author=UserFactory(username="smith"))
+        ModerationFactory(response=response, positive_in_tone=True)
+        ModerationFactory(response=response, positive_in_tone=True)
+
+        self.client.force_login(BypassStaffModerationUserFactory())
+        result = self.client.post(
+            reverse("create_moderation", kwargs={"response_pk": response.pk}),
+            data=dict(positive_in_tone=True, addressing_the_issue=True, personal=True),
+        )
+
+        self.assertEqual(result.status_code, 201)
+
+        response.refresh_from_db()
+        self.assertTrue(response.approved)
+        self.assertFalse(response.staff_approved)
+
 
 class TestModerationKarmaPointsApi(APITestCase):
     def setUp(self):
@@ -122,4 +144,5 @@ class TestModerationKarmaPointsApi(APITestCase):
         self.assertEqual(result.status_code, 201)
         self.user.profile.refresh_from_db()
         self.assertEqual(self.user.profile.karma_points, 3)
+        response.author.profile.refresh_from_db()
         self.assertEqual(response.author.profile.karma_points, 1)

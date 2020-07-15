@@ -54,11 +54,12 @@ class ResponseSerializerFactory(factory.Factory):
         exclude = ("author",)
 
     data = {"text": "test"}
-    author = UserFactory
 
     @classmethod
     def create(cls, **kwargs):
         obj = super().create(**kwargs)
         obj.is_valid()
-        obj.save(review=ReviewFactory(), author=kwargs.get("author", UserFactory()))
+        obj.save(
+            review=ReviewFactory(), author=kwargs.get("author", UserFactory()),
+        )
         return obj
