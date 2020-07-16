@@ -35,6 +35,15 @@ And the main UI through http://localhost:8000/
 The application uses external authentication. To log-in locally please do it
 through the administration interface instead.
 
+Testing the prod image
+~~~~~~~~~~~~~~~~~~~~~~
+
+To test building and running the prod image run the following:
+
+.. code:: sh
+
+   docker-compose -f docker-compose.prod.yml up --build
+
 Data Retrieval from the Google Playstore
 ~~~~~~~~~~~~~~~~~~~
 
