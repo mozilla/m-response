@@ -1,0 +1,28 @@
+version: '3.4'
+services:
+
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=mresponse
+      - POSTGRES_PASSWORD=mresponse
+      - POSTGRES_DB=mresponse
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  web:
+    build:
+      context: .
+      target: prod
+    image: mresponse-prod
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgres://mresponse:mresponse@db:5432/mresponse
+      - SECRET_KEY=verysecret
+      - ALLOWED_HOSTS=localhost
+      - SECURE_SSL_REDIRECT=false
+
+volumes:
+  pgdata:
+    driver: local

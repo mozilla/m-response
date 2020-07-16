@@ -69,6 +69,7 @@ USER mresponse
 COPY --chown=mresponse mresponse/frontend/app/package.json mresponse/frontend/app/yarn.lock ./
 RUN yarn install --frozen-lockfile
 ENV NODE_PATH=/app/node_modules
+RUN mkdir frontend
 WORKDIR /app/frontend
 
 # =========================================================================== #
@@ -80,6 +81,7 @@ ENV NODE_ENV=production
 
 # Compile static files
 COPY --chown=mresponse mresponse/frontend/app/ ./
+RUN rm -r build
 RUN yarn build
 
 # =========================================================================== #
@@ -94,6 +96,8 @@ COPY --chown=mresponse . .
 # Collect static. This command will move static files from application
 # directories and "static_compiled" folder to the main static directory that
 # will be served by the WSGI server.
+RUN rm -r mresponse/frontend/app
+COPY --from=frontend-builder /app/frontend/webpack-stats.json ./mresponse/frontend/app/
 COPY --from=frontend-builder /app/frontend/build ./mresponse/frontend/app/build
 RUN SECRET_KEY=none django-admin collectstatic --noinput --clear
 
