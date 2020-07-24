@@ -53,3 +53,8 @@ class TestModeratorInLanguage(TestCase):
         )
         review = ReviewFactory(review_language="en")
         self.assertFalse(user_can_bypass_staff_approval_for_review(user, review))
+
+    def test_superuser(self):
+        user = UserFactory(is_superuser=True)
+        review = ReviewFactory(review_language="de")
+        self.assertTrue(user_can_bypass_staff_approval_for_review(user, review))
