@@ -74,13 +74,34 @@ class TestCreateModerationApi(APITestCase):
 
     def test_is_staff_approved_after_moderation_by_mod_two(self, mock_reply_to_review):
         response = ResponseFactory(approved=False, author=UserFactory(username="smith"))
-        ModerationFactory(response=response, positive_in_tone=True)
-        ModerationFactory(response=response, positive_in_tone=True)
 
         self.client.force_login(BypassStaffModerationUserFactory())
         result = self.client.post(
             reverse("create_moderation", kwargs={"response_pk": response.pk}),
             data=dict(positive_in_tone=True, addressing_the_issue=True, personal=True),
+        )
+
+        self.assertEqual(result.status_code, 201)
+        mock_reply_to_review.assert_called()
+
+        response.refresh_from_db()
+        self.assertTrue(response.approved)
+        self.assertTrue(response.staff_approved)
+        self.assertTrue(response.submitted_to_play_store)
+
+    def test_is_staff_approved_after_partial_approval_by_mod_two(
+        self, mock_reply_to_review
+    ):
+        response = ResponseFactory(approved=False, author=UserFactory(username="smith"))
+        ModerationFactory(response=response)
+        ModerationFactory(response=response)
+
+        self.client.force_login(BypassStaffModerationUserFactory())
+        result = self.client.post(
+            reverse("create_moderation", kwargs={"response_pk": response.pk}),
+            data=dict(
+                positive_in_tone=True, addressing_the_issue=False, personal=False
+            ),
         )
 
         self.assertEqual(result.status_code, 201)
@@ -97,8 +118,6 @@ class TestCreateModerationApi(APITestCase):
     ):
         mock_moderator_in_review_langauge.return_value = False
         response = ResponseFactory(approved=False, author=UserFactory(username="smith"))
-        ModerationFactory(response=response, positive_in_tone=True)
-        ModerationFactory(response=response, positive_in_tone=True)
 
         self.client.force_login(BypassStaffModerationUserFactory())
         result = self.client.post(
