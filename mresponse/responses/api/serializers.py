@@ -42,6 +42,7 @@ class ResponseSerializer(serializers.ModelSerializer):
     def save(self, **kwargs):
         author = kwargs.get("author", None)
         add_missing_moderations = False
+        submit_to_play_store = False
 
         if author:
             if author.has_perm(
@@ -51,6 +52,7 @@ class ResponseSerializer(serializers.ModelSerializer):
                 add_missing_moderations = True
             if user_can_bypass_staff_approval_for_review(author, kwargs["review"]):
                 kwargs["staff_approved"] = True
+                submit_to_play_store = True
 
         response = super().save(**kwargs)
 
@@ -66,6 +68,9 @@ class ResponseSerializer(serializers.ModelSerializer):
                         addressing_the_issue=True,
                         personal=True,
                     )
+
+        if submit_to_play_store:
+            response.submit_to_play_store()
 
     def get_moderation_url(self, instance):
         return reverse.reverse(
