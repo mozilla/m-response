@@ -41,6 +41,7 @@ class Response(models.Model):
     text = models.TextField()
     submitted_at = models.DateTimeField(default=timezone.now, editable=False)
     submitted_to_play_store = models.BooleanField(default=False)
+    submitted_to_play_store_at = models.DateTimeField(null=True, editable=False)
     staff_approved = models.BooleanField(default=False)
     rejected = models.BooleanField(default=False)
 
@@ -156,7 +157,10 @@ class Response(models.Model):
         )
 
         self.submitted_to_play_store = True
-        self.save(update_fields=["submitted_to_play_store"])
+        self.submitted_to_play_store_at = timezone.now()
+        self.save(
+            update_fields=["submitted_to_play_store", "submitted_to_play_store_at"]
+        )
 
         self.send_upload_notification()
 
