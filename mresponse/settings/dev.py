@@ -1,4 +1,6 @@
+import os
 from .base import *  # noqa isort:skip
+from .base import WEBPACK_DIR
 
 # Debugging to be enabled locally only
 DEBUG = True
@@ -29,6 +31,10 @@ SECURE_SSL_REDIRECT = False
 
 # Use Django admin instead of OIDC
 DJANGO_LOGIN_ENABLED = True
+
+
+# Don't require yarn build to get new images in dev
+STATICFILES_DIRS = [os.path.join(WEBPACK_DIR, "public", "static")]
 
 
 # Import settings from local.py file if it exists. Please use it to keep

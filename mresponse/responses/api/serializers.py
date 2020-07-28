@@ -3,6 +3,7 @@ from rest_framework import reverse, serializers
 from mresponse.moderations import models as moderations_models
 from mresponse.responses import models as responses_models
 from mresponse.reviews.api import serializers as reviews_serializers
+from mresponse.utils.permissions import user_can_bypass_staff_approval_for_review
 
 
 class ResponseSerializer(serializers.ModelSerializer):
@@ -41,15 +42,17 @@ class ResponseSerializer(serializers.ModelSerializer):
     def save(self, **kwargs):
         author = kwargs.get("author", None)
         add_missing_moderations = False
+        submit_to_play_store = False
 
         if author:
-            if author.has_perm("responses.can_bypass_community_moderation"):
+            if author.has_perm(
+                "responses.can_bypass_community_moderation"
+            ) or author.has_perm("responses.can_bypass_staff_moderation"):
                 kwargs["approved"] = True
                 add_missing_moderations = True
-            if author.has_perm("responses.can_bypass_staff_moderation"):
-                kwargs["approved"] = True
+            if user_can_bypass_staff_approval_for_review(author, kwargs["review"]):
                 kwargs["staff_approved"] = True
-                add_missing_moderations = True
+                submit_to_play_store = True
 
         response = super().save(**kwargs)
 
@@ -65,6 +68,9 @@ class ResponseSerializer(serializers.ModelSerializer):
                         addressing_the_issue=True,
                         personal=True,
                     )
+
+        if submit_to_play_store:
+            response.submit_to_play_store()
 
     def get_moderation_url(self, instance):
         return reverse.reverse(

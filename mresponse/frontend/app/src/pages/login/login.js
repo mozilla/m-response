@@ -23,7 +23,7 @@ class LoginPage extends React.Component {
             alt='' />
           <img
             className="toolbar-logo"
-            src={staticAsset('media/mozilla-logo.png')}
+            src={staticAsset('media/mozilla-logo.svg')}
             alt=""
           />
           <span />

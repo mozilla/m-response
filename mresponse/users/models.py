@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from django.conf import settings
 from django.db import models
 from django.db.models import Count, Q
+from django.contrib.postgres.fields import ArrayField
 from django.utils.functional import cached_property
 from django.utils.timezone import now
 
@@ -18,6 +19,14 @@ class UserProfile(models.Model):
     )
     karma_points = models.PositiveIntegerField(default=0)
     languages = models.CharField(max_length=500)
+    permissions_in_locales = ArrayField(
+        models.CharField(max_length=3),
+        default=list,
+        blank=True,
+        help_text="Languages in which this user should have their permissions. "
+        "Takes a comma seperated list. "
+        "Currently only affects the <em>can_bypass_staff_moderation</em> permission.",
+    )
     name = models.CharField(max_length=500)
     avatar = models.CharField(max_length=500, blank=True, null=True)
 

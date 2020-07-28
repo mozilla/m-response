@@ -32,7 +32,12 @@ export default class WelcomePage extends React.Component {
           <div className="brand-container">
             <img
               className="welcome-image"
-              src={staticAsset('media/welcome-image.png')}
+              src={staticAsset('media/welcome-image-1x.png')}
+              srcSet={`
+                ${staticAsset('media/welcome-image-3x.png')} 3x,
+                ${staticAsset('media/welcome-image-2x.png')} 2x,
+                ${staticAsset('media/welcome-image-1x.png')}
+              `}
               alt=""
             />
           </div>

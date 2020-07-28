@@ -11,19 +11,6 @@ start it up using the following commands.
 
    docker-compose build
 
-Compile static assets
-~~~~~~~~~~~~~~~~~~~~~
-
-.. code:: sh
-
-   docker-compose run web bash
-   cd mresponse/frontend/app/
-   yarn install
-   yarn start  # "yarn build" for the production build
-
-The watcher (`yarn start`) has to be run locally (outside VM). We use Node
-8 LTS and Yarn stable.
-
 Create database and administrator user
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -31,6 +18,7 @@ Create database and administrator user
 
    docker-compose run web bash
    ./manage.py migrate
+   ./manage.py createcachetable
    ./manage.py createsuperuser
 
 Start the server
@@ -42,26 +30,19 @@ Start the server
 
 Then you can visit administration panel at http://localhost:8000/admin/.
 
+And the main UI through http://localhost:8000/
+
 The application uses external authentication. To log-in locally please do it
 through the administration interface instead.
 
-Auth0 Configuration
-~~~~~~~~~~~~~~~~~~~
+Testing the prod image
+~~~~~~~~~~~~~~~~~~~~~~
 
-The project uses Auth0 as an authentication mechanism. To get Auth0 working
-correctly you will need to a .env` configuration file (The required
-variables can be seen in `./mresponse/frontend/app/.env.example`).
+To test building and running the prod image run the following:
 
-Developing on localhost can also cause issues with Auth0 so it is recommended
-that you add the following to your `/etc/hosts/` file and develop from
-http://mresponse.local/
+.. code:: sh
 
-.. code::
-
-    127.0.0.1       mresponse.local
-
-On the backend you need to set two environment variables - ``AUTH0_DOMAIN`` and
-``JWT_ISSUER``.
+   docker-compose -f docker-compose.prod.yml up --build
 
 Data Retrieval from the Google Playstore
 ~~~~~~~~~~~~~~~~~~~
@@ -69,4 +50,12 @@ Data Retrieval from the Google Playstore
 To retrieve (download) reviews and publish (upload) responses on the Google Playstore, there is a small service.
 This service lives in its own repo: https://github.com/mozilla/m-response-api
 
+Committing changes
+------------------
 
+Set up `pre-commit <https://pre-commit.com/>`_ to automatically run flake8, black and other linters against your commmit:
+
+.. code:: sh
+
+   pip install pre-commit
+   pre-commit install

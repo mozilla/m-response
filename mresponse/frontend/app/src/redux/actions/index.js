@@ -54,7 +54,6 @@ export const updateProfile = ({ name, languages }) => connectApi(api => async (d
       metadata.languages = JSON.stringify(languages)
     }
     if (metadata.name || metadata.languages) {
-      console.log(metadata)
       const updatedProfile = await api.updateProfile(metadata)
       return dispatch({
         type: SET_PROFILE,

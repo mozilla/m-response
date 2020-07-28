@@ -34,4 +34,5 @@ mresponse/frontend/app/webpack-stats.json
 *.log
 
 # Local dev env
-.vscode
+.vscode/*
+!.vscode/launch.json

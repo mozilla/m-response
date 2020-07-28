@@ -74,7 +74,7 @@ export default class Api {
       text: res['review_text'],
       product: {
         name: res['application']['name'] + ' ' + res['application_version']['name'],
-        image: staticAsset('media/firefox.png')
+        image: staticAsset('media/firefox.svg')
       },
       androidVersion: 'Android ' + res['android_version'],
       lastModified: res['last_modified'],

@@ -2,7 +2,7 @@
 # ones becase they use a different C compiler. Debian images also come with
 # all useful packages required for image manipulation out of the box. They
 # however weight a lot, approx. up to 1.5GiB per built image.
-FROM python:3.6.6-stretch
+FROM python:3.6.6-stretch AS base
 
 WORKDIR /app
 
@@ -24,7 +24,6 @@ WORKDIR /app
 #    variable is read by Gunicorn
 ENV PYTHONUNBUFFERED=1 \
     PYTHONPATH=/app \
-    NODE_ENV=production \
     DJANGO_SETTINGS_MODULE=mresponse.settings.production \
     PORT=8000 \
     WEB_CONCURRENCY=3 \
@@ -34,7 +33,28 @@ ENV PYTHONUNBUFFERED=1 \
 # server (Gunicorn). This is read by Dokku only. Heroku will ignore this.
 EXPOSE 8000
 
+# Intsall WSGI server - Gunicorn - that will serve the application.
+RUN pip install "gunicorn== 19.9.0"
+
+# Install your app's Python requirements.
+COPY requirements.txt /
+RUN pip install -r /requirements.txt
+
+# Don't use the root user as it's an anti-pattern and Heroku does not run
+# containers as root either.
+# https://devcenter.heroku.com/articles/container-registry-and-runtime#dockerfile-commands-and-runtime
+
+RUN useradd mresponse -m
+RUN chown -R mresponse .
+USER mresponse
+
+# =========================================================================== #
+# base-dev image                                                              #
+# =========================================================================== #
+FROM base AS base-dev
+
 # Install operating system dependencies.
+USER root
 RUN apt-get update -y && \
     apt-get install -y apt-transport-https rsync && \
     curl -sL https://deb.nodesource.com/setup_12.x | bash - &&\
@@ -43,39 +63,43 @@ RUN apt-get update -y && \
     apt-get update -y &&\
     apt-get install nodejs yarn &&\
     rm -rf /var/lib/apt/lists/*
-
-# Intsall WSGI server - Gunicorn - that will serve the application.
-RUN pip install "gunicorn== 19.9.0"
+USER mresponse
 
 # Install front-end dependencies.
-WORKDIR /app/mresponse/frontend/app
-COPY mresponse/frontend/app/package.json mresponse/frontend/app/yarn.lock ./
+COPY --chown=mresponse mresponse/frontend/app/package.json mresponse/frontend/app/yarn.lock ./
 RUN yarn install --frozen-lockfile
+ENV NODE_PATH=/app/node_modules
+RUN mkdir frontend
+WORKDIR /app/frontend
 
-# Install your app's Python requirements.
-COPY requirements.txt /
-RUN pip install -r /requirements.txt
+# =========================================================================== #
+# frontend-builder image                                                      #
+# =========================================================================== #
+FROM base-dev AS frontend-builder
+
+ENV NODE_ENV=production
 
 # Compile static files
-COPY mresponse/frontend/app/ ./
+COPY --chown=mresponse mresponse/frontend/app/ ./
+RUN rm -rf build
 RUN yarn build
 
+# =========================================================================== #
+# prod image                                                                  #
+# =========================================================================== #
+FROM base AS prod
 
 # Copy application code.
 WORKDIR /app
-COPY . .
+COPY --chown=mresponse . .
 
 # Collect static. This command will move static files from application
 # directories and "static_compiled" folder to the main static directory that
 # will be served by the WSGI server.
+RUN rm -rf mresponse/frontend/app
+COPY --from=frontend-builder /app/frontend/webpack-stats.json ./mresponse/frontend/app/
+COPY --from=frontend-builder /app/frontend/build ./mresponse/frontend/app/build
 RUN SECRET_KEY=none django-admin collectstatic --noinput --clear
-
-# Don't use the root user as it's an anti-pattern and Heroku does not run
-# containers as root either.
-# https://devcenter.heroku.com/articles/container-registry-and-runtime#dockerfile-commands-and-runtime
-RUN useradd mresponse
-RUN chown -R mresponse .
-USER mresponse
 
 # Run the WSGI server. It reads GUNICORN_CMD_ARGS, PORT and WEB_CONCURRENCY
 # environment variable hence we don't specify a lot options below.
