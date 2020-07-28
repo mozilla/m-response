@@ -19,7 +19,7 @@ class Command(BaseCommand):
     help = "Fetches all available reviews from Google playstore"
 
     @transaction.atomic
-    def get_reviews(self, application):
+    def get_reviews(self, application, days):
         logger.info("Fetching new reviews for application: %s", application)
 
         params = {"packageName": application.package}
@@ -78,8 +78,8 @@ class Command(BaseCommand):
 
                         kwargs["application_version"] = versions_cache[version_code]
 
-                    # Stop when we reach a review that's older than one week
-                    if kwargs["last_modified"] < timezone.now() - timedelta(days=7):
+                    # Stop when we reach a review that's older than `days`
+                    if kwargs["last_modified"] < timezone.now() - timedelta(days=days):
                         return
 
                     obj = Review(**kwargs)
@@ -121,6 +121,11 @@ class Command(BaseCommand):
             response.raise_for_status()
             results = response.json()
 
+    def add_arguments(self, parser):
+        parser.add_argument(
+            "--days", type=int, default=7, help="Days to go back when fetching reviews"
+        )
+
     def handle(self, *args, **kwargs):
         for application in Application.objects.filter(is_archived=False):
-            self.get_reviews(application)
+            self.get_reviews(application, kwargs["days"])
