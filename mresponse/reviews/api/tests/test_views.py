@@ -38,3 +38,11 @@ class TestReview(APITestCase):
         result = self.client.get("/api/review/?lang=en")
         self.assertEqual(result.status_code, 200)
         self.assertEqual(result.json()["id"], review.id)
+
+    def test_review_with_rejected_response_and_unrejected_response_doesnt_appear(self):
+        review = ReviewFactory()
+        ResponseFactory(approved=False, rejected=True, review=review)
+        ResponseFactory(approved=False, rejected=False, review=review)
+
+        result = self.client.get("/api/review/?lang=en")
+        self.assertEqual(result.status_code, 404)

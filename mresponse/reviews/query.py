@@ -9,11 +9,7 @@ class ReviewQuerySet(models.QuerySet):
         """
         Get reviews that have no response, or only rejected responses.
         """
-        return self.annotate(
-            responses_not_rejected_count=models.Count(
-                "responses", filter=models.Q(responses__rejected=False)
-            )
-        ).filter(responses_not_rejected_count=0)
+        return self.exclude(responses__rejected=False)
 
     def assigned_to_user(self, user):
         """
