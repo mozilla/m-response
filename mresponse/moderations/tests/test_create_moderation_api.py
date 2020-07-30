@@ -133,6 +133,24 @@ class TestCreateModerationApi(APITestCase):
         self.assertFalse(response.staff_approved)
         self.assertFalse(response.submitted_to_play_store)
 
+    def test_is_rejected_after_negative_moderations(self, mock_reply_to_review):
+        response = ResponseFactory(approved=False, author=UserFactory(username="smith"))
+        # TODO: I don't think these ModerationFactories should be required - once a review has a moderation
+        # failing on all three counts, it won't meet the approved criteria and should be immediately rejected, no?
+        ModerationFactory(response=response)
+        ModerationFactory(response=response)
+
+        result = self.client.post(
+            reverse("create_moderation", kwargs={"response_pk": response.pk}),
+            data=dict(
+                positive_in_tone=False, addressing_the_issue=False, personal=False
+            ),
+        )
+
+        response.refresh_from_db()
+        self.assertEqual(result.status_code, 201)
+        self.assertTrue(response.rejected)
+
 
 class TestModerationKarmaPointsApi(APITestCase):
     def setUp(self):

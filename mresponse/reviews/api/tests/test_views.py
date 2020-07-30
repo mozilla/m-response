@@ -1,6 +1,10 @@
 from rest_framework.test import APITestCase
 
-from mresponse.responses.tests.factories import ReviewFactory, ArchivedReviewFactory
+from mresponse.responses.tests.factories import (
+    ReviewFactory,
+    ArchivedReviewFactory,
+    ResponseFactory,
+)
 from mresponse.users.tests.factories import UserFactory
 
 
@@ -19,3 +23,18 @@ class TestReview(APITestCase):
         ArchivedReviewFactory()
         result = self.client.get("/api/review/?lang=en")
         self.assertEqual(result.status_code, 404)
+
+    def test_dont_get_responded_review(self):
+        review = ReviewFactory()
+        ResponseFactory(approved=False, review=review)
+
+        result = self.client.get("/api/review/?lang=en")
+        self.assertEqual(result.status_code, 404)
+
+    def test_review_with_rejected_response_appears_again(self):
+        review = ReviewFactory()
+        ResponseFactory(approved=False, rejected=True, review=review)
+
+        result = self.client.get("/api/review/?lang=en")
+        self.assertEqual(result.status_code, 200)
+        self.assertEqual(result.json()["id"], review.id)
