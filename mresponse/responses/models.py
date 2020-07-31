@@ -29,7 +29,7 @@ class ResponseAssignedToUser(models.Model):
 
 class Response(models.Model):
     review = models.ForeignKey(
-        "reviews.Review", models.CASCADE, related_name="responses"
+        "reviews.Review", models.PROTECT, related_name="responses"
     )
     approved = models.BooleanField(
         default=False,
