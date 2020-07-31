@@ -1,4 +1,4 @@
-import datetime
+from django.utils import timezone
 
 import factory
 from mresponse.applications.models import Application
@@ -19,6 +19,8 @@ class ApplicationFactory(factory.django.DjangoModelFactory):
 
 class ArchivedApplicationFactory(ApplicationFactory):
     is_archived = True
+    name = "Firefox Archived"
+    package = "org.test.firefox_archived"
 
 
 class ReviewFactory(factory.django.DjangoModelFactory):
@@ -26,7 +28,7 @@ class ReviewFactory(factory.django.DjangoModelFactory):
         model = Review
 
     application = factory.SubFactory(ApplicationFactory)
-    last_modified = factory.LazyFunction(datetime.datetime.now)
+    last_modified = factory.LazyFunction(timezone.now)
     play_store_review_id = factory.Sequence(lambda n: n)
     review_rating = 1
     review_language = "en"
@@ -42,6 +44,14 @@ class ResponseFactory(factory.django.DjangoModelFactory):
 
     author = factory.SubFactory(UserFactory)
     review = factory.SubFactory(ReviewFactory)
+
+    @classmethod
+    def create(cls, **kwargs):
+        obj = super().create(**kwargs)
+        if obj.submitted_to_play_store and not obj.submitted_to_play_store_at:
+            obj.submitted_to_play_store_at = timezone.now()
+        obj.save()
+        return obj
 
 
 class ArchivedResponseFactory(ResponseFactory):
