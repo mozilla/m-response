@@ -44,6 +44,7 @@ class Command(BaseCommand):
                 if Review.objects.filter(
                     play_store_review_id=review["reviewId"]
                 ).exists():
+                    logger.info("Importing finished. Everything is up to date.")
                     return
 
                 if len(review["comments"]) == 1:
