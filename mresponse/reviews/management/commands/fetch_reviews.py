@@ -31,6 +31,9 @@ class Command(BaseCommand):
         results = response.json()
 
         versions_cache = {}
+        last_review_saved = Review.objects.latest("created_on").created_on
+        if not last_review_saved:
+            last_review_saved = timezone.now() - timedelta(hours=(days * 24))
 
         while results:
             time_of_last_review = None
@@ -40,15 +43,11 @@ class Command(BaseCommand):
                 # either the date/time of the most review we've imported before or one
                 # week ago, which ever is closer to the current time.
 
-                # Stop when we reach a review that's already imported
-                if Review.objects.filter(
-                    play_store_review_id=review["reviewId"]
-                ).exists():
-                    logger.info("Importing finished. Everything is up to date.")
-                    return
-
                 if len(review["comments"]) == 1:
                     comment = review["comments"][0]["userComment"]
+                    last_modified = datetime.fromtimestamp(
+                        int(comment["lastModified"]["seconds"]), pytz.UTC
+                    )
                     kwargs = {
                         "play_store_review_id": review["reviewId"],
                         "android_sdk_version": comment.get("androidOsVersion"),
@@ -56,10 +55,13 @@ class Command(BaseCommand):
                         "review_text": comment["text"],
                         "review_language": comment["reviewerLanguage"],
                         "review_rating": comment["starRating"],
-                        "last_modified": datetime.fromtimestamp(
-                            int(comment["lastModified"]["seconds"]), pytz.UTC
-                        ),
+                        "last_modified": last_modified,
                     }
+
+                    # we 're done parsing results - exit
+                    if last_modified < last_review_saved:
+                        logger.info("Time limit reached. Stopping.")
+                        return
 
                     # Application version
                     if "appVersionCode" in comment:
@@ -76,13 +78,20 @@ class Command(BaseCommand):
 
                         kwargs["application_version"] = versions_cache[version_code]
 
-                    # Stop when we reach a review that's older than `days`
-                    if kwargs["last_modified"] < timezone.now() - timedelta(days=days):
-                        logger.info("Time limit reached. Stopping.")
-                        return
-
-                    obj = Review(**kwargs)
-                    obj.application = application
+                    # Create a new review or update an exising one
+                    kwargs.update({"application": application})
+                    obj, created = Review.objects.get_or_create(
+                        play_store_review_id=kwargs["play_store_review_id"],
+                        defaults=kwargs,
+                    )
+                    obj.created_on = last_modified
+                    if not created:
+                        obj.created_on = obj.last_modified
+                        obj.last_modified = last_modified
+                        # TODO: we need to update the values and also account for reviews already submitted
+                        # for moderation
+                        # obj.review_rating = kwargs['review_rating']
+                        # obj.review_text = kwargs['review_text']
                     obj.save()
 
                     time_of_last_review = kwargs["last_modified"]
