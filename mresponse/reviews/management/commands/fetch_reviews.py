@@ -31,7 +31,11 @@ class Command(BaseCommand):
         results = response.json()
 
         versions_cache = {}
-        last_review_saved = Review.objects.latest("created_on").created_on
+        last_review_saved = (
+            Review.objects.filter(created_on__isnull=False)
+            .latest("created_on")
+            .created_on
+        )
         if not last_review_saved:
             last_review_saved = timezone.now() - timedelta(hours=(days * 24))
 
