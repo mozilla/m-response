@@ -28,8 +28,8 @@ class ResponseAssignedToUser(models.Model):
 
 
 class Response(models.Model):
-    review = models.OneToOneField(
-        "reviews.Review", models.PROTECT, related_name="response"
+    review = models.ForeignKey(
+        "reviews.Review", models.PROTECT, related_name="responses"
     )
     approved = models.BooleanField(
         default=False,
@@ -45,7 +45,7 @@ class Response(models.Model):
     staff_approved = models.BooleanField(default=False)
     rejected = models.BooleanField(default=False)
 
-    objects = query.ResponseManager.from_queryset(query.ResponseQuerySet)()
+    objects = query.ResponseQuerySet.as_manager()
 
     class Meta:
         permissions = (

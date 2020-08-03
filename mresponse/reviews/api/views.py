@@ -16,7 +16,8 @@ class Review(generics.RetrieveAPIView):
     queryset = (
         reviews_models.Review.objects.responder_queue()
         .application_is_active()
-        .select_related("application", "application_version", "response")
+        .select_related("application", "application_version")
+        .prefetch_related("responses")
         .filter(review_rating__lte=MAX_REVIEW_RATING)
     )
     permission_classes = (permissions.IsAuthenticated,)
@@ -127,7 +128,8 @@ class NextReview(generics.RetrieveAPIView):
 
     queryset = (
         reviews_models.Review.objects.unresponded()
-        .select_related("application", "application_version", "response")
+        .select_related("application", "application_version")
+        .prefetch_related("responses")
         .filter(review_rating__lte=MAX_REVIEW_RATING)
     )
     permission_classes = (permissions.IsAuthenticated,)

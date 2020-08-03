@@ -7,15 +7,15 @@ ASSIGNMENT_TIMEOUT = timezone.timedelta(minutes=20)
 class ReviewQuerySet(models.QuerySet):
     def unresponded(self):
         """
-        Get reviews that have no response.
+        Get reviews that have no response, or only rejected responses.
         """
-        return self.filter(response__isnull=True)
+        return self.exclude(responses__rejected=False)
 
     def assigned_to_user(self, user):
         """
         Get reviews that are assigned to a particular user.
         """
-        return self.assignment_not_expired() & self.filter(assigned_to=user)
+        return self.assignment_not_expired().filter(assigned_to=user)
 
     def assignment_not_expired(self):
         return self.filter(assigned_to_user_at__gte=timezone.now() - ASSIGNMENT_TIMEOUT)
