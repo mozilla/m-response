@@ -44,6 +44,7 @@ class Command(BaseCommand):
                 if Review.objects.filter(
                     play_store_review_id=review["reviewId"]
                 ).exists():
+                    logger.info("Importing finished. Everything is up to date.")
                     return
 
                 if len(review["comments"]) == 1:
@@ -77,6 +78,7 @@ class Command(BaseCommand):
 
                     # Stop when we reach a review that's older than `days`
                     if kwargs["last_modified"] < timezone.now() - timedelta(days=days):
+                        logger.info("Time limit reached. Stopping.")
                         return
 
                     obj = Review(**kwargs)
