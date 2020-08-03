@@ -28,7 +28,10 @@ class Review(models.Model):
     review_text = models.TextField()
     review_language = models.CharField(max_length=30, blank=True)
     review_rating = models.SmallIntegerField(choices=REVIEW_RATING_CHOICES)
+    # last modification in Playstore
     last_modified = models.DateTimeField()
+    created_on = models.DateTimeField(blank=True, null=True)
+    updated_on = models.DateTimeField(auto_now=True, null=True)
     assigned_to = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         models.PROTECT,
@@ -39,6 +42,9 @@ class Review(models.Model):
     assigned_to_user_at = models.DateTimeField(blank=True, null=True)
 
     objects = reviews_query.ReviewQuerySet.as_manager()
+
+    class Meta:
+        ordering = ["-created_on"]
 
     def __str__(self):
         return _("Review %(review_id)s by %(review_author)s") % {
