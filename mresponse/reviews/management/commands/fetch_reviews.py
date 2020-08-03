@@ -78,6 +78,7 @@ class Command(BaseCommand):
 
                     # Stop when we reach a review that's older than `days`
                     if kwargs["last_modified"] < timezone.now() - timedelta(days=days):
+                        logger.info("Time limit reached. Stopping.")
                         return
 
                     obj = Review(**kwargs)
