@@ -36,3 +36,4 @@ mresponse/frontend/app/webpack-stats.json
 # Local dev env
 .vscode/*
 !.vscode/launch.json
+.python-version
