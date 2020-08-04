@@ -12,10 +12,14 @@ class TestFetchReviews(TestCase):
         app1 = ApplicationFactory()
         app2 = ApplicationFactory(name="Thunderbird", package="org.mozilla.thunderbird")
 
-        Command().handle(days=7)
+        Command().handle(hours=1, force=False, sleep=0)
 
         self.assertCountEqual(
-            mock_get_reviews.mock_calls, [call(app1, 7), call(app2, 7)]
+            mock_get_reviews.mock_calls,
+            [
+                call(app1, hours=1, force=False, sleep=0),
+                call(app2, hours=1, force=False, sleep=0),
+            ],
         )
 
     @patch("mresponse.reviews.management.commands.fetch_reviews.Command.get_reviews")
@@ -25,6 +29,8 @@ class TestFetchReviews(TestCase):
         )
         app = ApplicationFactory()
 
-        Command().handle(days=7)
+        Command().handle(hours=1, force=False, sleep=0)
 
-        self.assertCountEqual(mock_get_reviews.mock_calls, [call(app, 7)])
+        self.assertCountEqual(
+            mock_get_reviews.mock_calls, [call(app, hours=1, force=False, sleep=0)]
+        )

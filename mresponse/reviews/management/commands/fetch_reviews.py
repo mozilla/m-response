@@ -19,7 +19,7 @@ class Command(BaseCommand):
     help = "Fetches all available reviews from Google playstore"
 
     @transaction.atomic
-    def get_reviews(self, application, days):
+    def get_reviews(self, application, hours=0, force=False, sleep=0):
         logger.info("Fetching new reviews for application: %s", application)
 
         params = {"packageName": application.package}
@@ -31,21 +31,28 @@ class Command(BaseCommand):
         results = response.json()
 
         versions_cache = {}
-        last_review_saved = (
-            Review.objects.filter(created_on__isnull=False)
-            .latest("created_on")
-            .created_on
-        )
-        if not last_review_saved:
-            last_review_saved = timezone.now() - timedelta(hours=(days * 24))
+
+        stop_at = timezone.now() - timedelta(hours=hours)
+        stopping_at_review = False
+        if not force:
+            try:
+                stop_at = (
+                    Review.objects.filter(created_on__isnull=False)
+                    .filter(application=application)
+                    .latest("created_on")
+                    .created_on
+                )
+                stopping_at_review = True
+            except Review.DoesNotExist:
+                pass
 
         while results:
             time_of_last_review = None
             for review in results["reviews"]:
                 # Reviews are returned in reverse-chronological order so this import
                 # can stop importing when it reaches a target date/time. This target is
-                # either the date/time of the most review we've imported before or one
-                # week ago, which ever is closer to the current time.
+                # either the created_on datetime of the most recent review prior to this
+                # run or the hours argument, whichever is closer to the current time.
 
                 if len(review["comments"]) == 1:
                     comment = review["comments"][0]["userComment"]
@@ -62,9 +69,19 @@ class Command(BaseCommand):
                         "last_modified": last_modified,
                     }
 
-                    # we 're done parsing results - exit
-                    if last_modified < last_review_saved:
-                        logger.info("Time limit reached. Stopping.")
+                    # we're done parsing results - exit
+                    if last_modified < stop_at:
+                        if stopping_at_review:
+                            logger.info(
+                                "Reached review older than the most recent review we knew of prior to this run. "
+                                "Stopping."
+                            )
+                        else:
+                            logger.info(
+                                "Reached review older than {} hours. Stopping.".format(
+                                    hours
+                                )
+                            )
                         return
 
                     # Application version
@@ -122,9 +139,8 @@ class Command(BaseCommand):
             except KeyError:
                 return
 
-            # Sleep for a minute
-            logger.info("Sleep for a minute before next request")
-            time.sleep(60)
+            logger.info("Sleep for {} seconds before next request".format(sleep))
+            time.sleep(sleep)
 
             params = {"packageName": application.package, "token": nextPageToken}
             response = requests.get(
@@ -135,9 +151,28 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument(
-            "--days", type=int, default=7, help="Days to go back when fetching reviews"
+            "--hours",
+            type=int,
+            default=168,
+            help="Hours to go back when fetching reviews",
+        )
+        parser.add_argument(
+            "--force",
+            action="store_true",
+            help="Don't stop when we hit a review older than the most recent review we currently know of",
+        )
+        parser.add_argument(
+            "--sleep",
+            type=int,
+            default=60,
+            help="Seconds to sleep between API requests",
         )
 
     def handle(self, *args, **kwargs):
         for application in Application.objects.filter(is_archived=False):
-            self.get_reviews(application, kwargs["days"])
+            self.get_reviews(
+                application,
+                hours=kwargs["hours"],
+                force=kwargs["force"],
+                sleep=kwargs["sleep"],
+            )
