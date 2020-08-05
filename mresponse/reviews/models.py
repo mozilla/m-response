@@ -44,7 +44,7 @@ class Review(models.Model):
     objects = reviews_query.ReviewQuerySet.as_manager()
 
     class Meta:
-        ordering = ["-created_on"]
+        ordering = [models.F("created_on").desc(nulls_last=True)]
 
     def __str__(self):
         return _("Review %(review_id)s by %(review_author)s") % {
