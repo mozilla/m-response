@@ -46,22 +46,28 @@ class LeaderboardManager(models.Manager):
         # Get moderations
         this_weeks_moderations = (
             Moderation.objects.filter(submitted_at__gte=start, submitted_at__lte=end)
-            .select_related("moderator")
+            .select_related("moderator", "response")
             .order_by("moderator_id")
         )
 
         for moderation in this_weeks_moderations:
+            if moderation.moderator == moderation.response.author:
+                # don't count self moderations towards score
+                continue
             record = get_or_create_record(moderation.moderator)
             record.score += POINT_PER_MODERATION
 
         # Get approvals
         this_weeks_approvals = (
             Approval.objects.filter(approved_at__gte=start, approved_at__lte=end)
-            .select_related("approver")
+            .select_related("approver", "response")
             .order_by("approver_id")
         )
 
         for approval in this_weeks_approvals:
+            if approval.approver == approval.response.author:
+                # don't count self approvals towards score
+                continue
             record = get_or_create_record(approval.approver)
             record.score += POINT_PER_MODERATION
 
