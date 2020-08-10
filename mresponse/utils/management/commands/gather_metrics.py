@@ -102,7 +102,7 @@ class Command(BaseCommand):
     def generate_report(self, options):
         report = "Report generated at {}:\n".format(now())
         for language in options["responded_languages"]:
-            report += "Responses in {} responded to within {} hours: {:.1%}\n".format(
+            report += "Reviews in {} responded to within {} hours: {:.1%}\n".format(
                 language,
                 options["responded_hours"],
                 self.responded_reviews(
