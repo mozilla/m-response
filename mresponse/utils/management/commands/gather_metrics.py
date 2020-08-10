@@ -12,11 +12,6 @@ User = get_user_model()
 
 
 class Command(BaseCommand):
-    def fetched_reviews(self, period=timedelta()):
-        return Review.objects.filter(
-            application__is_archived=False, last_modified__gte=now() - period
-        ).count()
-
     def responded_reviews(self, language="", period=timedelta(), since=None):
         reviews = Review.objects.filter(
             review_rating__lte=MAX_REVIEW_RATING,
@@ -74,12 +69,6 @@ class Command(BaseCommand):
             "--post-report", help="Post this report", action="store_true"
         )
         parser.add_argument(
-            "--fetched-hours",
-            help="Hours to report total fetched reviews for",
-            type=int,
-            default=24,
-        )
-        parser.add_argument(
             "--responded-hours",
             help="Hours reviews should be responded to within",
             type=int,
@@ -112,10 +101,6 @@ class Command(BaseCommand):
 
     def generate_report(self, options):
         report = "Report generated at {}:\n".format(now())
-        report += "Responses fetched which were posted in the past {} hours: {}\n".format(
-            options["fetched_hours"],
-            self.fetched_reviews(period=timedelta(hours=options["fetched_hours"])),
-        )
         for language in options["responded_languages"]:
             report += "Responses in {} responded to within {} hours: {:.1%}\n".format(
                 language,

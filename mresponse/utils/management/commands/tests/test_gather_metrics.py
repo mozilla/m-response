@@ -14,21 +14,6 @@ from mresponse.moderations.tests.factories import ModerationFactory
 from mresponse.utils.management.commands.gather_metrics import Command
 
 
-class TestFetchedReviews(TestCase):
-    def test_not_archived(self):
-        ReviewFactory()
-        ArchivedReviewFactory()
-
-        result = Command().fetched_reviews(period=timedelta(hours=1))
-        self.assertEqual(result, 1)
-
-    def test_outside_period(self):
-        ReviewFactory(last_modified=timezone.now() - timedelta(hours=2))
-
-        result = Command().fetched_reviews(period=timedelta(hours=1))
-        self.assertEqual(result, 0)
-
-
 class TestRespondedReviews(TestCase):
     def time_buffer(self, hours=2):
         return timezone.now() - timedelta(hours=hours)
