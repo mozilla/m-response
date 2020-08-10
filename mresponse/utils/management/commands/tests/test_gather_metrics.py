@@ -1,5 +1,6 @@
-from datetime import timedelta
+from datetime import timedelta, datetime
 from django.utils import timezone
+from pytz import UTC
 
 from django.test import TestCase
 
@@ -15,20 +16,19 @@ from mresponse.utils.management.commands.gather_metrics import Command
 
 
 class TestRespondedReviews(TestCase):
-    def time_buffer(self, hours=2):
-        return timezone.now() - timedelta(hours=hours)
+    some_time = datetime(2020, 8, 5, 12, tzinfo=UTC)
 
     def review(self, **kwargs):
-        return ReviewFactory(last_modified=self.time_buffer(), **kwargs)
+        return ReviewFactory(last_modified=self.some_time, **kwargs)
 
     def response(self, **kwargs):
         if "review" not in kwargs:
-            kwargs["review"] = ReviewFactory(last_modified=self.time_buffer())
+            kwargs["review"] = ReviewFactory(last_modified=self.some_time)
         if (
             kwargs["submitted_to_play_store"]
             and "submitted_to_play_store_at" not in kwargs
         ):
-            kwargs["submitted_to_play_store_at"] = self.time_buffer()
+            kwargs["submitted_to_play_store_at"] = self.some_time + timedelta(hours=1)
         return ResponseFactory(**kwargs)
 
     def test_simple(self):
@@ -37,26 +37,26 @@ class TestRespondedReviews(TestCase):
         self.response(submitted_to_play_store=False)
         self.response(submitted_to_play_store=True)
 
-        result = Command().responded_reviews(period=timedelta(hours=1))
+        result = Command().responded_reviews(weekdays=1)
         self.assertEqual(result, 0.25)
 
     def test_no_reviews(self):
-        result = Command().responded_reviews(period=timedelta(hours=1))
+        result = Command().responded_reviews(weekdays=1)
         self.assertEqual(result, 0)
 
     def test_high_star_reviews(self):
         self.review(review_rating=3)
         self.response(submitted_to_play_store=True,)
 
-        result = Command().responded_reviews(period=timedelta(hours=1))
+        result = Command().responded_reviews(weekdays=1)
         self.assertEqual(result, 1)
 
     def test_reviews_outside_period(self):
-        old_review = ReviewFactory(last_modified=self.time_buffer(4))
+        old_review = ReviewFactory(last_modified=datetime(2020, 8, 3, 12, tzinfo=UTC))
         self.response(review=old_review, submitted_to_play_store=True)
         self.response(submitted_to_play_store=True)
 
-        result = Command().responded_reviews(period=timedelta(hours=1))
+        result = Command().responded_reviews(weekdays=1)
         self.assertEqual(result, 0.5)
 
     def test_reviews_in_language(self):
@@ -64,22 +64,22 @@ class TestRespondedReviews(TestCase):
         self.response(review=de_review, submitted_to_play_store=True)
         self.response(submitted_to_play_store=False)
 
-        result = Command().responded_reviews(period=timedelta(hours=1), language="de")
+        result = Command().responded_reviews(weekdays=1, language="de")
         self.assertEqual(result, 1)
 
     def test_reviews_archived(self):
-        ArchivedReviewFactory(last_modified=self.time_buffer())
+        ArchivedReviewFactory(last_modified=self.some_time)
         self.response(submitted_to_play_store=True)
 
-        result = Command().responded_reviews(period=timedelta(hours=1))
+        result = Command().responded_reviews(weekdays=1)
         self.assertEqual(result, 1)
 
     def test_reviews_since(self):
-        ReviewFactory(last_modified=timezone.now() - timedelta(hours=100))
+        ReviewFactory(last_modified=self.some_time - timedelta(hours=100))
         self.response(submitted_to_play_store=True)
 
         result = Command().responded_reviews(
-            period=timedelta(hours=1), since=timezone.now() - timedelta(hours=99)
+            weekdays=1, since=self.some_time - timedelta(hours=99)
         )
         self.assertEqual(result, 1)
 
@@ -92,7 +92,7 @@ class TestRespondedReviews(TestCase):
             submitted_to_play_store_at=timezone.now(),
         )
 
-        result = Command().responded_reviews(period=timedelta(hours=1))
+        result = Command().responded_reviews(weekdays=1)
         self.assertEqual(result, 1)
 
     def test_handles_rejected_responses(self):
@@ -100,7 +100,7 @@ class TestRespondedReviews(TestCase):
         self.response(review=review, submitted_to_play_store=False, rejected=True)
         self.response(review=review, submitted_to_play_store=True)
 
-        result = Command().responded_reviews(period=timedelta(hours=1))
+        result = Command().responded_reviews(weekdays=1)
         self.assertEqual(result, 1)
 
     def test_doesnt_fail_with_no_submitted_to_play_store_at(self):
@@ -108,8 +108,49 @@ class TestRespondedReviews(TestCase):
         response.submitted_to_play_store_at = None
         response.save()
 
-        result = Command().responded_reviews(period=timedelta(hours=1))
+        result = Command().responded_reviews(weekdays=1)
         self.assertEqual(result, 0)
+
+    def test_across_weekend(self):
+        ResponseFactory(
+            review=ReviewFactory(
+                last_modified=datetime(2020, 8, 7, 12, tzinfo=UTC)
+            ),  # friday 12:00
+            submitted_to_play_store=True,
+            submitted_to_play_store_at=datetime(
+                2020, 8, 10, 11, tzinfo=UTC
+            ),  # monday 11:00
+        )
+        ResponseFactory(
+            review=ReviewFactory(
+                last_modified=datetime(2020, 8, 7, 12, tzinfo=UTC)
+            ),  # friday 12:00
+            submitted_to_play_store=True,
+            submitted_to_play_store_at=datetime(
+                2020, 8, 10, 13, tzinfo=UTC
+            ),  # monday 13:00
+        )
+        ResponseFactory(
+            review=ReviewFactory(
+                last_modified=datetime(2020, 8, 9, 12, tzinfo=UTC)
+            ),  # sunday 12:00
+            submitted_to_play_store=True,
+            submitted_to_play_store_at=datetime(
+                2020, 8, 10, 11, tzinfo=UTC
+            ),  # monday 11:00
+        )
+        ResponseFactory(
+            review=ReviewFactory(
+                last_modified=datetime(2020, 8, 9, 12, tzinfo=UTC)
+            ),  # sunday 12:00
+            submitted_to_play_store=True,
+            submitted_to_play_store_at=datetime(
+                2020, 8, 10, 13, tzinfo=UTC
+            ),  # monday 13:00
+        )
+
+        result = Command().responded_reviews(weekdays=1)
+        self.assertEqual(result, 0.5)
 
 
 class TestActiveContributors(TestCase):

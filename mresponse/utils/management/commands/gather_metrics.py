@@ -1,8 +1,8 @@
-from datetime import timedelta
+from datetime import timedelta, datetime, timezone
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
 from django.db.models import Count, Q, Prefetch
-from django.utils.timezone import now
+from pandas.tseries.offsets import BDay
 
 from mresponse.reviews.models import Review
 from mresponse.reviews.api.views import MAX_REVIEW_RATING
@@ -12,11 +12,12 @@ User = get_user_model()
 
 
 class Command(BaseCommand):
-    def responded_reviews(self, language="", period=timedelta(), since=None):
+    def responded_reviews(self, language="", weekdays=0, since=None):
+        period = BDay(weekdays)
         reviews = Review.objects.filter(
             review_rating__lte=MAX_REVIEW_RATING,
             application__is_archived=False,
-            last_modified__lte=now() - period,
+            last_modified__lte=datetime.now(timezone.utc) - period,
         ).prefetch_related(
             Prefetch(
                 "responses",
@@ -38,7 +39,8 @@ class Command(BaseCommand):
             response = review.responses.first()
             if (
                 response
-                and response.submitted_to_play_store_at - review.last_modified <= period
+                and response.submitted_to_play_store_at.astimezone(timezone.utc)
+                <= review.last_modified.astimezone(timezone.utc) + period
             ):
                 responded_in_period_count += 1
 
@@ -47,7 +49,7 @@ class Command(BaseCommand):
     def active_contributors(
         self, required_responses=0, required_moderations=0, period=timedelta(),
     ):
-        since = now() - period
+        since = datetime.now(timezone.utc) - period
         return (
             User.objects.annotate(
                 responses_count=Count(
@@ -69,10 +71,10 @@ class Command(BaseCommand):
             "--post-report", help="Post this report", action="store_true"
         )
         parser.add_argument(
-            "--responded-hours",
-            help="Hours reviews should be responded to within",
+            "--responded-weekdays",
+            help="Weekdays reviews should be responded to within",
             type=int,
-            default=72,
+            default=3,
         )
         parser.add_argument(
             "--responded-languages",
@@ -100,14 +102,13 @@ class Command(BaseCommand):
         )
 
     def generate_report(self, options):
-        report = "Report generated at {}:\n".format(now())
+        report = "Report generated at {}:\n".format(datetime.now(timezone.utc))
         for language in options["responded_languages"]:
-            report += "Reviews in {} responded to within {} hours: {:.1%}\n".format(
+            report += "Reviews in {} responded to within {} weekdays: {:.1%}\n".format(
                 language,
-                options["responded_hours"],
+                options["responded_weekdays"],
                 self.responded_reviews(
-                    language=language,
-                    period=timedelta(hours=options["responded_hours"]),
+                    language=language, weekdays=options["responded_weekdays"],
                 ),
             )
         report += "Active contributors (at least {} responses and {} moderations) in the past {} days: {}\n".format(
