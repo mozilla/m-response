@@ -34,7 +34,7 @@ class TestLeaderboardManager(TestCase):
         ApprovalFactory(
             approved_at=self.week_ago,
             response=response,
-            approver=UserFactory(username="user2"),
+            approver=UserFactory(username="user1"),
         )
         leaderboard = Leaderboard.objects.generate_weekly_leaderboard()
         scores = leaderboard.records.values_list("score", flat=True)
@@ -42,7 +42,7 @@ class TestLeaderboardManager(TestCase):
 
     def test_do_not_count_own_moderations(self):
         user = UserFactory()
-        response = ResponseFactory(submitted_at=self.week_ago)
+        response = ResponseFactory(submitted_at=self.week_ago, author=user)
         ModerationFactory(submitted_at=self.week_ago, response=response, moderator=user)
         leaderboard = Leaderboard.objects.generate_weekly_leaderboard()
         scores = leaderboard.records.values_list("score", flat=True)
@@ -50,7 +50,7 @@ class TestLeaderboardManager(TestCase):
 
     def test_do_not_count_own_approvals(self):
         user = UserFactory()
-        response = ResponseFactory(submitted_at=self.week_ago)
+        response = ResponseFactory(submitted_at=self.week_ago, author=user)
         ApprovalFactory(approved_at=self.week_ago, response=response, approver=user)
         leaderboard = Leaderboard.objects.generate_weekly_leaderboard()
         scores = leaderboard.records.values_list("score", flat=True)
