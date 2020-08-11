@@ -66,6 +66,11 @@ class Command(BaseCommand):
             .count()
         )
 
+    def new_accounts(self, period=timedelta()):
+        return User.objects.filter(
+            date_joined__gte=datetime.now(timezone.utc) - period
+        ).count()
+
     def add_arguments(self, parser):
         parser.add_argument(
             "--post-report", help="Post this report", action="store_true"
@@ -100,6 +105,12 @@ class Command(BaseCommand):
             type=int,
             default=15,
         )
+        parser.add_argument(
+            "--new-user-hours",
+            help="Hours to report new users for",
+            type=int,
+            default=24,
+        )
 
     def generate_report(self, options):
         report = "Report generated at {}:\n".format(datetime.now(timezone.utc))
@@ -120,6 +131,10 @@ class Command(BaseCommand):
                 required_moderations=options["contribute_moderations"],
                 period=timedelta(hours=options["contribute_hours"]),
             ),
+        )
+        report += "New users in the past {} hours: {}\n".format(
+            options["new_user_hours"],
+            self.new_accounts(period=timedelta(hours=options["new_user_hours"])),
         )
         return report
 

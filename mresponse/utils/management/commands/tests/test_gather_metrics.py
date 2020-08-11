@@ -197,3 +197,16 @@ class TestActiveContributors(TestCase):
             required_responses=0, required_moderations=1, period=timedelta(hours=1)
         )
         self.assertEqual(result, 0)
+
+
+class TestNewAccounts(TestCase):
+    def test_simple(self):
+        UserFactory(date_joined=timezone.now() - timedelta(hours=2), username="user1")
+        UserFactory(date_joined=timezone.now(), username="user2")
+
+        result = Command().new_accounts(period=timedelta(hours=1))
+        self.assertEqual(result, 1)
+
+    def test_none(self):
+        result = Command().new_accounts()
+        self.assertEqual(result, 0)
