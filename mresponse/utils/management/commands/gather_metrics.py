@@ -83,10 +83,10 @@ class Command(BaseCommand):
             default=["en", "de", "es"],
         )
         parser.add_argument(
-            "--contribute-days",
-            help="Days to report active contributors for",
+            "--contribute-hours",
+            help="Hours to report active contributors for",
             type=int,
-            default=7,
+            default=24,
         )
         parser.add_argument(
             "--contribute-responses",
@@ -111,14 +111,14 @@ class Command(BaseCommand):
                     language=language, weekdays=options["responded_weekdays"],
                 ),
             )
-        report += "Active contributors (at least {} responses and {} moderations) in the past {} days: {}\n".format(
+        report += "Active contributors (at least {} responses and {} moderations) in the past {} hours: {}\n".format(
             options["contribute_responses"],
             options["contribute_moderations"],
-            options["contribute_days"],
+            options["contribute_hours"],
             self.active_contributors(
                 required_responses=options["contribute_responses"],
                 required_moderations=options["contribute_moderations"],
-                period=timedelta(days=options["contribute_days"]),
+                period=timedelta(hours=options["contribute_hours"]),
             ),
         )
         return report
