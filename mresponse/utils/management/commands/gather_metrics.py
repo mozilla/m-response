@@ -120,17 +120,23 @@ class Command(BaseCommand):
         )
 
     def generate_report(self, options):
-        report = "Report generated at {}:\n".format(datetime.now(timezone.utc))
+        report = "Report generated at {}:\n".format(
+            datetime.now(timezone.utc).isoformat(" ", "minutes")
+        )
         for language in options["responded_languages"]:
             report += "Reviews in {} responded to within {} weekdays{}: {:.1%}\n".format(
                 language,
                 options["responded_weekdays"],
                 " since "
-                + options["responded_since"].astimezone(timezone.utc).isoformat()
+                + options["responded_since"]
+                .astimezone(timezone.utc)
+                .isoformat(" ", "minutes")
                 if options["responded_since"]
                 else "",
                 self.responded_reviews(
-                    language=language, weekdays=options["responded_weekdays"],
+                    language=language,
+                    weekdays=options["responded_weekdays"],
+                    since=options["responded_since"],
                 ),
             )
         report += "Active contributors (at least {} responses and {} moderations) in the past {} hours: {}\n".format(
