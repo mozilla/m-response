@@ -3,6 +3,7 @@ from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
 from django.db.models import Count, Q, Prefetch
 from pandas.tseries.offsets import BDay
+from dateutil.parser import parse as dateutil_parse
 
 from mresponse.reviews.models import Review
 from mresponse.reviews.api.views import MAX_REVIEW_RATING
@@ -88,6 +89,12 @@ class Command(BaseCommand):
             default=["en", "de", "es"],
         )
         parser.add_argument(
+            "--responded-since",
+            help="When to report responded percent from",
+            type=dateutil_parse,
+            default=None,
+        )
+        parser.add_argument(
             "--contribute-hours",
             help="Hours to report active contributors for",
             type=int,
@@ -115,9 +122,13 @@ class Command(BaseCommand):
     def generate_report(self, options):
         report = "Report generated at {}:\n".format(datetime.now(timezone.utc))
         for language in options["responded_languages"]:
-            report += "Reviews in {} responded to within {} weekdays: {:.1%}\n".format(
+            report += "Reviews in {} responded to within {} weekdays{}: {:.1%}\n".format(
                 language,
                 options["responded_weekdays"],
+                " since "
+                + options["responded_since"].astimezone(timezone.utc).isoformat()
+                if options["responded_since"]
+                else "",
                 self.responded_reviews(
                     language=language, weekdays=options["responded_weekdays"],
                 ),
