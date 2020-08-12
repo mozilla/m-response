@@ -1,8 +1,9 @@
-from datetime import timedelta
+from datetime import timedelta, datetime, timezone
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
 from django.db.models import Count, Q, Prefetch
-from django.utils.timezone import now
+from pandas.tseries.offsets import BDay
+from dateutil.parser import parse as dateutil_parse
 
 from mresponse.reviews.models import Review
 from mresponse.reviews.api.views import MAX_REVIEW_RATING
@@ -12,16 +13,12 @@ User = get_user_model()
 
 
 class Command(BaseCommand):
-    def fetched_reviews(self, period=timedelta()):
-        return Review.objects.filter(
-            application__is_archived=False, last_modified__gte=now() - period
-        ).count()
-
-    def responded_reviews(self, language="", period=timedelta(), since=None):
+    def responded_reviews(self, language="", weekdays=0, since=None):
+        period = BDay(weekdays)
         reviews = Review.objects.filter(
             review_rating__lte=MAX_REVIEW_RATING,
             application__is_archived=False,
-            last_modified__lte=now() - period,
+            last_modified__lte=datetime.now(timezone.utc) - period,
         ).prefetch_related(
             Prefetch(
                 "responses",
@@ -43,7 +40,8 @@ class Command(BaseCommand):
             response = review.responses.first()
             if (
                 response
-                and response.submitted_to_play_store_at - review.last_modified <= period
+                and response.submitted_to_play_store_at.astimezone(timezone.utc)
+                <= review.last_modified.astimezone(timezone.utc) + period
             ):
                 responded_in_period_count += 1
 
@@ -52,7 +50,7 @@ class Command(BaseCommand):
     def active_contributors(
         self, required_responses=0, required_moderations=0, period=timedelta(),
     ):
-        since = now() - period
+        since = datetime.now(timezone.utc) - period
         return (
             User.objects.annotate(
                 responses_count=Count(
@@ -69,21 +67,20 @@ class Command(BaseCommand):
             .count()
         )
 
+    def new_accounts(self, period=timedelta()):
+        return User.objects.filter(
+            date_joined__gte=datetime.now(timezone.utc) - period
+        ).count()
+
     def add_arguments(self, parser):
         parser.add_argument(
             "--post-report", help="Post this report", action="store_true"
         )
         parser.add_argument(
-            "--fetched-hours",
-            help="Hours to report total fetched reviews for",
+            "--responded-weekdays",
+            help="Weekdays reviews should be responded to within",
             type=int,
-            default=24,
-        )
-        parser.add_argument(
-            "--responded-hours",
-            help="Hours reviews should be responded to within",
-            type=int,
-            default=72,
+            default=3,
         )
         parser.add_argument(
             "--responded-languages",
@@ -92,10 +89,16 @@ class Command(BaseCommand):
             default=["en", "de", "es"],
         )
         parser.add_argument(
-            "--contribute-days",
-            help="Days to report active contributors for",
+            "--responded-since",
+            help="When to report responded percent from",
+            type=dateutil_parse,
+            default=None,
+        )
+        parser.add_argument(
+            "--contribute-hours",
+            help="Hours to report active contributors for",
             type=int,
-            default=7,
+            default=24,
         )
         parser.add_argument(
             "--contribute-responses",
@@ -109,31 +112,46 @@ class Command(BaseCommand):
             type=int,
             default=15,
         )
+        parser.add_argument(
+            "--new-user-hours",
+            help="Hours to report new users for",
+            type=int,
+            default=24,
+        )
 
     def generate_report(self, options):
-        report = "Report generated at {}:\n".format(now())
-        report += "Responses fetched which were posted in the past {} hours: {}\n".format(
-            options["fetched_hours"],
-            self.fetched_reviews(period=timedelta(hours=options["fetched_hours"])),
+        report = "Report generated at {}:\n".format(
+            datetime.now(timezone.utc).isoformat(" ", "minutes")
         )
         for language in options["responded_languages"]:
-            report += "Responses in {} responded to within {} hours: {:.1%}\n".format(
+            report += "Reviews in {} responded to within {} weekdays{}: {:.1%}\n".format(
                 language,
-                options["responded_hours"],
+                options["responded_weekdays"],
+                " since "
+                + options["responded_since"]
+                .astimezone(timezone.utc)
+                .isoformat(" ", "minutes")
+                if options["responded_since"]
+                else "",
                 self.responded_reviews(
                     language=language,
-                    period=timedelta(hours=options["responded_hours"]),
+                    weekdays=options["responded_weekdays"],
+                    since=options["responded_since"],
                 ),
             )
-        report += "Active contributors (at least {} responses and {} moderations) in the past {} days: {}\n".format(
+        report += "Active contributors (at least {} responses and {} moderations) in the past {} hours: {}\n".format(
             options["contribute_responses"],
             options["contribute_moderations"],
-            options["contribute_days"],
+            options["contribute_hours"],
             self.active_contributors(
                 required_responses=options["contribute_responses"],
                 required_moderations=options["contribute_moderations"],
-                period=timedelta(days=options["contribute_days"]),
+                period=timedelta(hours=options["contribute_hours"]),
             ),
+        )
+        report += "New users in the past {} hours: {}\n".format(
+            options["new_user_hours"],
+            self.new_accounts(period=timedelta(hours=options["new_user_hours"])),
         )
         return report
 
