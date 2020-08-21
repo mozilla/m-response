@@ -158,23 +158,10 @@ class Command(BaseCommand):
         return report
 
     def post_report(self, report):
-        url = settings.DISCOURSE_URL
-        api_key = settings.DISCOURSE_API_KEY
-        target = settings.DISCOURSE_TARGET
+        url = settings.SLACK_WEBHOOK
 
-        if api_key:
-            r = requests.post(
-                url + "/posts.json",
-                headers={"api-key": api_key},
-                json={
-                    "title": "Reponse report at {}".format(
-                        datetime.now(timezone.utc).isoformat(" ", "minutes")
-                    ),
-                    "raw": report,
-                    "target_recipients": target,
-                    "archetype": "private_message",
-                },
-            )
+        if url:
+            r = requests.post(url, json={"text": report},)
             if r.status_code != 200:
                 print("Posting report failed:")
                 print(r.status_code)
@@ -182,7 +169,7 @@ class Command(BaseCommand):
             else:
                 print("Posting report succeeded.")
         else:
-            print("Not posting report, as Discourse settings are not configured.")
+            print("Not posting report, as Slack webhook is not configured.")
 
     def handle(self, *args, **kwargs):
         report = self.generate_report(kwargs)

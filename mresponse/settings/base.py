@@ -560,7 +560,4 @@ SESSION_COOKIE_NAME = "v3_sessionid"
 
 
 # Report posting
-
-DISCOURSE_API_KEY = env.get("DISCOURSE_API_KEY")
-DISCOURSE_URL = env.get("DISCOURSE_URL", "https://discourse.mozilla.org")
-DISCOURSE_TARGET = env.get("DISCOURSE_TARGET", "response-report-group")
+SLACK_WEBHOOK = env.get("SLACK_WEBHOOK")
