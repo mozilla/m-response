@@ -1,9 +1,11 @@
+import requests
 from datetime import timedelta, datetime, timezone
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
 from django.db.models import Count, Q, Prefetch
 from pandas.tseries.offsets import BDay
 from dateutil.parser import parse as dateutil_parse
+from django.conf import settings
 
 from mresponse.reviews.models import Review
 from mresponse.reviews.api.views import MAX_REVIEW_RATING
@@ -156,11 +158,34 @@ class Command(BaseCommand):
         return report
 
     def post_report(self, report):
-        raise NotImplementedError
+        url = settings.DISCOURSE_URL
+        api_key = settings.DISCOURSE_API_KEY
+        target = settings.DISCOURSE_TARGET
+
+        if api_key:
+            r = requests.post(
+                url + "/posts.json",
+                headers={"api-key": api_key},
+                json={
+                    "title": "Reponse report at {}".format(
+                        datetime.now(timezone.utc).isoformat(" ", "minutes")
+                    ),
+                    "raw": report,
+                    "target_recipients": target,
+                    "archetype": "private_message",
+                },
+            )
+            if r.status_code != 200:
+                print("Posting report failed:")
+                print(r.status_code)
+                print(r.text)
+            else:
+                print("Posting report succeeded.")
+        else:
+            print("Not posting report, as Discourse settings are not configured.")
 
     def handle(self, *args, **kwargs):
         report = self.generate_report(kwargs)
+        print(report)
         if kwargs["post_report"]:
             self.post_report(report)
-        else:
-            print(report)
