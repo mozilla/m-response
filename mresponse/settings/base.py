@@ -557,3 +557,7 @@ WHITENOISE_ROOT = os.path.join(BASE_DIR, "public")
 
 # Sessions
 SESSION_COOKIE_NAME = "v3_sessionid"
+
+
+# Report posting
+SLACK_WEBHOOK = env.get("SLACK_WEBHOOK")

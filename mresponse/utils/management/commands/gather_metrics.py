@@ -1,9 +1,11 @@
+import requests
 from datetime import timedelta, datetime, timezone
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
 from django.db.models import Count, Q, Prefetch
 from pandas.tseries.offsets import BDay
 from dateutil.parser import parse as dateutil_parse
+from django.conf import settings
 
 from mresponse.reviews.models import Review
 from mresponse.reviews.api.views import MAX_REVIEW_RATING
@@ -156,11 +158,21 @@ class Command(BaseCommand):
         return report
 
     def post_report(self, report):
-        raise NotImplementedError
+        url = settings.SLACK_WEBHOOK
+
+        if url:
+            r = requests.post(url, json={"text": report},)
+            if r.status_code != 200:
+                print("Posting report failed:")
+                print(r.status_code)
+                print(r.text)
+            else:
+                print("Posting report succeeded.")
+        else:
+            print("Not posting report, as Slack webhook is not configured.")
 
     def handle(self, *args, **kwargs):
         report = self.generate_report(kwargs)
+        print(report)
         if kwargs["post_report"]:
             self.post_report(report)
-        else:
-            print(report)
