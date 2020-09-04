@@ -40,7 +40,7 @@
     "html-webpack-plugin": "2.29.0",
     "jest": "20.0.4",
     "js-cookie": "^2.2.0",
-    "node-sass": "^4.12.0",
+    "node-sass": "^4.13.1",
     "normalize-scss": "^7.0.1",
     "normalize.css": "^8.0.0",
     "noty": "^3.2.0-beta",
