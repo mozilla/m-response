@@ -22,7 +22,7 @@ jobs:
   include:
     - stage: lint
       name: lint back-end
-      install: pip install flake8 black==19.10b0
+      install: pip install flake8 black==20.8b1
       script:
         - flake8 mresponse
         - black --check mresponse
