@@ -70,6 +70,7 @@ class ResponseSerializerFactory(factory.Factory):
         obj = super().create(**kwargs)
         obj.is_valid()
         obj.save(
-            review=ReviewFactory(), author=kwargs.get("author", UserFactory()),
+            review=ReviewFactory(),
+            author=kwargs.get("author", UserFactory()),
         )
         return obj

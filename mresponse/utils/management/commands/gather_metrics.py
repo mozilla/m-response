@@ -50,7 +50,10 @@ class Command(BaseCommand):
         return responded_in_period_count / review_count if review_count else 0
 
     def active_contributors(
-        self, required_responses=0, required_moderations=0, period=timedelta(),
+        self,
+        required_responses=0,
+        required_moderations=0,
+        period=timedelta(),
     ):
         since = datetime.now(timezone.utc) - period
         return (
@@ -126,20 +129,22 @@ class Command(BaseCommand):
             datetime.now(timezone.utc).isoformat(" ", "minutes")
         )
         for language in options["responded_languages"]:
-            report += "Reviews in {} responded to within {} weekdays{}: {:.1%}\n".format(
-                language,
-                options["responded_weekdays"],
-                " since "
-                + options["responded_since"]
-                .astimezone(timezone.utc)
-                .isoformat(" ", "minutes")
-                if options["responded_since"]
-                else "",
-                self.responded_reviews(
-                    language=language,
-                    weekdays=options["responded_weekdays"],
-                    since=options["responded_since"],
-                ),
+            report += (
+                "Reviews in {} responded to within {} weekdays{}: {:.1%}\n".format(
+                    language,
+                    options["responded_weekdays"],
+                    " since "
+                    + options["responded_since"]
+                    .astimezone(timezone.utc)
+                    .isoformat(" ", "minutes")
+                    if options["responded_since"]
+                    else "",
+                    self.responded_reviews(
+                        language=language,
+                        weekdays=options["responded_weekdays"],
+                        since=options["responded_since"],
+                    ),
+                )
             )
         report += "Active contributors (at least {} responses and {} moderations) in the past {} hours: {}\n".format(
             options["contribute_responses"],
@@ -161,7 +166,7 @@ class Command(BaseCommand):
         url = settings.SLACK_WEBHOOK
 
         if url:
-            r = requests.post(url, json={"text": report},)
+            r = requests.post(url, json={"text": report})
             if r.status_code != 200:
                 print("Posting report failed:")
                 print(r.status_code)

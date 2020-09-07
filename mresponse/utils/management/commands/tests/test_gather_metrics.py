@@ -46,7 +46,7 @@ class TestRespondedReviews(TestCase):
 
     def test_high_star_reviews(self):
         self.review(review_rating=3)
-        self.response(submitted_to_play_store=True,)
+        self.response(submitted_to_play_store=True)
 
         result = Command().responded_reviews(weekdays=1)
         self.assertEqual(result, 1)
