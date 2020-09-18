@@ -1,9 +1,11 @@
 from django.core.cache import cache
 from django.utils.translation import ugettext_lazy as _
+
+from rest_framework import exceptions, generics, permissions, response, views
+
 from mresponse.reviews import models as reviews_models
 from mresponse.reviews.api import serializers as reviews_serializers
 from mresponse.utils import queryset as queryset_utils
-from rest_framework import exceptions, generics, permissions, response, views
 
 MAX_REVIEW_RATING = 2
 
@@ -14,8 +16,7 @@ class Review(generics.RetrieveAPIView):
     """
 
     queryset = (
-        reviews_models.Review.objects.responder_queue()
-        .application_is_active()
+        reviews_models.Review.objects.application_is_active()
         .select_related("application", "application_version")
         .prefetch_related("responses")
         .filter(review_rating__lte=MAX_REVIEW_RATING)
@@ -28,6 +29,9 @@ class Review(generics.RetrieveAPIView):
         kwargs["show_response_url"] = True
         kwargs["show_skip_url"] = True
         return super().get_serializer(*args, **kwargs)
+
+    def get_queryset(self):
+        return super().get_queryset().responder_queue(user=self.request.user)
 
     def get_languages_list(self):
         try:
@@ -56,6 +60,10 @@ class Review(generics.RetrieveAPIView):
     def delete_cached_next(self):
         next_key = "next_review_user_{}".format(self.request.user.pk)
         cache.delete(next_key)
+
+    def get_skipped(self):
+        skipped_key = "skipped_reviews_user_{}".format(self.request.user.pk)
+        return cache.get(skipped_key, list())
 
     def choose_review_for_user(self):
         """
@@ -86,25 +94,29 @@ class Review(generics.RetrieveAPIView):
         if languages_list:
             querysets.append(base_queryset.languages(languages_list))
 
+        skipped = self.get_skipped()
         if not assigned:
             cached_review = self.get_cached_next()
-            if not cached_review:
+            if not cached_review or cached_review.assigned_to:
                 for queryset in querysets:
-                    review = queryset_utils.get_random_entry(queryset)
+                    review = queryset_utils.get_review_entry(queryset, skipped)
                     if review is not None:
                         break
             else:
                 review = cached_review
 
+        if review is None:
+            raise exceptions.NotFound(detail=_("No reviews available in the queue."))
+
         next_review = None
         for queryset in querysets:
-            next_review = queryset_utils.get_random_entry(queryset)
+            next_review = queryset_utils.get_review_entry(
+                queryset, skipped + [review.pk]
+            )
 
             if next_review is not None and next_review.pk != review.pk:
                 break
 
-        if review is None:
-            raise exceptions.NotFound(detail=_("No reviews available in the queue."))
         review.assign_to_user(self.request.user)
 
         # Count available next reviews
@@ -149,9 +161,16 @@ class NextReview(generics.RetrieveAPIView):
 class SkipReview(views.APIView):
     def post(self, *args, format=None, **kwargs):
         try:
+            review_pk = kwargs["review_pk"]
+
             review = reviews_models.Review.objects.assigned_to_user(
                 self.request.user
-            ).get(pk=kwargs["review_pk"])
+            ).get(pk=review_pk)
+
+            skipped_key = "skipped_reviews_user_{}".format(self.request.user.pk)
+            skipped = cache.get(skipped_key, list())
+            cache.set(skipped_key, skipped + [review_pk])
+
         except reviews_models.Review.DoesNotExist:
             raise exceptions.NotFound(
                 detail=_("User has no assigned review of this ID.")

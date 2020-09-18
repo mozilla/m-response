@@ -21,7 +21,9 @@ class ReviewQuerySet(models.QuerySet):
         return self.filter(assigned_to_user_at__gte=timezone.now() - ASSIGNMENT_TIMEOUT)
 
     def assignment_expired(self):
-        return self.difference(self.assignment_not_expired())
+        return self.exclude(
+            assigned_to_user_at__gte=timezone.now() - ASSIGNMENT_TIMEOUT
+        )
 
     def not_assigned_to_any_user(self):
         return self.filter(assigned_to__isnull=True) | self.assignment_expired()

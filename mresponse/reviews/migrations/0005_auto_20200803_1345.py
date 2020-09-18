@@ -11,7 +11,8 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterModelOptions(
-            name="review", options={"ordering": ["-created_on"]},
+            name="review",
+            options={"ordering": ["-created_on"]},
         ),
         migrations.AddField(
             model_name="review",

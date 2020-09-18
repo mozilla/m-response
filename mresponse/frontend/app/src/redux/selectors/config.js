@@ -2,6 +2,7 @@ export const getAppConfig = state => state.config.appConfig || { languages: [] }
 export const getHomeConfig = state => state.config.homeConfig || {}
 
 export const getRespondQueue = state => getHomeConfig(state)['respond_queue'] || 0
+export const getThreeDaysRespondQueue = state => getHomeConfig(state)['respond_three_days_queue'] || 0
 export const getModerateQueue = state => getHomeConfig(state)['moderate_queue'] || 0
 
 export const getFeedbackUrl = state => getAppConfig(state)['feedback_url'] || '#'
