@@ -24,7 +24,7 @@ def homepage(request, format=None):
     respond_queue = reviews_models.Review.objects.responder_queue(
         user=request.user
     ).application_is_active()
-    three_days_diff = utc_now() - timedelta(days=30)
+    three_days_diff = utc_now() - timedelta(days=3)
 
     if languages:
         respond_queue = respond_queue.languages(languages)
