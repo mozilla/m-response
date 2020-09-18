@@ -3,12 +3,13 @@ import { push } from 'connected-react-router'
 
 import { PROFILE_URL, RESPOND_URL, MODERATE_URL } from '@utils/urls'
 import { updateAppConfig, updateHomeConfig, fetchExtraUserMeta, fetchProfile, fetchLeaderboard, fetchCannedResponses, fetchHelpDocs } from '@redux/actions'
-import { getModerateQueue, getRespondQueue, getFeedbackUrl, getAboutUrl, getProfile, getLeaderboard, getCannedResponses, getHelpDocs } from '@redux/selectors'
+import { getModerateQueue, getRespondQueue, getThreeDaysRespondQueue, getFeedbackUrl, getAboutUrl, getProfile, getLeaderboard, getCannedResponses, getHelpDocs } from '@redux/selectors'
 import HomePage from './home'
 // import { getHelpDocs } from '../../redux/selectors';
 
 const mapStateToProps = (state, props) => ({
   respondQueue: getRespondQueue(state),
+  respondThreeDaysQueue: getThreeDaysRespondQueue(state),
   moderateQueue: getModerateQueue(state),
   feedbackLink: getFeedbackUrl(state),
   aboutLink: getAboutUrl(state),
