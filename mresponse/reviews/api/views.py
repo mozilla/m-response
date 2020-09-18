@@ -1,9 +1,11 @@
 from django.core.cache import cache
 from django.utils.translation import ugettext_lazy as _
+
+from rest_framework import exceptions, generics, permissions, response, views
+
 from mresponse.reviews import models as reviews_models
 from mresponse.reviews.api import serializers as reviews_serializers
 from mresponse.utils import queryset as queryset_utils
-from rest_framework import exceptions, generics, permissions, response, views
 
 MAX_REVIEW_RATING = 2
 
@@ -90,7 +92,7 @@ class Review(generics.RetrieveAPIView):
             cached_review = self.get_cached_next()
             if not cached_review:
                 for queryset in querysets:
-                    review = queryset_utils.get_random_entry(queryset)
+                    review = queryset_utils.get_review_entry(queryset)
                     if review is not None:
                         break
             else:
@@ -98,7 +100,7 @@ class Review(generics.RetrieveAPIView):
 
         next_review = None
         for queryset in querysets:
-            next_review = queryset_utils.get_random_entry(queryset)
+            next_review = queryset_utils.get_review_entry(queryset)
 
             if next_review is not None and next_review.pk != review.pk:
                 break
