@@ -13,6 +13,23 @@ import { staticAsset } from '@utils/urls'
 import './home.scss'
 
 export default class HomePage extends React.Component {
+  reviewCount = () => {
+    let reviewString = ''
+    let reviewCount = 0
+    if (this.props.respondThreeDaysQueue) {
+      reviewString = 'in the last 3 days'
+      reviewCount = this.props.respondThreeDaysQueue
+    } else {
+      reviewString = 'in total'
+      reviewCount = this.props.respondQueue
+    }
+
+    return {
+      reviewCount: Number(reviewCount).toLocaleString(),
+      queueText: reviewString
+    }
+  }
+
   state = {
     isHelpDocsMenuOpen: false
   }
@@ -37,13 +54,13 @@ export default class HomePage extends React.Component {
       feedbackLink,
       aboutLink,
       goToProfile,
-      respondQueue,
       moderateQueue,
       goToRespondMode,
       goToModerateMode,
       leaderboard,
       helpDocs
     } = this.props
+    const queueData = this.reviewCount()
 
     const sideBarContent = (
       <HelpDocs helpData={helpDocs} />
@@ -74,13 +91,13 @@ export default class HomePage extends React.Component {
               icon={staticAsset('media/icons/respond-black.svg')}
               bgColor='orange'
               title='Respond'
-              subtitle={`Queue: ${Number(respondQueue).toLocaleString()}`}
+              subtitle={`${queueData.reviewCount} ${queueData.queueText}`}
               onClick={goToRespondMode} />
             <HomePageCard
               icon={staticAsset('media/icons/moderate-black.svg')}
               bgColor='blue-lighter'
               title='Moderate'
-              subtitle={`Queue: ${Number(moderateQueue).toLocaleString()}`}
+              subtitle={`${Number(moderateQueue).toLocaleString()} in total`}
               onClick={goToModerateMode} />
 
             <Leaderboard
