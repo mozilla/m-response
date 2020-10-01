@@ -156,6 +156,8 @@ else:
         }
     }
 
+SKIPPED_CACHE_TIMEOUT = int(env.get("SKIPPED_CACHE_TIMEOUT", "604800"))
+
 
 # Django authentication backends
 
