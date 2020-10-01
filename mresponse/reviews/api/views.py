@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.cache import cache
 from django.utils.translation import ugettext_lazy as _
 
@@ -169,7 +170,11 @@ class SkipReview(views.APIView):
 
             skipped_key = "skipped_reviews_user_{}".format(self.request.user.pk)
             skipped = cache.get(skipped_key, list())
-            cache.set(skipped_key, skipped + [review_pk])
+            cache.set(
+                skipped_key,
+                skipped + [review_pk],
+                timeout=settings.SKIPPED_CACHE_TIMEOUT,
+            )
 
         except reviews_models.Review.DoesNotExist:
             raise exceptions.NotFound(
