@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import Button from '@components/buttons'
+import DecomBanner from '@components/decom-banner'
 import { staticAsset, DASHBOARD_URL } from '@utils/urls'
 import './welcome.scss'
 
@@ -42,11 +43,7 @@ export default class WelcomePage extends React.Component {
             />
           </div>
           <section className="info-container">
-            <span className="info-tagline">Saving The World From Your Couch</span>
-            <span className="info-desc">
-              This is a new and fun tool to make it fun and easy to respond as
-              Mozilla on Google Play store reviews
-            </span>
+            <DecomBanner />
           </section>
           <Button
             label="Let's Start"
