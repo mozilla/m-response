@@ -3,6 +3,7 @@ import { CSSTransitionGroup } from 'react-transition-group'
 import { FirstChild } from '@components/first-child'
 
 import Avatar from '@components/avatar'
+import DecomBanner from '@components/decom-banner'
 import HomePageCard from '@components/home-page-card'
 import Leaderboard from '@components/leaderboard'
 import SideBar from '@components/side-bar'
@@ -83,6 +84,7 @@ export default class HomePage extends React.Component {
             karma={profile.karma.points}
             coverIcon={staticAsset('media/icons/user.svg')}
             onClick={goToProfile} />
+          <DecomBanner />
         </header>
 
         <div className='home-page-wrap'>
